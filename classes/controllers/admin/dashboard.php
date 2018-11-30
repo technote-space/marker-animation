@@ -151,6 +151,9 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 		}
 		if ( $ret['form'] === 'select' ) {
 			$ret['selected'] = $value;
+			if ( ! empty( $ret['options'] ) && ! isset( $ret['options'][ $value ] ) ) {
+				$ret['options'][ $value ] = $value;
+			}
 		}
 
 		return $ret;
