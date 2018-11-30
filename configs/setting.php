@@ -17,44 +17,52 @@ return [
 	9 => [
 		'Marker Animation' => [
 			10 => [
-				'is_valid'  => [
+				'is_valid'        => [
 					'label'   => 'validity',
 					'type'    => 'bool',
 					'default' => true,
 				],
-				'selector'  => [
+				'selector'        => [
 					'label'   => 'selector (other than [.marker-animation])',
 					'default' => '.marker-under',
 				],
-				'color'     => [
+				'color'           => [
 					'label'   => 'color',
 					'default' => '#ff6',
 				],
-				'thickness' => [
+				'thickness'       => [
 					'label'   => 'thickness',
 					'default' => '.6em',
 				],
-				'duration'  => [
+				'duration'        => [
 					'label'   => 'duration',
 					'default' => '2s',
 				],
-				'delay'     => [
+				'delay'           => [
 					'label'   => 'delay',
 					'default' => '.1s',
 				],
-				'function'  => [
+				'function'        => [
 					'label'   => 'function',
 					'default' => 'ease',
 				],
-				'bold'      => [
+				'bold'            => [
 					'label'   => 'font bold',
 					'type'    => 'bool',
 					'default' => true,
 				],
-				'repeat'    => [
+				'repeat'          => [
 					'label'   => 'repeat',
 					'type'    => 'bool',
 					'default' => false,
+				],
+				'position_bottom' => [
+					'label'   => 'position bottom',
+					'default' => '0',
+				],
+				'padding_bottom'  => [
+					'label'   => 'padding bottom',
+					'default' => '.1em',
 				],
 			],
 		],

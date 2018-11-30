@@ -6,4 +6,5 @@
     background-size: 200% .6em;
     font-weight: bold;
     transition: background-position 2s ease .1s;
+    padding-bottom: .1em;
 }

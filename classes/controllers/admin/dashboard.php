@@ -75,12 +75,12 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 	 */
 	private function get_setting_keys() {
 		return [
-			'is_valid'  => 'input/checkbox',
-			'color'     => 'color',
-			'thickness' => 'input/text',
-			'duration'  => 'input/text',
-			'delay'     => 'input/text',
-			'function'  => [
+			'is_valid'        => 'input/checkbox',
+			'color'           => 'color',
+			'thickness'       => 'input/text',
+			'duration'        => 'input/text',
+			'delay'           => 'input/text',
+			'function'        => [
 				'form' => 'select',
 				'args' => [
 					'options' => [
@@ -92,7 +92,7 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 					],
 				],
 			],
-			'bold'      => [
+			'bold'            => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'attributes' => [
@@ -102,7 +102,9 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 					],
 				],
 			],
-			'repeat'    => 'input/checkbox',
+			'repeat'          => 'input/checkbox',
+			'padding_bottom'  => 'input/text',
+			'position_bottom' => 'input/text',
 		];
 	}
 

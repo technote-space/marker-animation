@@ -98,7 +98,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		$options = [
 			'selector' => $this->get_selector(),
 		];
-		foreach ( [ 'color', 'thickness', 'duration', 'delay', 'function' ] as $key ) {
+		foreach ( [ 'color', 'thickness', 'duration', 'delay', 'function', 'padding_bottom', 'position_bottom' ] as $key ) {
 			$param = $this->get_string_param( $key );
 			if ( ! empty( $param ) ) {
 				$options[ $key ] = $param;
