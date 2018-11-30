@@ -1,0 +1,57 @@
+<?php
+/**
+ * @version 1.0.0
+ * @author technote
+ * @since 1.0.0
+ * @copyright technote All Rights Reserved
+ * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
+ * @link https://technote.space/
+ */
+
+if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+	return;
+}
+/** @var \Technote\Controllers\Admin\Base $instance */
+/** @var string $name_prefix */
+?>
+
+<script>
+    (function ($) {
+        const setup_options = function () {
+            const options = {};
+            $('#<?php $instance->id(); ?>-content-wrap input, #<?php $instance->id(); ?>-content-wrap select').each(function () {
+                const name = $(this).attr('name');
+                if (name && name.match(/^<?php $instance->h( preg_quote( $name_prefix ) );?>/)) {
+                    let option_name = name.replace(/^<?php $instance->h( preg_quote( $name_prefix ) );?>/, '');
+                    let option_value = $(this).val();
+                    if ('checkbox' === $(this).attr('type')) {
+                        const _option_value_true = $(this).data('option_value-true'), _option_value_false = $(this).data('option_value-false');
+                        if ($(this).prop('checked')) {
+                            if (undefined === _option_value_true) {
+                                option_value = 1;
+                            } else {
+                                option_value = _option_value_true;
+                            }
+                        } else {
+                            if (undefined === _option_value_false) {
+                                option_value = 0;
+                            } else {
+                                option_value = _option_value_false;
+                            }
+                        }
+                    }
+                    const _option_name = $(this).data('option_name'), _option_value = $(this).data('option_value');
+                    if (_option_name) option_name = _option_name;
+                    if (_option_value) option_value = _option_value;
+                    if (option_value === '') option_value = $(this).data('default');
+                    options[option_name] = option_value;
+                }
+            });
+            $('.marker-setting-preview span').markerAnimation(options);
+        };
+        $('#<?php $instance->id(); ?>-content-wrap input, #<?php $instance->id(); ?>-content-wrap select').on('change <?php $instance->h( $instance->app->slug_name . '-' );?>cleared', function () {
+            setup_options();
+        });
+        setup_options();
+    })(jQuery);
+</script>
