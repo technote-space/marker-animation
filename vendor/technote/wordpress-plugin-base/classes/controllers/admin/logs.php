@@ -2,7 +2,7 @@
 /**
  * Technote Controller Admin Logs
  *
- * @version 1.1.54
+ * @version 1.1.68
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -39,7 +39,7 @@ class Logs extends Base {
 	/**
 	 * post
 	 */
-	public function post_action() {
+	protected function post_action() {
 
 		$ext    = $this->app->get_config( 'config', 'log_extension' );
 		$root   = $this->app->define->plugin_logs_dir . DS;

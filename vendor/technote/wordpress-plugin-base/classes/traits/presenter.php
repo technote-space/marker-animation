@@ -2,7 +2,7 @@
 /**
  * Technote Traits Presenter
  *
- * @version 1.1.65
+ * @version 1.1.68
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -518,6 +518,21 @@ trait Presenter {
 	public function setup_modal() {
 		$this->add_script_view( 'include/script/modal', [], 1 );
 		$this->add_style_view( 'include/style/modal', [], 1 );
+	}
+
+	/**
+	 * setup color picker
+	 */
+	public function setup_color_picker() {
+		wp_enqueue_script( 'wp-color-picker' );
+		$this->add_script_view( 'include/script/color', [], 1 );
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_color_picker_class() {
+		return $this->get_slug( 'color_picker_class', '-color_picker' );
 	}
 
 	/**

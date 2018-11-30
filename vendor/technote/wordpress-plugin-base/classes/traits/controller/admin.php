@@ -2,7 +2,7 @@
 /**
  * Technote Traits Controller Admin
  *
- * @version 1.1.66
+ * @version 1.1.68
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -57,14 +57,21 @@ trait Admin {
 	/**
 	 * get
 	 */
-	public function get_action() {
+	protected function get_action() {
 
 	}
 
 	/**
 	 * post
 	 */
-	public function post_action() {
+	protected function post_action() {
+
+	}
+
+	/**
+	 * common
+	 */
+	protected function common_action() {
 
 	}
 
@@ -77,6 +84,7 @@ trait Admin {
 		} else {
 			$this->get_action();
 		}
+		$this->common_action();
 		$this->do_action( 'controller_action', $this->is_post() );
 	}
 
@@ -91,7 +99,12 @@ trait Admin {
 	 * @return string
 	 */
 	public function presenter() {
-		return $this->get_view( 'admin/' . $this->get_page_slug(), $this->get_view_args() );
+		$args = $this->get_view_args();
+		$slug = $this->get_page_slug();
+		$this->add_style_view( 'admin/style/' . $slug, $args );
+		$this->add_script_view( 'admin/script/' . $slug, $args );
+
+		return $this->get_view( 'admin/' . $this->get_page_slug(), $args );
 	}
 
 	/**

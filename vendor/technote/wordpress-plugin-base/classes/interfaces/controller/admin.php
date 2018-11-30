@@ -2,7 +2,7 @@
 /**
  * Technote Interfaces Controller Admin
  *
- * @version 1.1.54
+ * @version 1.1.68
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -41,16 +41,6 @@ interface Admin extends \Technote\Interfaces\Controller, \Technote\Interfaces\No
 	 * @return string
 	 */
 	public function get_page_slug();
-
-	/**
-	 * get
-	 */
-	public function get_action();
-
-	/**
-	 * post
-	 */
-	public function post_action();
 
 	/**
 	 * @return string

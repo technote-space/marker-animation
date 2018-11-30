@@ -2,7 +2,7 @@
 /**
  * Technote Controller Test
  *
- * @version 1.1.54
+ * @version 1.1.68
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -39,7 +39,7 @@ class Test extends Base {
 	/**
 	 * post
 	 */
-	public function post_action() {
+	protected function post_action() {
 		$action = $this->app->input->post( 'action' );
 		if ( method_exists( $this, $action ) && is_callable( [ $this, $action ] ) ) {
 			$this->$action();
