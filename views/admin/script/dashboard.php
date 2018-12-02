@@ -47,6 +47,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
                     options[option_name] = option_value;
                 }
             });
+            console.log(options);
             $('.marker-setting-preview span').markerAnimation(options);
         };
         $('#<?php $instance->id(); ?>-content-wrap input, #<?php $instance->id(); ?>-content-wrap select').on('change <?php $instance->h( $instance->app->slug_name . '-' );?>cleared', function () {
