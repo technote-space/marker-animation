@@ -16,7 +16,7 @@
     ]
   },
   "dependencies": {
-    "jquery.marker-animation": "^1.0.6"
+    "jquery.marker-animation": "^1.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
