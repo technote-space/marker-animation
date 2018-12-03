@@ -2,7 +2,7 @@
 /**
  * Technote Traits Presenter
  *
- * @version 1.1.68
+ * @version 1.1.69
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -27,6 +27,16 @@ trait Presenter {
 	private $_prev_post = null;
 
 	/**
+	 * @return array
+	 */
+	private function get_check_view_dirs() {
+		return $this->apply_filters( 'check_view_dirs', [
+			$this->app->define->plugin_views_dir,
+			$this->app->define->lib_views_dir,
+		] );
+	}
+
+	/**
 	 * @param string $name
 	 * @param array $args
 	 * @param bool $echo
@@ -40,10 +50,12 @@ trait Presenter {
 		$name = str_replace( '/', DS, $name );
 		$name .= '.php';
 		$path = null;
-		if ( is_readable( $this->app->define->plugin_views_dir . DS . $name ) ) {
-			$path = $this->app->define->plugin_views_dir . DS . $name;
-		} elseif ( is_readable( $this->app->define->lib_views_dir . DS . $name ) ) {
-			$path = $this->app->define->lib_views_dir . DS . $name;
+		foreach ( $this->get_check_view_dirs() as $dir ) {
+			$dir = rtrim( $dir, DS . '/' );
+			if ( is_readable( $dir . DS . $name ) ) {
+				$path = $dir . DS . $name;
+				break;
+			}
 		}
 
 		$view = '';
@@ -319,6 +331,16 @@ trait Presenter {
 	}
 
 	/**
+	 * @return array
+	 */
+	private function get_check_assets_dirs() {
+		return $this->apply_filters( 'check_assets_dirs', [
+			$this->app->define->plugin_assets_dir => $this->app->define->plugin_assets_url,
+			$this->app->define->lib_assets_dir    => $this->app->define->lib_assets_url,
+		] );
+	}
+
+	/**
 	 * @param string $path
 	 * @param string $default
 	 * @param bool $url
@@ -335,19 +357,15 @@ trait Presenter {
 		$path = trim( $path, '/' . DS );
 		$path = str_replace( '/', DS, $path );
 
-		if ( file_exists( $this->app->define->plugin_assets_dir . DS . $path ) && is_file( $this->app->define->plugin_assets_dir . DS . $path ) ) {
-			if ( $url ) {
-				return $this->app->define->plugin_assets_url . '/' . str_replace( DS, '/', $path ) . $this->apply_filters( 'get_assets_version', $this->get_assets_version( $append_version ), $append_version );
-			}
+		foreach ( $this->get_check_assets_dirs() as $_dir => $_url ) {
+			$_dir = rtrim( $_dir, DS . '/' );
+			if ( file_exists( $_dir . DS . $path ) && is_file( $_dir . DS . $path ) ) {
+				if ( $url ) {
+					return rtrim( $_url, '/' ) . '/' . str_replace( DS, '/', $path ) . $this->apply_filters( 'get_assets_version', $this->get_assets_version( $append_version ), $append_version );
+				}
 
-			return $this->app->define->plugin_assets_dir . DS . $path;
-		}
-		if ( file_exists( $this->app->define->lib_assets_dir . DS . $path ) && is_file( $this->app->define->lib_assets_dir . DS . $path ) ) {
-			if ( $url ) {
-				return $this->app->define->lib_assets_url . '/' . str_replace( DS, '/', $path ) . $this->apply_filters( 'get_assets_version', $this->get_assets_version( $append_version ), $append_version );
+				return $_dir . DS . $path;
 			}
-
-			return $this->app->define->lib_assets_dir . DS . $path;
 		}
 		if ( empty( $default ) ) {
 			return '';

@@ -2,7 +2,7 @@
 /**
  * Technote
  *
- * @version 1.1.67
+ * @version 1.1.69
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -219,6 +219,7 @@ class Technote {
 			foreach ( $this->properties as $name => $class ) {
 				$this->$name;
 			}
+			$this->loader->uninstall->get_class_list();
 		}
 	}
 
