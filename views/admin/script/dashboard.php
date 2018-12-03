@@ -17,9 +17,10 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 <script>
     (function ($) {
+        const $target = $('#<?php $instance->id(); ?>-content-wrap .marker-animation-option');
         const setup_options = function () {
             const options = {};
-            $('#<?php $instance->id(); ?>-content-wrap input, #<?php $instance->id(); ?>-content-wrap select').each(function () {
+            $target.each(function () {
                 const name = $(this).attr('name');
                 if (name && name.match(/^<?php $instance->h( preg_quote( $name_prefix ) );?>/)) {
                     let option_name = name.replace(/^<?php $instance->h( preg_quote( $name_prefix ) );?>/, '');
@@ -47,10 +48,9 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
                     options[option_name] = option_value;
                 }
             });
-            console.log(options);
             $('.marker-setting-preview span').markerAnimation(options);
         };
-        $('#<?php $instance->id(); ?>-content-wrap input, #<?php $instance->id(); ?>-content-wrap select').on('change <?php $instance->h( $instance->app->slug_name . '-' );?>cleared', function () {
+        $target.on('change <?php $instance->h( $instance->app->slug_name . '-' );?>cleared', function () {
             setup_options();
         });
         setup_options();

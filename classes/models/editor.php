@@ -70,11 +70,4 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 		return $stylesheets;
 	}
-
-	/**
-	 * @return string
-	 */
-	private function get_selector() {
-		return trim( $this->apply_filters( 'selector' ) );
-	}
 }

@@ -131,6 +131,7 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 		$value  = $detail['value'];
 		$ret    = [
 			'id'         => $this->get_id_prefix() . $name,
+			'class'      => 'marker-animation-option',
 			'name'       => $this->get_name_prefix() . $name,
 			'value'      => $value,
 			'label'      => $detail['label'],
