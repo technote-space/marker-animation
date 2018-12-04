@@ -18,6 +18,9 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Presenter;
 
+	/** @var bool $_setup_params */
+	private $_setup_params = false;
+
 	/**
 	 * enqueue editor params
 	 */
@@ -33,6 +36,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 				'class' => $assets->get_default_marker_animation_class(),
 			],
 		] );
+		$this->_setup_params = true;
 	}
 
 	/**
@@ -42,7 +46,9 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_external_plugins( $external_plugins ) {
-		$external_plugins['marker_animation_button_plugin'] = $this->get_assets_url( 'js/editor.js' );
+		if ( $this->_setup_params ) {
+			$external_plugins['marker_animation_button_plugin'] = $this->get_assets_url( 'js/editor.js' );
+		}
 
 		return $external_plugins;
 	}
@@ -54,7 +60,9 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_buttons( $mce_buttons ) {
-		$mce_buttons[] = 'marker_animation';
+		if ( $this->_setup_params ) {
+			$mce_buttons[] = 'marker_animation';
+		}
 
 		return $mce_buttons;
 	}
@@ -66,7 +74,9 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function editor_stylesheets( $stylesheets ) {
-		$stylesheets[] = $this->get_assets_url( 'css/editor.css' );
+		if ( $this->_setup_params ) {
+			$stylesheets[] = $this->get_assets_url( 'css/editor.css' );
+		}
 
 		return $stylesheets;
 	}
