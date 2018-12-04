@@ -2,7 +2,7 @@
 /**
  * Technote Views Admin Help Setting
  *
- * @version 1.1.66
+ * @version 1.1.70
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -13,7 +13,7 @@
 if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	return;
 }
-/** @var \Technote\Controllers\Admin\Base $instance */
+/** @var \Technote\Interfaces\Presenter $instance */
 /** @var string $prefix */
 ?>
 
@@ -51,7 +51,7 @@ add_filter( '<?php $instance->h( $prefix ); ?>get_help_contents', function ( $co
 if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	return;
 }
-/** @var \Technote\Controllers\Admin\Base $instance */
+/** @var \Technote\Interfaces\Presenter $instance */
 ?>
 <<<?php ?>?>div>
     Hello World!

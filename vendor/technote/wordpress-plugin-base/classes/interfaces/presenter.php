@@ -2,7 +2,7 @@
 /**
  * Technote Interfaces Presenter
  *
- * @version 1.1.13
+ * @version 1.1.70
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -26,20 +26,34 @@ interface Presenter {
 	 * @param string $name
 	 * @param array $args
 	 * @param bool $echo
+	 * @param bool $error
+	 * @param bool $remove_nl
 	 *
 	 * @return string
 	 */
-	public function get_view( $name, $args = [], $echo = false );
+	public function get_view( $name, $args = [], $echo = false, $error = true, $remove_nl = false );
 
 	/**
 	 * @param string $name
 	 * @param array $args
 	 * @param array $overwrite
 	 * @param bool $echo
+	 * @param bool $error
 	 *
 	 * @return string
 	 */
-	public function form( $name, $args = [], $overwrite = [], $echo = true );
+	public function form( $name, $args = [], $overwrite = [], $echo = true, $error = true );
+
+	/**
+	 * @param string $name
+	 * @param mixed $data
+	 * @param string|null $key
+	 * @param string $default
+	 * @param bool $checkbox
+	 *
+	 * @return mixed
+	 */
+	public function old( $name, $data, $key = null, $default = '', $checkbox = false );
 
 	/**
 	 * @param mixed $data
@@ -77,16 +91,36 @@ interface Presenter {
 
 	/**
 	 * @param string $value
+	 * @param bool $translate
+	 * @param bool $echo
+	 * @param bool $escape
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	public function h( $value, $translate = false, $echo = true, $escape = true, ...$args );
+
+	/**
+	 * @param mixed $value
 	 * @param bool $echo
 	 *
 	 * @return string
 	 */
-	public function h( $value, $echo = true );
+	public function json( $value, $echo = true );
 
 	/**
-	 * echo plugin_name
+	 * @param $value
+	 *
+	 * @return string
 	 */
-	public function id();
+	public function translate( $value );
+
+	/**
+	 * @param bool $echo
+	 *
+	 * @return string
+	 */
+	public function id( $echo = true );
 
 	/**
 	 * @param array $data
@@ -103,10 +137,11 @@ interface Presenter {
 	 * @param bool $new_tab
 	 * @param array $args
 	 * @param bool $echo
+	 * @param bool $escape
 	 *
 	 * @return string
 	 */
-	public function url( $url, $contents, $translate = false, $new_tab = false, $args = [], $echo = true );
+	public function url( $url, $contents, $translate = false, $new_tab = false, $args = [], $echo = true, $escape = true );
 
 	/**
 	 * @param string $path
@@ -177,6 +212,41 @@ interface Presenter {
 	 * @return bool
 	 */
 	public function js( $path, $priority = 10 );
+
+	/**
+	 * @param string $handle
+	 * @param string $file
+	 * @param array $depends
+	 * @param string|bool|null $ver
+	 * @param string $media
+	 * @param string $dir
+	 */
+	public function enqueue_style( $handle, $file, $depends = [], $ver = false, $media = 'all', $dir = 'css' );
+
+	/**
+	 * @param string $handle
+	 * @param string $file
+	 * @param array $depends
+	 * @param string|bool|null $ver
+	 * @param bool $in_footer
+	 * @param string $dir
+	 */
+	public function enqueue_script( $handle, $file, $depends = [], $ver = false, $in_footer = true, $dir = 'js' );
+
+	/**
+	 * setup modal
+	 */
+	public function setup_modal();
+
+	/**
+	 * setup color picker
+	 */
+	public function setup_color_picker();
+
+	/**
+	 * @return string
+	 */
+	public function get_color_picker_class();
 
 	/**
 	 * @param bool $echo

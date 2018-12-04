@@ -2,7 +2,7 @@
 /**
  * Technote Interfaces Nonce
  *
- * @version 1.1.13
+ * @version 1.1.70
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -26,5 +26,12 @@ interface Nonce {
 	 * @return string
 	 */
 	public function get_nonce_slug();
+
+	/**
+	 * @param string $nonce
+	 *
+	 * @return false|int
+	 */
+	public function verify_nonce( $nonce );
 
 }

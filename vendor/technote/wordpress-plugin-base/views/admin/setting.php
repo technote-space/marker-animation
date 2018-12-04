@@ -2,7 +2,7 @@
 /**
  * Technote Views Admin Setting
  *
- * @version 1.1.13
+ * @version 1.1.70
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -13,7 +13,7 @@
 if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	return;
 }
-/** @var \Technote\Controllers\Admin\Base $instance */
+/** @var \Technote\Interfaces\Presenter $instance */
 /** @var array $settings */
 /** @var array $args */
 ?>
