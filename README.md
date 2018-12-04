@@ -17,7 +17,9 @@
 
 - 投稿編集画面
 
-![投稿編集画面](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-3.png)
+![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-3.gif)
+
+![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-4.gif)
 
 ## 要件
 - PHP 5.6 以上
