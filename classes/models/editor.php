@@ -31,11 +31,14 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		$this->add_script_view( 'admin/script/editor', [
 			'param_name' => 'marker_animation_params',
 			'params'     => [
-				'title' => $this->translate( 'Marker Animation' ),
-				'text'  => $this->translate( 'Marker Animation' ),
-				'class' => $assets->get_default_marker_animation_class(),
+				'title'        => $this->translate( 'Marker Animation' ),
+				'detail_title' => $this->translate( 'Marker Animation (detail setting)' ),
+				'class'        => $assets->get_default_marker_animation_class(),
+				'details'      => $assets->get_setting_details(),
+				'prefix'       => 'ma_',
 			],
 		] );
+		$this->add_style_view( 'admin/style/editor' );
 		$this->_setup_params = true;
 	}
 
@@ -62,6 +65,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	private function mce_buttons( $mce_buttons ) {
 		if ( $this->_setup_params ) {
 			$mce_buttons[] = 'marker_animation';
+			$mce_buttons[] = 'marker_animation_detail';
 		}
 
 		return $mce_buttons;

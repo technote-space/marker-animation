@@ -22,7 +22,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 * setup assets
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function wp_enqueue_scripts() {
+	private function setup_assets() {
 		if ( ! $this->is_valid() ) {
 			return;
 		}
@@ -30,7 +30,6 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		$this->enqueue_script( $this->app->slug_name . '-marker_animation', 'marker-animation.min.js', [
 			'jquery',
 		] );
-
 		wp_localize_script( $this->app->slug_name . '-marker_animation', $this->get_marker_object_name(), $this->get_marker_options() );
 	}
 
@@ -62,29 +61,6 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
-	 * @param $key
-	 *
-	 * @return string
-	 */
-	private function get_string_param( $key ) {
-		$param = $this->apply_filters( $key );
-		$param = preg_replace( '/[\x00-\x1F\x7F]/', '', $param );
-		$param = str_replace( [ ' ', '　' ], '', $param );
-		$param = trim( $param );
-
-		return $param;
-	}
-
-	/**
-	 * @param $key
-	 *
-	 * @return bool
-	 */
-	private function get_bool_param( $key ) {
-		return $this->apply_filters( $key );
-	}
-
-	/**
 	 * @return string
 	 */
 	public function get_marker_object_name() {
@@ -98,19 +74,147 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		$options = [
 			'selector' => $this->get_selector(),
 		];
-		foreach ( [ 'color', 'thickness', 'duration', 'delay', 'function', 'padding_bottom', 'position_bottom' ] as $key ) {
-			$param = $this->get_string_param( $key );
-			if ( ! empty( $param ) ) {
-				$options[ $key ] = $param;
+
+		foreach ( $this->get_setting_details() as $key => $setting ) {
+			if ( ! empty( $setting['ignore'] ) ) {
+				continue;
 			}
-		}
-		if ( ! $this->get_bool_param( 'bold' ) ) {
-			$options['font_weight'] = null;
-		}
-		if ( $this->get_bool_param( 'repeat' ) ) {
-			$options['repeat'] = true;
+
+			$value = $setting['attributes']['data-value'];
+			if ( ! empty( $setting['attributes']['data-option_name'] ) ) {
+				$name = $setting['attributes']['data-option_name'];
+			} else {
+				$name = $key;
+			}
+			if ( 'input/checkbox' === $setting['form'] ) {
+				if ( ! empty( $value ) ) {
+					if ( array_key_exists( 'data-option_value-true', $setting['attributes'] ) ) {
+						$value = $setting['attributes']['data-option_value-true'];
+					} else {
+						$value = true;
+					}
+				} else {
+					if ( array_key_exists( 'data-option_value-false', $setting['attributes'] ) ) {
+						$value = $setting['attributes']['data-option_value-false'];
+					} else {
+						$value = false;
+					}
+				}
+			}
+			$options[ $name ] = $value;
 		}
 
 		return $options;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_setting_keys() {
+		return [
+			'is_valid'        => [
+				'form' => 'input/checkbox',
+				'args' => [
+					'ignore' => true,
+				],
+			],
+			'color'           => 'color',
+			'thickness'       => 'input/text',
+			'duration'        => 'input/text',
+			'delay'           => 'input/text',
+			'function'        => [
+				'form' => 'select',
+				'args' => [
+					'options' => [
+						'ease'        => $this->translate( 'ease' ),
+						'linear'      => $this->translate( 'linear' ),
+						'ease-in'     => $this->translate( 'ease-in' ),
+						'ease-out'    => $this->translate( 'ease-out' ),
+						'ease-in-out' => $this->translate( 'ease-in-out' ),
+					],
+				],
+			],
+			'bold'            => [
+				'form' => 'input/checkbox',
+				'args' => [
+					'attributes' => [
+						'data-option_name'        => 'font_weight',
+						'data-option_value-true'  => 'bold',
+						'data-option_value-false' => null,
+					],
+				],
+			],
+			'repeat'          => 'input/checkbox',
+			'padding_bottom'  => 'input/text',
+			'position_bottom' => 'input/text',
+		];
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_setting_details() {
+		$args = [];
+		foreach ( $this->get_setting_keys() as $key => $form ) {
+			$args[ $key ] = $this->get_setting( $key, $form );
+		}
+
+		return $args;
+	}
+
+	/**
+	 * @param string $name
+	 * @param string $form
+	 *
+	 * @return array
+	 */
+	private function get_setting( $name, $form ) {
+		$detail = $this->app->setting->get_setting( $name, true );
+		$value  = $detail['value'];
+		$ret    = [
+			'id'         => $this->get_id_prefix() . $name,
+			'class'      => 'marker-animation-option',
+			'name'       => $this->get_name_prefix() . $name,
+			'value'      => $value,
+			'label'      => $this->translate( $detail['label'] ),
+			'attributes' => [
+				'data-value'   => $value,
+				'data-default' => $detail['default'],
+			],
+			'form'       => $form,
+			'detail'     => $detail,
+		];
+		if ( is_array( $form ) ) {
+			$ret['form'] = $form['form'];
+			$ret         = array_replace_recursive( $ret, isset( $form['args'] ) && is_array( $form['args'] ) ? $form['args'] : [] );
+		} else {
+			$ret['form'] = $form;
+		}
+		if ( \Technote\Models\Utility::array_get( $detail, 'type' ) === 'bool' ) {
+			$ret['value'] = 1;
+			! empty( $value ) and $ret['attributes']['checked'] = 'checked';
+		}
+		if ( $ret['form'] === 'select' ) {
+			$ret['selected'] = $value;
+			if ( ! empty( $ret['options'] ) && ! isset( $ret['options'][ $value ] ) ) {
+				$ret['options'][ $value ] = $value;
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_id_prefix() {
+		return $this->app->slug_name . '-';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_name_prefix() {
+		return $this->get_filter_prefix();
 	}
 }

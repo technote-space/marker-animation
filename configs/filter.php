@@ -15,8 +15,8 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 return [
 
 	'\Marker_Animation\Models\Assets' => [
-		'wp_enqueue_scripts' => [
-			'wp_enqueue_scripts' => [],
+		'template_redirect' => [
+			'setup_assets' => [],
 		],
 	],
 
