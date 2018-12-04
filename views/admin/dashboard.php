@@ -11,7 +11,7 @@
 if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	return;
 }
-/** @var \Technote\Controllers\Admin\Base $instance */
+/** @var \Technote\Interfaces\Presenter $instance */
 /** @var array $args */
 /** @var array $setting */
 ?>
@@ -23,7 +23,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 			<?php foreach ( $setting as $k => $v ) : ?>
                 <tr>
                     <th>
-                        <label for="<?php $instance->h( $v['id'] ); ?>"><?php $instance->h( $v['label'], true ); ?></label>
+                        <label for="<?php $instance->h( $v['id'] ); ?>"><?php $instance->h( $v['label'] ); ?></label>
                     </th>
                     <td>
 						<?php $instance->form( $v['form'], $args, $v ); ?>
@@ -31,11 +31,18 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
                 </tr>
 			<?php endforeach; ?>
         </table>
-	    <?php $instance->form( 'input/submit', $args, [
-		    'name'  => 'update',
-		    'value' => 'Update',
-		    'class' => 'button-primary left',
-	    ] ); ?>
+        <div>
+	        <?php $instance->form( 'input/submit', $args, [
+		        'name'  => 'update',
+		        'value' => 'Update',
+		        'class' => 'button-primary left',
+	        ] ); ?>
+	        <?php $instance->form( 'input/button', $args, [
+		        'name'  => 'reset',
+		        'value' => 'Reset',
+		        'class' => 'button-primary left',
+	        ] ); ?>
+        </div>
         <div class="marker-setting-preview">
             Hello, Dolly<br>
             <span>Well, hello, Dolly</span><br>

@@ -11,7 +11,7 @@
 if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	return;
 }
-/** @var \Technote\Controllers\Admin\Base $instance */
+/** @var \Technote\Interfaces\Presenter $instance */
 /** @var string $name_prefix */
 ?>
 
@@ -41,17 +41,38 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
                             }
                         }
                     }
-                    const _option_name = $(this).data('option_name'), _option_value = $(this).data('option_value');
+                    const _option_name = $(this).data('option_name');
                     if (_option_name) option_name = _option_name;
-                    if (_option_value) option_value = _option_value;
                     if (option_value === '') option_value = $(this).data('default');
                     options[option_name] = option_value;
                 }
             });
             $('.marker-setting-preview span').markerAnimation(options);
         };
+        const reset_options = function () {
+            $target.each(function () {
+                const name = $(this).attr('name');
+                if (name && name.match(/^<?php $instance->h( preg_quote( $name_prefix ) );?>/)) {
+                    let option_value = $(this).data('default');
+                    if ('checkbox' === $(this).attr('type')) {
+                        $(this).prop('checked', option_value);
+                    } else {
+                        $(this).val(option_value);
+                        if ($(this).hasClass('<?php $instance->h( $instance->get_color_picker_class() );?>')) {
+                            $(this).wpColorPicker('color', option_value);
+                        }
+                    }
+                }
+            });
+            setup_options();
+        };
+
         $target.on('change <?php $instance->h( $instance->app->slug_name . '-' );?>cleared', function () {
             setup_options();
+        });
+        $('[name="reset"]').on('click', function () {
+            reset_options();
+            return false;
         });
         setup_options();
     })(jQuery);

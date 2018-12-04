@@ -11,7 +11,7 @@
 if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	return;
 }
-/** @var \Technote\Controllers\Admin\Base $instance */
+/** @var \Technote\Interfaces\Presenter $instance */
 ?>
 
 <style>
@@ -24,8 +24,8 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
         background: white;
         border: 1px solid #CCC;
     }
-    
-    .button-primary.left {
-        display: block;
+
+    #<?php $instance->id(); ?>-main-contents input[type="submit"].button-primary.left {
+        margin-right: 10px;
     }
 </style>
