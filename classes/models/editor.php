@@ -26,7 +26,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_editor_params() {
-		if ( $this->_setup_params ) {
+		if ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) {
 			return;
 		}
 
@@ -94,7 +94,6 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'wp-i18n',
 		] );
 		wp_localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
-		$this->_setup_params = true;
 	}
 
 	/**

@@ -7,8 +7,6 @@
  * @link https://technote.space/
  */
 (function (richText, element, editor) {
-    console.log(marker_animation_params);
-
     const name = 'marker-animation/marker-animation';
     richText.registerFormatType(name, {
         title: marker_animation_params.title,
