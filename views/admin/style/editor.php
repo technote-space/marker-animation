@@ -16,7 +16,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 <style>
     i.highlight-icon {
-        background-image: url('<?php $instance->h($instance->get_img_url('color-1297308_640.png'));?>');
+        background-image: url('<?php $instance->h($instance->get_img_url('icon-128x128.png'));?>');
         background-repeat: no-repeat;
         background-size: contain;
     }
