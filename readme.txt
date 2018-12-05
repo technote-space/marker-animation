@@ -1,8 +1,9 @@
 === Marker Animation ===
 Contributors: technote-space
-Tags: contact, form, contact form, file upload
+Tags: marker, marker animation
 Requires at least: 3.9.3
 Tested up to: 4.9.8
+Requires PHP: 5.6
 Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
