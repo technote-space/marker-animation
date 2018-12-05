@@ -24,7 +24,7 @@ return [
 				],
 				'selector'        => [
 					'label'   => 'selector (other than [.marker-animation])',
-					'default' => '.marker-under',
+					'default' => '',
 				],
 				'color'           => [
 					'label'   => 'color',
