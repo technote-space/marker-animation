@@ -26,17 +26,13 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_editor_params() {
-		/** @var Assets $assets */
-		$assets = Assets::get_instance( $this->app );
+		if ( $this->_setup_params ) {
+			return;
+		}
+
 		$this->add_script_view( 'admin/script/editor', [
 			'param_name' => 'marker_animation_params',
-			'params'     => [
-				'title'        => $this->translate( 'Marker Animation' ),
-				'detail_title' => $this->translate( 'Marker Animation (detail setting)' ),
-				'class'        => $assets->get_default_marker_animation_class(),
-				'details'      => $assets->get_setting_details(),
-				'prefix'       => 'ma_',
-			],
+			'params'     => $this->get_editor_params(),
 		] );
 		$this->add_style_view( 'admin/style/editor' );
 		$this->_setup_params = true;
@@ -83,5 +79,39 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		}
 
 		return $stylesheets;
+	}
+
+	/**
+	 * enqueue css for gutenberg
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function enqueue_block_editor_assets() {
+		$this->enqueue_style( 'marker_animation-editor', 'editor.css' );
+		$this->enqueue_script( 'marker_animation-editor', 'gutenberg.js', [
+			'wp-blocks',
+			'wp-element',
+			'wp-rich-text',
+			'wp-i18n',
+		] );
+		wp_localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
+		$this->_setup_params = true;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function get_editor_params() {
+		/** @var Assets $assets */
+		$assets      = Assets::get_instance( $this->app );
+		$text_domain = $this->app->get_config( 'config', 'text_domain' );
+
+		return [
+			'title'        => $this->translate( 'Marker Animation' ),
+			'detail_title' => $this->translate( 'Marker Animation (detail setting)' ),
+			'class'        => $assets->get_default_marker_animation_class(),
+			'details'      => $assets->get_setting_details(),
+			'prefix'       => 'ma_',
+			'domain'       => $text_domain,
+		];
 	}
 }
