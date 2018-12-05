@@ -2,7 +2,7 @@
 /**
  * Technote Models Loader Controller Api
  *
- * @version 1.1.58
+ * @version 1.1.72
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -323,8 +323,11 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	 * @return array
 	 */
 	private function get_api_controllers( $filter ) {
-		$api_controllers = $this->get_class_list();
+		if ( $this->is_empty() ) {
+			return [];
+		}
 
+		$api_controllers = $this->get_class_list();
 		if ( $filter ) {
 			/** @var \Technote\Traits\Controller\Api $class */
 			foreach ( $api_controllers as $name => $class ) {
@@ -372,5 +375,12 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 		}
 
 		return $this->get_slug( 'api_namespace', '' ) . '/' . $this->app->get_config( 'config', 'api_version' );
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_empty() {
+		return $this->get_loaded_count() <= 1;
 	}
 }
