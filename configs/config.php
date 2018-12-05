@@ -32,9 +32,6 @@ return [
 	// menu image url
 	'menu_image'           => '',
 
-	// update
-	'update_info_file_url' => 'https://raw.githubusercontent.com/technote-space/marker-animation/master/update.json',
-
 	// text domain
 	'text_domain'          => 'marker-animation',
 
