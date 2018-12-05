@@ -1,5 +1,5 @@
 === Marker Animation ===
-Contributors: technote-space
+Contributors: technote0space
 Tags: marker, marker animation, highlighter
 Requires at least: 3.9.3
 Tested up to: 4.9.8
