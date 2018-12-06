@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.1.4
+ * @version 1.1.7
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -21,7 +21,10 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	/** @var bool $_setup_params */
 	private $_setup_params = false;
 
-	/** @var bool $_enqueue_editor_stylesheets */
+	/**
+	 * @since 1.1.7
+	 * @var bool $_enqueue_editor_stylesheets
+	 */
 	private $_enqueue_editor_stylesheets = false;
 
 	/**
@@ -86,6 +89,8 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.1.7
+	 *
 	 * @param string $mce_css
 	 *
 	 * @return string
