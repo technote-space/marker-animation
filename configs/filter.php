@@ -36,6 +36,9 @@ return [
 		'editor_stylesheets'          => [
 			'editor_stylesheets' => [],
 		],
+		'mce_css'                     => [
+			'mce_css' => [],
+		],
 		'enqueue_block_editor_assets' => [
 			'enqueue_block_editor_assets' => [],
 		],

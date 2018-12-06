@@ -34,7 +34,7 @@
                         label: detail.label,
                         checked: detail.attributes.checked === 'checked'
                     });
-                } else if (detail.form === 'color') {
+                } else if (marker_animation_params.colorpicker_enabled && detail.form === 'color') {
                     body.push({
                         type: 'colorpicker',
                         name: key,

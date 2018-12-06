@@ -21,6 +21,9 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	/** @var bool $_setup_params */
 	private $_setup_params = false;
 
+	/** @var bool $_enqueue_editor_stylesheets */
+	private $_enqueue_editor_stylesheets = false;
+
 	/**
 	 * enqueue editor params
 	 */
@@ -75,10 +78,25 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function editor_stylesheets( $stylesheets ) {
 		if ( $this->_setup_params ) {
-			$stylesheets[] = $this->get_assets_url( 'css/editor.css' );
+			$stylesheets[]                     = $this->get_assets_url( 'css/editor.css' );
+			$this->_enqueue_editor_stylesheets = true;
 		}
 
 		return $stylesheets;
+	}
+
+	/**
+	 * @param string $mce_css
+	 *
+	 * @return string
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function mce_css( $mce_css ) {
+		if ( $this->_setup_params && ! $this->_enqueue_editor_stylesheets ) {
+			$mce_css .= ',' . $this->get_assets_url( 'css/editor.css' );
+		}
+
+		return $mce_css;
 	}
 
 	/**
@@ -101,16 +119,16 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	private function get_editor_params() {
 		/** @var Assets $assets */
-		$assets      = Assets::get_instance( $this->app );
-		$text_domain = $this->app->get_config( 'config', 'text_domain' );
+		$assets = Assets::get_instance( $this->app );
+		global $wp_version;
 
 		return [
-			'title'        => $this->translate( 'Marker Animation' ),
-			'detail_title' => $this->translate( 'Marker Animation (detail setting)' ),
-			'class'        => $assets->get_default_marker_animation_class(),
-			'details'      => $assets->get_setting_details(),
-			'prefix'       => 'ma_',
-			'domain'       => $text_domain,
+			'title'               => $this->translate( 'Marker Animation' ),
+			'detail_title'        => $this->translate( 'Marker Animation (detail setting)' ),
+			'class'               => $assets->get_default_marker_animation_class(),
+			'details'             => $assets->get_setting_details(),
+			'prefix'              => 'ma_',
+			'colorpicker_enabled' => version_compare( $wp_version, '4.0', '>=' ),
 		];
 	}
 }
