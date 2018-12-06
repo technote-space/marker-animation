@@ -2,7 +2,7 @@
 Contributors: technote0space
 Tags: marker, marker animation, highlighter
 Requires at least: 3.9.3
-Tested up to: 4.9.8
+Tested up to: 5.0.0
 Requires PHP: 5.6
 Stable tag: 1.1.9
 License: GPLv2 or later
