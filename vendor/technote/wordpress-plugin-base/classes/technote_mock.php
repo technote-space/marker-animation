@@ -2,7 +2,7 @@
 /**
  * Technote mock
  *
- * @version 1.2.0
+ * @version 1.2.1
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -75,14 +75,51 @@ class Technote {
 
 		if ( ! ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) ) {
 			if ( $this->is_not_enough_php_version() || $this->is_not_enough_wp_version() ) {
-				$config            = $this->load_config_file();
-				$this->text_domain = 'default';
-				if ( ! empty( $config['text_domain'] ) ) {
-					$this->text_domain = $config['text_domain'];
-				}
 				$this->set_unsupported();
 			}
 		}
+	}
+
+	/**
+	 * @since 1.2.1
+	 * @return string
+	 */
+	private function get_text_domain() {
+		if ( ! isset( $this->text_domain ) ) {
+			$config            = $this->load_config_file();
+			$this->text_domain = '';
+			if ( ! empty( $config['text_domain'] ) ) {
+				$this->text_domain = $config['text_domain'];
+			}
+
+			$lib_language_rel_path     = ltrim( str_replace( WP_PLUGIN_DIR, '', dirname( TECHNOTE_BOOTSTRAP ) . DS . 'languages' ), DS );
+			$plugin_languages_rel_path = ltrim( str_replace( WP_PLUGIN_DIR, '', $this->plugin_dir . DS . 'languages' ), DS );
+			load_plugin_textdomain( TECHNOTE_PLUGIN, false, $lib_language_rel_path );
+			if ( ! empty( $this->text_domain ) ) {
+				load_plugin_textdomain( $this->text_domain, false, $plugin_languages_rel_path );
+			}
+		}
+
+		return $this->text_domain;
+	}
+
+	/**
+	 * @since 1.2.1
+	 *
+	 * @param $value
+	 *
+	 * @return string
+	 */
+	private function translate( $value ) {
+		$text_domain = $this->get_text_domain();
+		if ( ! empty( $text_domain ) ) {
+			$translated = __( $value, $text_domain );
+			if ( $value !== $translated ) {
+				return $translated;
+			}
+		}
+
+		return __( $value, TECHNOTE_PLUGIN );
 	}
 
 	/**
@@ -129,9 +166,9 @@ class Technote {
 	 */
 	private function get_unsupported_php_version_message() {
 		$messages   = array();
-		$messages[] = sprintf( __( 'Your PHP version is %s.', $this->text_domain ), phpversion() );
-		$messages[] = __( 'Please update your PHP.', $this->text_domain );
-		$messages[] = sprintf( __( '<strong>%s</strong> requires PHP version %s or above.', $this->text_domain ), $this->original_plugin_name, TECHNOTE_REQUIRED_PHP_VERSION );
+		$messages[] = sprintf( $this->translate( 'Your PHP version is %s.' ), phpversion() );
+		$messages[] = $this->translate( 'Please update your PHP.' );
+		$messages[] = sprintf( $this->translate( '<strong>%s</strong> requires PHP version %s or above.' ), $this->translate( $this->original_plugin_name ), TECHNOTE_REQUIRED_PHP_VERSION );
 
 		return implode( '<br>', $messages );
 	}
@@ -143,9 +180,9 @@ class Technote {
 	private function get_unsupported_wp_version_message() {
 		global $wp_version;
 		$messages   = array();
-		$messages[] = sprintf( __( 'Your WordPress version is %s.', $this->text_domain ), $wp_version );
-		$messages[] = __( 'Please update your WordPress.', $this->text_domain );
-		$messages[] = sprintf( __( '<strong>%s</strong> requires WordPress version %s or above.', $this->text_domain ), $this->original_plugin_name, TECHNOTE_REQUIRED_WP_VERSION );
+		$messages[] = sprintf( $this->translate( 'Your WordPress version is %s.' ), $wp_version );
+		$messages[] = $this->translate( 'Please update your WordPress.' );
+		$messages[] = sprintf( $this->translate( '<strong>%s</strong> requires WordPress version %s or above.' ), $this->translate( $this->original_plugin_name ), TECHNOTE_REQUIRED_WP_VERSION );
 
 		return implode( '<br>', $messages );
 	}
