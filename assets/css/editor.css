@@ -1,5 +1,5 @@
 /**
- * @version 1.1.3
+ * @version 1.1.5
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
