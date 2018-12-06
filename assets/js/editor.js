@@ -87,12 +87,14 @@
                                         const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
                                         if (detail.form === 'input/checkbox') {
                                             if (value) {
+                                                if (detail.attributes['data-default']) return;
                                                 value = undefined === detail.attributes['data-option_value-true'] ? value : detail.attributes['data-option_value-true'];
                                             } else {
+                                                if (!detail.attributes['data-default']) return;
                                                 value = undefined === detail.attributes['data-option_value-false'] ? value : detail.attributes['data-option_value-false'];
                                             }
                                         }
-                                        if (value === '') value = detail.attributes['data-default'];
+                                        if (value === '' || value === detail.attributes['data-default']) return;
                                         attributes[name] = value;
                                     });
                                     wrap_animation(ed, selected_text, attributes);

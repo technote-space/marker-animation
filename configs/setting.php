@@ -28,7 +28,7 @@ return [
 				],
 				'color'           => [
 					'label'   => 'color',
-					'default' => '#ff6',
+					'default' => '#ffff66',
 				],
 				'thickness'       => [
 					'label'   => 'thickness',
