@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter
 Requires at least: 3.9.3
 Tested up to: 4.9.8
 Requires PHP: 5.6
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,10 @@ This plugin needs PHP5.6 or higher.
 4. Editor(off animation)
 
 == Changelog ==
+
+= 1.1.9 =
+
+* Fix: for WordPress5.0
 
 = 1.1.8 =
 

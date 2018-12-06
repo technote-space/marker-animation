@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.1.7
+ * @version 1.1.9
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -18,7 +18,10 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Presenter;
 
-	/** @var bool $_gutenberg */
+	/**
+	 * @since 1.1.9
+	 * @var bool $_gutenberg
+	 */
 	private $_gutenberg = false;
 
 	/** @var bool $_setup_params */
@@ -31,6 +34,8 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	private $_enqueue_editor_stylesheets = false;
 
 	/**
+	 * @since 1.1.9
+	 *
 	 * @param array $preload_paths
 	 *
 	 * @return array

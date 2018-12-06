@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.1.7
+ * @version 1.1.9
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -42,6 +42,9 @@ return [
 		'block_editor_preload_paths'  => [
 			'block_editor_preload_paths' => [],
 		],
+		/**
+		 * @since 1.1.9
+		 */
 		'enqueue_block_editor_assets' => [
 			'enqueue_block_editor_assets' => [],
 		],
