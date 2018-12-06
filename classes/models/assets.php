@@ -30,7 +30,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		$this->enqueue_script( $this->app->slug_name . '-marker_animation', 'marker-animation.min.js', [
 			'jquery',
 		] );
-		wp_localize_script( $this->app->slug_name . '-marker_animation', $this->get_marker_object_name(), $this->get_marker_options() );
+		$this->localize_script( $this->app->slug_name . '-marker_animation', $this->get_marker_object_name(), $this->get_marker_options() );
 	}
 
 	/**
@@ -112,17 +112,17 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	public function get_setting_keys() {
 		return [
-			'is_valid'        => [
+			'is_valid'       => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'ignore' => true,
 				],
 			],
-			'color'           => 'color',
-			'thickness'       => 'input/text',
-			'duration'        => 'input/text',
-			'delay'           => 'input/text',
-			'function'        => [
+			'color'          => 'color',
+			'thickness'      => 'input/text',
+			'duration'       => 'input/text',
+			'delay'          => 'input/text',
+			'function'       => [
 				'form' => 'select',
 				'args' => [
 					'options' => [
@@ -134,7 +134,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 					],
 				],
 			],
-			'bold'            => [
+			'bold'           => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'attributes' => [
@@ -144,8 +144,8 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 					],
 				],
 			],
-			'repeat'          => 'input/checkbox',
-			'padding_bottom'  => 'input/text',
+			'repeat'         => 'input/checkbox',
+			'padding_bottom' => 'input/text',
 		];
 	}
 

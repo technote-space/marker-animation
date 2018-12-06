@@ -93,7 +93,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'wp-rich-text',
 			'wp-i18n',
 		] );
-		wp_localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
+		$this->localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
 	}
 
 	/**

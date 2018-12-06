@@ -58,7 +58,7 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 
 		/** @var \Marker_Animation\Models\Assets $assets */
 		$assets = \Marker_Animation\Models\Assets::get_instance( $this->app );
-		wp_localize_script( $this->app->slug_name . '-marker_animation', $assets->get_marker_object_name(), [ 'selector' => '' ] );
+		$this->localize_script( $this->app->slug_name . '-marker_animation', $assets->get_marker_object_name(), [ 'selector' => '' ] );
 	}
 
 	/**
