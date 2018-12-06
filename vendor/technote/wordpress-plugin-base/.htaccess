@@ -6,7 +6,7 @@ Deny from all
 	Allow from all
 </FilesMatch>
 
-#allow access to any image
+#allow access to images
 <FilesMatch "^(.+)\.(png|gif|jpg|jpeg|ico)$">
 	Allow from all
 </FilesMatch>

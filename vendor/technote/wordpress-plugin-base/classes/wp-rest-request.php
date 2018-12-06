@@ -2,7 +2,7 @@
 /**
  * Technote
  *
- * @version 1.1.52
+ * @version 1.2.0
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -14,7 +14,12 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	return;
 }
 
-if ( ! class_exists( 'WP_REST_Request' ) ) {
+/**
+ * @since 1.2.0
+ */
+define( 'TECHNOTE_MOCK_REST_REQUEST', ! class_exists( 'WP_REST_Request' ) );
+
+if ( TECHNOTE_MOCK_REST_REQUEST ) {
 	// < v4.4
 
 	/**

@@ -2,7 +2,7 @@
 /**
  * Technote
  *
- * @version 1.1.72
+ * @version 1.2.0
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -245,6 +245,14 @@ class Technote {
 	}
 
 	/**
+	 * @since 1.1.73
+	 * @return mixed
+	 */
+	public function get_text_domain() {
+		return $this->get_config( 'config', 'text_domain' );
+	}
+
+	/**
 	 * setup textdomain
 	 */
 	private function setup_textdomain() {
@@ -253,7 +261,7 @@ class Technote {
 			load_plugin_textdomain( $this->define->lib_name, false, $this->define->lib_language_rel_path );
 		}
 
-		$text_domain = $this->get_config( 'config', 'text_domain' );
+		$text_domain = $this->get_text_domain();
 		if ( ! empty( $text_domain ) ) {
 			load_plugin_textdomain( $text_domain, false, $this->define->plugin_languages_rel_path );
 		}
@@ -263,7 +271,7 @@ class Technote {
 	 * setup settings
 	 */
 	private function setup_settings() {
-		if ( ! class_exists( '\WP_REST_Request' ) ) {
+		if ( defined( 'TECHNOTE_MOCK_REST_REQUEST' ) && TECHNOTE_MOCK_REST_REQUEST ) {
 			$this->setting->remove_setting( 'use_admin_ajax' );
 		}
 		if ( $this->loader->api->is_empty() ) {
@@ -279,7 +287,7 @@ class Technote {
 	 * @return string
 	 */
 	public function translate( $value ) {
-		$text_domain = $this->get_config( 'config', 'text_domain' );
+		$text_domain = $this->get_text_domain();
 		if ( ! empty( $text_domain ) ) {
 			$translated = __( $value, $text_domain );
 			if ( $value !== $translated ) {

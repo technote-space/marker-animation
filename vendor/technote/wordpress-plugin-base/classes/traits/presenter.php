@@ -2,7 +2,7 @@
 /**
  * Technote Traits Presenter
  *
- * @version 1.1.69
+ * @version 1.1.73
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -25,6 +25,12 @@ trait Presenter {
 
 	/** @var array $_prev_post */
 	private $_prev_post = null;
+
+	/**
+	 * @since 1.1.73
+	 * @var bool $_set_script_translations
+	 */
+	private $_set_script_translations = false;
 
 	/**
 	 * @return array
@@ -531,6 +537,19 @@ trait Presenter {
 	}
 
 	/**
+	 * @since 1.1.73
+	 *
+	 * @param string $handle
+	 * @param string $name
+	 * @param array $data
+	 *
+	 * @return bool
+	 */
+	public function localize_script( $handle, $name, $data ) {
+		return wp_localize_script( $handle, $name, $data );
+	}
+
+	/**
 	 * setup modal
 	 */
 	public function setup_modal() {
@@ -562,4 +581,30 @@ trait Presenter {
 		return $this->h( $this->get_slug( 'modal_class', '_modal' ), false, $echo );
 	}
 
+	/**
+	 * @since 1.1.73
+	 *
+	 * @param string $handle
+	 */
+	public function set_script_translations( $handle ) {
+		if ( $this->_set_script_translations ) {
+			return;
+		}
+		$this->_set_script_translations = true;
+		$text_domain                    = $this->app->get_text_domain();
+		if ( empty( $text_domain ) ) {
+			return;
+		}
+
+		if ( function_exists( 'wp_set_script_translations' ) ) {
+			wp_set_script_translations( $handle, $text_domain );
+		} elseif ( function_exists( 'wp_get_jed_locale_data' ) || function_exists( 'gutenberg_get_jed_locale_data' ) ) {
+			$json = function_exists( 'wp_get_jed_locale_data' ) ? wp_get_jed_locale_data( $text_domain ) : gutenberg_get_jed_locale_data( $text_domain );
+			wp_add_inline_script(
+				'wp-i18n',
+				sprintf( 'wp.i18n.setLocaleData(  %s, "%s" );', wp_json_encode( $json ), $text_domain ),
+				'after'
+			);
+		}
+	}
 }
