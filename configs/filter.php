@@ -39,6 +39,9 @@ return [
 		'mce_css'                     => [
 			'mce_css' => [],
 		],
+		'block_editor_preload_paths'  => [
+			'block_editor_preload_paths' => [],
+		],
 		'enqueue_block_editor_assets' => [
 			'enqueue_block_editor_assets' => [],
 		],

@@ -18,6 +18,9 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Presenter;
 
+	/** @var bool $_gutenberg */
+	private $_gutenberg = false;
+
 	/** @var bool $_setup_params */
 	private $_setup_params = false;
 
@@ -28,11 +31,24 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	private $_enqueue_editor_stylesheets = false;
 
 	/**
+	 * @param array $preload_paths
+	 *
+	 * @return array
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function block_editor_preload_paths( $preload_paths ) {
+		$this->_gutenberg = true;
+
+		return $preload_paths;
+	}
+
+	/**
 	 * enqueue editor params
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_editor_params() {
-		if ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) {
+		$this->add_style_view( 'admin/style/editor' );
+		if ( $this->_gutenberg ) {
 			return;
 		}
 
@@ -40,7 +56,6 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'param_name' => 'marker_animation_params',
 			'params'     => $this->get_editor_params(),
 		] );
-		$this->add_style_view( 'admin/style/editor' );
 		$this->_setup_params = true;
 	}
 
@@ -51,7 +66,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_external_plugins( $external_plugins ) {
-		if ( $this->_setup_params ) {
+		if ( $this->_setup_params || $this->_gutenberg ) {
 			$external_plugins['marker_animation_button_plugin'] = $this->get_assets_url( 'js/editor.js' );
 		}
 
@@ -65,7 +80,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_buttons( $mce_buttons ) {
-		if ( $this->_setup_params ) {
+		if ( $this->_setup_params || $this->_gutenberg ) {
 			$mce_buttons[] = 'marker_animation';
 			$mce_buttons[] = 'marker_animation_detail';
 		}

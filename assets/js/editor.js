@@ -186,14 +186,23 @@
                 break;
         }
         if (style) {
-            ed.dom.add(
-                ed.dom.select("head")[0], // first element
-                "style",
-                {
-                    type: "text/css"
-                },
-                style
-            );
+            if (undefined === ed.dom.select("head")[0]) {
+                const s = document.createElement('style');
+                console.log(s);
+                s.setAttribute("type", "text/css");
+                document.getElementsByTagName('head').item(0).appendChild(s);
+                console.log(s.sheet);
+                s.sheet.insertRule(style, 0);
+            } else {
+                ed.dom.add(
+                    ed.dom.select("head")[0], // first element
+                    "style",
+                    {
+                        type: "text/css"
+                    },
+                    style
+                );
+            }
         }
         if (!added_style[key]) added_style[key] = {};
         added_style[key][value] = true;
