@@ -165,7 +165,7 @@
      * @param value
      */
     const add_style = function (ed, key, value) {
-        if (key !== 'color' && key !== 'thickness' && key !== 'font_weight' && key !== 'padding_bottom' && key !== 'position_bottom') return;
+        if (key !== 'color' && key !== 'thickness' && key !== 'font_weight' && key !== 'padding_bottom') return;
         if (added_style[key] && added_style[key][value]) return;
 
         let style = null;
@@ -181,9 +181,6 @@
                 break;
             case 'padding_bottom':
                 style = '[data-' + marker_animation_params.prefix + key + '="' + value + '"] { padding-bottom: ' + value + ' }';
-                break;
-            case 'position_bottom':
-                style = '[data-' + marker_animation_params.prefix + key + '="' + value + '"] { background-position: left -100% bottom ' + value + ' }';
                 break;
         }
         if (style) {

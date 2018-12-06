@@ -146,7 +146,6 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			],
 			'repeat'          => 'input/checkbox',
 			'padding_bottom'  => 'input/text',
-			'position_bottom' => 'input/text',
 		];
 	}
 

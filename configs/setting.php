@@ -56,13 +56,9 @@ return [
 					'type'    => 'bool',
 					'default' => false,
 				],
-				'position_bottom' => [
-					'label'   => 'position bottom',
-					'default' => '0',
-				],
 				'padding_bottom'  => [
 					'label'   => 'padding bottom',
-					'default' => '.1em',
+					'default' => '.6em',
 				],
 			],
 		],
