@@ -188,10 +188,8 @@
         if (style) {
             if (undefined === ed.dom.select("head")[0]) {
                 const s = document.createElement('style');
-                console.log(s);
                 s.setAttribute("type", "text/css");
                 document.getElementsByTagName('head').item(0).appendChild(s);
-                console.log(s.sheet);
                 s.sheet.insertRule(style, 0);
             } else {
                 ed.dom.add(
