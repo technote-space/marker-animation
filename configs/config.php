@@ -30,7 +30,7 @@ return [
 	'contact_url'          => 'https://technote.space/contact/',
 
 	// menu image url
-	'menu_image'           => '',
+	'menu_image'           => 'icon-24x24.png',
 
 	// text domain
 	'text_domain'          => 'marker-animation',
