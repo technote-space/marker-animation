@@ -8,11 +8,11 @@
  * @link https://technote.space/
  */
 
-namespace Marker_Animation\Models;
+namespace Marker_Animation\Classes\Models;
 
 /**
  * Class Editor
- * @package Marker_Animation\Models
+ * @package Marker_Animation\Classes\Models
  */
 class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \Technote\Interfaces\Presenter {
 

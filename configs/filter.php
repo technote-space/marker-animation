@@ -14,13 +14,13 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 return [
 
-	'\Marker_Animation\Models\Assets' => [
+	'\Marker_Animation\Classes\Models\Assets' => [
 		'template_redirect' => [
 			'setup_assets' => [],
 		],
 	],
 
-	'\Marker_Animation\Models\Editor' => [
+	'\Marker_Animation\Classes\Models\Editor' => [
 		'admin_head-post.php'         => [
 			'enqueue_editor_params' => [],
 		],

@@ -8,7 +8,7 @@
  * @link https://technote.space/
  */
 
-namespace Marker_Animation\Controllers\Admin;
+namespace Marker_Animation\Classes\Controllers\Admin;
 
 if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	exit;
@@ -16,9 +16,9 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 /**
  * Class Dashboard
- * @package Marker_Animation\Controllers\Admin
+ * @package Marker_Animation\Classes\Controllers\Admin
  */
-class Dashboard extends \Technote\Controllers\Admin\Base {
+class Dashboard extends \Technote\Classes\Controllers\Admin\Base {
 
 	/**
 	 * @return int
@@ -38,8 +38,8 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 	 * post
 	 */
 	protected function post_action() {
-		/** @var \Marker_Animation\Models\Assets $assets */
-		$assets = \Marker_Animation\Models\Assets::get_instance( $this->app );
+		/** @var \Marker_Animation\Classes\Models\Assets $assets */
+		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		foreach ( $assets->get_setting_keys() as $key => $form ) {
 			$this->update_setting( $key );
 		}
@@ -56,8 +56,8 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 			'jquery',
 		] );
 
-		/** @var \Marker_Animation\Models\Assets $assets */
-		$assets = \Marker_Animation\Models\Assets::get_instance( $this->app );
+		/** @var \Marker_Animation\Classes\Models\Assets $assets */
+		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		$this->localize_script( $this->app->slug_name . '-marker_animation', $assets->get_marker_object_name(), [ 'selector' => '' ] );
 	}
 
@@ -65,8 +65,8 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 	 * @return array
 	 */
 	protected function get_view_args() {
-		/** @var \Marker_Animation\Models\Assets $assets */
-		$assets = \Marker_Animation\Models\Assets::get_instance( $this->app );
+		/** @var \Marker_Animation\Classes\Models\Assets $assets */
+		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		return [
 			'setting'     => $assets->get_setting_details(),
 			'name_prefix' => $assets->get_name_prefix(),
@@ -82,7 +82,7 @@ class Dashboard extends \Technote\Controllers\Admin\Base {
 	private function update_setting( $name ) {
 		$detail  = $this->app->setting->get_setting( $name, true );
 		$default = null;
-		if ( \Technote\Models\Utility::array_get( $detail, 'type' ) === 'bool' ) {
+		if ( $this->app->utility->array_get( $detail, 'type' ) === 'bool' ) {
 			$default = 0;
 		}
 

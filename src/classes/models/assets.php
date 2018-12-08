@@ -8,11 +8,11 @@
  * @link https://technote.space/
  */
 
-namespace Marker_Animation\Models;
+namespace Marker_Animation\Classes\Models;
 
 /**
  * Class Assets
- * @package Marker_Animation\Models
+ * @package Marker_Animation\Classes\Models
  */
 class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \Technote\Interfaces\Presenter {
 
@@ -189,7 +189,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		} else {
 			$ret['form'] = $form;
 		}
-		if ( \Technote\Models\Utility::array_get( $detail, 'type' ) === 'bool' ) {
+		if ( $this->app->utility->array_get( $detail, 'type' ) === 'bool' ) {
 			$ret['value'] = 1;
 			! empty( $value ) and $ret['attributes']['checked'] = 'checked';
 		}
