@@ -2,7 +2,7 @@
 /**
  * Technote Configs Config
  *
- * @version 1.1.26
+ * @version 2.0.2
  * @author technote-space
  * @since 1.0.0
  * @copyright technote All Rights Reserved
@@ -16,7 +16,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 return [
 	// library version
-	'library_version'           => '2.0.1',
+	'library_version'           => '2.0.2',
 
 	// plugin title
 	'plugin_title'              => '',
