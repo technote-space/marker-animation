@@ -15,6 +15,8 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 }
 
 return [
+	// library version
+	'library_version'           => '2.0.1',
 
 	// plugin title
 	'plugin_title'              => '',
@@ -29,7 +31,7 @@ return [
 	'github'                    => '',
 
 	// db version
-	'db_version'                => '0.0.0.0.0',
+	'db_version'                => '0.0.0',
 
 	// update
 	'update_info_file_url'      => '',

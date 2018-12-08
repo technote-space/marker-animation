@@ -2,9 +2,10 @@
 /**
  * Technote Models Option Test
  *
- * @version 1.1.13
+ * @version 2.0.0
  * @author technote-space
  * @since 1.0.0
+ * @since 2.0.0
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -20,12 +21,12 @@ namespace Technote\Tests\Models;
  */
 class OptionTest extends \Technote\Tests\TestCase {
 
-	/** @var \Technote\Models\Option */
+	/** @var \Technote\Classes\Models\Lib\Option $option */
 	private static $option;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		static::$option = \Technote\Models\Option::get_instance( static::$app );
+		static::$option = \Technote\Classes\Models\Lib\Option::get_instance( static::$app );
 		foreach ( static::get_test_value() as $value ) {
 			static::$option->delete( $value[0] );
 		}

@@ -2,9 +2,10 @@
 /**
  * Technote Tests Models Db
  *
- * @version 1.1.13
+ * @version 2.0.0
  * @author technote-space
  * @since 1.0.0
+ * @since 2.0.0
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -20,7 +21,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Class Db
  * @package Technote\Tests\Models
  */
-class Db extends \Technote\Models\Db {
+class Db extends \Technote\Classes\Models\Lib\Db {
 
 	/**
 	 * initialize

@@ -171,3 +171,12 @@ msgstr "WordPressのバージョンを上げてください。"
 
 msgid "<strong>%s</strong> requires WordPress version %s or above."
 msgstr "<strong>%s</strong> を使用するためには %s 以上のバージョンが必要です。"
+
+msgid "The procedure for editing the help of dashboard"
+msgstr "ダッシュボードのヘルプの変更手順"
+
+msgid "The procedure for deleting this help if it is not needed"
+msgstr "このヘルプが不要な場合の手順"
+
+msgid "The procedure for editing the sidebar"
+msgstr "サイドバーの変更手順"

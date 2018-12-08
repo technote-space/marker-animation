@@ -2,9 +2,10 @@
 /**
  * Technote Models Utility Test
  *
- * @version 1.1.13
+ * @version 2.0.0
  * @author technote-space
  * @since 1.0.0
+ * @since 2.0.0
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -21,6 +22,20 @@ namespace Technote\Tests\Models;
 class UtilityTest extends \Technote\Tests\TestCase {
 
 	/**
+	 * @since 2.0.0
+	 * @var \Technote\Classes\Models\Lib\Utility $utility
+	 */
+	private static $utility;
+
+	/**
+	 * @since 2.0.0
+	 */
+	public static function setUpBeforeClass() {
+		parent::setUpBeforeClass();
+		static::$utility = \Technote\Classes\Models\Lib\Utility::get_instance( static::$app );
+	}
+
+	/**
 	 * @dataProvider _test_flatten_provider
 	 *
 	 * @param array $array
@@ -28,7 +43,7 @@ class UtilityTest extends \Technote\Tests\TestCase {
 	 * @param array $expected
 	 */
 	public function test_flatten( $array, $preserve_keys, $expected ) {
-		$this->assertEquals( $expected, \Technote\Models\Utility::flatten( $array, $preserve_keys ) );
+		$this->assertEquals( $expected, static::$utility->flatten( $array, $preserve_keys ) );
 	}
 
 	/**
@@ -85,7 +100,7 @@ class UtilityTest extends \Technote\Tests\TestCase {
 	 * @param mixed $expected
 	 */
 	public function test_array_get( $array, $key, $default, $expected ) {
-		$this->assertEquals( $expected, \Technote\Models\Utility::array_get( $array, $key, $default ) );
+		$this->assertEquals( $expected, static::$utility->array_get( $array, $key, $default ) );
 	}
 
 	/**
@@ -129,8 +144,8 @@ class UtilityTest extends \Technote\Tests\TestCase {
 	 * @param mixed $value
 	 */
 	public function test_array_set( $array, $key, $value ) {
-		\Technote\Models\Utility::array_set( $array, $key, $value );
-		$this->assertEquals( $value, \Technote\Models\Utility::array_get( $array, $key ) );
+		static::$utility->array_set( $array, $key, $value );
+		$this->assertEquals( $value, static::$utility->array_get( $array, $key ) );
 	}
 
 	/**
@@ -177,7 +192,7 @@ class UtilityTest extends \Technote\Tests\TestCase {
 	 * @param string $expected
 	 */
 	public function test_replace( $string, $data, $expected ) {
-		$this->assertEquals( $expected, \Technote\Models\Utility::replace( $string, $data ) );
+		$this->assertEquals( $expected, static::$utility->replace( $string, $data ) );
 	}
 
 	/**

@@ -2,9 +2,10 @@
 /**
  * Technote Models User Test
  *
- * @version 1.1.13
+ * @version 2.0.0
  * @author technote-space
  * @since 1.0.0
+ * @since 2.0.0
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -20,12 +21,12 @@ namespace Technote\Tests\Models;
  */
 class UserTest extends \Technote\Tests\TestCase {
 
-	/** @var \Technote\Models\User */
+	/** @var \Technote\Classes\Models\Lib\User $user */
 	private static $user;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		static::$user = \Technote\Models\User::get_instance( static::$app );
+		static::$user = \Technote\Classes\Models\Lib\User::get_instance( static::$app );
 		foreach ( static::get_test_value() as $value ) {
 			static::$user->delete( $value[0], 1 );
 		}

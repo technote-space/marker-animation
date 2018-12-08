@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c20545ffe5fc00c7c5b663230dbea3a",
+    "content-hash": "b6f2caa1e87c3f24aedf1d3bc083697c",
     "packages": [
         {
             "name": "matthiasmullie/minify",
@@ -169,16 +169,16 @@
         },
         {
             "name": "technote/wordpress-plugin-base",
-            "version": "v1.2.1",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/technote-space/wordpress-plugin-base.git",
-                "reference": "18267ba4fd9d9eef82d0a270b1a4739286d3aaa9"
+                "reference": "b2cbcedefbd8779f38ce7d23627da732ceb6cc54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/technote-space/wordpress-plugin-base/zipball/18267ba4fd9d9eef82d0a270b1a4739286d3aaa9",
-                "reference": "18267ba4fd9d9eef82d0a270b1a4739286d3aaa9",
+                "url": "https://api.github.com/repos/technote-space/wordpress-plugin-base/zipball/b2cbcedefbd8779f38ce7d23627da732ceb6cc54",
+                "reference": "b2cbcedefbd8779f38ce7d23627da732ceb6cc54",
                 "shasum": ""
             },
             "require": {
@@ -214,7 +214,7 @@
                 "plugin",
                 "wordpress"
             ],
-            "time": "2018-12-06T20:57:56+00:00"
+            "time": "2018-12-08T20:55:19+00:00"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",

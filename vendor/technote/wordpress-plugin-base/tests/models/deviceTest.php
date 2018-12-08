@@ -2,9 +2,10 @@
 /**
  * Technote Models Device Test
  *
- * @version 1.1.13
+ * @version 2.0.0
  * @author technote-space
  * @since 1.0.0
+ * @since 2.0.0
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -20,12 +21,12 @@ namespace Technote\Tests\Models;
  */
 class DeviceTest extends \Technote\Tests\TestCase {
 
-	/** @var \Technote\Models\Device */
+	/** @var \Technote\Classes\Models\Lib\Device $device */
 	private static $device;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		static::$device = \Technote\Models\Device::get_instance( static::$app );
+		static::$device = \Technote\Classes\Models\Lib\Device::get_instance( static::$app );
 	}
 
 	/**

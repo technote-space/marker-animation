@@ -16,7 +16,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 /** @var \Technote\Interfaces\Presenter $instance */
 /** @var array $args */
 /** @var \PHPUnit_Framework_TestResult $result */
-/** @var \Technote\Tests\Base $class */
+/** @var \Technote\Classes\Tests\Base $class */
 /** @var array $dump */
 $instance->add_style_view( 'admin/style/table' );
 ?>
