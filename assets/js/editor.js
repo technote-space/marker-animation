@@ -173,8 +173,8 @@
             }
             ed.dom.addStyle(
                 selector + ' { ' + style + ' }'
-                );
-            }
+            );
+        }
         if (!added_style[key]) added_style[key] = {};
         added_style[key][value] = true;
     };
@@ -209,14 +209,14 @@
         const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
         if (detail.form === 'input/checkbox') {
             if (value) {
-                if (!not_check && detail.attributes['data-default']) return false;
+                if (!not_check && detail.attributes['data-value']) return false;
                 value = undefined === detail.attributes['data-option_value-true'] ? value : detail.attributes['data-option_value-true'];
             } else {
-                if (!not_check && !detail.attributes['data-default']) return false;
+                if (!not_check && !detail.attributes['data-value']) return false;
                 value = undefined === detail.attributes['data-option_value-false'] ? value : detail.attributes['data-option_value-false'];
             }
         }
-        if (!not_check && (value === '' || value === detail.attributes['data-default'])) return false;
+        if (!not_check && (value === '' || value === detail.attributes['data-value'])) return false;
         return {
             name: name,
             value: value
