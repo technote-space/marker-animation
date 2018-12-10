@@ -20,10 +20,16 @@
             ed.addButton('marker_animation', {
                 title: marker_animation_params.title,
                 icon: 'icon highlight-icon',
-                cmd: 'marker_animation_cmd'
+                onclick: function () {
+                    onClick(ed, null);
+                },
+                onPostRender: function () {
+                    nodeChanged(ed, this);
+                }
             });
 
             const body = [];
+            const attrs = {};
             Object.keys(marker_animation_params.details).forEach(function (key) {
                 const detail = marker_animation_params.details[key];
                 if (detail.ignore) return;
@@ -63,67 +69,45 @@
                         value: detail.value
                     });
                 }
+                const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
+                attrs['data-' + marker_animation_params.prefix + name] = getDataAttribute(name);
             });
             ed.addButton('marker_animation_detail', {
                 title: marker_animation_params.detail_title,
                 icon: 'icon highlight-icon',
                 onclick: function () {
-                    const selected_elem = ed.selection.getNode();
-                    const $selected = $(selected_elem);
-
-                    if ($selected.hasClass(marker_animation_params.class)) {
-                        unwrap_animation(ed, $selected);
-                    } else {
-                        const selected_text = ed.selection.getContent();
-                        if (selected_text !== '') {
-                            ed.windowManager.open({
-                                title: marker_animation_params.title,
-                                body: body,
-                                onsubmit: function (e) {
-                                    const attributes = {};
-                                    Object.keys(e.data).forEach(function (key) {
-                                        let value = e.data[key];
-                                        const detail = marker_animation_params.details[key];
-                                        const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
-                                        if (detail.form === 'input/checkbox') {
-                                            if (value) {
-                                                if (detail.attributes['data-default']) return;
-                                                value = undefined === detail.attributes['data-option_value-true'] ? value : detail.attributes['data-option_value-true'];
-                                            } else {
-                                                if (!detail.attributes['data-default']) return;
-                                                value = undefined === detail.attributes['data-option_value-false'] ? value : detail.attributes['data-option_value-false'];
-                                            }
-                                        }
-                                        if (value === '' || value === detail.attributes['data-default']) return;
-                                        attributes[name] = value;
-                                    });
-                                    wrap_animation(ed, selected_text, attributes);
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-            ed.addCommand('marker_animation_cmd', function () {
-                const selected_elem = ed.selection.getNode();
-                const $selected = $(selected_elem);
-
-                if ($selected.hasClass(marker_animation_params.class)) {
-                    unwrap_animation(ed, $selected);
-                } else {
-                    const selected_text = ed.selection.getContent();
-                    if (selected_text !== '') {
-                        wrap_animation(ed, selected_text, {});
-                    }
+                    onClick(ed, function () {
+                        const $defer = $.Deferred();
+                        ed.windowManager.open({
+                            title: marker_animation_params.title,
+                            body: body,
+                            onSubmit: function (e) {
+                                $defer.resolve(getDialogResults(e.data));
+                            },
+                            onClose: function () {
+                                $defer.reject();
+                            }
+                        });
+                        return $defer;
+                    });
+                },
+                onPostRender: function () {
+                    nodeChanged(ed, this);
                 }
             });
 
             ed.on('init', function () {
                 ed.dom.select('.' + marker_animation_params.class).forEach(function (elem) {
                     Object.keys(elem.dataset).forEach(function (key) {
-                        const regExp = new RegExp('^' + marker_animation_params.prefix, 'g');
-                        add_style(ed, key.replace(regExp, ''), elem.dataset[key]);
+                        if (key.substring(0, marker_animation_params.prefix.length) === marker_animation_params.prefix) {
+                            addStyle(ed, key.slice(marker_animation_params.prefix.length), elem.dataset[key]);
+                        }
                     });
+                });
+                ed.formatter.register('marker_animation', {
+                    inline: 'span',
+                    classes: [marker_animation_params.class],
+                    attributes: attrs
                 });
             });
         },
@@ -133,40 +117,23 @@
     });
 
     /**
-     * wrap animation
+     * add styles
      * @param ed
-     * @param text
      * @param attributes
      */
-    const wrap_animation = function (ed, text, attributes) {
-        let html = '<span class="' + marker_animation_params.class + '"';
+    const addStyles = function (ed, attributes) {
         Object.keys(attributes).forEach(function (key) {
-            html += ' data-' + marker_animation_params.prefix + key + '="' + attributes[key] + '"';
-            add_style(ed, key, attributes[key]);
+            addStyle(ed, key, attributes[key]);
         });
-
-        html += '>' + text + '</span>';
-        ed.execCommand('mceInsertContent', 0, html);
     };
 
     /**
-     * unwrap animation
-     * @param ed
-     * @param $selected
-     */
-    const unwrap_animation = function (ed, $selected) {
-        const insert_html = $selected.html();
-        $selected.remove();
-        ed.execCommand('mceInsertContent', 0, insert_html);
-    };
-
-    /**
-     * add color
+     * add style
      * @param ed
      * @param key
      * @param value
      */
-    const add_style = function (ed, key, value) {
+    const addStyle = function (ed, key, value) {
         if (key !== 'color' && key !== 'thickness' && key !== 'font_weight' && key !== 'padding_bottom') return;
         if (added_style[key] && added_style[key][value]) return;
 
@@ -204,6 +171,89 @@
         }
         if (!added_style[key]) added_style[key] = {};
         added_style[key][value] = true;
+    };
+
+    /**
+     * dialog results
+     * @param data
+     */
+    const getDialogResults = function (data) {
+        const attributes = {};
+        Object.keys(data).forEach(function (key) {
+            let value = data[key];
+            const detail = marker_animation_params.details[key];
+            const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
+            if (detail.form === 'input/checkbox') {
+                if (value) {
+                    if (detail.attributes['data-default']) return;
+                    value = undefined === detail.attributes['data-option_value-true'] ? value : detail.attributes['data-option_value-true'];
+                } else {
+                    if (!detail.attributes['data-default']) return;
+                    value = undefined === detail.attributes['data-option_value-false'] ? value : detail.attributes['data-option_value-false'];
+                }
+            }
+            if (value === '' || value === detail.attributes['data-default']) return;
+            attributes[name] = value;
+        });
+        return attributes;
+    };
+
+    /**
+     * data attribute
+     * @param name
+     * @returns {Function}
+     */
+    const getDataAttribute = function (name) {
+        return function (vars) {
+            if (undefined === vars) return '';
+            if (null === vars[name]) return 'null';
+            if (undefined !== vars[name]) return vars[name];
+            return '';
+        };
+    };
+
+    /**
+     * on click
+     * @param ed
+     * @param get_attributes
+     */
+    const onClick = function (ed, get_attributes) {
+        const selected_elem = ed.selection.getNode();
+        const $selected = $(selected_elem);
+        const bm = ed.selection.getBookmark();
+
+        if ($selected.hasClass(marker_animation_params.class)) {
+            ed.formatter.remove('marker_animation', undefined, selected_elem);
+            ed.selection.moveToBookmark(bm);
+        } else {
+            let $deferred;
+            if (get_attributes) {
+                $deferred = get_attributes();
+            } else {
+                $deferred = $.Deferred();
+                setTimeout(function () {
+                    $deferred.resolve({});
+                }, 1);
+            }
+
+            $deferred.done(function (attributes) {
+                addStyles(ed, attributes);
+                const selected_text = ed.selection.getContent();
+                ed.formatter.apply('marker_animation', attributes, selected_text === '' ? selected_elem : null);
+                ed.selection.moveToBookmark(bm);
+            });
+        }
+    };
+
+    /**
+     * node changed
+     * @param ed
+     * @param $target
+     */
+    const nodeChanged = function (ed, $target) {
+        ed.on('NodeChange', function (e) {
+            $target.active(e.element.classList.contains(marker_animation_params.class));
+        });
     };
 
     /* Start the buttons */
