@@ -130,12 +130,11 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_block_editor_assets() {
-		$this->enqueue_style( 'marker_animation-editor', 'editor.css' );
+		$this->enqueue_style( 'marker_animation-editor', 'gutenberg.css' );
 		$this->enqueue_script( 'marker_animation-editor', 'gutenberg.js', [
 			'wp-blocks',
 			'wp-element',
 			'wp-rich-text',
-			'wp-i18n',
 		] );
 		$this->localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
 	}

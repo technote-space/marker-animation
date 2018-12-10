@@ -7,21 +7,25 @@
  * @link https://technote.space/
  */
 (function (richText, element, editor) {
+    'use strict';
+
+    const el = element.createElement;
+
     const name = 'marker-animation/marker-animation';
     richText.registerFormatType(name, {
         title: marker_animation_params.title,
         tagName: 'span',
         className: marker_animation_params.class,
-        edit: function ({isActive, value, onChange}) {
-            return element.createElement(editor.RichTextToolbarButton, {
+        edit: function (args) {
+            return el(editor.RichTextToolbarButton, {
                 icon: 'admin-customizer',
                 title: marker_animation_params.title,
                 onClick: function () {
-                    onChange(richText.toggleFormat(value, {
+                    args.onChange(richText.toggleFormat(args.value, {
                         type: name
                     }));
                 },
-                isActive: isActive,
+                isActive: args.isActive,
             });
         },
     });
