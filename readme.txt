@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter
 Requires at least: 3.9.3
 Tested up to: 5.0.0
 Requires PHP: 5.6
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,10 @@ This plugin needs PHP5.6 or higher.
 4. Editor(off animation)
 
 == Changelog ==
+
+= 1.2.2 =
+
+* Updated: refine the behavior of classic editor's tool button
 
 = 1.2.1 =
 

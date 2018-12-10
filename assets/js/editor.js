@@ -1,7 +1,8 @@
 /**
- * @version 1.1.11
+ * @version 1.2.2
  * @author technote-space
  * @since 1.0.0
+ * @since 1.2.2 Updated: refine tool button behavior
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -118,6 +119,7 @@
 
     /**
      * add styles
+     * @since 1.2.2
      * @param ed
      * @param attributes
      */
@@ -175,6 +177,7 @@
 
     /**
      * dialog results
+     * @since 1.2.2
      * @param data
      */
     const getDialogResults = function (data) {
@@ -200,6 +203,7 @@
 
     /**
      * data attribute
+     * @since 1.2.2
      * @param name
      * @returns {Function}
      */
@@ -214,6 +218,7 @@
 
     /**
      * on click
+     * @since 1.2.2
      * @param ed
      * @param get_attributes
      */
@@ -247,6 +252,7 @@
 
     /**
      * node changed
+     * @since 1.2.2
      * @param ed
      * @param $target
      */
