@@ -154,41 +154,27 @@
         let selector, style = null;
         switch (key) {
             case 'color':
-                style = '{ background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, ' + value + ' 50%) }';
+                style = 'background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, ' + value + ' 50%)';
                 break;
             case 'thickness':
-                style = '{ background-size: 200% ' + value + ' }';
+                style = 'background-size: 200% ' + value;
                 break;
             case 'font_weight':
-                style = '{ font-weight: ' + (!value || value === 'null' ? 'normal' : value) + ' }';
+                style = 'font-weight: ' + (!value || value === 'null' ? 'normal' : value);
                 break;
             case 'padding_bottom':
-                style = '{ padding-bottom: ' + value + ' }';
+                style = 'padding-bottom: ' + value;
                 break;
         }
         if (style) {
-            if (is_default) {
-                selector = '.' + marker_animation_params.class;
-            } else {
-                selector = '[data-' + marker_animation_params.prefix + key + '="' + value + '"]';
+            selector = 'body .' + marker_animation_params.class;
+            if (!is_default) {
+                selector += '[data-' + marker_animation_params.prefix + key + '="' + value + '"]';
             }
-            style = selector + ' ' + style;
-            if (undefined === ed.dom.select("head")[0]) {
-                const s = document.createElement('style');
-                s.setAttribute("type", "text/css");
-                document.getElementsByTagName('head').item(0).appendChild(s);
-                s.sheet.insertRule(style, 0);
-            } else {
-                ed.dom.add(
-                    ed.dom.select("head")[0], // first element
-                    "style",
-                    {
-                        type: "text/css"
-                    },
-                    style
+            ed.dom.addStyle(
+                selector + ' { ' + style + ' }'
                 );
             }
-        }
         if (!added_style[key]) added_style[key] = {};
         added_style[key][value] = true;
     };
