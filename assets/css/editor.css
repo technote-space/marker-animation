@@ -11,8 +11,4 @@
     display: inline;
     background-position: left -100% center;
     background-repeat: repeat-x;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, #ff6 50%);
-    background-size: 200% .6em;
-    font-weight: bold;
-    padding-bottom: .6em;
 }

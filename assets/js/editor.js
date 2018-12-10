@@ -31,22 +31,26 @@
 
             const body = [];
             const attrs = {};
+            const defaultStyle = [];
             Object.keys(marker_animation_params.details).forEach(function (key) {
                 const detail = marker_animation_params.details[key];
                 if (detail.ignore) return;
+                let value;
                 if (detail.form === 'input/checkbox') {
+                    value = detail.attributes.checked === 'checked';
                     body.push({
                         type: 'checkbox',
                         name: key,
                         label: detail.label,
-                        checked: detail.attributes.checked === 'checked'
+                        checked: value
                     });
                 } else if (marker_animation_params.colorpicker_enabled && detail.form === 'color') {
+                    value = detail.value;
                     body.push({
                         type: 'colorpicker',
                         name: key,
                         label: detail.label,
-                        value: detail.value
+                        value: value
                     });
                 } else if (detail.form === 'select') {
                     const values = [];
@@ -56,6 +60,7 @@
                             value: k
                         });
                     });
+                    value = detail.value;
                     body.push({
                         type: 'listbox',
                         name: key,
@@ -63,15 +68,17 @@
                         values: values
                     });
                 } else {
+                    value = detail.value;
                     body.push({
                         type: 'textbox',
                         name: key,
                         label: detail.label,
-                        value: detail.value
+                        value: value
                     });
                 }
                 const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
                 attrs['data-' + marker_animation_params.prefix + name] = getDataAttribute(name);
+                defaultStyle.push(getDialogResult(value, key, true));
             });
             ed.addButton('marker_animation_detail', {
                 title: marker_animation_params.detail_title,
@@ -98,6 +105,9 @@
             });
 
             ed.on('init', function () {
+                defaultStyle.forEach(function (style) {
+                    addStyle(ed, style.name, style.value, true);
+                });
                 ed.dom.select('.' + marker_animation_params.class).forEach(function (elem) {
                     Object.keys(elem.dataset).forEach(function (key) {
                         if (key.substring(0, marker_animation_params.prefix.length) === marker_animation_params.prefix) {
@@ -134,27 +144,33 @@
      * @param ed
      * @param key
      * @param value
+     * @param is_default
      */
-    const addStyle = function (ed, key, value) {
-        if (key !== 'color' && key !== 'thickness' && key !== 'font_weight' && key !== 'padding_bottom') return;
+    const addStyle = function (ed, key, value, is_default) {
         if (added_style[key] && added_style[key][value]) return;
 
-        let style = null;
+        let selector, style = null;
         switch (key) {
             case 'color':
-                style = '[data-' + marker_animation_params.prefix + key + '="' + value + '"] { background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, ' + value + ' 50%) }';
+                style = '{ background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, ' + value + ' 50%) }';
                 break;
             case 'thickness':
-                style = '[data-' + marker_animation_params.prefix + key + '="' + value + '"] { background-size: 200% ' + value + ' }';
+                style = '{ background-size: 200% ' + value + ' }';
                 break;
             case 'font_weight':
-                style = '[data-' + marker_animation_params.prefix + key + '="' + value + '"] { font-weight: ' + (!value || value === 'null' ? 'normal' : value) + ' }';
+                style = '{ font-weight: ' + (!value || value === 'null' ? 'normal' : value) + ' }';
                 break;
             case 'padding_bottom':
-                style = '[data-' + marker_animation_params.prefix + key + '="' + value + '"] { padding-bottom: ' + value + ' }';
+                style = '{ padding-bottom: ' + value + ' }';
                 break;
         }
         if (style) {
+            if (is_default) {
+                selector = '.' + marker_animation_params.class;
+            } else {
+                selector = '[data-' + marker_animation_params.prefix + key + '="' + value + '"]';
+            }
+            style = selector + ' ' + style;
             if (undefined === ed.dom.select("head")[0]) {
                 const s = document.createElement('style');
                 s.setAttribute("type", "text/css");
@@ -184,21 +200,38 @@
         const attributes = {};
         Object.keys(data).forEach(function (key) {
             let value = data[key];
-            const detail = marker_animation_params.details[key];
-            const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
-            if (detail.form === 'input/checkbox') {
-                if (value) {
-                    if (detail.attributes['data-default']) return;
-                    value = undefined === detail.attributes['data-option_value-true'] ? value : detail.attributes['data-option_value-true'];
-                } else {
-                    if (!detail.attributes['data-default']) return;
-                    value = undefined === detail.attributes['data-option_value-false'] ? value : detail.attributes['data-option_value-false'];
-                }
+            const result = getDialogResult(value, key);
+            if (result) {
+                attributes[result.name] = result.value;
             }
-            if (value === '' || value === detail.attributes['data-default']) return;
-            attributes[name] = value;
         });
         return attributes;
+    };
+
+    /**
+     * dialog result
+     * @param value
+     * @param key
+     * @param not_check
+     * @returns {{name: (string|*), value: *}}|bool
+     */
+    const getDialogResult = function (value, key, not_check) {
+        const detail = marker_animation_params.details[key];
+        const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
+        if (detail.form === 'input/checkbox') {
+            if (value) {
+                if (!not_check && detail.attributes['data-default']) return false;
+                value = undefined === detail.attributes['data-option_value-true'] ? value : detail.attributes['data-option_value-true'];
+            } else {
+                if (!not_check && !detail.attributes['data-default']) return false;
+                value = undefined === detail.attributes['data-option_value-false'] ? value : detail.attributes['data-option_value-false'];
+            }
+        }
+        if (!not_check && (value === '' || value === detail.attributes['data-default'])) return false;
+        return {
+            name: name,
+            value: value
+        };
     };
 
     /**
