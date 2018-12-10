@@ -1,9 +1,11 @@
 /**
- * @version 1.2.3
+ * @version 1.2.4
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.2 Updated: refine tool button behavior
  * @since 1.2.3 Update: set default style
+ * @since 1.2.4 Fixed: for IE11
+ * @since 1.2.4 Fixed: detail setting value check
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -143,6 +145,7 @@
     /**
      * add style
      * @since 1.2.3 Update: set default style
+     * @since 1.2.4 Fixed: for IE11
      * @param ed
      * @param key
      * @param value
@@ -199,6 +202,7 @@
     /**
      * dialog result
      * @since 1.2.3
+     * @since 1.2.4 Fixed: detail setting value check
      * @param value
      * @param key
      * @param not_check

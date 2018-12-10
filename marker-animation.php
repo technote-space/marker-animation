@@ -4,7 +4,7 @@ Plugin Name: Marker Animation
 Plugin URI:
 Description: This plugin will add "Marker animation" function
 Author: technote
-Version: 1.2.3
+Version: 1.2.4
 Author URI: https://technote.space
 Text Domain: marker-animation
 Domain Path: /languages/
