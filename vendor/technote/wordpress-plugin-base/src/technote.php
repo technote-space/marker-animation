@@ -2,11 +2,17 @@
 /**
  * Technote
  *
- * @version 2.0.2
+ * @version 2.1.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Added: Feature to load library of latest version
  * @since 2.0.2 Fixed: Uninstall behavior
+ * @since 2.1.0 Added: app_initialize action
+ * @since 2.1.0 Added: argument to actions (app_initialized, app_activated, app_deactivated)
+ * @since 2.1.0 Fixed: initialize process
+ * @since 2.1.0 Changed: load textdomain from plugin data
+ * @since 2.1.0 Added: check develop version
+ * @since 2.1.0 Changed: set default value of check_update when the plugin is registered as official
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -235,13 +241,13 @@ class Technote {
 						$this->initialize();
 					}
 				}
-				$this->filter->do_action( 'app_activated' );
+				$this->filter->do_action( 'app_activated', $this );
 			}
 		} );
 
 		add_action( 'deactivated_plugin', function ( $plugin ) {
 			if ( $this->define->plugin_base_name === $plugin ) {
-				$this->filter->do_action( 'app_deactivated' );
+				$this->filter->do_action( 'app_deactivated', $this );
 			}
 		} );
 	}
@@ -254,6 +260,11 @@ class Technote {
 			return;
 		}
 		$this->plugins_loaded = true;
+
+		if ( ! function_exists( 'get_plugin_data' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		$this->plugin_data = get_plugin_data( $this->plugin_file, false, false );
 
 		spl_autoload_register( [ $this, 'load_class' ] );
 		$this->load_functions();
@@ -278,11 +289,13 @@ class Technote {
 			return;
 		}
 		$this->initialized = true;
+
+		$this->filter->do_action( 'app_initialize', $this );
 		$this->setup_property( $uninstall );
-		$this->setup_update();
 		$this->setup_textdomain();
 		$this->setup_settings();
-		$this->filter->do_action( 'app_initialized' );
+		$this->setup_update();
+		$this->filter->do_action( 'app_initialized', $this );
 	}
 
 	/**
@@ -312,11 +325,6 @@ class Technote {
 	 * @param bool $uninstall
 	 */
 	private function setup_property( $uninstall ) {
-		if ( ! function_exists( 'get_plugin_data' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-		$this->plugin_data = get_plugin_data( $this->plugin_file, false, false );
-
 		if ( $uninstall ) {
 			foreach ( $this->properties as $name => $class ) {
 				$this->$name;
@@ -327,19 +335,22 @@ class Technote {
 
 	/**
 	 * setup update checker
+	 * @since 2.1.0 Added: check develop version
 	 */
 	private function setup_update() {
 		$update_info_file_url = $this->get_config( 'config', 'update_info_file_url' );
 		if ( ! empty( $update_info_file_url ) ) {
-			$key   = $this->plugin_name . '-setup_update';
-			$check = get_transient( $key );
-			if ( ! $check ) {
-				\Puc_v4_Factory::buildUpdateChecker(
-					$update_info_file_url,
-					$this->plugin_file,
-					$this->plugin_name
-				);
-				set_transient( $key, true, 15 * 60 );
+			if ( $this->filter->apply_filters( 'check_update' ) ) {
+				$key   = $this->plugin_name . '-setup_update';
+				$check = get_transient( $key );
+				if ( ! $check ) {
+					\Puc_v4_Factory::buildUpdateChecker(
+						$update_info_file_url,
+						$this->plugin_file,
+						$this->plugin_name
+					);
+					set_transient( $key, true, 15 * 60 );
+				}
 			}
 		} else {
 			$this->setting->remove_setting( 'check_update' );
@@ -348,10 +359,11 @@ class Technote {
 
 	/**
 	 * @since 1.1.73
+	 * @since 2.1.0 Changed: load textdomain from plugin data
 	 * @return mixed
 	 */
 	public function get_text_domain() {
-		return $this->get_config( 'config', 'text_domain' );
+		return $this->define->plugin_textdomain;
 	}
 
 	/**
@@ -360,7 +372,7 @@ class Technote {
 	private function setup_textdomain() {
 		if ( ! static::$lib_language_loaded ) {
 			static::$lib_language_loaded = true;
-			load_plugin_textdomain( $this->define->lib_name, false, $this->define->lib_language_rel_path );
+			load_plugin_textdomain( $this->define->lib_textdomain, false, $this->define->lib_languages_rel_path );
 		}
 
 		$text_domain = $this->get_text_domain();
@@ -371,6 +383,7 @@ class Technote {
 
 	/**
 	 * setup settings
+	 * @since 2.1.0 Changed: set default value of check_update when the plugin is registered as official
 	 */
 	private function setup_settings() {
 		if ( defined( 'TECHNOTE_MOCK_REST_REQUEST' ) && TECHNOTE_MOCK_REST_REQUEST ) {
@@ -380,6 +393,9 @@ class Technote {
 			$this->setting->remove_setting( 'use_admin_ajax' );
 			$this->setting->remove_setting( 'get_nonce_check_referer' );
 			$this->setting->remove_setting( 'check_referer_host' );
+		}
+		if ( ! empty( $this->plugin_data['PluginURI'] ) && $this->utility->starts_with( $this->plugin_data['PluginURI'], 'https://wordpress.org' ) ) {
+			$this->setting->edit_setting( 'check_update', 'default', false );
 		}
 	}
 
@@ -397,7 +413,7 @@ class Technote {
 			}
 		}
 
-		return __( $value, $this->define->lib_name );
+		return __( $value, $this->define->lib_textdomain );
 	}
 
 	/**

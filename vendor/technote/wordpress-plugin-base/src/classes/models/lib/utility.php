@@ -2,10 +2,11 @@
 /**
  * Technote Classes Models Lib Utility
  *
- * @version 2.0.0
+ * @version 2.1.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Changed: static function to non static function
+ * @since 2.1.0 Added: starts_with, ends_with functions
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -260,5 +261,43 @@ class Utility implements \Technote\Interfaces\Singleton {
 			$fp = popen( 'start "" ' . $command, 'r' );
 			pclose( $fp );
 		}
+	}
+
+	/**
+	 * @since 2.1.0
+	 *
+	 * @param string $haystack
+	 * @param string $needle
+	 *
+	 * @return bool
+	 */
+	public function starts_with( $haystack, $needle ) {
+		if ( '' === $haystack || '' === $needle ) {
+			return false;
+		}
+		if ( $haystack === $needle ) {
+			return true;
+		}
+
+		return strncmp( $haystack, $needle, strlen( $needle ) ) === 0;
+	}
+
+	/**
+	 * @since 2.1.0
+	 *
+	 * @param string $haystack
+	 * @param string $needle
+	 *
+	 * @return bool
+	 */
+	public function ends_with( $haystack, $needle ) {
+		if ( '' === $haystack || '' === $needle ) {
+			return false;
+		}
+		if ( $haystack === $needle ) {
+			return true;
+		}
+
+		return substr_compare( $haystack, $needle, - strlen( $needle ) ) === 0;
 	}
 }

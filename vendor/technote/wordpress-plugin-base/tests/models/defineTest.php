@@ -2,10 +2,11 @@
 /**
  * Technote Models Define Test
  *
- * @version 2.0.0
+ * @version 2.1.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.1.0 Changed: language -> languages
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -37,7 +38,7 @@ class DefineTest extends \Technote\Tests\TestCase {
 		$this->assertNotEmpty( static::$define->lib_src_dir );
 		$this->assertNotEmpty( static::$define->lib_configs_dir );
 		$this->assertNotEmpty( static::$define->lib_views_dir );
-		$this->assertNotEmpty( static::$define->lib_language_dir );
+		$this->assertNotEmpty( static::$define->lib_languages_dir );
 		$this->assertNotEmpty( static::$define->lib_vendor_dir );
 		$this->assertNotEmpty( static::$define->lib_assets_url );
 	}
@@ -53,7 +54,7 @@ class DefineTest extends \Technote\Tests\TestCase {
 		$this->assertNotEmpty( static::$define->plugin_src_dir );
 		$this->assertNotEmpty( static::$define->plugin_configs_dir );
 		$this->assertNotEmpty( static::$define->plugin_views_dir );
-		$this->assertNotEmpty( static::$define->plugin_languages_dir );
+		$this->assertEmpty( static::$define->plugin_languages_dir );
 		$this->assertNotEmpty( static::$define->plugin_logs_dir );
 		$this->assertNotEmpty( static::$define->plugin_assets_url );
 	}
