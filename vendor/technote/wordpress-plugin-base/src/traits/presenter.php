@@ -2,10 +2,11 @@
 /**
  * Technote Traits Presenter
  *
- * @version 2.0.0
+ * @version 2.0.3
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.0.3 Changed: trim assets_version
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -316,6 +317,8 @@ trait Presenter {
 	}
 
 	/**
+	 * @since 2.0.3 Changed: trim assets_version
+	 *
 	 * @param bool $append_version
 	 * @param string $q
 	 *
@@ -325,7 +328,7 @@ trait Presenter {
 		if ( ! $append_version ) {
 			return '';
 		}
-		$append = $this->apply_filters( 'assets_version' );
+		$append = trim( $this->apply_filters( 'assets_version' ) );
 		if ( $append !== '' ) {
 			if ( $q ) {
 				return '?' . $q . '=' . $append;

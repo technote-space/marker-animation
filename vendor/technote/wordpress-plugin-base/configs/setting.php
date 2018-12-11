@@ -2,9 +2,10 @@
 /**
  * Technote Configs Setting
  *
- * @version 1.1.41
+ * @version 2.0.3
  * @author technote-space
  * @since 1.0.0
+ * @since 2.0.3 Changed: default assets_version
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -50,7 +51,10 @@ return [
 				'assets_version'          => [
 					'label'   => 'Assets Version',
 					'type'    => 'string',
-					'default' => '',
+					'default' => function ( $app ) {
+						/** @var \Technote $app */
+						return $app->utility->array_get( $app->plugin_data, 'Version' );
+					},
 				],
 				'use_admin_ajax'          => [
 					'label'   => 'Use admin-ajax.php instead of wp-json.',
