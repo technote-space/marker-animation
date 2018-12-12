@@ -1,10 +1,10 @@
 === Marker Animation ===
 Contributors: technote0space
-Tags: marker, marker animation, highlighter
+Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アンダーライン
 Requires at least: 3.9.3
 Tested up to: 5.0.0
 Requires PHP: 5.6
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,6 +31,11 @@ This plugin needs PHP5.6 or higher.
 4. Editor(off animation)
 
 == Changelog ==
+
+= 1.2.6 =
+
+* Updated: plugin library
+* Updated: use library method to determine whether gutenberg editor is used
 
 = 1.2.5 =
 
