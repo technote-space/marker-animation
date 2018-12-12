@@ -20,12 +20,6 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Presenter;
 
-	/**
-	 * @since 1.1.9
-	 * @var bool $_gutenberg
-	 */
-	private $_gutenberg = false;
-
 	/** @var bool $_setup_params */
 	private $_setup_params = false;
 
@@ -36,26 +30,13 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	private $_enqueue_editor_stylesheets = false;
 
 	/**
-	 * @since 1.1.9
-	 *
-	 * @param array $preload_paths
-	 *
-	 * @return array
-	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function block_editor_preload_paths( $preload_paths ) {
-		$this->_gutenberg = true;
-
-		return $preload_paths;
-	}
-
-	/**
 	 * enqueue editor params
+	 * @since 1.2.5
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_editor_params() {
 		$this->add_style_view( 'admin/style/editor' );
-		if ( $this->_gutenberg ) {
+		if ( $this->app->post->is_block_editor() ) {
 			return;
 		}
 
@@ -73,7 +54,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_external_plugins( $external_plugins ) {
-		if ( $this->_setup_params || $this->_gutenberg ) {
+		if ( $this->_setup_params || $this->app->post->is_block_editor() ) {
 			$external_plugins['marker_animation_button_plugin'] = $this->get_assets_url( 'js/editor.js' );
 		}
 
@@ -87,7 +68,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_buttons( $mce_buttons ) {
-		if ( $this->_setup_params || $this->_gutenberg ) {
+		if ( $this->_setup_params || $this->app->post->is_block_editor() ) {
 			$mce_buttons[] = 'marker_animation';
 			$mce_buttons[] = 'marker_animation_detail';
 		}
@@ -146,15 +127,14 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	private function get_editor_params() {
 		/** @var Assets $assets */
 		$assets = Assets::get_instance( $this->app );
-		global $wp_version;
 
 		return [
-			'title'               => $this->translate( 'Marker Animation' ),
-			'detail_title'        => $this->translate( 'Marker Animation (detail setting)' ),
-			'class'               => $assets->get_default_marker_animation_class(),
-			'details'             => $assets->get_setting_details(),
-			'prefix'              => 'ma_',
-			'colorpicker_enabled' => version_compare( $wp_version, '4.0', '>=' ),
+			'title'                 => $this->translate( 'Marker Animation' ),
+			'detail_title'          => $this->translate( 'Marker Animation (detail setting)' ),
+			'class'                 => $assets->get_default_marker_animation_class(),
+			'details'               => $assets->get_setting_details(),
+			'prefix'                => 'ma_',
+			'is_valid_color_picker' => $this->app->post->is_valid_tinymce_color_picker(),
 		];
 	}
 }

@@ -40,9 +40,6 @@ return [
 		'mce_css'                     => [
 			'mce_css' => [],
 		],
-		'block_editor_preload_paths'  => [
-			'block_editor_preload_paths' => [],
-		],
 		/**
 		 * @since 1.1.9
 		 */

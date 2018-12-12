@@ -47,7 +47,7 @@
                         label: detail.label,
                         checked: value
                     });
-                } else if (marker_animation_params.colorpicker_enabled && detail.form === 'color') {
+                } else if (marker_animation_params.is_valid_color_picker && detail.form === 'color') {
                     value = detail.value;
                     body.push({
                         type: 'colorpicker',
