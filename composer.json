@@ -1,5 +1,10 @@
 {
     "require": {
         "technote/wordpress-plugin-base": "^2.0"
+    },
+    "config": {
+        "platform": {
+            "php": "5.6"
+        }
     }
 }
