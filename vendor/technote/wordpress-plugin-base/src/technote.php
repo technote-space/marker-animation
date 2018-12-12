@@ -2,7 +2,7 @@
 /**
  * Technote
  *
- * @version 2.1.0
+ * @version 2.1.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Added: Feature to load library of latest version
@@ -13,6 +13,7 @@
  * @since 2.1.0 Changed: load textdomain from plugin data
  * @since 2.1.0 Added: check develop version
  * @since 2.1.0 Changed: set default value of check_update when the plugin is registered as official
+ * @since 2.1.1 Fixed: check develop version
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -336,21 +337,17 @@ class Technote {
 	/**
 	 * setup update checker
 	 * @since 2.1.0 Added: check develop version
+	 * @since 2.1.1 Fixed: check develop version
 	 */
 	private function setup_update() {
 		$update_info_file_url = $this->get_config( 'config', 'update_info_file_url' );
 		if ( ! empty( $update_info_file_url ) ) {
 			if ( $this->filter->apply_filters( 'check_update' ) ) {
-				$key   = $this->plugin_name . '-setup_update';
-				$check = get_transient( $key );
-				if ( ! $check ) {
-					\Puc_v4_Factory::buildUpdateChecker(
-						$update_info_file_url,
-						$this->plugin_file,
-						$this->plugin_name
-					);
-					set_transient( $key, true, 15 * 60 );
-				}
+				\Puc_v4_Factory::buildUpdateChecker(
+					$update_info_file_url,
+					$this->plugin_file,
+					$this->plugin_name
+				);
 			}
 		} else {
 			$this->setting->remove_setting( 'check_update' );

@@ -2,11 +2,13 @@
 /**
  * Technote Classes Models Lib Post
  *
- * @version 2.0.2
+ * @version 2.2.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.0.2 Added: Uninstall priority
+ * @since 2.2.0 Added: is_valid_tinymce_color_picker method
+ * @since 2.2.0 Added: is_block_editor method
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -252,6 +254,29 @@ SQL;
 		preg_match_all( '@\[([^<>&/\[\]\x00-\x20=]++)@', $content, $matches );
 
 		return array_intersect( array_keys( $shortcode_tags ), $matches[1] );
+	}
+
+	/**
+	 * @since 2.2.0
+	 * @return bool
+	 */
+	public function is_valid_tinymce_color_picker() {
+		global $wp_version;
+
+		return version_compare( $wp_version, '4.0', '>=' );
+	}
+
+	/**
+	 * @since 2.2.0
+	 * @return bool
+	 */
+	public function is_block_editor() {
+		if ( ! is_admin() ) {
+			return false;
+		}
+		$current_screen = get_current_screen();
+
+		return ( method_exists( $current_screen, 'is_block_editor' ) && $current_screen->is_block_editor() ) || ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() );
 	}
 
 	/**
