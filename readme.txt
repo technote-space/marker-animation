@@ -32,51 +32,51 @@ This plugin needs PHP5.6 or higher.
 
 == Changelog ==
 
-= 1.2.6 =
+= 1.2.6 (2018/12/13) =
 
 * Updated: plugin library
 * Updated: use library method to determine whether gutenberg editor is used
 
-= 1.2.5 =
+= 1.2.5 (2018/12/12) =
 
 * Changed: version query to assets
 * Added: check develop version
 
-= 1.2.4 =
+= 1.2.4 (2018/12/11) =
 
 * Fixed: for IE11
 * Fixed: detail setting value check
 
-= 1.2.3 =
+= 1.2.3 (2018/12/11) =
 
 * Updated: set default style
 
-= 1.2.2 =
+= 1.2.2 (2018/12/11) =
 
 * Updated: refine the behavior of classic editor's tool button
 
-= 1.2.1 =
+= 1.2.1 (2018/12/9) =
 
 * Updated: plugin library
 
-= 1.2.0 =
+= 1.2.0 (2018/12/9) =
 
 * Updated: plugin library
 
-= 1.1.11 =
+= 1.1.11 (2018/12/8) =
 
 * Added: Admin menu icon
 * Fixed: Removed debug code
 
-= 1.1.10 =
+= 1.1.10 (2018/12/7) =
 
 * Changed: readme.txt
 
-= 1.1.9 =
+= 1.1.9 (2018/12/7) =
 
 * Fixed: for WordPress5.0
 
-= 1.1.8 =
+= 1.1.8 (2018/12/7) =
 
 * First release
 

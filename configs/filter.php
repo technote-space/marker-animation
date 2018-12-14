@@ -20,6 +20,9 @@ return [
 		'template_redirect' => [
 			'setup_assets' => [],
 		],
+		'${prefix}changed_option'  => [
+			'changed_option' => [],
+		],
 	],
 
 	'\Marker_Animation\Classes\Models\Editor' => [

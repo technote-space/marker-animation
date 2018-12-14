@@ -69,13 +69,38 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @return string
+	 */
+	private function get_marker_options_cache_key() {
+		return 'marker_options_cache';
+	}
+
+	/**
 	 * @return array
 	 */
 	public function get_marker_options() {
+		if ( $this->apply_filters( 'is_valid_marker_options_cache' ) ) {
+			$options = $this->app->get_option( $this->get_marker_options_cache_key() );
+			if ( is_array( $options ) ) {
+				return $options;
+			}
+			$options = $this->load_marker_options();
+			$this->app->option->set( $this->get_marker_options_cache_key(), $options );
+		} else {
+			$options = $this->load_marker_options();
+		}
+
+		return $options;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function load_marker_options() {
 		$options = [
+			'version'  => $this->app->get_library_version(),
 			'selector' => $this->get_selector(),
 		];
-
 		foreach ( $this->get_setting_details() as $key => $setting ) {
 			if ( ! empty( $setting['ignore'] ) ) {
 				continue;
@@ -106,6 +131,18 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		}
 
 		return $options;
+	}
+
+	/**
+	 * clear cache when changed option
+	 *
+	 * @param string $key
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function changed_option( $key ) {
+		if ( $this->app->utility->starts_with( $key, $this->get_filter_prefix() ) ) {
+			$this->app->option->delete( $this->get_marker_options_cache_key() );
+		}
 	}
 
 	/**
