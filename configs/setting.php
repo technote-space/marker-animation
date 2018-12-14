@@ -1,8 +1,9 @@
 <?php
 /**
- * @version 1.1.6
+ * @version 1.2.7
  * @author technote-space
  * @since 1.0.0
+ * @since 1.2.7 Added: cache validity setting
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -22,6 +23,9 @@ return [
 					'type'    => 'bool',
 					'default' => true,
 				],
+				/**
+				 * @since 1.2.7
+				 */
 				'is_valid_marker_options_cache' => [
 					'label'   => 'cache validity',
 					'type'    => 'bool',

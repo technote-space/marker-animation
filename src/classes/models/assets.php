@@ -1,9 +1,10 @@
 <?php
 /**
- * @version 1.2.0
+ * @version 1.2.7
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
+ * @since 1.2.7 Added: cache options
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -69,6 +70,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.2.7
 	 * @return string
 	 */
 	private function get_marker_options_cache_key() {
@@ -76,6 +78,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.2.7 Added: cache options
 	 * @return array
 	 */
 	public function get_marker_options() {
@@ -94,6 +97,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.2.7
 	 * @return array
 	 */
 	private function load_marker_options() {
@@ -135,6 +139,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	/**
 	 * clear cache when changed option
+	 * @since 1.2.7
 	 *
 	 * @param string $key
 	 */
