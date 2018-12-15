@@ -87,5 +87,4 @@ trait Test {
 	public function get_dump_objects() {
 		return $this->objects;
 	}
-
 }

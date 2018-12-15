@@ -513,5 +513,4 @@ class DeviceTest extends \Technote\Tests\TestCase {
 			],
 		];
 	}
-
 }

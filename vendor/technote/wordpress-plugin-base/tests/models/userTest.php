@@ -100,5 +100,4 @@ class UserTest extends \Technote\Tests\TestCase {
 	public function _test_value_provider() {
 		return static::get_test_value();
 	}
-
 }

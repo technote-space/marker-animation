@@ -1,19 +1,21 @@
 <?php
 /**
- * Technote Classes Models Lib Loader Test
+ * Technote Classes Models Lib Test
  *
- * @version 2.0.1
+ * @version 2.3.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.0.1 Fixed: change timing to set $app instance
  * @since 2.0.1 Changed: hide menu if there is no tests
+ * @since 2.3.0 Changed: property access to getter access
+ * @since 2.3.1 Changed: not load test if not required
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
  */
 
-namespace Technote\Classes\Models\Lib\Loader;
+namespace Technote\Classes\Models\Lib;
 
 if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	exit;
@@ -21,7 +23,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 /**
  * Class Test
- * @package Technote\Classes\Models\Lib\Loader
+ * @package Technote\Classes\Models\Lib
  */
 class Test implements \Technote\Interfaces\Loader {
 
@@ -72,7 +74,7 @@ class Test implements \Technote\Interfaces\Loader {
 	 * @return array
 	 */
 	public function get_test_class_names() {
-		return $this->app->utility->array_pluck( $this->get_tests(), 'class_name' );
+		return $this->app->utility->array_map( $this->get_tests(), 'get_class_name' );
 	}
 
 	/**
@@ -81,7 +83,6 @@ class Test implements \Technote\Interfaces\Loader {
 	protected function get_namespaces() {
 		return [
 			$this->app->define->plugin_namespace . '\\Classes\\Tests',
-			$this->app->define->lib_namespace . '\\Classes\\Tests',
 		];
 	}
 
@@ -115,7 +116,7 @@ class Test implements \Technote\Interfaces\Loader {
 	 * @return array
 	 */
 	private function do_test( $class ) {
-		$suite = new \PHPUnit_Framework_TestSuite( $class->class_name );
+		$suite = new \PHPUnit_Framework_TestSuite( $class->get_class_name() );
 		$suite->setBackupGlobals( false );
 		$result = $suite->run();
 

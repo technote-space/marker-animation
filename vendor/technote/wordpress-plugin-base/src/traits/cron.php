@@ -2,10 +2,11 @@
 /**
  * Technote Traits Cron
  *
- * @version 2.0.0
+ * @version 2.3.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.3.0 Changed: method names
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -33,17 +34,17 @@ trait Cron {
 		add_action( $this->get_hook_name(), function () {
 			$this->run();
 		} );
-		$this->set_event();
+		$this->set_cron_event();
 	}
 
 	/**
-	 * set event
+	 * set cron event
 	 */
-	private function set_event() {
+	private function set_cron_event() {
 		$interval = $this->get_interval();
 		if ( $interval > 0 ) {
 			if ( ! wp_next_scheduled( $this->get_hook_name() ) ) {
-				if ( $this->is_process_running() ) {
+				if ( $this->is_running_cron_process() ) {
 					return;
 				}
 				wp_schedule_single_event( time() + $interval, $this->get_hook_name() );
@@ -54,7 +55,7 @@ trait Cron {
 	/**
 	 * @return bool
 	 */
-	private function is_process_running() {
+	private function is_running_cron_process() {
 		if ( get_site_transient( $this->get_transient_key() ) ) {
 			return true;
 		}
@@ -65,14 +66,14 @@ trait Cron {
 	/**
 	 * lock
 	 */
-	private function lock_process() {
+	private function lock_cron_process() {
 		set_site_transient( $this->get_transient_key(), microtime(), $this->apply_filters( 'cron_process_expire', $this->get_expire(), $this->get_hook_name() ) );
 	}
 
 	/**
 	 * unlock
 	 */
-	private function unlock_process() {
+	private function unlock_cron_process() {
 		delete_site_transient( $this->get_transient_key() );
 	}
 
@@ -122,16 +123,16 @@ trait Cron {
 	 * run
 	 */
 	public final function run() {
-		if ( $this->is_process_running() ) {
+		if ( $this->is_running_cron_process() ) {
 			return;
 		}
 		set_time_limit( 0 );
-		$this->lock_process();
+		$this->lock_cron_process();
 		$this->do_action( 'before_cron_run', $this->get_hook_name() );
 		$this->execute();
 		$this->do_action( 'after_cron_run', $this->get_hook_name() );
-		$this->set_event();
-		$this->unlock_process();
+		$this->set_cron_event();
+		$this->unlock_cron_process();
 	}
 
 	/**
@@ -154,7 +155,6 @@ trait Cron {
 	 */
 	public function uninstall() {
 		$this->clear_event();
-		$this->unlock_process();
+		$this->unlock_cron_process();
 	}
-
 }

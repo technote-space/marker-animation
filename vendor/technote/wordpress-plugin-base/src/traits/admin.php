@@ -30,5 +30,4 @@ trait Admin {
 	public function get_capability() {
 		return $this->app->get_config( 'capability', 'admin_capability', 'manage_options' );
 	}
-
 }

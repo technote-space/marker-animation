@@ -2,11 +2,12 @@
 /**
  * Technote Classes Models Lib User
  *
- * @version 2.0.2
+ * @version 2.3.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.0.2 Added: Uninstall priority
+ * @since 2.3.0 Changed: public properties to readonly properties
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -21,54 +22,39 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 /**
  * Class User
  * @package Technote\Classes\Models\Lib
- * @property int $user_id
- * @property \WP_User $user_data
- * @property int $user_level
- * @property bool $super_admin
- * @property string $user_name
- * @property string $display_name
- * @property string $user_email
- * @property bool $logged_in
- * @property string|false $user_role
- * @property array $user_roles
- * @property array $user_caps
+ * @property-read int $user_id
+ * @property-read \WP_User $user_data
+ * @property-read int $user_level
+ * @property-read bool $super_admin
+ * @property-read string $user_name
+ * @property-read string $display_name
+ * @property-read string $user_email
+ * @property-read bool $logged_in
+ * @property-read string|false $user_role
+ * @property-read array $user_roles
+ * @property-read array $user_caps
  */
 class User implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \Technote\Interfaces\Uninstall {
 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Uninstall;
 
-	/** @var int $user_id */
-	public $user_id;
-
-	/** @var \WP_User $user_data */
-	public $user_data;
-
-	/** @var int $user_level */
-	public $user_level;
-
-	/** @var bool $super_admin */
-	public $super_admin;
-
-	/** @var string $user_name */
-	public $user_name;
-
-	/** @var string $display_name */
-	public $display_name;
-
-	/** @var string $user_email */
-	public $user_email;
-
-	/** @var bool $logged_in */
-	public $logged_in;
-
-	/** @var string|false $user_role */
-	public $user_role;
-
-	/** @var array $user_roles */
-	public $user_roles;
-
-	/** @var array $user_caps */
-	public $user_caps;
+	/**
+	 * @since 2.3.0
+	 * @var array $readonly_properties
+	 */
+	protected $readonly_properties = [
+		'user_id',
+		'user_data',
+		'user_level',
+		'super_admin',
+		'user_name',
+		'display_name',
+		'user_email',
+		'logged_in',
+		'user_role',
+		'user_roles',
+		'user_caps',
+	];
 
 	/**
 	 * initialize

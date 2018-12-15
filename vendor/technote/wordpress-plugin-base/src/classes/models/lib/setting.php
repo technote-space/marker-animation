@@ -220,5 +220,4 @@ class Setting implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Ho
 	public function is_setting( $setting ) {
 		return isset( $this->setting_priority[ $setting ], $this->settings[ $this->setting_priority[ $setting ] ] );
 	}
-
 }

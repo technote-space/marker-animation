@@ -2,11 +2,15 @@
 /**
  * Technote Traits Singleton
  *
- * @version 2.0.2
+ * @version 2.4.2
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.0.2 Added: Uninstall priority
+ * @since 2.3.0 Changed: implements readonly trait
+ * @since 2.3.2 Fixed: ignore abstract class
+ * @since 2.4.2 Added: is_filter_callable, filter_callback methods
+ * @since 2.4.2 Deleted: add_filter method
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -22,25 +26,25 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Trait Singleton
  * @package TechnoteTraits
  * @property \Technote $app
- * @property string $class_name
- * @property \ReflectionClass $reflection
  */
 trait Singleton {
 
-	/** @var array */
+	use Readonly;
+
+	/** @var array|Singleton[] $instances */
 	private static $instances = [];
 
-	/** @var array */
+	/** @var array|string[] $slugs */
 	private static $slugs = [];
 
-	/** @var \Technote */
+	/** @var \Technote $app */
 	protected $app;
 
-	/** @var string */
-	public $class_name;
+	/** @var string $class_name */
+	private $class_name;
 
-	/** @var \ReflectionClass */
-	public $reflection;
+	/** @var \ReflectionClass $reflection */
+	private $reflection;
 
 	/**
 	 * Singleton constructor.
@@ -87,6 +91,7 @@ trait Singleton {
 
 	/**
 	 * @since 2.0.2 Added: Uninstall priority
+	 * @since 2.3.2 Fixed: ignore abstract class
 	 *
 	 * @param \Technote $app
 	 *
@@ -100,12 +105,18 @@ trait Singleton {
 		try {
 			if ( ! isset( self::$instances[ $app->plugin_name ][ $class ] ) ) {
 				$reflection = new \ReflectionClass( $class );
-				$instance   = new static( $app, $reflection );
-				if ( $instance instanceof \Technote\Interfaces\Uninstall && $app->uninstall ) {
-					$app->uninstall->add_uninstall( [ $instance, 'uninstall' ], $instance->get_uninstall_priority() );
+				if ( $reflection->isAbstract() ) {
+					self::$instances[ $app->plugin_name ][ $class ] = null;
+				} else {
+					$instance = new static( $app, $reflection );
+					if ( $instance instanceof \Technote\Interfaces\Uninstall && $app->uninstall ) {
+						$app->uninstall->add_uninstall( [ $instance, 'uninstall' ], $instance->get_uninstall_priority() );
+					}
+					self::$instances[ $app->plugin_name ][ $class ] = $instance;
+					$instance->set_allowed_access( true );
+					$instance->initialize();
+					$instance->set_allowed_access( false );
 				}
-				self::$instances[ $app->plugin_name ][ $class ] = $instance;
-				$instance->initialize();
 			}
 
 			return self::$instances[ $app->plugin_name ][ $class ];
@@ -136,15 +147,22 @@ trait Singleton {
 	}
 
 	/**
-	 * @param string $tag
 	 * @param string $method
-	 * @param string $priority
-	 * @param string $accepted_args
+	 *
+	 * @return bool
 	 */
-	public function add_filter( $tag, $method, $priority, $accepted_args ) {
-		add_filter( $tag, function () use ( $method ) {
-			return $this->$method( ...func_get_args() );
-		}, $priority, $accepted_args );
+	public function is_filter_callable( $method ) {
+		return method_exists( $this, $method ) && is_callable( [ $this, $method ] );
+	}
+
+	/**
+	 * @param string $method
+	 * @param array $args
+	 *
+	 * @return mixed
+	 */
+	public function filter_callback( $method, $args ) {
+		return call_user_func( [ $this, $method ], ...$args );
 	}
 
 	/**
@@ -181,5 +199,19 @@ trait Singleton {
 		$this->app->option->delete( $name );
 
 		return true;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_class_name() {
+		return $this->class_name;
+	}
+
+	/**
+	 * @return \ReflectionClass
+	 */
+	public function get_reflection() {
+		return $this->reflection;
 	}
 }

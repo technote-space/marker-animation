@@ -2,10 +2,12 @@
 /**
  * Technote Classes Models Lib Loader
  *
- * @version 2.0.0
+ * @version 2.3.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.3.0 Changed: public properties to readonly properties
+ * @since 2.3.1 Changed: not load test and uninstall if not required
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -20,30 +22,23 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 /**
  * Class Loader
  * @package Technote\Classes\Models\Lib
- * @property \Technote\Classes\Models\Lib\Loader\Controller\Admin $admin
- * @property \Technote\Classes\Models\Lib\Loader\Controller\Api $api
- * @property \Technote\Classes\Models\Lib\Loader\Test $test
- * @property \Technote\Classes\Models\Lib\Loader\Cron $cron
- * @property \Technote\Classes\Models\Lib\Loader\Uninstall $uninstall
+ * @property-read \Technote\Classes\Models\Lib\Loader\Controller\Admin $admin
+ * @property-read \Technote\Classes\Models\Lib\Loader\Controller\Api $api
+ * @property-read \Technote\Classes\Models\Lib\Loader\Cron $cron
  */
 class Loader implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook {
 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook;
 
-	/** @var \Technote\Classes\Models\Lib\Loader\Controller\Admin $admin */
-	public $admin;
-
-	/** @var \Technote\Classes\Models\Lib\Loader\Controller\Api $api */
-	public $api;
-
-	/** @var \Technote\Classes\Models\Lib\Loader\Test $test */
-	public $test;
-
-	/** @var \Technote\Classes\Models\Lib\Loader\Cron $cron */
-	public $cron;
-
-	/** @var \Technote\Classes\Models\Lib\Loader\Uninstall $uninstall */
-	public $uninstall;
+	/**
+	 * @since 2.3.0
+	 * @var array $readonly_properties
+	 */
+	protected $readonly_properties = [
+		'admin',
+		'api',
+		'cron',
+	];
 
 	/**
 	 * initialize

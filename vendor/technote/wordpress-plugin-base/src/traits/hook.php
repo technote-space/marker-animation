@@ -235,5 +235,4 @@ trait Hook {
 		$args[0] = $this->get_filter_prefix() . $args[0];
 		call_user_func_array( 'do_action', $args );
 	}
-
 }

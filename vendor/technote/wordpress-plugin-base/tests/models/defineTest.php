@@ -58,5 +58,4 @@ class DefineTest extends \Technote\Tests\TestCase {
 		$this->assertNotEmpty( static::$define->plugin_logs_dir );
 		$this->assertNotEmpty( static::$define->plugin_assets_url );
 	}
-
 }

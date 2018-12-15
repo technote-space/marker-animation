@@ -2,10 +2,11 @@
 /**
  * Technote Classes Models Lib Loader Controller Admin
  *
- * @version 2.0.0
+ * @version 2.3.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.3.0 Changed: public property to readonly property
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -20,7 +21,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 /**
  * Class Admin
  * @package Technote\Classes\Models\Lib\Loader\Controller
- * @property \Technote\Classes\Controllers\Admin\Base $page
+ * @property-read \Technote\Classes\Controllers\Admin\Base $page
  */
 class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 
@@ -29,8 +30,13 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	/** @var array $messages */
 	private $messages = [];
 
-	/** @var \Technote\Classes\Controllers\Admin\Base */
-	public $page;
+	/**
+	 * @since 2.3.0
+	 * @var array $readonly_properties
+	 */
+	protected $readonly_properties = [
+		'page',
+	];
 
 	/**
 	 * @return string
@@ -96,7 +102,7 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 			return;
 		}
 
-		$this->page = $this->load_page();
+		$this->set_readonly_property( 'page', $this->load_page() );
 		if ( isset( $this->page ) && $this->app->user_can( $this->apply_filters( 'admin_menu_capability', $this->page->get_capability(), $this->page ) ) ) {
 			$this->page->action();
 			$this->do_action( 'post_load_admin_page', $this->page );

@@ -230,5 +230,4 @@ trait Admin {
 	protected function get_help_sidebar() {
 		return false;
 	}
-
 }

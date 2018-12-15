@@ -2,10 +2,11 @@
 /**
  * Technote Classes Controller Test
  *
- * @version 2.0.0
+ * @version 2.3.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.3.1 Changed: not load test if not required
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -27,7 +28,7 @@ class Test extends Base {
 	 * @return int
 	 */
 	public function get_load_priority() {
-		return $this->app->loader->test->is_valid() ? $this->apply_filters( 'test_page_priority', defined( 'WP_DEBUG' ) && WP_DEBUG ? 900 : - 1 ) : - 1;
+		return $this->app->test->is_valid() ? $this->apply_filters( 'test_page_priority', defined( 'WP_DEBUG' ) && WP_DEBUG ? 900 : - 1 ) : - 1;
 	}
 
 	/**
@@ -52,7 +53,7 @@ class Test extends Base {
 	 */
 	public function get_view_args() {
 		return [
-			'tests' => $this->app->loader->test->get_test_class_names(),
+			'tests' => $this->app->test->get_test_class_names(),
 		];
 	}
 
@@ -61,9 +62,8 @@ class Test extends Base {
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function do_test() {
-		foreach ( $this->app->loader->test->do_tests() as list( $success, $result ) ) {
+		foreach ( $this->app->test->do_tests() as list( $success, $result ) ) {
 			$this->app->add_message( $result, 'test', ! $success, false );
 		}
 	}
-
 }

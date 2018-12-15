@@ -2,11 +2,12 @@
 /**
  * Technote Classes Models Lib Define
  *
- * @version 2.1.0
+ * @version 2.3.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Changed: directory structure
  * @since 2.1.0 Changed: load textdomain from plugin data
+ * @since 2.3.0 Changed: public properties to readonly properties
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -21,146 +22,73 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 /**
  * Class Define
  * @package Technote\Classes\Models\Lib
- * @property string $plugin_name
- * @property string $plugin_file
- * @property string $plugin_namespace
- * @property string $plugin_dir
- * @property string $plugin_dir_name
- * @property string $plugin_base_name
- * @property string $lib_name
- * @property string $lib_namespace
- * @property string $lib_dir
- * @property string $lib_assets_dir
- * @property string $lib_src_dir
- * @property string $lib_configs_dir
- * @property string $lib_views_dir
- * @property string $lib_textdomain
- * @property string $lib_languages_dir
- * @property string $lib_languages_rel_path
- * @property string $lib_vendor_dir
- * @property string $lib_assets_url
- * @property string $plugin_assets_dir
- * @property string $plugin_src_dir
- * @property string $plugin_configs_dir
- * @property string $plugin_views_dir
- * @property string|false $plugin_textdomain
- * @property string|false $plugin_languages_dir
- * @property string|false $plugin_languages_rel_path
- * @property string $plugin_logs_dir
- * @property string $plugin_url
- * @property string $plugin_assets_url
+ * @property-read string $plugin_name
+ * @property-read string $plugin_file
+ * @property-read string $plugin_namespace
+ * @property-read string $plugin_dir
+ * @property-read string $plugin_dir_name
+ * @property-read string $plugin_base_name
+ * @property-read string $lib_name
+ * @property-read string $lib_namespace
+ * @property-read string $lib_dir
+ * @property-read string $lib_assets_dir
+ * @property-read string $lib_src_dir
+ * @property-read string $lib_configs_dir
+ * @property-read string $lib_views_dir
+ * @property-read string $lib_textdomain
+ * @property-read string $lib_languages_dir
+ * @property-read string $lib_languages_rel_path
+ * @property-read string $lib_vendor_dir
+ * @property-read string $lib_assets_url
+ * @property-read string $plugin_assets_dir
+ * @property-read string $plugin_src_dir
+ * @property-read string $plugin_configs_dir
+ * @property-read string $plugin_views_dir
+ * @property-read string|false $plugin_textdomain
+ * @property-read string|false $plugin_languages_dir
+ * @property-read string|false $plugin_languages_rel_path
+ * @property-read string $plugin_logs_dir
+ * @property-read string $plugin_url
+ * @property-read string $plugin_assets_url
  */
 class Define implements \Technote\Interfaces\Singleton {
 
 	use \Technote\Traits\Singleton;
 
-	/** @var string $plugin_name */
-	public $plugin_name;
-
-	/** @var string $plugin_file */
-	public $plugin_file;
-
-	/** @var string $plugin_namespace */
-	public $plugin_namespace;
-
-	/** @var string $plugin_dir */
-	public $plugin_dir;
-
-	/** @var string $plugin_dir_name */
-	public $plugin_dir_name;
-
-	/** @var string $plugin_base_name */
-	public $plugin_base_name;
-
-	/** @var string $lib_name */
-	public $lib_name;
-
-	/** @var string $lib_namespace */
-	public $lib_namespace;
-
-	/** @var string $lib_dir */
-	public $lib_dir;
-
-	/** @var string $lib_assets_dir */
-	public $lib_assets_dir;
-
 	/**
-	 * @since 2.0.0
-	 * @var string $lib_src_dir
+	 * @since 2.3.0
+	 * @var array $readonly_properties
 	 */
-	public $lib_src_dir;
-
-	/** @var string $lib_configs_dir */
-	public $lib_configs_dir;
-
-	/** @var string $lib_views_dir */
-	public $lib_views_dir;
-
-	/**
-	 * @since 2.1.0
-	 * @var string $lib_textdomain
-	 */
-	public $lib_textdomain;
-
-	/**
-	 * @since 2.1.0 Changed: language -> languages
-	 * @var string $lib_languages_dir
-	 */
-	public $lib_languages_dir;
-
-	/**
-	 * @since 2.1.0 Changed: language -> languages
-	 * @var string $lib_languages_rel_path
-	 */
-	public $lib_languages_rel_path;
-
-	/** @var string $lib_vendor_dir */
-	public $lib_vendor_dir;
-
-	/** @var string $lib_assets_url */
-	public $lib_assets_url;
-
-	/** @var string $plugin_assets_dir */
-	public $plugin_assets_dir;
-
-	/**
-	 * @since 2.0.0
-	 * @var string $plugin_src_dir
-	 */
-	public $plugin_src_dir;
-
-	/** @var string $plugin_configs_dir */
-	public $plugin_configs_dir;
-
-	/** @var string $plugin_views_dir */
-	public $plugin_views_dir;
-
-	/** 
-	 * @since 2.1.0
-	 * @var string|false $plugin_textdomain 
-	 */
-	public $plugin_textdomain;
-
-	/** 
-	 * @since 2.1.0 Changed: type string -> string|false
-	 * @var string|false $plugin_languages_dir 
-	 */
-	public $plugin_languages_dir;
-
-	/** 
-	 * @since 2.1.0 Changed: type string -> string|false
-	 * @var string|false $plugin_languages_rel_path 
-	 */
-	public $plugin_languages_rel_path;
-
-	/** @var string $plugin_logs_dir */
-	public $plugin_logs_dir;
-
-	/** @var string $plugin_url */
-	public $plugin_url;
-
-	/** @var string $plugin_assets_url */
-	public $plugin_assets_url;
+	protected $readonly_properties = [
+		'plugin_name',
+		'plugin_file',
+		'plugin_namespace',
+		'plugin_dir',
+		'plugin_dir_name',
+		'plugin_base_name',
+		'lib_name',
+		'lib_namespace',
+		'lib_dir',
+		'lib_assets_dir',
+		'lib_src_dir',
+		'lib_configs_dir',
+		'lib_views_dir',
+		'lib_textdomain',
+		'lib_languages_dir',
+		'lib_languages_rel_path',
+		'lib_vendor_dir',
+		'lib_assets_url',
+		'plugin_assets_dir',
+		'plugin_src_dir',
+		'plugin_configs_dir',
+		'plugin_views_dir',
+		'plugin_textdomain',
+		'plugin_languages_dir',
+		'plugin_languages_rel_path',
+		'plugin_logs_dir',
+		'plugin_url',
+		'plugin_assets_url',
+	];
 
 	/**
 	 * initialize
@@ -215,5 +143,4 @@ class Define implements \Technote\Interfaces\Singleton {
 		$this->plugin_url        = plugins_url( '', $this->plugin_file );
 		$this->plugin_assets_url = $this->plugin_url . '/assets';
 	}
-
 }

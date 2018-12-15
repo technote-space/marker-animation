@@ -2,11 +2,12 @@
 /**
  * Technote Classes Models Lib Uninstall
  *
- * @version 2.0.2
+ * @version 2.3.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.0.2 Added: Uninstall priority
+ * @since 2.3.1 Changed: not load uninstall if not required
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -22,9 +23,9 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Class Uninstall
  * @package Technote\Classes\Models\Lib
  */
-class Uninstall implements \Technote\Interfaces\Singleton {
+class Uninstall implements \Technote\Interfaces\Loader {
 
-	use \Technote\Traits\Singleton;
+	use \Technote\Traits\Loader;
 
 	/** @var array $uninstall */
 	private $uninstall = [];
@@ -38,6 +39,22 @@ class Uninstall implements \Technote\Interfaces\Singleton {
 			"\Technote",
 			"register_uninstall_" . $this->app->define->plugin_base_name,
 		] );
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function get_namespaces() {
+		return [
+			$this->app->define->plugin_namespace,
+		];
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function get_instanceof() {
+		return '\Technote\Interfaces\Uninstall';
 	}
 
 	/**
@@ -85,5 +102,4 @@ class Uninstall implements \Technote\Interfaces\Singleton {
 	public function add_uninstall( $callback, $priority = 10 ) {
 		$this->uninstall[ $priority ][] = $callback;
 	}
-
 }

@@ -94,5 +94,4 @@ class Db extends \Technote\Classes\Models\Lib\Db {
 	public function _table_update( $table ) {
 		return $this->table_update( $table, $this->table_defines[ $table ] );
 	}
-
 }

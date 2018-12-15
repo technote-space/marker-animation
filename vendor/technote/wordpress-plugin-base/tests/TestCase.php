@@ -37,5 +37,4 @@ class TestCase extends \PHPUnit\Framework\TestCase {
 		static::$app->utility     = \Technote\Classes\Models\Lib\Utility::get_instance( static::$app );
 		static::$app->user        = \Technote\Classes\Models\Lib\User::get_instance( static::$app );
 	}
-
 }

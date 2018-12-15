@@ -2,11 +2,12 @@
 /**
  * Technote Classes Models Lib Utility
  *
- * @version 2.1.0
+ * @version 2.3.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Changed: static methods to non static methods
  * @since 2.1.0 Added: starts_with, ends_with methods
+ * @since 2.1.0 Added: array_map method
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -154,6 +155,20 @@ class Utility implements \Technote\Interfaces\Singleton {
 
 			return is_array( $d ) && array_key_exists( $key, $d );
 		} ) : $array );
+	}
+
+	/**
+	 * @param array|object $array
+	 * @param string|callable $callback
+	 *
+	 * @return array
+	 */
+	public function array_map( $array, $callback ) {
+		$array = $this->get_array_value( $array );
+
+		return array_map( function ( $d ) use ( $callback ) {
+			return is_callable( $callback ) ? $callback( $d ) : ( is_string( $callback ) && method_exists( $d, $callback ) ? $d->$callback() : null );
+		}, $array );
 	}
 
 	/**

@@ -108,5 +108,4 @@ class Setting extends Base {
 
 		return false;
 	}
-
 }
