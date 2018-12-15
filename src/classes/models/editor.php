@@ -109,6 +109,35 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @param array $tinymce_settings
+	 *
+	 * @return array
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function tiny_mce_before_init( $tinymce_settings ) {
+		$style_formats = ! empty( $tinymce_settings['style_formats'] ) ? json_decode( $tinymce_settings['style_formats'], true ) : [];
+
+		/** @var Assets $assets */
+		$assets          = Assets::get_instance( $this->app );
+		$marker_settings = [];
+		for ( $i = 1, $n = $assets->get_preset_color_count(); $i <= $n; $i ++ ) {
+			$marker_settings[] = [
+				'title'  => $this->translate( 'preset color' . $i ),
+				'inline' => 'span',
+				'icon'   => 'icon highlight-icon',
+				'cmd'    => 'marker_animation_preset_color' . $i,
+			];
+		}
+		$style_formats[]                   = [
+			'title' => $this->translate( 'Marker Animation' ),
+			'items' => $marker_settings,
+		];
+		$tinymce_settings['style_formats'] = json_encode( $style_formats );
+
+		return $tinymce_settings;
+	}
+
+	/**
 	 * enqueue css for gutenberg
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
@@ -133,8 +162,9 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'title'                 => $this->translate( 'Marker Animation' ),
 			'detail_title'          => $this->translate( 'Marker Animation (detail setting)' ),
 			'class'                 => $assets->get_default_marker_animation_class(),
-			'details'               => $assets->get_setting_details(),
-			'prefix'                => 'ma_',
+			'details'               => $assets->get_setting_details( 'editor' ),
+			'preset_color_count'    => $assets->get_preset_color_count(),
+			'prefix'                => $assets->get_data_prefix(),
 			'is_valid_color_picker' => $this->app->post->is_valid_tinymce_color_picker(),
 		];
 	}

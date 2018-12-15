@@ -17,6 +17,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 <script>
     (function ($) {
+        /** @var {{preset_color_count: number}} marker_animation */
         const $target = $('#<?php $instance->id(); ?>-content-wrap .marker-animation-option');
         const setup_options = function () {
             const options = {};
@@ -47,7 +48,11 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
                     options[option_name] = option_value;
                 }
             });
-            $('.marker-setting-preview span').markerAnimation(options);
+            $('.marker-setting-preview span').not('.preset-color').markerAnimation(options);
+            for (let i = 1; i <= marker_animation.preset_color_count; i++) {
+                options.color = options['color' + i];
+                $('.marker-setting-preview span.preset-color' + i).markerAnimation(options);
+            }
         };
         const reset_options = function () {
             $target.each(function () {

@@ -60,5 +60,8 @@ return [
 		'enqueue_block_editor_assets' => [
 			'enqueue_block_editor_assets' => [],
 		],
+		'tiny_mce_before_init'        => [
+			'tiny_mce_before_init' => [ 11 ],
+		],
 	],
 ];

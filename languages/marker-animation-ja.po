@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: marker-animation\n"
 "POT-Creation-Date: 2018-07-01 17:47+0900\n"
-"PO-Revision-Date: 2018-12-15 03:54+0900\n"
+"PO-Revision-Date: 2018-12-16 00:19+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -51,6 +51,15 @@ msgstr "「.marker-animation」以外のセレクタ"
 
 msgid "color"
 msgstr "マーカーの色"
+
+msgid "preset color1"
+msgstr "プリセットカラー１"
+
+msgid "preset color2"
+msgstr "プリセットカラー２"
+
+msgid "preset color3"
+msgstr "プリセットカラー３"
 
 msgid "thickness"
 msgstr "マーカーの太さ"

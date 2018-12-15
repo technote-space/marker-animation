@@ -59,7 +59,7 @@ class Dashboard extends \Technote\Classes\Controllers\Admin\Base {
 
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
-		$this->localize_script( $this->app->slug_name . '-marker_animation', $assets->get_marker_object_name(), [ 'selector' => '' ] );
+		$this->localize_script( $this->app->slug_name . '-marker_animation', $assets->get_marker_object_name(), [ 'preset_color_count' => $assets->get_preset_color_count() ] );
 	}
 
 	/**
@@ -68,8 +68,9 @@ class Dashboard extends \Technote\Classes\Controllers\Admin\Base {
 	protected function get_view_args() {
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+
 		return [
-			'setting'     => $assets->get_setting_details(),
+			'setting'     => $assets->get_setting_details( 'dashboard' ),
 			'name_prefix' => $assets->get_name_prefix(),
 			'id_prefix'   => $assets->get_id_prefix(),
 		];

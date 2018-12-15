@@ -50,6 +50,13 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @return int
+	 */
+	public function get_preset_color_count() {
+		return 3;
+	}
+
+	/**
 	 * @return string
 	 */
 	private function get_selector() {
@@ -78,6 +85,13 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @return string
+	 */
+	public function get_data_prefix() {
+		return 'ma_';
+	}
+
+	/**
 	 * @since 1.2.7 Added: cache options
 	 * @return array
 	 */
@@ -102,14 +116,12 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	private function load_marker_options() {
 		$options = [
-			'version'  => $this->app->get_library_version(),
-			'selector' => $this->get_selector(),
+			'version'            => $this->app->get_library_version(),
+			'selector'           => $this->get_selector(),
+			'prefix'             => $this->get_data_prefix(),
+			'preset_color_count' => $this->get_preset_color_count(),
 		];
-		foreach ( $this->get_setting_details() as $key => $setting ) {
-			if ( ! empty( $setting['ignore'] ) ) {
-				continue;
-			}
-
+		foreach ( $this->get_setting_details( 'front' ) as $key => $setting ) {
 			$value = $setting['attributes']['data-value'];
 			if ( ! empty( $setting['attributes']['data-option_name'] ) ) {
 				$name = $setting['attributes']['data-option_name'];
@@ -148,7 +160,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		if ( $this->app->utility->starts_with( $key, $this->get_filter_prefix() ) ) {
 			$this->clear_options_cache();
 		}
-		}
+	}
 
 	/**
 	 * clear options cache
@@ -165,10 +177,28 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'is_valid'       => [
 				'form' => 'input/checkbox',
 				'args' => [
-					'ignore' => true,
+					'target' => [ 'dashboard' ],
 				],
 			],
 			'color'          => 'color',
+			'color1'         => [
+				'form' => 'color',
+				'args' => [
+					'ignore_editor' => true,
+				],
+			],
+			'color2'         => [
+				'form' => 'color',
+				'args' => [
+					'ignore_editor' => true,
+				],
+			],
+			'color3'         => [
+				'form' => 'color',
+				'args' => [
+					'ignore_editor' => true,
+				],
+			],
 			'thickness'      => 'input/text',
 			'duration'       => 'input/text',
 			'delay'          => 'input/text',
@@ -200,11 +230,16 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @param string $target
+	 *
 	 * @return array
 	 */
-	public function get_setting_details() {
+	public function get_setting_details( $target ) {
 		$args = [];
 		foreach ( $this->get_setting_keys() as $key => $form ) {
+			if ( is_array( $form ) && ! empty( $form['args']['target'] ) && ! in_array( $target, $form['args']['target'] ) ) {
+				continue;
+			}
 			$args[ $key ] = $this->get_setting( $key, $form );
 		}
 
@@ -230,7 +265,6 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 				'data-value'   => $value,
 				'data-default' => $detail['default'],
 			],
-			'form'       => $form,
 			'detail'     => $detail,
 		];
 		if ( is_array( $form ) ) {

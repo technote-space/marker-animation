@@ -14,6 +14,16 @@
 (function ($) {
     'use strict';
 
+    /** @var {{
+    * title: string,
+    * detail_title: string,
+    * class: string,
+    * prefix: string,
+    * details: {ignore: boolean, ignore_editor: boolean, form: string, label: string, value: string, attributes: object}[],
+    * is_valid_color_picker: boolean,
+    * preset_color_count: number
+    * }} marker_animation_params */
+
     const added_style = {};
 
     /* Register the buttons */
@@ -39,23 +49,23 @@
             Object.keys(marker_animation_params.details).forEach(function (key) {
                 const detail = marker_animation_params.details[key];
                 if (detail.ignore) return;
-                let value;
+                let value, item;
                 if (detail.form === 'input/checkbox') {
                     value = detail.attributes.checked === 'checked';
-                    body.push({
+                    item = {
                         type: 'checkbox',
                         name: key,
                         label: detail.label,
                         checked: value
-                    });
+                    };
                 } else if (marker_animation_params.is_valid_color_picker && detail.form === 'color') {
                     value = detail.value;
-                    body.push({
+                    item = {
                         type: 'colorpicker',
                         name: key,
                         label: detail.label,
                         value: value
-                    });
+                    };
                 } else if (detail.form === 'select') {
                     const values = [];
                     Object.keys(detail.options).forEach(function (k) {
@@ -65,24 +75,26 @@
                         });
                     });
                     value = detail.value;
-                    body.push({
+                    item = {
                         type: 'listbox',
                         name: key,
                         label: detail.label,
                         values: values
-                    });
+                    };
                 } else {
                     value = detail.value;
-                    body.push({
+                    item = {
                         type: 'textbox',
                         name: key,
                         label: detail.label,
                         value: value
-                    });
+                    };
                 }
                 const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
                 attrs['data-' + marker_animation_params.prefix + name] = getDataAttribute(name);
                 defaultStyle.push(getDialogResult(value, key, true));
+                if (detail.ignore_editor) return;
+                body.push(item);
             });
             ed.addButton('marker_animation_detail', {
                 title: marker_animation_params.detail_title,
@@ -124,6 +136,9 @@
                     classes: [marker_animation_params.class],
                     attributes: attrs
                 });
+                for (let i = 1; i <= marker_animation_params.preset_color_count; i++) {
+                    addPresetColorCommand(ed, i);
+                }
             });
         },
         createControl: function () {
@@ -169,6 +184,10 @@
             case 'padding_bottom':
                 style = 'padding-bottom: ' + value;
                 break;
+        }
+        if (!style && key.lastIndexOf('color', 0) === 0) {
+            if (is_default || !value) return;
+            style = 'background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, ' + marker_animation_params.details[key].value + ' 50%)';
         }
         if (style) {
             selector = 'body .' + marker_animation_params.class;
@@ -286,6 +305,26 @@
     const nodeChanged = function (ed, $target) {
         ed.on('NodeChange', function (e) {
             $target.active(e.element.classList.contains(marker_animation_params.class));
+        });
+    };
+
+    /**
+     * add preset color command
+     * @param ed
+     * @param index
+     */
+    const addPresetColorCommand = function (ed, index) {
+        ed.addCommand('marker_animation_preset_color' + index, function () {
+            const key = 'color' + index;
+            const attributes = {};
+            attributes[key] = 1;
+            onClick(ed, function () {
+                const $deferred = $.Deferred();
+                setTimeout(function () {
+                    $deferred.resolve(attributes);
+                }, 1);
+                return $deferred;
+            });
         });
     };
 

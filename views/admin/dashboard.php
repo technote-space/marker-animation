@@ -45,32 +45,32 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
         </div>
         <div class="marker-setting-preview">
             Hello, Dolly<br>
-            <span>Well, hello, Dolly</span><br>
+            <span class="default-color">Well, hello, Dolly</span><br>
             It's so nice to have you back where you belong<br>
             You're lookin' swell, Dolly<br>
             I can tell, Dolly<br>
-            <span>You're still glowin', you're still crowin'</span><br>
+            <span class="preset-color preset-color1">You're still glowin', you're still crowin'</span><br>
             You're still goin' strong<br>
             I feel the room swayin'<br>
             While the band's playin'<br>
             One of our old favorite songs from way back when<br>
-            So, <span>take her wrap</span>, fellas<br>
+            So, <span class="default-color">take her wrap</span>, fellas<br>
             Dolly, never go away again<br>
             Hello, Dolly<br>
             Well, hello, Dolly<br>
             It's so nice to have you back where you belong<br>
-            You're lookin' <span>swell, Dolly<br>
+            You're lookin' <span class="preset-color preset-color2">swell, Dolly<br>
             I can tell, Dolly<br>
             You're still glowin', you're still crowin'</span><br>
             You're still goin' strong<br>
             I feel the room swayin'<br>
             While the band's playin'<br>
             One of our old favorite songs from way back when<br>
-            So, <span>golly, gee, fellas</span><br>
+            So, <span class="default-color">golly, gee, fellas</span><br>
             Have a little faith in me, fellas<br>
             Dolly, never go away<br>
             Promise, you'll never go away<br>
-            Dolly'll <span>never go away again</span>
+            Dolly'll <span class="preset-color preset-color3">never go away again</span>
         </div>
     </div>
 </div>
