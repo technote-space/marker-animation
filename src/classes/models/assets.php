@@ -116,7 +116,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	private function load_marker_options() {
 		$options = [
-			'version'            => $this->app->get_library_version(),
+			'version'            => $this->app->get_plugin_version(),
 			'selector'           => $this->get_selector(),
 			'prefix'             => $this->get_data_prefix(),
 			'preset_color_count' => $this->get_preset_color_count(),
