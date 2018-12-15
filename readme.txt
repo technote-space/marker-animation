@@ -2,9 +2,9 @@
 Contributors: technote0space
 Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アンダーライン
 Requires at least: 3.9.3
-Tested up to: 5.0.0
+Tested up to: 5.0.1
 Requires PHP: 5.6
-Stable tag: 1.2.7
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,7 +30,20 @@ This plugin needs PHP5.6 or higher.
 3. Editor(on animation)
 4. Editor(off animation)
 
+== Upgrade notice ==
+
+* Added: preset color feature
+* Improved: performance
+* Tested: against 5.0.1
+
+
 == Changelog ==
+
+= 1.3.0 (2018/12/16) =
+
+* Added: preset color feature
+* Improved: performance
+* Tested: against 5.0.1
 
 = 1.2.7 (2018/12/15) =
 

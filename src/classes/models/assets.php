@@ -5,6 +5,7 @@
  * @since 1.0.0
  * @since 1.2.0
  * @since 1.2.7 Added: cache options
+ * @since 1.3.0 Added: preset color
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -50,6 +51,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.3.0
 	 * @return int
 	 */
 	public function get_preset_color_count() {
@@ -85,6 +87,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.3.0
 	 * @return string
 	 */
 	public function get_data_prefix() {
@@ -164,12 +167,14 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	/**
 	 * clear options cache
+	 * @since 1.3.0
 	 */
 	private function clear_options_cache() {
 		$this->app->option->delete( $this->get_marker_options_cache_key() );
 	}
 
 	/**
+	 * @since 1.3.0 Added: preset color
 	 * @return array
 	 */
 	public function get_setting_keys() {
@@ -230,6 +235,8 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.3.0 Added: target filter
+	 *
 	 * @param string $target
 	 *
 	 * @return array

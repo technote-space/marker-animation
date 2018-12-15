@@ -1,11 +1,13 @@
 <?php
 /**
- * @version 1.2.7
+ * @version 1.3.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
  * @since 1.2.6 Deleted: block_editor_preload_paths filter
  * @since 1.2.7 Added: filter to clear cache
+ * @since 1.3.0 Added: filter to clear cache
+ * @since 1.3.0 Added: preset color
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -27,9 +29,15 @@ return [
 		'${prefix}changed_option'   => [
 			'changed_option' => [],
 		],
+		/**
+		 * @since 1.3.0
+		 */
 		'${prefix}app_activated'    => [
 			'clear_options_cache' => [],
 		],
+		/**
+		 * @since 1.3.0
+		 */
 		'upgrader_process_complete' => [
 			'clear_options_cache' => [],
 		],
@@ -60,6 +68,9 @@ return [
 		'enqueue_block_editor_assets' => [
 			'enqueue_block_editor_assets' => [],
 		],
+		/**
+		 * @since 1.3.0
+		 */
 		'tiny_mce_before_init'        => [
 			'tiny_mce_before_init' => [ 11 ],
 		],

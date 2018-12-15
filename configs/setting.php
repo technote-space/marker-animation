@@ -1,9 +1,10 @@
 <?php
 /**
- * @version 1.2.7
+ * @version 1.3.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.7 Added: cache validity setting
+ * @since 1.3.0 Added: preset color
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -69,14 +70,23 @@ return [
 					'label'   => 'padding bottom',
 					'default' => '.6em',
 				],
+				/**
+				 * @since 1.3.0
+				 */
 				'color1'                        => [
 					'label'   => 'preset color1',
 					'default' => '#ff99b4',
 				],
+				/**
+				 * @since 1.3.0
+				 */
 				'color2'                        => [
 					'label'   => 'preset color2',
 					'default' => '#99e3ff',
 				],
+				/**
+				 * @since 1.3.0
+				 */
 				'color3'                        => [
 					'label'   => 'preset color3',
 					'default' => '#99ffa8',

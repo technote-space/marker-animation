@@ -1,12 +1,13 @@
 <?php
 /**
- * @version 1.2.6
+ * @version 1.3.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
  * @since 1.2.4
  * @since 1.2.6 Updated: use library method to determine whether gutenberg editor is used
  * @since 1.2.6 Changed: variable name
+ * @since 1.3.0 Added: preset color
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -109,6 +110,8 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.3.0
+	 *
 	 * @param array $tinymce_settings
 	 *
 	 * @return array
