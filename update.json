@@ -10,7 +10,6 @@
     "sections": {
         "description": "This plugin will add \"Marker animation\" function"
     },
-    "upgrade_notice": "* Added: preset color feature\n* Improved: performance\n* Tested: against 5.0.1",
     "banners": {
         "low": "https://raw.githubusercontent.com/technote-space/marker-animation/images/assets/banner-772x250.png"
     },
