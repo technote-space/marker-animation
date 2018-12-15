@@ -18,14 +18,20 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 return [
 
 	'\Marker_Animation\Classes\Models\Assets' => [
-		'template_redirect' => [
+		'template_redirect'         => [
 			'setup_assets' => [],
 		],
 		/**
 		 * @since 1.2.7
 		 */
-		'${prefix}changed_option'  => [
+		'${prefix}changed_option'   => [
 			'changed_option' => [],
+		],
+		'${prefix}app_activated'    => [
+			'clear_options_cache' => [],
+		],
+		'upgrader_process_complete' => [
+			'clear_options_cache' => [],
 		],
 	],
 

@@ -146,8 +146,15 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function changed_option( $key ) {
 		if ( $this->app->utility->starts_with( $key, $this->get_filter_prefix() ) ) {
-			$this->app->option->delete( $this->get_marker_options_cache_key() );
+			$this->clear_options_cache();
 		}
+		}
+
+	/**
+	 * clear options cache
+	 */
+	private function clear_options_cache() {
+		$this->app->option->delete( $this->get_marker_options_cache_key() );
 	}
 
 	/**
