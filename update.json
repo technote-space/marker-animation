@@ -6,7 +6,16 @@
     "tested": "5.0.1",
     "homepage": "https://technote.space/",
     "author": "technote-space",
+    "author_homepage": "https://technote.space/",
     "sections": {
         "description": "This plugin will add \"Marker animation\" function"
+    },
+    "upgrade_notice": "* Added: preset color feature\n* Improved: performance\n* Tested: against 5.0.1",
+    "banners": {
+        "low": "https://raw.githubusercontent.com/technote-space/marker-animation/images/assets/banner-772x250.png"
+    },
+    "icons" : {
+        "1x" : "https://raw.githubusercontent.com/technote-space/marker-animation/images/assets/icon-128x128.png",
+        "2x" : "https://raw.githubusercontent.com/technote-space/marker-animation/images/assets/icon-256x256.png"
     }
 }
