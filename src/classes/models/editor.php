@@ -42,8 +42,6 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			return;
 		}
 
-		/** @var Assets $assets */
-		$assets = Assets::get_instance( $this->app );
 		$this->add_script_view( 'admin/script/editor', [
 			'param_name' => 'marker_animation_params',
 			'params'     => $this->get_editor_params(),
