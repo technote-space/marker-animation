@@ -2,12 +2,13 @@
 /**
  * Technote Classes Models Lib Define
  *
- * @version 2.3.0
+ * @version 2.5.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Changed: directory structure
  * @since 2.1.0 Changed: load textdomain from plugin data
  * @since 2.3.0 Changed: public properties to readonly properties
+ * @since 2.5.0 Changed: views directory
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -112,7 +113,7 @@ class Define implements \Technote\Interfaces\Singleton {
 			$cache['lib_assets_dir']         = $cache['lib_dir'] . DS . 'assets';
 			$cache['lib_src_dir']            = $cache['lib_dir'] . DS . 'src';
 			$cache['lib_configs_dir']        = $cache['lib_dir'] . DS . 'configs';
-			$cache['lib_views_dir']          = $cache['lib_dir'] . DS . 'views';
+			$cache['lib_views_dir']          = $cache['lib_src_dir'] . DS . 'views';
 			$cache['lib_textdomain']         = TECHNOTE_PLUGIN;
 			$cache['lib_languages_dir']      = $cache['lib_dir'] . DS . 'languages';
 			$cache['lib_languages_rel_path'] = ltrim( str_replace( WP_PLUGIN_DIR, '', $cache['lib_languages_dir'] ), DS );
@@ -127,7 +128,7 @@ class Define implements \Technote\Interfaces\Singleton {
 		$this->plugin_assets_dir  = $this->plugin_dir . DS . 'assets';
 		$this->plugin_src_dir     = $this->plugin_dir . DS . 'src';
 		$this->plugin_configs_dir = $this->plugin_dir . DS . 'configs';
-		$this->plugin_views_dir   = $this->plugin_dir . DS . 'views';
+		$this->plugin_views_dir   = $this->plugin_src_dir . DS . 'views';
 		$domain_path              = trim( $this->app->plugin_data['DomainPath'], '/' . DS );
 		if ( empty( $domain_path ) || ! is_dir( $this->plugin_dir . DS . $domain_path ) ) {
 			$this->plugin_textdomain         = false;

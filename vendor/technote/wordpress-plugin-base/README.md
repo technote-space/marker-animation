@@ -67,19 +67,22 @@ example
     - src
     |  |
         - classes
-    |        |
-    |        - controllers
-    |        |      |
-    |        |      - admin
-    |        |      - api 
-    |        |
-    |        - models
-    |        |
-    |        - tests
-    |
-    - views
-    |   |
-    |   - admin
+    |  |     |
+    |  |     - controllers
+    |  |     |      |
+    |  |     |      - admin
+    |  |     |      |
+    |  |     |      - api 
+    |  |     |
+    |  |     - models
+    |  |     |
+    |  |     - tests
+    |  |
+    |  - views 
+    |      |
+    |      - admin
+    |          |
+    |          - help
     |
     - configs
 ```
@@ -300,7 +303,7 @@ class Test extends \Technote\Classes\Controllers\Admin\Base {
 
 POST の時に行う動作は事前にnonce checkが行われます。
 
-- views/admin に PHP ファイル (例：test.php) を追加
+- src/views/admin に PHP ファイル (例：test.php) を追加
 ```
 <?php
 
@@ -332,7 +335,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	- img
 
 - ヘルプの追加
-	- classes/controllers/admin に追加した上記 PHP ファイル に以下を追記
+	- src/classes/controllers/admin に追加した上記 PHP ファイル に以下を追記
 ```
 protected function get_help_contents() {
     return array(
@@ -345,7 +348,7 @@ protected function get_help_contents() {
 ```
 
 -
-	- views/admin/help に PHP ファイル (例：test.php) を追加
+	- src/views/admin/help に PHP ファイル (例：test.php) を追加
 ```
 <?php
 
