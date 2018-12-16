@@ -19,4 +19,14 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 <script>
     const <?php $instance->h( $param_name );?>=<?php $instance->json( $params );?>;
+    (function ($) {
+        $(function () {
+            /** @var {{preset_color_count: number, details: {}}} marker_animation_params */
+            for (let i = 1; i <= marker_animation_params.preset_color_count; i++) {
+                $('<style type="text/css">' +
+                    '.mce-menu-item:nth-of-type(' + i + ') > .highlight-icon + span {background-color:' + marker_animation_params.details['color' + i].value + '}' +
+                    '</style>').appendTo('head');
+            }
+        });
+    })(jQuery);
 </script>

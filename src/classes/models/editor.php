@@ -42,6 +42,8 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			return;
 		}
 
+		/** @var Assets $assets */
+		$assets = Assets::get_instance( $this->app );
 		$this->add_script_view( 'admin/script/editor', [
 			'param_name' => 'marker_animation_params',
 			'params'     => $this->get_editor_params(),
@@ -73,6 +75,9 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		if ( $this->_setup_params || $this->app->post->is_block_editor() ) {
 			$mce_buttons[] = 'marker_animation';
 			$mce_buttons[] = 'marker_animation_detail';
+			if ( ! in_array( 'styleselect', $mce_buttons ) ) {
+				array_splice( $mce_buttons, 1, 0, 'styleselect' );
+			}
 		}
 
 		return $mce_buttons;
@@ -118,24 +123,26 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function tiny_mce_before_init( $tinymce_settings ) {
-		$style_formats = ! empty( $tinymce_settings['style_formats'] ) ? json_decode( $tinymce_settings['style_formats'], true ) : [];
+		if ( $this->_setup_params ) {
+			$style_formats = ! empty( $tinymce_settings['style_formats'] ) ? json_decode( $tinymce_settings['style_formats'], true ) : [];
 
-		/** @var Assets $assets */
-		$assets          = Assets::get_instance( $this->app );
-		$marker_settings = [];
-		for ( $i = 1, $n = $assets->get_preset_color_count(); $i <= $n; $i ++ ) {
-			$marker_settings[] = [
-				'title'  => $this->translate( 'preset color' . $i ),
-				'inline' => 'span',
-				'icon'   => 'icon highlight-icon',
-				'cmd'    => 'marker_animation_preset_color' . $i,
+			/** @var Assets $assets */
+			$assets          = Assets::get_instance( $this->app );
+			$marker_settings = [];
+			for ( $i = 1, $n = $assets->get_preset_color_count(); $i <= $n; $i ++ ) {
+				$marker_settings[] = [
+					'title'  => $this->translate( 'preset color' . $i ),
+					'inline' => 'span',
+					'icon'   => 'icon highlight-icon',
+					'cmd'    => 'marker_animation_preset_color' . $i,
+				];
+			}
+			$style_formats[]                   = [
+				'title' => $this->translate( 'Marker Animation' ),
+				'items' => $marker_settings,
 			];
+			$tinymce_settings['style_formats'] = json_encode( $style_formats );
 		}
-		$style_formats[]                   = [
-			'title' => $this->translate( 'Marker Animation' ),
-			'items' => $marker_settings,
-		];
-		$tinymce_settings['style_formats'] = json_encode( $style_formats );
 
 		return $tinymce_settings;
 	}
