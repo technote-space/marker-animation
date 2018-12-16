@@ -55,23 +55,23 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
             I feel the room swayin'<br>
             While the band's playin'<br>
             One of our old favorite songs from way back when<br>
-            So, <span class="default-color">take her wrap</span>, fellas<br>
-            Dolly, never go away again<br>
+            <span class="default-color">So, take her wrap, fellas<br>
+            Dolly, never go away again</span><br>
             Hello, Dolly<br>
             Well, hello, Dolly<br>
             It's so nice to have you back where you belong<br>
-            You're lookin' <span class="preset-color preset-color2">swell, Dolly<br>
+            <span class="preset-color preset-color2"> You're lookin' swell, Dolly<br>
             I can tell, Dolly<br>
-            You're still glowin', you're still crowin'</span><br>
+            You're still glowin'</span>, you're still crowin'<br>
             You're still goin' strong<br>
             I feel the room swayin'<br>
-            While the band's playin'<br>
-            One of our old favorite songs from way back when<br>
-            So, <span class="default-color">golly, gee, fellas</span><br>
-            Have a little faith in me, fellas<br>
-            Dolly, never go away<br>
+            <span class="default-color">While the band's playin'<br>
+            One of our old favorite songs from way back when</span><br>
+            So, golly, gee, fellas<br>
+            <span class="preset-color preset-color3">Have a little faith in me, fellas<br>
+            Dolly, never go away</span><br>
             Promise, you'll never go away<br>
-            Dolly'll <span class="preset-color preset-color3">never go away again</span>
+            Dolly'll never go away again
         </div>
     </div>
 </div>
