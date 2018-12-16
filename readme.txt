@@ -29,6 +29,7 @@ This plugin needs PHP5.6 or higher.
 2. Settings
 3. Editor(on animation)
 4. Editor(off animation)
+4. Editor(preset color)
 
 == Upgrade notice ==
 
