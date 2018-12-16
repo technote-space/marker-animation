@@ -25,6 +25,8 @@
 
 ![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-4.gif)
 
+![プリセットカラー](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-5.gif)
+
 ## 要件
 - PHP 5.6 以上
 - WordPress 3.9.3 以上
@@ -47,6 +49,10 @@
 
 ### マーカーの色
 マーカーの色を設定します。
+
+### プリセットカラー
+投稿画面から使用可能な色を設定します。  
+設定したプリセットカラーはスタイルボタンから選択できます。
 
 ### マーカーの太さ
 マーカーの太さを設定します。

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.3.0
+ * @version 1.3.1
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
@@ -64,6 +64,8 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.3.1 Added: style button
+	 *
 	 * @param array $mce_buttons
 	 *
 	 * @return array
@@ -114,6 +116,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	/**
 	 * @since 1.3.0
+	 * @since 1.3.1 Fixed: setup only when required parameter has loaded
 	 *
 	 * @param array $tinymce_settings
 	 *

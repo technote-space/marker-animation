@@ -31,14 +31,17 @@ This plugin needs PHP5.6 or higher.
 4. Editor(off animation)
 4. Editor(preset color)
 
-== Upgrade notice ==
+== Upgrade Notice ==
 
-* Added: preset color feature
-* Improved: performance
-* Tested: against 5.0.1
-
+* Added: apply color to preset color button
+* Fixed: behavior of gutenberg editor
 
 == Changelog ==
+
+= 1.3.1 (2018/12/16) =
+
+* Added: apply color to preset color button
+* Fixed: behavior of gutenberg editor
 
 = 1.3.0 (2018/12/16) =
 
@@ -71,7 +74,7 @@ This plugin needs PHP5.6 or higher.
 
 = 1.2.2 (2018/12/11) =
 
-* Updated: refine the behavior of classic editor's tool button
+* Improved: behavior of classic editor's tool button
 
 = 1.2.1 (2018/12/9) =
 
