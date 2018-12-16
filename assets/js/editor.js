@@ -187,7 +187,11 @@
                 break;
         }
         if (!style && key.lastIndexOf('color', 0) === 0) {
-            if (is_default || !value) return;
+            if (!value) return;
+            if (is_default) {
+                is_default = false;
+                value = 1;
+            }
             style = 'background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, ' + marker_animation_params.details[key].value + ' 50%)';
         }
         if (style) {

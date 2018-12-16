@@ -121,7 +121,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function tiny_mce_before_init( $tinymce_settings ) {
-		if ( $this->_setup_params ) {
+		if ( $this->_setup_params || $this->app->post->is_block_editor() ) {
 			$style_formats = ! empty( $tinymce_settings['style_formats'] ) ? json_decode( $tinymce_settings['style_formats'], true ) : [];
 
 			/** @var Assets $assets */
@@ -155,6 +155,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'wp-blocks',
 			'wp-element',
 			'wp-rich-text',
+			'jquery',
 		] );
 		$this->localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
 	}
