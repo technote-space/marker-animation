@@ -2,10 +2,11 @@
 /**
  * Technote Classes Models Lib Loader Controller Api
  *
- * @version 2.0.0
+ * @version 2.6.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.6.0 Improved: control load api
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -56,10 +57,10 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function register_rest_api() {
-		if ( $this->use_admin_ajax() ) {
+		if ( $this->use_admin_ajax() || ! $this->app->utility->doing_ajax() ) {
 			return;
 		}
-		foreach ( $this->get_api_controllers( false ) as $api ) {
+		foreach ( $this->get_api_controllers() as $api ) {
 			/** @var \Technote\Classes\Controllers\Api\Base $api */
 			register_rest_route( $this->get_api_namespace(), $api->get_endpoint(), [
 				'methods'             => strtoupper( $api->get_method() ),
@@ -77,10 +78,10 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function register_ajax_api() {
-		if ( ! $this->use_admin_ajax() ) {
+		if ( ! $this->use_admin_ajax() || ! $this->app->utility->doing_ajax() ) {
 			return;
 		}
-		foreach ( $this->get_api_controllers( false ) as $api ) {
+		foreach ( $this->get_api_controllers() as $api ) {
 			/** @var \Technote\Classes\Controllers\Api\Base $api */
 			$action   = $this->get_api_namespace() . '_' . $api->get_endpoint();
 			$callback = function () use ( $api ) {
@@ -95,10 +96,13 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	 * @param callable $get_view_params
 	 */
 	private function register_script_common( $get_view_params ) {
+		if ( $this->app->utility->doing_ajax() ) {
+			return;
+		}
 		$functions = [];
 		$scripts   = [];
 		/** @var \Technote\Traits\Controller\Api $api */
-		foreach ( $this->get_api_controllers( true ) as $api ) {
+		foreach ( $this->get_api_controllers() as $api ) {
 			$name               = $api->get_call_function_name();
 			$functions[ $name ] = [
 				'method'   => $api->get_method(),
@@ -317,17 +321,15 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	}
 
 	/**
-	 * @param bool $filter
-	 *
 	 * @return array
 	 */
-	private function get_api_controllers( $filter ) {
+	private function get_api_controllers() {
 		if ( $this->is_empty() ) {
 			return [];
 		}
 
 		$api_controllers = $this->get_class_list();
-		if ( $filter ) {
+		if ( ! $this->app->utility->doing_ajax() ) {
 			/** @var \Technote\Traits\Controller\Api $class */
 			foreach ( $api_controllers as $name => $class ) {
 				if ( ! $class->is_valid() || ( is_admin() && $class->is_only_front() ) || ( ! is_admin() && $class->is_only_admin() ) ) {

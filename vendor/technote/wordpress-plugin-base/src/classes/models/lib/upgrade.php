@@ -2,11 +2,14 @@
 /**
  * Technote Classes Models Lib Upgrade
  *
- * @version 2.4.3
+ * @version 2.6.0
  * @author technote-space
  * @since 2.4.0
  * @since 2.4.1 Added: show_plugin_update_notices method
  * @since 2.4.3 Fixed: get plugin upgrade notice from plugin directory
+ * @since 2.6.0 Fixed: search upgrade file namespace
+ * @since 2.6.0 Changed: call setup_update from admin_init filter
+ * @since 2.6.0 Fixed: debug code
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -71,11 +74,37 @@ class Upgrade implements \Technote\Interfaces\Loader {
 	}
 
 	/**
+	 * setup update
+	 * @since 2.1.0 Added: check develop version
+	 * @since 2.1.1 Fixed: check develop version
+	 * @since 2.4.1 Added: plugin upgrade notices feature
+	 * @since 2.6.0 Changed: call setup_update from admin_init filter
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function setup_update() {
+		$update_info_file_url = $this->app->get_config( 'config', 'update_info_file_url' );
+		if ( ! empty( $update_info_file_url ) ) {
+			if ( $this->apply_filters( 'check_update' ) ) {
+				\Puc_v4_Factory::buildUpdateChecker(
+					$update_info_file_url,
+					$this->app->plugin_file,
+					$this->app->plugin_name
+				);
+			}
+		} else {
+			$this->app->setting->remove_setting( 'check_update' );
+		}
+
+		$this->show_plugin_update_notices();
+	}
+
+	/**
+	 * @since 2.6.0 Fixed: search upgrade file namespace
 	 * @return array
 	 */
 	protected function get_namespaces() {
 		return [
-			$this->app->define->plugin_namespace,
+			$this->app->define->plugin_namespace . '\\Classes',
 		];
 	}
 
@@ -121,7 +150,7 @@ class Upgrade implements \Technote\Interfaces\Loader {
 	 * @since 2.4.1
 	 * @since 2.4.3 Fixed: get plugin upgrade notice from plugin directory
 	 */
-	public function show_plugin_update_notices() {
+	private function show_plugin_update_notices() {
 		add_action( 'in_plugin_update_message-' . $this->app->define->plugin_base_name, function ( $data, $r ) {
 			$new_version = $r->new_version;
 			$url         = $this->app->utility->array_get( $data, 'PluginURI' );
@@ -147,6 +176,7 @@ class Upgrade implements \Technote\Interfaces\Loader {
 
 	/**
 	 * @since 2.4.3
+	 * @since 2.6.0 Fixed: debug code
 	 *
 	 * @param string $version
 	 * @param string $url
@@ -160,7 +190,7 @@ class Upgrade implements \Technote\Interfaces\Loader {
 		}
 
 		$transient_name = 'upgrade_notice-' . $slug . '_' . $version;
-		$upgrade_notice = false;//get_transient( $transient_name );
+		$upgrade_notice = get_transient( $transient_name );
 
 		if ( false === $upgrade_notice ) {
 			$response = wp_safe_remote_get( $this->get_plugin_readme( $slug ) );
@@ -199,10 +229,13 @@ class Upgrade implements \Technote\Interfaces\Loader {
 		$notices = [];
 		if ( preg_match( '#==\s*Upgrade Notice\s*==([\s\S]+?)==#', $content, $matches ) ) {
 			foreach ( (array) preg_split( '~[\r\n]+~', trim( $matches[1] ) ) as $line ) {
-				$line      = preg_replace( '~\[([^\]]*)\]\(([^\)]*)\)~', '<a href="${2}">${1}</a>', $line );
-				$line      = preg_replace( '#^\s*\*+\s*#', '', $line );
-				$line      = preg_replace( '#^\s*=\s*([^\s]+)\s*=\s*$#', '[ $1 ]', $line );
-				$notices[] = $line;
+				$line = preg_replace( '~\[([^\]]*)\]\(([^\)]*)\)~', '<a href="${2}">${1}</a>', $line );
+				$line = preg_replace( '#^\s*\*+\s*#', '', $line );
+				$line = preg_replace( '#^\s*=\s*([^\s]+)\s*=\s*$#', '[ $1 ]', $line );
+				$line = trim( $line );
+				if ( '' !== $line ) {
+					$notices[] = $line;
+				}
 			}
 		}
 

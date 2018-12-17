@@ -2,12 +2,13 @@
 /**
  * Technote Classes Models Lib Utility
  *
- * @version 2.3.0
+ * @version 2.6.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Changed: static methods to non static methods
  * @since 2.1.0 Added: starts_with, ends_with methods
  * @since 2.1.0 Added: array_map method
+ * @since 2.6.0 Added: doing_ajax, get_debug_backtrace methods
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -314,5 +315,73 @@ class Utility implements \Technote\Interfaces\Singleton {
 		}
 
 		return substr_compare( $haystack, $needle, - strlen( $needle ) ) === 0;
+	}
+
+	/**
+	 * @since 2.6.0
+	 * @return bool
+	 */
+	public function doing_ajax() {
+		if ( $this->definedv( 'REST_REQUEST' ) ) {
+			return true;
+		}
+
+		if ( function_exists( 'wp_doing_ajax' ) ) {
+			return wp_doing_ajax();
+		}
+
+		return $this->definedv( 'DOING_AJAX' );
+	}
+
+	/**
+	 * @since 2.6.0
+	 *
+	 * @param array $unset
+	 *
+	 * @return array
+	 */
+	public function get_debug_backtrace( $unset = [] ) {
+		$backtrace = debug_backtrace();
+		foreach ( $backtrace as $k => $v ) {
+			// 大量のデータになりがちな object と args を削除や編集
+			unset( $backtrace[ $k ]['object'] );
+			if ( ! empty( $backtrace[ $k ]['args'] ) ) {
+				$backtrace[ $k ]['args'] = $this->parse_backtrace_args( $backtrace[ $k ]['args'] );
+			} else {
+				unset( $backtrace[ $k ]['args'] );
+			}
+			if ( ! empty( $unset ) ) {
+				foreach ( $v as $key => $value ) {
+					if ( in_array( $key, $unset ) ) {
+						unset( $backtrace[ $k ][ $key ] );
+					}
+				}
+			}
+		}
+
+		return $backtrace;
+	}
+
+	/**
+	 * @param array $args
+	 *
+	 * @return array
+	 */
+	private function parse_backtrace_args( $args ) {
+		return $this->app->utility->array_map( $args, function ( $d ) {
+			$type = gettype( $d );
+			if ( 'array' === $type ) {
+				return $this->parse_backtrace_args( $d );
+			} elseif ( 'object' === $type ) {
+				$type = get_class( $d );
+			} elseif ( 'resource' !== $type && 'resource (closed)' !== $type && 'NULL' !== $type && 'unknown type' !== $type ) {
+				if ( 'boolean' === $type ) {
+					$d = var_export( $d, true );
+				}
+				$type .= ': ' . $d;
+			}
+
+			return $type;
+		} );
 	}
 }

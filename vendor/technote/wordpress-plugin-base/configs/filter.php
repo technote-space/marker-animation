@@ -2,10 +2,11 @@
 /**
  * Technote Configs Filter
  *
- * @version 2.4.0
+ * @version 2.6.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.4.0 Added: filter for upgrade
+ * @since 2.6.0 Changed: call setup_update from admin_init filter
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -58,6 +59,12 @@ return [
 		],
 		'upgrader_process_complete' => [
 			'upgrade' => [],
+		],
+		/**
+		 * @since 2.6.0
+		 */
+		'admin_init'                => [
+			'setup_update' => [],
 		],
 	],
 

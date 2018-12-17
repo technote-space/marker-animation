@@ -2,12 +2,13 @@
 /**
  * Technote Classes Models Lib Uninstall
  *
- * @version 2.3.1
+ * @version 2.6.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.0.2 Added: Uninstall priority
  * @since 2.3.1 Changed: not load uninstall if not required
+ * @since 2.6.0 Fixed: search uninstall file namespace
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -46,7 +47,7 @@ class Uninstall implements \Technote\Interfaces\Loader {
 	 */
 	protected function get_namespaces() {
 		return [
-			$this->app->define->plugin_namespace,
+			$this->app->define->plugin_namespace . '\\Classes',
 		];
 	}
 
