@@ -2,10 +2,11 @@
 /**
  * Technote Interfaces Presenter
  *
- * @version 2.0.0
+ * @version 2.7.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.7.0 Added: property doc
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -20,6 +21,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 /**
  * Interface Presenter
  * @package Technote\Interfaces
+ * @property \Technote $app
  */
 interface Presenter {
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: technote\n"
 "POT-Creation-Date: 2018-07-01 17:47+0900\n"
-"PO-Revision-Date: 2018-12-07 04:56+0900\n"
+"PO-Revision-Date: 2018-12-19 02:28+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -180,3 +180,18 @@ msgstr "このヘルプが不要な場合の手順"
 
 msgid "The procedure for editing the sidebar"
 msgstr "サイドバーの変更手順"
+
+msgid "validation error"
+msgstr "バリデーションエラー"
+
+msgid "Save log term (set 0 to prevent save)"
+msgstr "ログの保存期間（0でログを保存しない）"
+
+msgid "Delete log interval"
+msgstr "ログ削除間隔"
+
+msgid "Total: %d"
+msgstr "件数: %d"
+
+msgid "%d to %d"
+msgstr "%d～%d"

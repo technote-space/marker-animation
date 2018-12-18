@@ -2,9 +2,10 @@
 /**
  * Technote Views Admin Logs
  *
- * @version 1.1.70
+ * @version 2.7.0
  * @author technote-space
  * @since 1.0.0
+ * @since 2.7.0 Changed: save log to db
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -14,154 +15,49 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	return;
 }
 /** @var \Technote\Interfaces\Presenter $instance */
-/** @var array $action */
-/** @var array $root */
-/** @var array $search */
-/** @var array $field */
-/** @var array $data */
-/** @var array $segments */
-/** @var array $segments_scandir */
-/** @var array $args */
-/** @var bool $deleted */
+/** @var int $total */
+/** @var int $total_page */
+/** @var int $page */
+/** @var int $offset */
+/** @var int $start */
+/** @var int $end */
+/** @var string $p */
+/** @var array $logs */
 ?>
 
 <div class="log">
-	<?php if ( ! $deleted && isset( $field['name'] ) ): ?>
-        <h3><?php $instance->h( $field['name'] ); ?></h3>
-		<?php $instance->form( 'open', $args ); ?>
-		<?php $instance->form( 'input/hidden', $args, [
-			'name'  => 'path',
-			'value' => $field['path'],
-		] ); ?>
-		<?php $instance->form( 'input/hidden', $args, [
-			'name'  => 'name',
-			'value' => $field['name'],
-		] ); ?>
-		<?php $instance->form( 'input/submit', $args, [
-			'id'    => $instance->id( false ) . '-delete_log',
-			'name'  => 'delete',
-			'value' => 'Delete',
-		] ); ?>
-		<?php $instance->form( 'close', $args ); ?>
-	<?php endif; ?>
+    <div class="summary">
+        <div class="total"><?php $instance->h( 'Total: %d', true, true, true, $total ); ?></div>
+        <div class="now"><?php $instance->h( '%d to %d', true, true, true, $start, $end ); ?></div>
+		<?php $instance->get_view( 'admin/include/pagination', $args, true ); ?>
+    </div>
     <table class="widefat striped">
         <tr>
+            <th><?php $instance->h( 'No.', true ); ?></th>
             <th><?php $instance->h( 'Datetime', true ); ?></th>
             <th><?php $instance->h( 'Message', true ); ?></th>
+            <th><?php $instance->h( 'Context', true ); ?></th>
         </tr>
-		<?php if ( ! $deleted && isset( $field['name'] ) ): ?>
-			<?php if ( false === $data ): ?>
+		<?php if ( $total > 0 ): ?>
+			<?php foreach ( $logs as $i => $log ) : ?>
                 <tr>
-                    <td rowspan="2">
-						<?php $instance->h( 'Invalid log file.', true ); ?>
+                    <td><?php $instance->h( $offset + $i + 1 ); ?></td>
+                    <td><?php $instance->h( $log['created_at'] ); ?></td>
+                    <td><?php $instance->h( $log['message'] ); ?></td>
+                    <td>
+						<?php if ( isset( $log['context'] ) ): ?>
+							<?php $instance->dump( @json_decode( $log['context'], true ) ); ?>
+						<?php endif; ?>
                     </td>
                 </tr>
-			<?php else: ?>
-				<?php if ( empty( $data ) ): ?>
-                    <tr>
-                        <td rowspan="2">
-                        </td>
-                    </tr>
-				<?php else: ?>
-					<?php foreach ( $data as list( $a, $b ) ): ?>
-                        <tr>
-                            <td><?php $instance->h( $a ); ?></td>
-                            <td><?php $instance->h( $b, false, true, false ); ?></td>
-                        </tr>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			<?php endif; ?>
+			<?php endforeach; ?>
 		<?php else: ?>
             <tr>
-                <td rowspan="2">
-					<?php $instance->h( 'Please select log file.', true ); ?>
-                </td>
+                <td colspan="3"><?php $instance->h( 'Item not found.', true ); ?></td>
             </tr>
 		<?php endif; ?>
     </table>
+	<?php if ( $total > 0 ) : ?>
+		<?php $instance->get_view( 'admin/include/pagination', $args, true ); ?>
+	<?php endif; ?>
 </div>
-<div class="directory">
-    <ul>
-        <li>
-			<?php $instance->url( add_query_arg( [
-				'path' => null,
-				'name' => null,
-			], $action ), 'Logs', true ); ?>
-            <ul>
-				<?php foreach ( $root[0] as $dir ): ?>
-					<?php if ( ! empty( $segments ) && $segments[0] === $dir ): ?>
-						<?php $seg = ''; ?>
-						<?php foreach ( $segments as $segment ): ?>
-							<?php
-							! empty( $seg ) and $seg .= '/';
-							$seg .= $segment;
-							?>
-                            <li<?php if ( $seg === $field['path'] ): ?> class="selected"<?php endif; ?>>
-							<?php $instance->url( add_query_arg( [
-								'path' => $seg,
-								'name' => null,
-							], $action ), '+ ' . $segment ); ?>
-                            <ul>
-						<?php endforeach; ?>
-						<?php foreach ( $search[0] as $search_dir ): ?>
-                            <li>
-								<?php $instance->url( add_query_arg( [
-									'path' => $seg . '/' . $search_dir,
-									'name' => null,
-								], $action ), '+ ' . $search_dir ); ?>
-                            </li>
-						<?php endforeach; ?>
-						<?php foreach ( $search[1] as $search_file ): ?>
-                            <li<?php if ( ! $deleted && isset( $field['name'] ) && $search_file === $field['name'] ): ?> class="selected"<?php endif; ?>>
-								<?php $instance->url( add_query_arg( [
-									'path' => $seg,
-									'name' => $search_file,
-								], $action ), $search_file ); ?>
-                            </li>
-						<?php endforeach; ?>
-						<?php foreach ( array_reverse( $segments ) as $segment ): ?>
-                            </ul>
-                            </li>
-							<?php
-							$seg = preg_replace( '#' . preg_quote( $segment ) . '$#', '', $seg );
-							$seg = rtrim( $seg, '/' );
-							?>
-							<?php if ( isset( $segments_scandir[ $seg ] ) ): ?>
-								<?php foreach ( $segments_scandir[ $seg ][0] as $segments_dir ): ?>
-									<?php if ( $segment === $segments_dir ): continue; endif; ?>
-                                    <li>
-										<?php $instance->url( add_query_arg( [
-											'path' => $seg . '/' . $segments_dir,
-											'name' => null,
-										], $action ), '+ ' . $segments_dir ); ?>
-                                    </li>
-								<?php endforeach; ?>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					<?php else: ?>
-                        <li>
-							<?php $instance->url( add_query_arg( [
-								'path' => $dir,
-								'name' => null,
-							], $action ), '+ ' . $dir ); ?>
-                        </li>
-					<?php endif; ?>
-				<?php endforeach; ?>
-				<?php foreach ( $root[1] as $file ): ?>
-                    <li>
-						<?php $instance->url( add_query_arg( [
-							'path' => null,
-							'name' => $file,
-						], $action ), $file ); ?>
-                    </li>
-				<?php endforeach; ?>
-            </ul>
-        </li>
-    </ul>
-	<?php $instance->form( 'input/button', $args, [
-		'class' => 'close_button',
-		'name'  => 'close',
-		'value' => 'Close',
-	] ); ?>
-</div>
-

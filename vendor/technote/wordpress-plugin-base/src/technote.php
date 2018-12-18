@@ -2,7 +2,7 @@
 /**
  * Technote
  *
- * @version 2.6.0
+ * @version 2.7.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Added: Feature to load library of latest version
@@ -20,6 +20,7 @@
  * @since 2.4.0 Added: upgrade feature
  * @since 2.4.1 Added: show plugin upgrade notices feature
  * @since 2.6.0 Changed: move setup_update method to upgrade
+ * @since 2.7.0 Changed: log
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -391,6 +392,10 @@ class Technote {
 		if ( ! empty( $this->plugin_data['PluginURI'] ) && $this->utility->starts_with( $this->plugin_data['PluginURI'], 'https://wordpress.org' ) ) {
 			$this->setting->edit_setting( 'check_update', 'default', false );
 		}
+		if ( ! $this->log->is_valid_log() ) {
+			$this->setting->remove_setting( 'save___log_term' );
+			$this->setting->remove_setting( 'delete___log_interval' );
+		}
 	}
 
 	/**
@@ -460,14 +465,16 @@ class Technote {
 	}
 
 	/**
-	 * @param mixed $message
+	 * @param string $message
+	 * @param mixed $context
 	 */
-	public function log( $message ) {
+	public function log( $message, $context = null ) {
 		if ( $message instanceof \Exception ) {
-			$this->log->log( $message->getMessage() );
-			$this->log->log( $message->getTraceAsString() );
+			$this->log->log( $message->getMessage(), isset( $context ) ? $context : $message->getTraceAsString() );
+		} elseif ( $message instanceof \WP_Error ) {
+			$this->log->log( $message->get_error_message(), isset( $context ) ? $context : $message->get_error_data() );
 		} else {
-			$this->log->log( $message );
+			$this->log->log( $message, $context );
 		}
 	}
 

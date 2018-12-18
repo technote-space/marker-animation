@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Db
  *
- * @version 2.6.0
+ * @version 2.7.2
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Added: Feature to cache result of conversion type format
@@ -12,6 +12,8 @@
  * @since 2.0.0 Changed: default db version
  * @since 2.0.2 Added: Uninstall priority
  * @since 2.6.0 Changed: move doing_ajax method to utility
+ * @since 2.7.0 Changed: log message
+ * @since 2.7.2 Fixed: clear table define cache when library was updated
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -412,7 +414,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 		$index[] = "PRIMARY KEY  ({$define['columns']['id']['name']})";
 		if ( ! empty( $define['index']['key'] ) ) {
 			foreach ( $define['index']['key'] as $name => $columns ) {
-				if ( ! [ $columns ] ) {
+				if ( ! is_array( $columns ) ) {
 					$columns = [ $columns ];
 				}
 				$columns = implode( ', ', $columns );
@@ -421,7 +423,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 		}
 		if ( ! empty( $define['index']['unique'] ) ) {
 			foreach ( $define['index']['unique'] as $name => $columns ) {
-				if ( ! [ $columns ] ) {
+				if ( ! is_array( $columns ) ) {
 					$columns = [ $columns ];
 				}
 				$columns = implode( ', ', $columns );
@@ -443,7 +445,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @return bool
 	 */
 	private function need_to_update() {
-		return version_compare( $this->get_version(), $this->get_db_version() ) > 0;
+		return version_compare( $this->get_version(), $this->get_db_version() ) > 0 || version_compare( $this->app->get_library_version(), $this->app->get_option( 'lib_version', '0.0.0' ) ) > 0;
 	}
 
 	/**
@@ -464,7 +466,10 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @return bool
 	 */
 	private function update_db_version() {
-		return $this->app->option->set( 'db_version', $this->get_version() );
+		$this->app->option->set( 'db_version', $this->get_version() );
+		$this->app->option->set( 'lib_version', $this->app->get_library_version() );
+
+		return true;
 	}
 
 
@@ -1306,7 +1311,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 				return true;
 			} catch ( \Exception $e ) {
 				$this->rollback();
-				$this->app->log( $e->getMessage() );
+				$this->app->log( $e );
 			} finally {
 				$this->transaction_level = $level;
 			}

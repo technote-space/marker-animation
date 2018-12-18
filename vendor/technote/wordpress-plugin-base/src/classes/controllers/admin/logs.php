@@ -2,10 +2,11 @@
 /**
  * Technote Classes Controller Admin Logs
  *
- * @version 2.0.0
+ * @version 2.7.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.7.0 Changed: save log to db
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -27,7 +28,7 @@ class Logs extends Base {
 	 * @return int
 	 */
 	public function get_load_priority() {
-		return $this->apply_filters( 'logs_page_priority', defined( 'WP_DEBUG' ) && WP_DEBUG ? 999 : - 1 );
+		return $this->app->log->is_valid_log() ? $this->apply_filters( 'logs_page_priority', 999 ) : - 1;
 	}
 
 	/**
@@ -38,150 +39,32 @@ class Logs extends Base {
 	}
 
 	/**
-	 * post
-	 */
-	protected function post_action() {
-		$ext    = $this->app->get_config( 'config', 'log_extension' );
-		$root   = $this->app->define->plugin_logs_dir . DS;
-		$path   = $this->app->input->get( 'path', '' );
-		$name   = $this->app->input->get( 'name' );
-		$search = trim( $path );
-		$search = trim( $search, '/' . DS );
-		$search = $root . $search;
-		if ( ! empty( $name ) && pathinfo( $name, PATHINFO_EXTENSION ) === $ext ) {
-			$file = $search . DS . $name;
-			if ( file_exists( $file ) && is_file( $file ) ) {
-				@unlink( $file );
-			}
-			if ( ! file_exists( $file ) ) {
-				$this->app->add_message( 'File deleted.', 'logs' );
-			}
-		}
-	}
-
-	/**
 	 * @return array
 	 */
 	protected function get_view_args() {
-		$ext    = $this->app->get_config( 'config', 'log_extension' );
-		$root   = $this->app->define->plugin_logs_dir . DS;
-		$path   = $this->app->input->get( 'path', '' );
-		$name   = $this->app->input->get( 'name' );
-		$search = trim( $path );
-		$search = trim( $search, '/' . DS );
-		$search = $root . $search;
-
-		$data    = [];
-		$deleted = true;
-		if ( ! empty( $name ) && pathinfo( $name, PATHINFO_EXTENSION ) === $ext ) {
-			$file = $search . DS . $name;
-			if ( file_exists( $file ) && is_file( $file ) ) {
-				$deleted = false;
-				if ( is_readable( $file ) ) {
-					$data = $this->load_log_data( $file );
-				}
-			}
+		$p     = $this->apply_filters( 'log_page_query_name', 'p' );
+		$total = $this->app->db->select_count( '__log' );
+		$limit = $this->apply_filters( 'get___log_limit', 20 );
+		if ( $limit < 1 ) {
+			$limit = 1;
 		}
-		$segments         = explode( '/', $path );
-		$segments_scandir = [];
-		$seg              = '';
-		$count            = count( $segments );
-		$max              = $count - 1;
-		for ( $i = 0; $i < $max; $i ++ ) {
-			$segment = $segments[ $i ];
-			! empty( $seg ) and $seg .= '/';
-			$seg     .= $segment;
-			$exclude = [];
-			if ( $i < $count - 1 ) {
-				$exclude [] = $segments[ $i + 1 ];
-			}
-			$scandir                  = $this->scandir( $root . $seg, $ext, $exclude );
-			$segments_scandir[ $seg ] = $scandir;
-		}
+		$total_page = max( 1, ceil( $total / $limit ) );
+		$page       = max( 1, min( $total_page, $this->app->input->get( $p, 1 ) ) );
+		$offset     = ( $page - 1 ) * $limit;
+		$start      = $total > 0 ? $offset + 1 : 0;
+		$end        = $total > 0 ? min( $offset + $limit, $total ) : 0;
 
 		return [
-			'root'             => $this->scandir( $root, $ext ),
-			'search'           => $this->scandir( $search, $ext ),
-			'field'            => [
-				'path' => '',
-			],
-			'segments'         => explode( '/', $path ),
-			'segments_scandir' => $segments_scandir,
-			'data'             => $data,
-			'deleted'          => $deleted,
+			'logs'       => $this->app->db->select( '__log', [], null, $limit, $offset, [
+				'created_at' => 'DESC',
+			] ),
+			'total'      => $total,
+			'total_page' => $total_page,
+			'page'       => $page,
+			'offset'     => $offset,
+			'p'          => $p,
+			'start'      => $start,
+			'end'        => $end,
 		];
-	}
-
-	/**
-	 * @param string $dir
-	 * @param string $ext
-	 * @param array $exclude
-	 *
-	 * @return array
-	 */
-	private function scandir( $dir, $ext, $exclude = [] ) {
-		$files = [];
-		$dirs  = [];
-		if ( is_dir( $dir ) ) {
-			foreach ( scandir( $dir ) as $file ) {
-				if ( $file === '.' || $file === '..' || in_array( $file, $exclude ) ) {
-					continue;
-				}
-
-				$path = rtrim( $dir, DS ) . DS . $file;
-				if ( is_file( $path ) && pathinfo( $path, PATHINFO_EXTENSION ) === $ext ) {
-					$files[] = $file;
-				}
-				if ( is_dir( $path ) ) {
-					$dirs[] = $file;
-				}
-			}
-		}
-
-		return [ $dirs, $files ];
-	}
-
-	/**
-	 * @param string $path
-	 *
-	 * @return array|false
-	 */
-	private function load_log_data( $path ) {
-		$data = @file_get_contents( $path );
-		if ( empty( $data ) ) {
-			return [];
-		}
-
-		try {
-			$exploded = explode( "\n", $data );
-			$ret      = [];
-			$time     = false;
-			$buffer   = '';
-			foreach ( $exploded as $item ) {
-				if ( preg_match( '#^\[(\d{4}\-\d{2}\-\d{2}\T\d{2}:\d{2}:\d{2}(\s*[+-]\d{2}:\d{2})?)\] (.+)#', $item, $matches ) ) {
-					if ( '' !== $buffer ) {
-						$ret[]  = [ $time, $buffer ];
-						$buffer = '';
-					}
-					$item = $matches[3];
-					$time = $matches[1];
-				}
-
-				if ( '' !== $buffer ) {
-					$buffer .= "<br>";
-				}
-				$buffer .= $item;
-			}
-			if ( false !== $time && '' !== $buffer ) {
-				$ret[] = [ $time, $buffer ];
-			}
-			if ( ! empty( $data ) && empty( $ret ) ) {
-				return false;
-			}
-		} catch ( \Exception $e ) {
-			return false;
-		}
-
-		return $ret;
 	}
 }

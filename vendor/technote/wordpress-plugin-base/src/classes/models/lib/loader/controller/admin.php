@@ -2,11 +2,12 @@
 /**
  * Technote Classes Models Lib Loader Controller Admin
  *
- * @version 2.3.0
+ * @version 2.7.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.3.0 Changed: public property to readonly property
+ * @since 2.7.0 Changed: log message
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -82,11 +83,14 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 
 					return $instance;
 				}
-				$page = isset( $_GET['page'] ) ? $_GET['page'] : 'Page';
-				$this->app->log( sprintf( '%s not found.', $page ) );
+				$this->app->log( sprintf( '%s not found.', $_GET['page'] ), [
+					'$_GET[\'page\']' => $_GET['page'],
+					'$page'           => $page,
+					'$add_namespace'  => $add_namespace,
+				] );
 			}
 		} catch ( \Exception $e ) {
-			$this->app->log( $e->getMessage() );
+			$this->app->log( $e );
 		}
 
 		return null;

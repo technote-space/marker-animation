@@ -1,10 +1,11 @@
 <?php
 /**
- * Technote Views Admin Style Admin Setting
+ * Technote Views Admin Style Setting
  *
- * @version 1.1.13
+ * @version 2.7.0
  * @author technote-space
  * @since 1.0.0
+ * @since 2.7.0 Fixed: comment
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space

@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Upgrade
  *
- * @version 2.6.0
+ * @version 2.7.0
  * @author technote-space
  * @since 2.4.0
  * @since 2.4.1 Added: show_plugin_update_notices method
@@ -10,6 +10,7 @@
  * @since 2.6.0 Fixed: search upgrade file namespace
  * @since 2.6.0 Changed: call setup_update from admin_init filter
  * @since 2.6.0 Fixed: debug code
+ * @since 2.7.0 Added: error handling
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -40,36 +41,40 @@ class Upgrade implements \Technote\Interfaces\Loader {
 		$last_version = $this->get_last_upgrade_version();
 		$this->set_last_upgrade_version();
 
-		$upgrades = [];
-		foreach ( $this->get_class_list() as $class ) {
-			/** @var \Technote\Interfaces\Upgrade $class */
-			foreach ( $class->get_upgrade_methods() as $items ) {
-				if ( ! is_array( $items ) ) {
-					continue;
+		try {
+			$upgrades = [];
+			foreach ( $this->get_class_list() as $class ) {
+				/** @var \Technote\Interfaces\Upgrade $class */
+				foreach ( $class->get_upgrade_methods() as $items ) {
+					if ( ! is_array( $items ) ) {
+						continue;
+					}
+					$version  = $this->app->utility->array_get( $items, 'version' );
+					$callback = $this->app->utility->array_get( $items, 'callback' );
+					if ( ! isset( $version ) || empty( $callback ) || ! is_string( $version ) ) {
+						continue;
+					}
+					if ( $last_version && version_compare( $version, $last_version, '>=' ) ) {
+						continue;
+					}
+					if ( ! is_callable( $callback ) && ( ! is_string( $callback ) || ! method_exists( $class, $callback ) || ! is_callable( [ $class, $callback ] ) ) ) {
+						continue;
+					}
+					$upgrades[ $version ][] = is_callable( $callback ) ? $callback : [ $class, $callback ];
 				}
-				$version  = $this->app->utility->array_get( $items, 'version' );
-				$callback = $this->app->utility->array_get( $items, 'callback' );
-				if ( ! isset( $version ) || empty( $callback ) || ! is_string( $version ) ) {
-					continue;
-				}
-				if ( $last_version && version_compare( $version, $last_version, '>=' ) ) {
-					continue;
-				}
-				if ( ! is_callable( $callback ) && ( ! is_string( $callback ) || ! method_exists( $class, $callback ) || ! is_callable( [ $class, $callback ] ) ) ) {
-					continue;
-				}
-				$upgrades[ $version ][] = is_callable( $callback ) ? $callback : [ $class, $callback ];
 			}
-		}
-		if ( empty( $upgrades ) ) {
-			return;
-		}
+			if ( empty( $upgrades ) ) {
+				return;
+			}
 
-		uksort( $upgrades, 'version_compare' );
-		foreach ( $upgrades as $version => $items ) {
-			foreach ( $items as $item ) {
-				call_user_func( $item );
+			uksort( $upgrades, 'version_compare' );
+			foreach ( $upgrades as $version => $items ) {
+				foreach ( $items as $item ) {
+					call_user_func( $item );
+				}
 			}
+		} catch ( \Exception $e ) {
+			$this->app->log( $e );
 		}
 	}
 
