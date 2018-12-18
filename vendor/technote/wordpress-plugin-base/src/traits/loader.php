@@ -2,11 +2,13 @@
 /**
  * Technote Traits Loader
  *
- * @version 2.3.0
+ * @version 2.6.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.3.0 Changed: property access to getter access
+ * @since 2.6.1 Improved: refactoring
+ * @since 2.6.1 Updated: count without load class feature
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -27,11 +29,14 @@ trait Loader {
 
 	use Singleton, Hook, Presenter;
 
-	/** @var array */
+	/** @var array $list */
 	private $list = null;
 
-	/** @var array */
+	/** @var array $cache */
 	private $cache = [];
+
+	/** @var int $_count */
+	private $_count = null;
 
 	/**
 	 * @return string
@@ -108,33 +113,35 @@ trait Loader {
 	}
 
 	/**
+	 * @since 2.6.1 Updated: count without load class feature
+	 *
+	 * @param bool $exact
+	 *
 	 * @return int
 	 */
-	public function get_loaded_count() {
+	public function get_loaded_count( $exact = true ) {
+		if ( ! $exact && ! isset( $this->list ) ) {
+			if ( ! isset( $this->_count ) ) {
+				$this->_count = 0;
+				foreach ( $this->get_namespaces() as $namespace ) {
+					$this->_count += count( $this->app->utility->scan_dir_namespace_class( $this->namespace_to_dir( $namespace ) ) );
+				}
+			}
+
+			return $this->_count;
+		}
+
 		return count( $this->get_class_list() );
 	}
 
 	/**
 	 * @param string $dir
-	 * @param string $add_namespace
 	 *
 	 * @return \Generator
 	 */
-	protected function get_class_settings( $dir, $add_namespace = '' ) {
-		$dir = rtrim( $dir, DS );
-		if ( is_dir( $dir ) ) {
-			foreach ( scandir( $dir ) as $file ) {
-				if ( $file == '.' || $file == '..' ) {
-					continue;
-				}
-				if ( is_file( $dir . DS . $file ) && preg_match( "/^[^\\.].*\\.php$/", $file ) ) {
-					yield $this->get_class_setting( $this->app->get_page_slug( $file ), $add_namespace );
-				} elseif ( is_dir( $dir . DS . $file ) ) {
-					foreach ( $this->get_class_settings( $dir . DS . $file, $add_namespace . ucfirst( $file ) . '\\' ) as $class_setting ) {
-						yield $class_setting;
-					}
-				}
-			}
+	protected function get_class_settings( $dir ) {
+		foreach ( $this->app->utility->scan_dir_namespace_class( $dir, true ) as list( $namespace, $class ) ) {
+			yield $this->get_class_setting( $class, $namespace );
 		}
 	}
 
@@ -159,37 +166,23 @@ trait Loader {
 	}
 
 	/**
-	 * @since 2.3.0 Changed: method name
-	 *
-	 * @param string $page
-	 *
-	 * @return string
-	 */
-	private function get_page_class_name( $page ) {
-		return $this->apply_filters( 'get_page_class_name', ucfirst( str_replace( DS, '\\', $page ) ), $page );
-	}
-
-	/**
-	 * @param string $page
+	 * @param string $class_name
 	 * @param string $add_namespace
 	 *
 	 * @return false|array
 	 */
-	protected function get_class_setting( $page, $add_namespace = '' ) {
-		if ( 'base' === $page ) {
-			return false;
-		}
-		if ( isset( $this->cache[ $add_namespace . $page ] ) ) {
-			return $this->cache[ $add_namespace . $page ];
+	protected function get_class_setting( $class_name, $add_namespace = '' ) {
+		if ( isset( $this->cache[ $add_namespace . $class_name ] ) ) {
+			return $this->cache[ $add_namespace . $class_name ];
 		}
 		$namespaces = $this->get_namespaces();
 		if ( ! empty( $namespaces ) ) {
 			foreach ( $namespaces as $namespace ) {
-				$class = rtrim( $namespace, '\\' ) . '\\' . $add_namespace . $this->get_page_class_name( $page );
+				$class = rtrim( $namespace, '\\' ) . '\\' . $add_namespace . $class_name;
 				if ( class_exists( $class ) ) {
-					$this->cache[ $add_namespace . $page ] = [ $class, $add_namespace ];
+					$this->cache[ $add_namespace . $class_name ] = [ $class, $add_namespace ];
 
-					return $this->cache[ $add_namespace . $page ];
+					return $this->cache[ $add_namespace . $class_name ];
 				}
 			}
 		}

@@ -2,11 +2,12 @@
 /**
  * Technote Classes Models Lib Loader Controller Api
  *
- * @version 2.6.0
+ * @version 2.6.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.6.0 Improved: control load api
+ * @since 2.6.1 Changed: stop auto load
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -26,6 +27,12 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 
 	use \Technote\Traits\Loader, \Technote\Traits\Nonce;
 
+	/** @var bool $_use_all_api */
+	private $_use_all_api = false;
+
+	/** @var array $_use_apis */
+	private $_use_apis = [];
+
 	/**
 	 * @return bool
 	 */
@@ -41,10 +48,34 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	}
 
 	/**
+	 * @since 2.6.1
+	 *
+	 * @param bool $flag
+	 */
+	public function set_use_all_api_flag( $flag ) {
+		$this->_use_all_api = $flag;
+	}
+
+	/**
+	 * @since 2.6.1
+	 *
+	 * @param string $name
+	 */
+	public function add_use_api_name( $name ) {
+		$this->_use_apis[ $name ] = true;
+	}
+
+	/**
 	 * register script
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function register_script() {
+		if ( $this->app->utility->doing_ajax() ) {
+			return;
+		}
+		if ( ! $this->_use_all_api && empty( $this->_use_apis ) ) {
+			return;
+		}
 		if ( $this->use_admin_ajax() ) {
 			$this->register_ajax_script();
 		} else {
@@ -96,14 +127,17 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	 * @param callable $get_view_params
 	 */
 	private function register_script_common( $get_view_params ) {
-		if ( $this->app->utility->doing_ajax() ) {
-			return;
-		}
 		$functions = [];
 		$scripts   = [];
+		if ( ! empty( $this->_use_apis ) ) {
+			$this->_use_apis['get_nonce'] = true;
+		}
 		/** @var \Technote\Traits\Controller\Api $api */
 		foreach ( $this->get_api_controllers() as $api ) {
-			$name               = $api->get_call_function_name();
+			$name = $api->get_call_function_name();
+			if ( ! $this->_use_all_api && empty( $this->_use_apis[ $name ] ) ) {
+				continue;
+			}
 			$functions[ $name ] = [
 				'method'   => $api->get_method(),
 				'endpoint' => $api->get_endpoint(),
@@ -382,6 +416,7 @@ class Api implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	 * @return bool
 	 */
 	public function is_empty() {
-		return $this->get_loaded_count() <= 1;
+		// 1 は nonce 更新用のライブラリ提供のAPI
+		return $this->get_loaded_count( false ) <= 1;
 	}
 }

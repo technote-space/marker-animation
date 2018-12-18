@@ -2,12 +2,13 @@
 /**
  * Technote Classes Models Lib Loader
  *
- * @version 2.3.1
+ * @version 2.6.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.3.0 Changed: public properties to readonly properties
  * @since 2.3.1 Changed: not load test and uninstall if not required
+ * @since 2.6.1 Improved: refactoring
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -44,9 +45,9 @@ class Loader implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 * initialize
 	 */
 	protected function initialize() {
-		$scan_dir = $this->app->define->lib_src_dir . DS . 'classes' . DS . 'models' . DS . 'lib' . DS . 'loader';
-		foreach ( $this->get_relative_namespaces( $scan_dir ) as $namespace ) {
-			$class = $this->get_class( $namespace );
+		$scan_dir  = $this->app->define->lib_src_dir . DS . 'classes' . DS . 'models' . DS . 'lib' . DS . 'loader';
+		$namespace = $this->app->define->lib_namespace . '\\Classes\\Models\\Lib\\Loader\\';
+		foreach ( $this->app->utility->scan_dir_namespace_class( $scan_dir, false, $namespace ) as $class ) {
 			if ( class_exists( $class ) && is_subclass_of( $class, '\Technote\Interfaces\Singleton' ) ) {
 				try {
 					/** @var \Technote\Traits\Singleton $class */
@@ -60,41 +61,5 @@ class Loader implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 				}
 			}
 		}
-	}
-
-	/**
-	 * @param string $dir
-	 * @param string $relative
-	 *
-	 * @return array
-	 */
-	private function get_relative_namespaces( $dir, $relative = '' ) {
-		$list = [];
-		if ( is_dir( $dir ) ) {
-			foreach ( scandir( $dir ) as $file ) {
-				if ( $file === '.' || $file === '..' ) {
-					continue;
-				}
-
-				$path = rtrim( $dir, DS ) . DS . $file;
-				if ( is_file( $path ) ) {
-					$list[] = $relative . ucfirst( $this->app->get_page_slug( $file ) );
-				}
-				if ( is_dir( $path ) ) {
-					$list = array_merge( $list, $this->get_relative_namespaces( $path, $relative . ucfirst( $file ) . '\\' ) );
-				}
-			}
-		}
-
-		return $list;
-	}
-
-	/**
-	 * @param string $namespace
-	 *
-	 * @return string
-	 */
-	private function get_class( $namespace ) {
-		return $this->app->define->lib_namespace . '\\Classes\\Models\\Lib\\Loader\\' . $namespace;
 	}
 }
