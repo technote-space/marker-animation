@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 3.9.3
 Tested up to: 5.0.1
 Requires PHP: 5.6
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,6 +23,8 @@ This plugin needs PHP5.6 or higher.
 1. Upload the `marker-animation` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
+== Frequently asked questions ==
+
 == Screenshots ==
 
 1. Marker animation
@@ -33,7 +35,14 @@ This plugin needs PHP5.6 or higher.
 
 == Upgrade Notice ==
 
+* Improved: performance
+
 == Changelog ==
+
+= 1.3.5 (2018/12/19) =
+
+* Updated: plugin library
+* Improved: performance
 
 = 1.3.4 (2018/12/17) =
 
