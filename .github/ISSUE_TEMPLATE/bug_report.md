@@ -1,3 +1,12 @@
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 # バグの概要
 <!-- バグの内容を簡潔かつ明確に書いてください -->
 
@@ -13,6 +22,8 @@
 # バグが発生した環境
  - WordPressのバージョン
  - プラグインのバージョン
+ - OS
+ - ブラウザ
 
 # 補足
 <!-- このバグに関連する情報を追加してください -->
