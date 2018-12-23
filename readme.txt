@@ -36,6 +36,7 @@ This plugin needs PHP5.6 or higher.
 == Upgrade Notice ==
 
 * Fixed: suppress error when activate plugin
+* Fixed: suppress error when uninstall plugin
 * Tested: against 5.0.2
 
 == Changelog ==
@@ -43,6 +44,7 @@ This plugin needs PHP5.6 or higher.
 = 1.3.6 (2018/12/23) =
 
 * Fixed: suppress error when activate plugin
+* Fixed: suppress error when uninstall plugin
 * Tested: against 5.0.2
 
 = 1.3.5 (2018/12/19) =
