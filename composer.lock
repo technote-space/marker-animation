@@ -169,16 +169,16 @@
         },
         {
             "name": "technote/wordpress-plugin-base",
-            "version": "v2.7.2",
+            "version": "v2.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/technote-space/wordpress-plugin-base.git",
-                "reference": "a90e027f5446a1cb45e668adac1f0421bd612274"
+                "reference": "40a9c9935320dc86166ab66ed2c1b90e28ea1da1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/technote-space/wordpress-plugin-base/zipball/a90e027f5446a1cb45e668adac1f0421bd612274",
-                "reference": "a90e027f5446a1cb45e668adac1f0421bd612274",
+                "url": "https://api.github.com/repos/technote-space/wordpress-plugin-base/zipball/40a9c9935320dc86166ab66ed2c1b90e28ea1da1",
+                "reference": "40a9c9935320dc86166ab66ed2c1b90e28ea1da1",
                 "shasum": ""
             },
             "require": {
@@ -214,7 +214,7 @@
                 "plugin",
                 "wordpress"
             ],
-            "time": "2018-12-18T19:17:09+00:00"
+            "time": "2018-12-23T05:38:22+00:00"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",

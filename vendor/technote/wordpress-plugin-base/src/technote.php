@@ -2,7 +2,7 @@
 /**
  * Technote
  *
- * @version 2.7.0
+ * @version 2.7.3
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Added: Feature to load library of latest version
@@ -21,6 +21,7 @@
  * @since 2.4.1 Added: show plugin upgrade notices feature
  * @since 2.6.0 Changed: move setup_update method to upgrade
  * @since 2.7.0 Changed: log
+ * @since 2.7.3 Fixed: suppress error when activate plugin
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -232,6 +233,7 @@ class Technote {
 
 	/**
 	 * @since 2.0.0
+	 * @since 2.7.3 Fixed: suppress error when activate plugin
 	 * setup actions
 	 */
 	private function setup_actions() {
@@ -244,15 +246,13 @@ class Technote {
 		}, 1 );
 
 		add_action( 'activated_plugin', function ( $plugin ) {
+			if ( did_action( 'plugins_loaded' ) ) {
+				$this->plugins_loaded();
+			}
+			if ( did_action( 'init' ) ) {
+				$this->initialize();
+			}
 			if ( $this->define->plugin_base_name === $plugin ) {
-				if ( ! $this->initialized ) {
-					if ( did_action( 'plugins_loaded' ) ) {
-						$this->plugins_loaded();
-					}
-					if ( did_action( 'init' ) ) {
-						$this->initialize();
-					}
-				}
 				$this->filter->do_action( 'app_activated', $this );
 			}
 		} );

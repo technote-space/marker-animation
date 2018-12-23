@@ -2,7 +2,7 @@
 /**
  * Technote Configs Config
  *
- * @version 2.7.2
+ * @version 2.7.3
  * @author technote-space
  * @since 1.0.0
  * @since 2.1.0 Deleted: text_domain
@@ -18,7 +18,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 return [
 	// library version
-	'library_version'           => '2.7.2',
+	'library_version'           => '2.7.3',
 
 	// plugin title
 	'plugin_title'              => '',
