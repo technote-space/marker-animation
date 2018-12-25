@@ -2,7 +2,7 @@
 /**
  * Technote
  *
- * @version 2.7.4
+ * @version 2.9.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Added: Feature to load library of latest version
@@ -23,6 +23,11 @@
  * @since 2.7.0 Changed: log
  * @since 2.7.3 Fixed: suppress error when activate plugin
  * @since 2.7.4 Fixed: suppress error when uninstall plugin
+ * @since 2.8.0 Added: social login, custom post
+ * @since 2.8.1 Added: setup social login, custom post filters
+ * @since 2.8.5 Added: capture fatal error
+ * @since 2.9.0 Added: mail
+ * @since 2.9.0 Improved: log
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -58,6 +63,9 @@ define( 'TECHNOTE_IS_MOCK', false );
  * @property \Technote\Classes\Models\Lib\Utility $utility
  * @property \Technote\Classes\Models\Lib\Test $test
  * @property \Technote\Classes\Models\Lib\Upgrade $upgrade
+ * @property \Technote\Classes\Models\Lib\Social $social
+ * @property \Technote\Classes\Models\Lib\Custom_Post $custom_post
+ * @property \Technote\Classes\Models\Lib\Mail $mail
  */
 class Technote {
 
@@ -115,26 +123,33 @@ class Technote {
 	/** @var array $plugin_data */
 	public $plugin_data;
 
-	/** @var array $properties */
+	/**
+	 * @since 2.8.0 Added: social, custom_post
+	 * @since 2.9.0 Added: mail
+	 * @var array $properties
+	 */
 	private $properties = [
-		'define'    => '\Technote\Classes\Models\Lib\Define',
-		'config'    => '\Technote\Classes\Models\Lib\Config',
-		'setting'   => '\Technote\Classes\Models\Lib\Setting',
-		'option'    => '\Technote\Classes\Models\Lib\Option',
-		'device'    => '\Technote\Classes\Models\Lib\Device',
-		'minify'    => '\Technote\Classes\Models\Lib\Minify',
-		'filter'    => '\Technote\Classes\Models\Lib\Filter',
-		'user'      => '\Technote\Classes\Models\Lib\User',
-		'post'      => '\Technote\Classes\Models\Lib\Post',
-		'loader'    => '\Technote\Classes\Models\Lib\Loader',
-		'log'       => '\Technote\Classes\Models\Lib\Log',
-		'input'     => '\Technote\Classes\Models\Lib\Input',
-		'db'        => '\Technote\Classes\Models\Lib\Db',
-		'uninstall' => '\Technote\Classes\Models\Lib\Uninstall',
-		'session'   => '\Technote\Classes\Models\Lib\Session',
-		'utility'   => '\Technote\Classes\Models\Lib\Utility',
-		'test'      => '\Technote\Classes\Models\Lib\Test',
-		'upgrade'   => '\Technote\Classes\Models\Lib\Upgrade',
+		'define'      => '\Technote\Classes\Models\Lib\Define',
+		'config'      => '\Technote\Classes\Models\Lib\Config',
+		'setting'     => '\Technote\Classes\Models\Lib\Setting',
+		'option'      => '\Technote\Classes\Models\Lib\Option',
+		'device'      => '\Technote\Classes\Models\Lib\Device',
+		'minify'      => '\Technote\Classes\Models\Lib\Minify',
+		'filter'      => '\Technote\Classes\Models\Lib\Filter',
+		'user'        => '\Technote\Classes\Models\Lib\User',
+		'post'        => '\Technote\Classes\Models\Lib\Post',
+		'loader'      => '\Technote\Classes\Models\Lib\Loader',
+		'log'         => '\Technote\Classes\Models\Lib\Log',
+		'input'       => '\Technote\Classes\Models\Lib\Input',
+		'db'          => '\Technote\Classes\Models\Lib\Db',
+		'uninstall'   => '\Technote\Classes\Models\Lib\Uninstall',
+		'session'     => '\Technote\Classes\Models\Lib\Session',
+		'utility'     => '\Technote\Classes\Models\Lib\Utility',
+		'test'        => '\Technote\Classes\Models\Lib\Test',
+		'upgrade'     => '\Technote\Classes\Models\Lib\Upgrade',
+		'social'      => '\Technote\Classes\Models\Lib\Social',
+		'custom_post' => '\Technote\Classes\Models\Lib\Custom_Post',
+		'mail'        => '\Technote\Classes\Models\Lib\Mail',
 	];
 
 	/** @var array $property_instances */
@@ -247,12 +262,8 @@ class Technote {
 		}, 1 );
 
 		add_action( 'activated_plugin', function ( $plugin ) {
-			if ( did_action( 'plugins_loaded' ) ) {
-				$this->plugins_loaded();
-			}
-			if ( did_action( 'init' ) ) {
-				$this->initialize();
-			}
+			$this->plugins_loaded();
+			$this->initialize();
 			if ( $this->define->plugin_base_name === $plugin ) {
 				$this->filter->do_action( 'app_activated', $this );
 			}
@@ -280,6 +291,12 @@ class Technote {
 		$this->plugin_data = get_plugin_data( $this->plugin_file, false, false );
 
 		spl_autoload_register( [ $this, 'load_class' ] );
+
+		if ( $this->get_config( 'config', 'capture_shutdown_error' ) ) {
+			add_action( 'shutdown', function () {
+				$this->shutdown();
+			}, 0 );
+		}
 		$this->load_functions();
 	}
 
@@ -342,6 +359,8 @@ class Technote {
 	}
 
 	/**
+	 * @since 2.8.1 Added: setup social login, custom post filters
+	 *
 	 * @param bool $uninstall
 	 */
 	private function setup_property( $uninstall ) {
@@ -350,6 +369,13 @@ class Technote {
 				$this->$name;
 			}
 			$this->uninstall->get_class_list();
+		} else {
+			if ( $this->get_config( 'config', 'use_custom_post' ) ) {
+				$this->custom_post;
+			}
+			if ( $this->get_config( 'config', 'use_social_login' ) ) {
+				$this->social;
+			}
 		}
 	}
 
@@ -393,9 +419,25 @@ class Technote {
 		if ( ! empty( $this->plugin_data['PluginURI'] ) && $this->utility->starts_with( $this->plugin_data['PluginURI'], 'https://wordpress.org' ) ) {
 			$this->setting->edit_setting( 'check_update', 'default', false );
 		}
-		if ( ! $this->log->is_valid_log() ) {
+		if ( ! $this->log->is_valid() ) {
 			$this->setting->remove_setting( 'save___log_term' );
 			$this->setting->remove_setting( 'delete___log_interval' );
+		}
+	}
+
+	/**
+	 * shutdown
+	 * @since 2.8.5
+	 * @since 2.9.0 Changed: capture error target
+	 */
+	private function shutdown() {
+		$error = error_get_last();
+		if ( $error === null ) {
+			return;
+		}
+
+		if ( $error['type'] & $this->get_config( 'config', 'target_shutdown_error' ) ) {
+			$this->log( $error['message'], $error, 'error' );
 		}
 	}
 
@@ -468,14 +510,15 @@ class Technote {
 	/**
 	 * @param string $message
 	 * @param mixed $context
+	 * @param string $level
 	 */
-	public function log( $message, $context = null ) {
+	public function log( $message, $context = null, $level = '' ) {
 		if ( $message instanceof \Exception ) {
-			$this->log->log( $message->getMessage(), isset( $context ) ? $context : $message->getTraceAsString() );
+			$this->log->log( $message->getMessage(), isset( $context ) ? $context : $message->getTraceAsString(), empty( $level ) ? 'error' : $level );
 		} elseif ( $message instanceof \WP_Error ) {
-			$this->log->log( $message->get_error_message(), isset( $context ) ? $context : $message->get_error_data() );
+			$this->log->log( $message->get_error_message(), isset( $context ) ? $context : $message->get_error_data(), empty( $level ) ? 'error' : $level );
 		} else {
-			$this->log->log( $message, $context );
+			$this->log->log( $message, $context, $level );
 		}
 	}
 
@@ -505,13 +548,13 @@ class Technote {
 		$dir   = null;
 		if ( empty( $this->define ) ) {
 			$namespace = ucfirst( TECHNOTE_PLUGIN );
-			$class     = preg_replace( "#^{$namespace}#", '', $class );
+			$class     = preg_replace( "#\A{$namespace}#", '', $class );
 			$dir       = self::$latest_library_directory . DS . 'src';
-		} elseif ( preg_match( "#^{$this->define->plugin_namespace}#", $class ) ) {
-			$class = preg_replace( "#^{$this->define->plugin_namespace}#", '', $class );
+		} elseif ( preg_match( "#\A{$this->define->plugin_namespace}#", $class ) ) {
+			$class = preg_replace( "#\A{$this->define->plugin_namespace}#", '', $class );
 			$dir   = $this->define->plugin_src_dir;
-		} elseif ( preg_match( "#^{$this->define->lib_namespace}#", $class ) ) {
-			$class = preg_replace( "#^{$this->define->lib_namespace}#", '', $class );
+		} elseif ( preg_match( "#\A{$this->define->lib_namespace}#", $class ) ) {
+			$class = preg_replace( "#\A{$this->define->lib_namespace}#", '', $class );
 			$dir   = $this->define->lib_src_dir;
 		}
 
@@ -544,7 +587,7 @@ class Technote {
 	 * @param $arguments
 	 */
 	public static function __callStatic( $name, $arguments ) {
-		if ( preg_match( '#register_uninstall_(.+)$#', $name, $matches ) ) {
+		if ( preg_match( '#register_uninstall_(.+)\z#', $name, $matches ) ) {
 			$plugin_base_name = $matches[1];
 			self::uninstall( $plugin_base_name );
 		}

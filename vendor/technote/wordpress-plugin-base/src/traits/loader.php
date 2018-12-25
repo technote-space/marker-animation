@@ -2,13 +2,14 @@
 /**
  * Technote Traits Loader
  *
- * @version 2.6.1
+ * @version 2.9.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.3.0 Changed: property access to getter access
  * @since 2.6.1 Improved: refactoring
  * @since 2.6.1 Updated: count without load class feature
+ * @since 2.9.0 Improved: regexp
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -53,11 +54,11 @@ trait Loader {
 	private function namespace_to_dir( $namespace ) {
 		$namespace = ltrim( $namespace, '\\' );
 		$dir       = null;
-		if ( preg_match( "#^{$this->app->define->plugin_namespace}#", $namespace ) ) {
-			$namespace = preg_replace( "#^{$this->app->define->plugin_namespace}#", '', $namespace );
+		if ( preg_match( "#\A{$this->app->define->plugin_namespace}#", $namespace ) ) {
+			$namespace = preg_replace( "#\A{$this->app->define->plugin_namespace}#", '', $namespace );
 			$dir       = $this->app->define->plugin_src_dir;
-		} elseif ( preg_match( "#^{$this->app->define->lib_namespace}#", $namespace ) ) {
-			$namespace = preg_replace( "#^{$this->app->define->lib_namespace}#", '', $namespace );
+		} elseif ( preg_match( "#\A{$this->app->define->lib_namespace}#", $namespace ) ) {
+			$namespace = preg_replace( "#\A{$this->app->define->lib_namespace}#", '', $namespace );
 			$dir       = $this->app->define->lib_src_dir;
 		}
 

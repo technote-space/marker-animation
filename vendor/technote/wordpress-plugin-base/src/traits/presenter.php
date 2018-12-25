@@ -2,11 +2,13 @@
 /**
  * Technote Traits Presenter
  *
- * @version 2.0.3
+ * @version 2.9.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.0.3 Changed: trim assets_version
+ * @since 2.8.3 Added: get_form_by_type
+ * @since 2.9.1 Changed: array_merge -> array_replace_recursive
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -138,7 +140,7 @@ trait Presenter {
 	 * @return string
 	 */
 	public function form( $name, $args = [], $overwrite = [], $echo = true, $error = true ) {
-		return $this->get_view( 'include/form/' . trim( $name, '/' . DS ), array_merge( $args, $overwrite ), $echo, $error );
+		return $this->get_view( 'include/form/' . trim( $name, '/' . DS ), array_replace_recursive( $args, $overwrite ), $echo, $error );
 	}
 
 	/**
@@ -313,7 +315,7 @@ trait Presenter {
 			$overwrite['target'] = '_blank';
 		}
 
-		return $this->get_view( 'include/url', array_merge( $args, $overwrite ), $echo, true, true );
+		return $this->get_view( 'include/url', array_replace_recursive( $args, $overwrite ), $echo, true, true );
 	}
 
 	/**
@@ -610,5 +612,28 @@ trait Presenter {
 				'after'
 			);
 		}
+	}
+
+	/**
+	 * @since 2.8.3
+	 *
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public function get_form_by_type( $type ) {
+		switch ( $this->app->utility->parse_db_type( $type, true ) ) {
+			case 'int':
+				return 'number';
+			case 'bool':
+				return 'checkbox';
+			case 'number';
+			case 'float';
+				return 'text';
+			case 'text';
+				return 'textarea';
+		}
+
+		return 'text';
 	}
 }

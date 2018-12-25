@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Db
  *
- * @version 2.7.2
+ * @version 2.9.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Added: Feature to cache result of conversion type format
@@ -14,6 +14,10 @@
  * @since 2.6.0 Changed: move doing_ajax method to utility
  * @since 2.7.0 Changed: log message
  * @since 2.7.2 Fixed: clear table define cache when library was updated
+ * @since 2.8.0 Changed: translate comment
+ * @since 2.8.3 Fixed: translate table defined's comment
+ * @since 2.8.3 Added: length define
+ * @since 2.9.0 Added: method to get last error
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -41,6 +45,12 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @var array $_type2format
 	 */
 	private $_type2format = [];
+
+	/**
+	 * @since 2.9.0
+	 * @var \Exception $_error
+	 */
+	private $_error = null;
 
 	/**
 	 * initialize
@@ -114,6 +124,9 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 			$this->table_defines[ $table ]['id']       = $id;
 			$this->table_defines[ $table ]['columns']  = $columns;
 			$this->table_defines[ $table ]['is_added'] = true;
+			if ( ! empty( $this->table_defines[ $table ]['comment'] ) ) {
+				$this->table_defines[ $table ]['comment'] = $this->app->translate( $this->table_defines[ $table ]['comment'] );
+			}
 		}
 		$this->app->option->set( 'table_defines_cache', $this->table_defines );
 	}
@@ -225,7 +238,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 				$check = false;
 				break;
 			}
-			$type = $this->app->utility->array_get( $column, 'type' );
+			$type = trim( $this->app->utility->array_get( $column, 'type' ) );
 			if ( empty( $type ) ) {
 				$check = false;
 				break;
@@ -233,7 +246,15 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 
 			$column['name']   = $this->app->utility->array_get( $column, 'name', $key );
 			$column['format'] = $this->app->utility->array_get( $column, 'format', $this->type2format( $type ) );
-			$columns[ $key ]  = $column;
+			$column['length'] = null;
+			if ( preg_match( '/\(\s*(\d+)\s*\)/', $type, $matches ) ) {
+				$column['length'] = $matches[1] - 0;
+			}
+			$column['is_user_defined'] = true;
+			if ( ! empty( $column['comment'] ) ) {
+				$column['comment'] = $this->app->translate( $column['comment'] );
+			}
+			$columns[ $key ] = $column;
 		}
 		if ( ! $check ) {
 			return [ false, false ];
@@ -373,7 +394,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 */
 	protected function table_update( $table, $define ) {
 		require_once ABSPATH . "wp-admin" . DS . "includes" . DS . "upgrade.php";
-		$char = defined( "DB_CHARSET" ) ? DB_CHARSET : "utf8";
+		$char = $this->app->utility->definedv( 'DB_CHARSET', 'utf8' );
 		if ( empty( $define['id'] ) ) {
 			$define['id'] = $table . '_id';
 		}
@@ -1026,7 +1047,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @param array $data
 	 * @param string $method
 	 *
-	 * @return bool|false|int
+	 * @return false|int
 	 */
 	private function _insert_replace( $table, $data, $method ) {
 		if ( ! isset( $this->table_defines[ $table ] ) ) {
@@ -1060,6 +1081,25 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	}
 
 	/**
+	 * @since 2.9.0
+	 * @return string
+	 */
+	public function get_last_error() {
+		/** @var \wpdb $wpdb */
+		global $wpdb;
+
+		return $wpdb->last_error;
+	}
+
+	/**
+	 * @since 2.9.0
+	 * @return \Exception|null
+	 */
+	public function get_last_transaction_error() {
+		return $this->_error;
+	}
+
+	/**
 	 * @param string $table
 	 * @param array $data
 	 *
@@ -1074,7 +1114,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @param array $fields
 	 * @param array $data_list
 	 *
-	 * @return bool|false|int
+	 * @return false|int
 	 */
 	public function bulk_insert( $table, $fields, $data_list ) {
 		if ( ! isset( $this->table_defines[ $table ] ) || empty( $fields ) || empty( $data_list ) ) {
@@ -1118,7 +1158,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @param string $table
 	 * @param array $data
 	 *
-	 * @return bool|false|int
+	 * @return false|int
 	 */
 	public function replace( $table, $data ) {
 		return $this->_insert_replace( $table, $data, 'replace' );
@@ -1129,7 +1169,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @param array $data
 	 * @param array $where
 	 *
-	 * @return bool|false|int
+	 * @return false|int
 	 */
 	public function update( $table, $data, $where ) {
 		if ( ! isset( $this->table_defines[ $table ] ) ) {
@@ -1156,7 +1196,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @param $data
 	 * @param $where
 	 *
-	 * @return int
+	 * @return int|false
 	 */
 	public function insert_or_update( $table, $data, $where ) {
 		if ( ! isset( $this->table_defines[ $table ] ) ) {
@@ -1170,11 +1210,17 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 		$row = $this->select_row( $table, $where, 'id' );
 		if ( empty( $row ) ) {
 			$this->insert( $table, $data );
+			if ( $this->get_last_error() ) {
+				return false;
+			}
 
 			return $this->get_insert_id();
 		}
 		$where = [ 'id' => $row['id'] ];
 		$this->update( $table, $data, $where );
+		if ( $this->get_last_error() ) {
+			return false;
+		}
 
 		return $row['id'];
 	}
@@ -1260,7 +1306,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @param string $table
 	 * @param bool $write
 	 *
-	 * @return bool|string
+	 * @return false|int
 	 */
 	public function lock( $table, $write ) {
 		if ( ! isset( $this->table_defines[ $table ] ) ) {
@@ -1303,6 +1349,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 		$level = $this->transaction_level;
 		$this->transaction_level ++;
 		if ( $level === 0 ) {
+			$this->_error = null;
 			try {
 				$this->begin();
 				$func();
@@ -1312,6 +1359,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 			} catch ( \Exception $e ) {
 				$this->rollback();
 				$this->app->log( $e );
+				$this->_error = $e;
 			} finally {
 				$this->transaction_level = $level;
 			}

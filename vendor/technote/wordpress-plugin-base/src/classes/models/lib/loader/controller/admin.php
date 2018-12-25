@@ -2,12 +2,14 @@
 /**
  * Technote Classes Models Lib Loader Controller Admin
  *
- * @version 2.7.0
+ * @version 2.9.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.3.0 Changed: public property to readonly property
  * @since 2.7.0 Changed: log message
+ * @since 2.8.0 Changed: visibility of get_menu_slug
+ * @since 2.9.0 Improved: regexp
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -49,7 +51,7 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	/**
 	 * @return string
 	 */
-	private function get_menu_slug() {
+	public function get_menu_slug() {
 		return $this->get_page_prefix() . $this->apply_filters( 'get_setting_menu_slug', $this->get_setting_slug() );
 	}
 
@@ -69,7 +71,7 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	private function load_page() {
 		try {
 			$prefix  = $this->get_page_prefix();
-			$pattern = "#^{$prefix}(.+)#";
+			$pattern = "#\A{$prefix}(.+)#";
 			if ( isset( $_GET['page'] ) && preg_match( $pattern, $_GET['page'], $matches ) ) {
 				$page          = $matches[1];
 				$exploded      = explode( '-', $page );

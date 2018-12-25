@@ -2,11 +2,12 @@
 /**
  * Technote Interfaces Presenter
  *
- * @version 2.7.0
+ * @version 2.8.3
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.7.0 Added: property doc
+ * @since 2.8.3 Added: set_script_translations, get_form_by_type
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -257,5 +258,21 @@ interface Presenter {
 	 * @return string
 	 */
 	public function modal_class( $echo = true );
+
+	/**
+	 * @since 1.1.73
+	 *
+	 * @param string $handle
+	 */
+	public function set_script_translations( $handle );
+
+	/**
+	 * @since 2.8.3
+	 *
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public function get_form_by_type( $type );
 
 }

@@ -2,11 +2,12 @@
 /**
  * Technote Classes Controller Test
  *
- * @version 2.3.1
+ * @version 2.9.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.3.1 Changed: not load test if not required
+ * @since 2.9.0 Changed: use utility->definedv
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -28,7 +29,7 @@ class Test extends Base {
 	 * @return int
 	 */
 	public function get_load_priority() {
-		return $this->app->test->is_valid() ? $this->apply_filters( 'test_page_priority', defined( 'WP_DEBUG' ) && WP_DEBUG ? 900 : - 1 ) : - 1;
+		return $this->app->test->is_valid() ? $this->apply_filters( 'test_page_priority', $this->app->utility->definedv( 'WP_DEBUG' ) ? 900 : - 1 ) : - 1;
 	}
 
 	/**

@@ -2,11 +2,12 @@
 /**
  * Technote Classes Controller Admin Logs
  *
- * @version 2.7.0
+ * @version 2.9.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.7.0 Changed: save log to db
+ * @since 2.9.0 Changed: is_valid_log > is_valid
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -28,7 +29,7 @@ class Logs extends Base {
 	 * @return int
 	 */
 	public function get_load_priority() {
-		return $this->app->log->is_valid_log() ? $this->apply_filters( 'logs_page_priority', 999 ) : - 1;
+		return $this->app->log->is_valid() ? $this->apply_filters( 'logs_page_priority', 999 ) : - 1;
 	}
 
 	/**

@@ -2,10 +2,11 @@
 /**
  * Technote Configs Db
  *
- * @version 2.7.0
+ * @version 2.9.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.7.0 Added: __log table
+ * @since 2.9.0 Added: level column to __log
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -55,8 +56,18 @@ return [
 //		'delete'  => 'logical', // physical or logical [default = physical]
 //	),
 
+	/**
+	 * @since 2.7.0
+	 */
 	'__log' => [
 		'columns' => [
+			/**
+			 * @since 2.9.0
+			 */
+			'level'          => [
+				'type' => 'VARCHAR(32)',
+				'null' => false,
+			],
 			'message'        => [
 				'type' => 'TEXT',
 				'null' => false,

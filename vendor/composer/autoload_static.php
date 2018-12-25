@@ -12,6 +12,14 @@ class ComposerStaticInit9f337c6be72c714b3f1387d390e267d8
     );
 
     public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'TijsVerkoyen\\CssToInlineStyles\\' => 31,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Component\\CssSelector\\' => 30,
+        ),
         'M' => 
         array (
             'MatthiasMullie\\PathConverter\\' => 29,
@@ -20,6 +28,14 @@ class ComposerStaticInit9f337c6be72c714b3f1387d390e267d8
     );
 
     public static $prefixDirsPsr4 = array (
+        'TijsVerkoyen\\CssToInlineStyles\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src',
+        ),
+        'Symfony\\Component\\CssSelector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/css-selector',
+        ),
         'MatthiasMullie\\PathConverter\\' => 
         array (
             0 => __DIR__ . '/..' . '/matthiasmullie/path-converter/src',

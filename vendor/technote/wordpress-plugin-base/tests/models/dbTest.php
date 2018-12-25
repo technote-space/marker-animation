@@ -2,9 +2,10 @@
 /**
  * Technote Models Define Test
  *
- * @version 1.1.13
+ * @version 2.9.0
  * @author technote-space
  * @since 1.0.0
+ * @since 2.9.0 Changed: move test db class
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -12,7 +13,7 @@
 
 namespace Technote\Tests\Models;
 
-require_once __DIR__ . DS . 'db.php';
+require_once __DIR__ . DS . 'misc' . DS . 'db.php';
 
 /**
  * Class DbTest
@@ -22,12 +23,12 @@ require_once __DIR__ . DS . 'db.php';
  */
 class DbTest extends \Technote\Tests\TestCase {
 
-	/** @var Db */
+	/** @var Misc\Db */
 	private static $db;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		static::$db = Db::get_instance( static::$app );
+		static::$db = Misc\Db::get_instance( static::$app );
 		static::$db->drop( 'technote_test_table1' );
 		static::$db->drop( 'technote_test_table2' );
 		static::$db->setup( 'technote_test_table1', [

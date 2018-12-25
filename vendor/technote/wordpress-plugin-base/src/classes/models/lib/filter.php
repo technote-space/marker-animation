@@ -2,11 +2,12 @@
 /**
  * Technote Classes Models Lib Filter
  *
- * @version 2.4.2
+ * @version 2.8.1
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.4.2 Improved: change timing to load filter target instance
+ * @since 2.8.1 Improved: refactoring
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -35,15 +36,45 @@ class Filter implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	protected function initialize() {
 		foreach ( $this->apply_filters( 'filter', $this->app->config->load( 'filter' ) ) as $class => $tags ) {
-			foreach ( $tags as $tag => $methods ) {
-				$tag = $this->app->utility->replace( $tag, [ 'prefix' => $this->get_filter_prefix() ] );
-				foreach ( $methods as $method => $params ) {
-					list( $priority, $accepted_args ) = $this->get_filter_params( $params );
-					add_filter( $tag, function () use ( $class, $method ) {
-						return $this->call_filter_callback( $class, $method, func_get_args() );
-					}, $priority, $accepted_args );
-				}
+			$this->register_class_filter( $class, $tags );
+		}
+	}
+
+	/**
+	 * @param string $class
+	 * @param array $tags
+	 */
+	public function register_class_filter( $class, $tags ) {
+		if ( empty( $class ) || ! is_array( $tags ) ) {
+			return;
+		}
+		foreach ( $tags as $tag => $methods ) {
+			$this->register_filter( $class, $tag, $methods );
+		}
+	}
+
+	/**
+	 * @param string $class
+	 * @param string $tag
+	 * @param array $methods
+	 */
+	public function register_filter( $class, $tag, $methods ) {
+		$tag = $this->app->utility->replace( $tag, [ 'prefix' => $this->get_filter_prefix() ] );
+		if ( empty( $class ) || empty( $tag ) || ! is_array( $methods ) ) {
+			return;
+		}
+		foreach ( $methods as $method => $params ) {
+			if ( ! is_array( $params ) && is_string( $params ) ) {
+				$method = $params;
+				$params = [];
 			}
+			if ( empty( $method ) || ! is_string( $method ) ) {
+				continue;
+			}
+			list( $priority, $accepted_args ) = $this->get_filter_params( $params );
+			add_filter( $tag, function () use ( $class, $method ) {
+				return $this->call_filter_callback( $class, $method, func_get_args() );
+			}, $priority, $accepted_args );
 		}
 	}
 
