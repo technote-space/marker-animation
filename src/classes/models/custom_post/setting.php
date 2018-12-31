@@ -69,6 +69,19 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	}
 
 	/**
+	 * @param int $post_id
+	 * @param bool $is_selector
+	 *
+	 * @return string
+	 */
+	public function get_default_class( $post_id, $is_selector = true ) {
+		/** @var \Marker_Animation\Classes\Models\Assets $assets */
+		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+
+		return ( $is_selector ? '.' : '' ) . $assets->get_default_marker_animation_class() . '-' . $post_id;
+	}
+
+	/**
 	 * @param array $params
 	 * @param \WP_Post $post
 	 *
@@ -93,6 +106,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 				$params['columns'][ $key ]['args']['attributes']['data-option_name'] = $name;
 			}
 		}
+		$params['columns']['selector']['args']['attributes']['data-default'] = $this->get_default_class( $post->ID );
+		$params['columns']['selector']['default']                            = $params['columns']['selector']['args']['attributes']['data-default'];
+
 		$params['columns']['color']['form_type']    = 'color';
 		$params['columns']['function']['form_type'] = 'select';
 		$params['columns']['function']['options']   = $assets->get_animation_functions();
@@ -132,10 +148,10 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	 */
 	protected function get_manage_posts_columns() {
 		return [
-			'is_valid'  => function ( $value ) {
+			'is_valid' => function ( $value ) {
 				return ! empty( $value ) ? $this->app->translate( 'Valid' ) : $this->app->translate( 'Invalid' );
 			},
-			'display'   => [
+			'display'  => [
 				'name'     => $this->app->translate( 'display' ),
 				'callback' => function (
 					/** @noinspection PhpUnusedParameterInspection */
@@ -185,9 +201,23 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 				},
 				'unescape' => true,
 			],
-			'is_repeat' => function ( $value ) {
-				return ! empty( $value ) ? $this->app->translate( 'Yes' ) : $this->app->translate( 'No' );
-			},
+			'others'   => [
+				'name'     => $this->app->translate( 'others' ),
+				'callback' => function (
+					/** @noinspection PhpUnusedParameterInspection */
+					$value, $data, $post
+				) {
+					return $this->get_view( 'admin/custom_post/setting/others', [
+						'details' => [
+							'repeat'          => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'is valid button' => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'is valid style'  => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'selector'        => empty( $data['selector'] ) ? $this->get_default_class( $post->ID ) : $data['selector'],
+						],
+					] );
+				},
+				'unescape' => true,
+			],
 		];
 	}
 
@@ -295,7 +325,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 				$options[ $name ] = $value;
 			}
 			/** @var \WP_Post $post */
-			$post       = $data['post'];
+			$post                = $data['post'];
+			$options['selector'] = $this->get_default_class( $post->ID );
+			! empty( $data['selector'] ) and $options['selector'] .= ', ' . $data['selector'];
 			$settings[] = [
 				'id'      => $post->ID,
 				'options' => $options,
