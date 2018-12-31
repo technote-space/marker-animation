@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Db
  *
- * @version 2.9.0
+ * @version 2.9.8
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Added: Feature to cache result of conversion type format
@@ -18,6 +18,7 @@
  * @since 2.8.3 Fixed: translate table defined's comment
  * @since 2.8.3 Added: length define
  * @since 2.9.0 Added: method to get last error
+ * @since 2.9.8 Fixed: upgrade message
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -378,7 +379,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 					return ! empty( $d );
 				} ) );
 				if ( $message ) {
-					$this->app->add_message( $message, 'db' );
+					$this->app->add_message( $message, 'db', false, false );
 				}
 			}
 		}

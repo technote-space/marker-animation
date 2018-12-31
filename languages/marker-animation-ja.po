@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: marker-animation\n"
 "POT-Creation-Date: 2018-07-01 17:47+0900\n"
-"PO-Revision-Date: 2018-12-16 00:19+0900\n"
+"PO-Revision-Date: 2019-01-01 03:11+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,6 @@ msgstr "マーカーアニメーション"
 
 msgid "This plugin will add \"Marker animation\" function"
 msgstr "このプラグインは「マーカーアニメーション」機能を追加します"
-
-msgid "Settings"
-msgstr "設定"
 
 msgid "Dashboard"
 msgstr "ダッシュボード"
@@ -82,6 +79,12 @@ msgstr "繰り返すかどうか"
 msgid "padding bottom"
 msgstr "マーカー位置の調整"
 
+msgid "is valid button"
+msgstr "ボタン表示させるかどうか"
+
+msgid "is valid style"
+msgstr "スタイルメニューに表示させるかどうか"
+
 msgid "ease"
 msgstr "開始と完了を滑らかに(ease)"
 
@@ -99,3 +102,63 @@ msgstr "ゆっくり始まりゆっくり終わる(ease-in-out)"
 
 msgid "Marker Animation (detail setting)"
 msgstr "マーカーアニメーション(詳細設定)"
+
+msgid "post id"
+msgstr "投稿ID"
+
+msgid "priority"
+msgstr "優先度"
+
+msgid "marker settings"
+msgstr "マーカー設定"
+
+msgid "Setting"
+msgstr "設定"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "All Settings"
+msgstr "設定管理"
+
+msgid "Add Setting"
+msgstr "設定を追加"
+
+msgid "Edit Setting"
+msgstr "設定を編集"
+
+msgid "Search Settings"
+msgstr "設定を検索"
+
+msgid "No Settings found."
+msgstr "設定情報が見つかりません。"
+
+msgid "No Settings found in Trash."
+msgstr "ゴミ箱に設定情報が見つかりません。"
+
+msgid "Value is required."
+msgstr "必須項目です。"
+
+msgid "Setting name"
+msgstr "設定名"
+
+msgid "display"
+msgstr "表示"
+
+msgid "Valid"
+msgstr "有効"
+
+msgid "Invalid"
+msgstr "無効"
+
+msgid "Yes"
+msgstr "はい"
+
+msgid "No"
+msgstr "いいえ"
+
+msgid "show"
+msgstr "表示させる"
+
+msgid "others"
+msgstr "その他"

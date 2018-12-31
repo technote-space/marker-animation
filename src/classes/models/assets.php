@@ -1,11 +1,13 @@
 <?php
 /**
- * @version 1.2.7
+ * @version 1.4.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
  * @since 1.2.7 Added: cache options
  * @since 1.3.0 Added: preset color
+ * @since 1.4.0 Deleted: preset color
+ * @since 1.4.0 Added: marker setting feature
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -30,6 +32,14 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			return;
 		}
 
+		$this->enqueue_marker_animation();
+	}
+
+	/**
+	 * enqueue marker animation
+	 * @since 1.4.0
+	 */
+	public function enqueue_marker_animation() {
 		$this->enqueue_script( $this->app->slug_name . '-marker_animation', 'marker-animation.min.js', [
 			'jquery',
 		] );
@@ -48,14 +58,6 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	public function get_default_marker_animation_class() {
 		return 'marker-animation';
-	}
-
-	/**
-	 * @since 1.3.0
-	 * @return int
-	 */
-	public function get_preset_color_count() {
-		return 3;
 	}
 
 	/**
@@ -101,7 +103,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	public function get_marker_options() {
 		if ( $this->apply_filters( 'is_valid_marker_options_cache' ) ) {
 			$options = $this->app->get_option( $this->get_marker_options_cache_key() );
-			if ( is_array( $options ) ) {
+			if ( is_array( $options ) && ! empty( $options['version'] ) && version_compare( $options['version'], $this->app->get_plugin_version(), '>=' ) ) {
 				return $options;
 			}
 			$options = $this->load_marker_options();
@@ -118,38 +120,54 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 * @return array
 	 */
 	private function load_marker_options() {
+		/** @var Custom_Post\Setting $setting */
+		$setting = Custom_Post\Setting::get_instance( $this->app );
 		$options = [
-			'version'            => $this->app->get_plugin_version(),
-			'selector'           => $this->get_selector(),
-			'prefix'             => $this->get_data_prefix(),
-			'preset_color_count' => $this->get_preset_color_count(),
+			'version'  => $this->app->get_plugin_version(),
+			'selector' => $this->get_selector(),
+			'prefix'   => $this->get_data_prefix(),
+			'settings' => $setting->get_settings( 'front' ),
 		];
 		foreach ( $this->get_setting_details( 'front' ) as $key => $setting ) {
-			$value = $setting['attributes']['data-value'];
-			if ( ! empty( $setting['attributes']['data-option_name'] ) ) {
-				$name = $setting['attributes']['data-option_name'];
-			} else {
-				$name = $key;
-			}
-			if ( 'input/checkbox' === $setting['form'] ) {
-				if ( ! empty( $value ) ) {
-					if ( array_key_exists( 'data-option_value-true', $setting['attributes'] ) ) {
-						$value = $setting['attributes']['data-option_value-true'];
-					} else {
-						$value = true;
-					}
-				} else {
-					if ( array_key_exists( 'data-option_value-false', $setting['attributes'] ) ) {
-						$value = $setting['attributes']['data-option_value-false'];
-					} else {
-						$value = false;
-					}
-				}
-			}
+			list( $name, $value ) = $this->parse_setting( $setting, $key );
 			$options[ $name ] = $value;
 		}
 
 		return $options;
+	}
+
+	/**
+	 * @since 1.4.0
+	 *
+	 * @param array $setting
+	 * @param string $key
+	 *
+	 * @return array
+	 */
+	public function parse_setting( $setting, $key ) {
+		$value = $setting['attributes']['data-value'];
+		if ( ! empty( $setting['attributes']['data-option_name'] ) ) {
+			$name = $setting['attributes']['data-option_name'];
+		} else {
+			$name = $key;
+		}
+		if ( 'input/checkbox' === $setting['form'] ) {
+			if ( ! empty( $value ) ) {
+				if ( array_key_exists( 'data-option_value-true', $setting['attributes'] ) ) {
+					$value = $setting['attributes']['data-option_value-true'];
+				} else {
+					$value = true;
+				}
+			} else {
+				if ( array_key_exists( 'data-option_value-false', $setting['attributes'] ) ) {
+					$value = $setting['attributes']['data-option_value-false'];
+				} else {
+					$value = false;
+				}
+			}
+		}
+
+		return [ $name, $value ];
 	}
 
 	/**
@@ -168,9 +186,24 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	/**
 	 * clear options cache
 	 * @since 1.3.0
+	 * @since 1.4.0 Changed: visibility (private to public)
 	 */
-	private function clear_options_cache() {
+	public function clear_options_cache() {
 		$this->app->option->delete( $this->get_marker_options_cache_key() );
+	}
+
+	/**
+	 * @since 1.4.0
+	 * @return array
+	 */
+	public function get_animation_functions() {
+		return $this->apply_filters( 'animation_functions', [
+			'ease'        => $this->translate( 'ease' ),
+			'linear'      => $this->translate( 'linear' ),
+			'ease-in'     => $this->translate( 'ease-in' ),
+			'ease-out'    => $this->translate( 'ease-out' ),
+			'ease-in-out' => $this->translate( 'ease-in-out' ),
+		] );
 	}
 
 	/**
@@ -179,47 +212,23 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	public function get_setting_keys() {
 		return [
-			'is_valid'       => [
+			'is_valid'        => [
 				'form' => 'input/checkbox',
 				'args' => [
-					'target' => [ 'dashboard' ],
+					'target' => [ 'dashboard', 'setting' ],
 				],
 			],
-			'color'          => 'color',
-			'color1'         => [
-				'form' => 'color',
-				'args' => [
-					'ignore_editor' => true,
-				],
-			],
-			'color2'         => [
-				'form' => 'color',
-				'args' => [
-					'ignore_editor' => true,
-				],
-			],
-			'color3'         => [
-				'form' => 'color',
-				'args' => [
-					'ignore_editor' => true,
-				],
-			],
-			'thickness'      => 'input/text',
-			'duration'       => 'input/text',
-			'delay'          => 'input/text',
-			'function'       => [
+			'color'           => 'color',
+			'thickness'       => 'input/text',
+			'duration'        => 'input/text',
+			'delay'           => 'input/text',
+			'function'        => [
 				'form' => 'select',
 				'args' => [
-					'options' => [
-						'ease'        => $this->translate( 'ease' ),
-						'linear'      => $this->translate( 'linear' ),
-						'ease-in'     => $this->translate( 'ease-in' ),
-						'ease-out'    => $this->translate( 'ease-out' ),
-						'ease-in-out' => $this->translate( 'ease-in-out' ),
-					],
+					'options' => $this->get_animation_functions(),
 				],
 			],
-			'bold'           => [
+			'bold'            => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'attributes' => [
@@ -229,8 +238,24 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 					],
 				],
 			],
-			'repeat'         => 'input/checkbox',
-			'padding_bottom' => 'input/text',
+			'repeat'          => 'input/checkbox',
+			'padding_bottom'  => 'input/text',
+			'is_valid_button' => [
+				'form' => 'input/checkbox',
+				'args' => [
+					'target' => [ 'setting' ],
+					'value'  => 1,
+					'label'  => $this->translate( 'show' ),
+				],
+			],
+			'is_valid_style'  => [
+				'form' => 'input/checkbox',
+				'args' => [
+					'target' => [ 'setting' ],
+					'value'  => 0,
+					'label'  => $this->translate( 'show' ),
+				],
+			],
 		];
 	}
 
@@ -255,7 +280,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	/**
 	 * @param string $name
-	 * @param string $form
+	 * @param string|array $form
 	 *
 	 * @return array
 	 */

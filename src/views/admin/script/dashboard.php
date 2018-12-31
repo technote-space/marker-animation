@@ -1,9 +1,10 @@
 <?php
 /**
- * @version 1.3.0
+ * @version 1.4.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.3.0 Added: preset color
+ * @since 1.4.0 Deleted: preset color
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -18,7 +19,6 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 <script>
     (function ($) {
-        /** @var {{preset_color_count: number}} marker_animation */
         const $target = $('#<?php $instance->id(); ?>-content-wrap .marker-animation-option');
         const setup_options = function () {
             const options = {};
@@ -49,11 +49,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
                     options[option_name] = option_value;
                 }
             });
-            $('.marker-setting-preview span').not('.preset-color').markerAnimation(options);
-            for (let i = 1; i <= marker_animation.preset_color_count; i++) {
-                options.color = options['color' + i];
-                $('.marker-setting-preview span.preset-color' + i).markerAnimation(options);
-            }
+            $('.marker-setting-preview span').markerAnimation(options);
         };
         const reset_options = function () {
             $target.each(function () {
