@@ -36,7 +36,7 @@ return [
 	'menu_image'           => 'icon-24x24.png',
 
 	// update
-	'update_info_file_url' => 'https://raw.githubusercontent.com/technote-space/marker-animation/master/update.json',
+	'update_info_file_url' => 'https://raw.githubusercontent.com/technote-space/marker-animation/develop/update.json',
 
 	// use custom post
 	'use_custom_post'      => true,
