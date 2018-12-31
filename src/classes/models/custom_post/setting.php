@@ -55,7 +55,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 			return;
 		}
 
-		$func = function (
+		add_filter( 'posts_orderby', $func = function (
 			/** @noinspection PhpUnusedParameterInspection */
 			$orderby, $wp_query
 		) use ( &$func ) {
@@ -65,8 +65,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 			remove_filter( 'posts_orderby', $func );
 
 			return "{$table}.priority ASC, {$orderby}";
-		};
-		add_filter( 'posts_orderby', $func, 10, 2 );
+		}, 10, 2 );
 	}
 
 	/**
