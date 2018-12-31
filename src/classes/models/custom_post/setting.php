@@ -212,7 +212,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 							'repeat'          => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 							'is valid button' => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 							'is valid style'  => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'selector'        => empty( $data['selector'] ) ? $this->get_default_class( $post->ID ) : $data['selector'],
+							'selector'        => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
 						],
 					] );
 				},
@@ -346,15 +346,20 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 			[
 				'version'  => '1.4.0',
 				'callback' => function () {
-					for ( $i = 1; $i <= 3; $i ++ ) {
-						$color = $this->app->get_option( $this->get_filter_prefix() . 'color' . $i );
-						if ( ! empty( $color ) ) {
-							$this->insert( [
-								'post_title' => $this->translate( 'preset color' . $i ),
-								'color'      => $color,
-								'priority'   => 10 + $i,
-							] );
-						}
+					foreach (
+						[
+							1 => '#ff99b4',
+							2 => '#99e3ff',
+							3 => '#99ffa8',
+						] as $k => $v
+					) {
+						$color = $this->app->get_option( $this->get_filter_prefix() . 'color' . $k, $v );
+						$this->insert( [
+							'post_title' => $this->translate( 'preset color' . $k ),
+							'color'      => $color,
+							'selector'   => ".marker-animation[data-ma_color{$k}]",
+							'priority'   => 10 + $k,
+						] );
 					}
 				},
 			],
