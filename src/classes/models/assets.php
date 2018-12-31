@@ -120,11 +120,10 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		/** @var Custom_Post\Setting $setting */
 		$setting = Custom_Post\Setting::get_instance( $this->app );
 		$options = [
-			'version'         => $this->app->get_plugin_version(),
-			'selector'        => $this->get_selector(),
-			'prefix'          => $this->get_data_prefix(),
-			'settings'        => $setting->get_settings( 'front' ),
-			'animation_class' => $this->get_default_marker_animation_class(),
+			'version'  => $this->app->get_plugin_version(),
+			'selector' => $this->get_selector(),
+			'prefix'   => $this->get_data_prefix(),
+			'settings' => $setting->get_settings( 'front' ),
 		];
 		foreach ( $this->get_setting_details( 'front' ) as $key => $setting ) {
 			list( $name, $value ) = $this->parse_setting( $setting, $key );

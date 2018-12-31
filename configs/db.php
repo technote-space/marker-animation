@@ -94,6 +94,11 @@ return [
 				'default'  => 0,
 				'comment'  => 'is valid style',
 			],
+			'selector'        => [
+				'type'    => 'VARCHAR(255)',
+				'default' => '',
+				'comment' => 'selector',
+			],
 		],
 		'index'   => [
 			'key'    => [
