@@ -11,21 +11,18 @@ require('jquery.marker-animation');
 import $ from 'jquery';
 
 $(function () {
-    /** @var {{selector: string, prefix: string, preset_color_count: number}} marker_animation */
+    /** @var {{selector: string, prefix: string, animation_class: string, settings: {options: {}}[]}} marker_animation */
+    Object.keys(marker_animation.settings).forEach(function (id) {
+        const options = marker_animation.settings[id].options;
+        const selector = '.' + marker_animation.animation_class + '-' + id;
+        console.log(selector);
+        $(selector).filter(function () {
+            return !$(this).data('marker_animation_initialized');
+        }).data('marker_animation_initialized', true).markerAnimation(options);
+    });
     if (marker_animation.selector) {
         $(marker_animation.selector).filter(function () {
-            for (let i = 1; i <= marker_animation.preset_color_count; i++) {
-                if ($(this).data(marker_animation.prefix + 'color' + i)) {
-                    return false;
-                }
-            }
-            return true;
-        }).markerAnimation(marker_animation);
-        for (let i = 1; i <= marker_animation.preset_color_count; i++) {
-            marker_animation.color = marker_animation['color' + i];
-            $(marker_animation.selector).filter(function () {
-                return !!$(this).data(marker_animation.prefix + 'color' + i);
-            }).markerAnimation(marker_animation);
-        }
+            return !$(this).data('marker_animation_initialized');
+        }).data('marker_animation_initialized', true).markerAnimation(marker_animation);
     }
 });

@@ -54,13 +54,9 @@ class Dashboard extends \Technote\Classes\Controllers\Admin\Base {
 	protected function common_action() {
 		$this->setup_color_picker();
 
-		$this->enqueue_script( $this->app->slug_name . '-marker_animation', 'marker-animation.min.js', [
-			'jquery',
-		] );
-
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
-		$this->localize_script( $this->app->slug_name . '-marker_animation', $assets->get_marker_object_name(), [ 'preset_color_count' => $assets->get_preset_color_count() ] );
+		$assets->enqueue_marker_animation();
 	}
 
 	/**

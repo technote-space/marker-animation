@@ -19,7 +19,7 @@ return [
 	'plugin_title'         => 'Marker Animation',
 
 	// db version
-	'db_version'           => '0.0.1',
+	'db_version'           => '0.0.5',
 
 	// twitter
 	'twitter'              => 'technote15',
@@ -35,5 +35,8 @@ return [
 
 	// update
 	'update_info_file_url' => 'https://raw.githubusercontent.com/technote-space/marker-animation/master/update.json',
+
+	// use custom post
+	'use_custom_post'      => true,
 
 ];

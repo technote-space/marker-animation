@@ -21,12 +21,13 @@
     * detail_title: string,
     * class: string,
     * prefix: string,
-    * details: {ignore: boolean, ignore_editor: boolean, form: string, label: string, value: string, attributes: object}[],
+    * details: {ignore: boolean, form: string, label: string, value: string, attributes: object}[],
     * is_valid_color_picker: boolean,
-    * preset_color_count: number
+    * settings: {options: {is_button: boolean}, title: string}[]
     * }} marker_animation_params */
 
     const added_style = {};
+    const formatters = [];
 
     /* Register the buttons */
     tinymce.create('tinymce.plugins.marker_animation_button', {
@@ -81,7 +82,8 @@
                         type: 'listbox',
                         name: key,
                         label: detail.label,
-                        values: values
+                        values: values,
+                        value: value
                     };
                 } else {
                     value = detail.value;
@@ -95,7 +97,6 @@
                 const name = detail.attributes['data-option_name'] ? detail.attributes['data-option_name'] : key;
                 attrs['data-' + marker_animation_params.prefix + name] = getDataAttribute(name);
                 defaultStyle.push(getDialogResult(value, key, true));
-                if (detail.ignore_editor) return;
                 body.push(item);
             });
             ed.addButton('marker_animation_detail', {
@@ -122,6 +123,10 @@
                 }
             });
 
+            Object.keys(marker_animation_params.settings).forEach(function (id) {
+                addColorSettingButton(ed, id, marker_animation_params.settings[id]);
+            });
+
             ed.on('init', function () {
                 defaultStyle.forEach(function (style) {
                     addStyle(ed, style.name, style.value, true);
@@ -133,14 +138,15 @@
                         }
                     });
                 });
+                formatters.push('marker_animation');
                 ed.formatter.register('marker_animation', {
                     inline: 'span',
                     classes: [marker_animation_params.class],
                     attributes: attrs
                 });
-                for (let i = 1; i <= marker_animation_params.preset_color_count; i++) {
-                    addPresetColorCommand(ed, i);
-                }
+                Object.keys(marker_animation_params.settings).forEach(function (id) {
+                    addColorSettingFormatter(ed, id, attrs, marker_animation_params.settings[id], defaultStyle);
+                });
             });
         },
         createControl: function () {
@@ -168,11 +174,14 @@
      * @param key
      * @param value
      * @param is_default
+     * @param class_name
+     * @param _style
      */
-    const addStyle = function (ed, key, value, is_default) {
-        if (added_style[key] && added_style[key][value]) return;
+    const addStyle = function (ed, key, value, is_default, class_name, _style) {
+        if (undefined === class_name) class_name = marker_animation_params.class;
+        if (added_style[class_name] && added_style[class_name][key] && added_style[class_name][key][value]) return;
 
-        let selector, style = null;
+        let selector, style = _style;
         switch (key) {
             case 'color':
                 style = 'background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, ' + value + ' 50%)';
@@ -187,16 +196,8 @@
                 style = 'padding-bottom: ' + value;
                 break;
         }
-        if (!style && key.lastIndexOf('color', 0) === 0) {
-            if (!value) return;
-            if (is_default) {
-                is_default = false;
-                value = 1;
-            }
-            style = 'background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, ' + marker_animation_params.details[key].value + ' 50%)';
-        }
         if (style) {
-            selector = 'body .' + marker_animation_params.class;
+            selector = 'body .' + class_name;
             if (!is_default) {
                 selector += '[data-' + marker_animation_params.prefix + key + '="' + value + '"]';
             }
@@ -204,8 +205,9 @@
                 selector + ' { ' + style + ' }'
             );
         }
-        if (!added_style[key]) added_style[key] = {};
-        added_style[key][value] = true;
+        if (!added_style[class_name]) added_style[class_name] = {};
+        if (!added_style[class_name][key]) added_style[class_name][key] = {};
+        added_style[class_name][key][value] = true;
     };
 
     /**
@@ -273,14 +275,23 @@
      * @since 1.2.2
      * @param ed
      * @param get_attributes
+     * @param formatter
+     * @param class_name
      */
-    const onClick = function (ed, get_attributes) {
+    const onClick = function (ed, get_attributes, formatter, class_name) {
         const selected_elem = ed.selection.getNode();
         const $selected = $(selected_elem);
         const bm = ed.selection.getBookmark();
+        if (undefined === formatter) formatter = 'marker_animation';
+        if (undefined === class_name) class_name = marker_animation_params.class;
 
-        if ($selected.hasClass(marker_animation_params.class)) {
-            ed.formatter.remove('marker_animation', undefined, selected_elem);
+        if ($selected.hasClass(class_name)) {
+            formatters.forEach(function (formatter) {
+                try {
+                    ed.formatter.remove(formatter, undefined, selected_elem);
+                } catch (e) {
+                }
+            });
             ed.selection.moveToBookmark(bm);
         } else {
             let $deferred;
@@ -296,7 +307,7 @@
             $deferred.done(function (attributes) {
                 addStyles(ed, attributes);
                 const selected_text = ed.selection.getContent();
-                ed.formatter.apply('marker_animation', attributes, selected_text === '' ? selected_elem : null);
+                ed.formatter.apply(formatter, attributes, selected_text === '' ? selected_elem : null);
                 ed.selection.moveToBookmark(bm);
             });
         }
@@ -307,30 +318,71 @@
      * @since 1.2.2
      * @param ed
      * @param $target
+     * @param class_name
      */
-    const nodeChanged = function (ed, $target) {
+    const nodeChanged = function (ed, $target, class_name) {
+        if (undefined === class_name) class_name = marker_animation_params.class;
         ed.on('NodeChange', function (e) {
-            $target.active(e.element.classList.contains(marker_animation_params.class));
+            $target.active(e.element.classList.contains(class_name));
         });
     };
 
     /**
-     * add preset color command
-     * @param ed
-     * @param index
+     * add color setting button
+     * @param {{}} ed
+     * @param {number} id
+     * @param {{options: {is_button: boolean}, title: string}} setting
      */
-    const addPresetColorCommand = function (ed, index) {
-        ed.addCommand('marker_animation_preset_color' + index, function () {
-            const key = 'color' + index;
-            const attributes = {};
-            attributes[key] = 1;
-            onClick(ed, function () {
-                const $deferred = $.Deferred();
-                setTimeout(function () {
-                    $deferred.resolve(attributes);
-                }, 1);
-                return $deferred;
+    const addColorSettingButton = function (ed, id, setting) {
+        const formatter = 'marker_animation-' + id;
+        const class_name = marker_animation_params.class + '-' + id;
+
+        if (setting.options.is_button) {
+            ed.addButton(formatter, {
+                title: setting.title,
+                icon: 'icon highlight-icon setting-' + id,
+                onclick: function () {
+                    onClick(ed, null, formatter, class_name);
+                },
+                onPostRender: function () {
+                    nodeChanged(ed, this, class_name);
+                }
             });
+        } else {
+            ed.addCommand('marker_animation_preset_color' + id, function () {
+                onClick(ed, null, formatter, class_name);
+            });
+        }
+    };
+
+    /**
+     * add color setting formatter
+     * @param ed
+     * @param id
+     * @param attrs
+     * @param setting
+     * @param defaultStyle
+     */
+    const addColorSettingFormatter = function (ed, id, attrs, setting, defaultStyle) {
+        const formatter = 'marker_animation-' + id;
+        const class_name = marker_animation_params.class + '-' + id;
+
+        formatters.push(formatter);
+        ed.formatter.register(formatter, {
+            inline: 'span',
+            classes: [class_name],
+            attributes: attrs
+        });
+
+        addStyle(ed, 'display', 'inline', true, class_name, 'display: inline');
+        addStyle(ed, 'background-position', 'left -100% center', true, class_name, 'background-position: left -100% center');
+        addStyle(ed, 'background-repeat', 'repeat-x', true, class_name, 'background-repeat: repeat-x');
+
+        defaultStyle.forEach(function (style) {
+            addStyle(ed, style.name, style.value, true, class_name);
+        });
+        Object.keys(setting.options).forEach(function (key) {
+            addStyle(ed, key, setting.options[key], true, class_name);
         });
     };
 
