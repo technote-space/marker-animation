@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Upgrade
  *
- * @version 2.9.1
+ * @version 2.9.8
  * @author technote-space
  * @since 2.4.0
  * @since 2.4.1 Added: show_plugin_update_notices method
@@ -13,6 +13,7 @@
  * @since 2.7.0 Added: error handling
  * @since 2.9.0 Improved: regexp
  * @since 2.9.1 Fixed: compare version
+ * @since 2.9.8 Fixed: ignore if first activated
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -42,6 +43,9 @@ class Upgrade implements \Technote\Interfaces\Loader {
 		}
 		$last_version = $this->get_last_upgrade_version();
 		$this->set_last_upgrade_version();
+		if ( empty( $last_version ) ) {
+			return;
+		}
 
 		try {
 			$upgrades = [];
@@ -56,7 +60,7 @@ class Upgrade implements \Technote\Interfaces\Loader {
 					if ( ! isset( $version ) || empty( $callback ) || ! is_string( $version ) ) {
 						continue;
 					}
-					if ( $last_version && version_compare( $version, $last_version, '<=' ) ) {
+					if ( version_compare( $version, $last_version, '<=' ) ) {
 						continue;
 					}
 					if ( ! is_callable( $callback ) && ( ! is_string( $callback ) || ! method_exists( $class, $callback ) || ! is_callable( [ $class, $callback ] ) ) ) {
