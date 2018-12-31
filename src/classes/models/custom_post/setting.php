@@ -106,16 +106,17 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	 */
 	private function get_setting_list() {
 		return [
-			'is_valid'       => 'is_valid',
-			'color'          => 'color',
-			'thickness'      => 'thickness',
-			'duration'       => 'duration',
-			'delay'          => 'delay',
-			'function'       => 'function',
-			'is_font_bold'   => 'bold',
-			'is_repeat'      => 'repeat',
-			'padding_bottom' => 'padding_bottom',
-			'is_button'      => 'is_button',
+			'is_valid'        => 'is_valid',
+			'color'           => 'color',
+			'thickness'       => 'thickness',
+			'duration'        => 'duration',
+			'delay'           => 'delay',
+			'function'        => 'function',
+			'is_font_bold'    => 'bold',
+			'is_repeat'       => 'repeat',
+			'padding_bottom'  => 'padding_bottom',
+			'is_valid_button' => 'is_valid_button',
+			'is_valid_style'  => 'is_valid_style',
 		];
 	}
 
@@ -261,12 +262,14 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	}
 
 	/**
+	 * @param string $target
+	 *
 	 * @return array
 	 */
-	public function get_settings() {
+	public function get_settings( $target ) {
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
-		$setting_details = $assets->get_setting_details( 'front' );
+		$setting_details = $assets->get_setting_details( $target );
 		$settings        = [];
 		foreach (
 			$this->list_data( true, null, 1, [
@@ -278,7 +281,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 			$options = [];
 			foreach ( $this->get_setting_list() as $key => $name ) {
 				$is_default = '' === (string) ( $data[ $key ] );
-				if ( 'is_button' === $name ) {
+				if ( 'is_valid_button' === $name || 'is_valid_style' === $name ) {
 					$options[ $name ] = $data[ $key ];
 					continue;
 				}
@@ -292,8 +295,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 				$options[ $name ] = $value;
 			}
 			/** @var \WP_Post $post */
-			$post                  = $data['post'];
-			$settings[ $post->ID ] = [
+			$post       = $data['post'];
+			$settings[] = [
+				'id'      => $post->ID,
 				'options' => $options,
 				'title'   => $post->post_title,
 			];
