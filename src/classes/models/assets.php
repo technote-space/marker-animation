@@ -209,7 +209,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'is_valid'       => [
 				'form' => 'input/checkbox',
 				'args' => [
-					'target' => [ 'dashboard' ],
+					'target' => [ 'dashboard', 'setting' ],
 				],
 			],
 			'color'          => 'color',
@@ -234,6 +234,13 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			],
 			'repeat'         => 'input/checkbox',
 			'padding_bottom' => 'input/text',
+			'is_button'      => [
+				'form'  => 'input/checkbox',
+				'args'  => [
+					'target' => [ 'setting' ],
+				],
+				'value' => 1,
+			],
 		];
 	}
 
@@ -258,13 +265,13 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	/**
 	 * @param string $name
-	 * @param string $form
+	 * @param string|array $form
 	 *
 	 * @return array
 	 */
 	private function get_setting( $name, $form ) {
 		$detail = $this->app->setting->get_setting( $name, true );
-		$value  = $detail['value'];
+		$value  = $this->app->utility->array_get( is_array( $form ) ? $form : [], 'value', $detail['value'] );
 		$ret    = [
 			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',

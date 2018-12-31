@@ -81,7 +81,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	) {
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
-		$setting_details = $assets->get_setting_details( 'dashboard' );
+		$setting_details = $assets->get_setting_details( 'setting' );
 		foreach ( $this->get_setting_list() as $key => $name ) {
 			$params['columns'][ $key ]['args'] = $this->app->utility->array_get( $setting_details, $name );
 			unset( $params['columns'][ $key ]['args']['name'] );
