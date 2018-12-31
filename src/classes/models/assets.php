@@ -1,11 +1,13 @@
 <?php
 /**
- * @version 1.2.7
+ * @version 1.4.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
  * @since 1.2.7 Added: cache options
  * @since 1.3.0 Added: preset color
+ * @since 1.4.0 Deleted: preset color
+ * @since 1.4.0 Added: marker setting feature
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -35,6 +37,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	/**
 	 * enqueue marker animation
+	 * @since 1.4.0
 	 */
 	public function enqueue_marker_animation() {
 		$this->enqueue_script( $this->app->slug_name . '-marker_animation', 'marker-animation.min.js', [
@@ -134,6 +137,8 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	}
 
 	/**
+	 * @since 1.4.0
+	 *
 	 * @param array $setting
 	 * @param string $key
 	 *
@@ -181,12 +186,14 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	/**
 	 * clear options cache
 	 * @since 1.3.0
+	 * @since 1.4.0 Changed: visibility (private to public)
 	 */
 	public function clear_options_cache() {
 		$this->app->option->delete( $this->get_marker_options_cache_key() );
 	}
 
 	/**
+	 * @since 1.4.0
 	 * @return array
 	 */
 	public function get_animation_functions() {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.3.1
+ * @version 1.4.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
@@ -8,6 +8,8 @@
  * @since 1.2.6 Updated: use library method to determine whether gutenberg editor is used
  * @since 1.2.6 Changed: variable name
  * @since 1.3.0 Added: preset color
+ * @since 1.4.0 Deleted: preset color
+ * @since 1.4.0 Added: marker setting feature
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
