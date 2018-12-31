@@ -79,9 +79,9 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 			/** @var Custom_Post\Setting $setting */
 			$setting = Custom_Post\Setting::get_instance( $this->app );
-			foreach ( $setting->get_settings() as $id => $setting ) {
-				if ( $setting['options']['is_button'] ) {
-					$mce_buttons[] = 'marker_animation-' . $id;
+			foreach ( $setting->get_settings( 'editor' ) as $setting ) {
+				if ( $setting['options']['is_valid_button'] ) {
+					$mce_buttons[] = 'marker_animation-' . $setting['id'];
 				}
 			}
 
@@ -140,13 +140,13 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			/** @var Custom_Post\Setting $setting */
 			$setting         = Custom_Post\Setting::get_instance( $this->app );
 			$marker_settings = [];
-			foreach ( $setting->get_settings() as $id => $setting ) {
-				if ( ! $setting['options']['is_button'] ) {
+			foreach ( $setting->get_settings( 'editor' ) as $setting ) {
+				if ( $setting['options']['is_valid_style'] ) {
 					$marker_settings[] = [
 						'title'  => $setting['title'],
 						'inline' => 'span',
 						'icon'   => 'icon highlight-icon',
-						'cmd'    => 'marker_animation_preset_color' . $id,
+						'cmd'    => 'marker_animation_preset_color' . $setting['id'],
 					];
 				}
 			}
@@ -192,7 +192,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'detail_title'          => $this->translate( 'Marker Animation (detail setting)' ),
 			'class'                 => $assets->get_default_marker_animation_class(),
 			'details'               => $assets->get_setting_details( 'editor' ),
-			'settings'              => $setting->get_settings(),
+			'settings'              => $setting->get_settings( 'editor' ),
 			'prefix'                => $assets->get_data_prefix(),
 			'is_valid_color_picker' => $this->app->post->is_valid_tinymce_color_picker(),
 		];

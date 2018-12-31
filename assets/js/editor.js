@@ -23,7 +23,7 @@
     * prefix: string,
     * details: {ignore: boolean, form: string, label: string, value: string, attributes: object}[],
     * is_valid_color_picker: boolean,
-    * settings: {options: {is_button: boolean}, title: string}[]
+    * settings: {id: number, options: {is_valid_button: boolean, is_valid_style: boolean}, title: string}[]
     * }} marker_animation_params */
 
     const added_style = {};
@@ -123,8 +123,8 @@
                 }
             });
 
-            Object.keys(marker_animation_params.settings).forEach(function (id) {
-                addColorSettingButton(ed, id, marker_animation_params.settings[id]);
+            Object.keys(marker_animation_params.settings).forEach(function (key) {
+                addColorSettingButton(ed, marker_animation_params.settings[key]);
             });
 
             ed.on('init', function () {
@@ -144,8 +144,8 @@
                     classes: [marker_animation_params.class],
                     attributes: attrs
                 });
-                Object.keys(marker_animation_params.settings).forEach(function (id) {
-                    addColorSettingFormatter(ed, id, attrs, marker_animation_params.settings[id], defaultStyle);
+                Object.keys(marker_animation_params.settings).forEach(function (key) {
+                    addColorSettingFormatter(ed, attrs, marker_animation_params.settings[key], defaultStyle);
                 });
             });
         },
@@ -330,14 +330,14 @@
     /**
      * add color setting button
      * @param {{}} ed
-     * @param {number} id
-     * @param {{options: {is_button: boolean}, title: string}} setting
+     * @param {{id: number, options: {is_valid_button: boolean, is_valid_style: boolean}, title: string}} setting
      */
-    const addColorSettingButton = function (ed, id, setting) {
+    const addColorSettingButton = function (ed, setting) {
+        const id = setting.id;
         const formatter = 'marker_animation-' + id;
         const class_name = marker_animation_params.class + '-' + id;
 
-        if (setting.options.is_button) {
+        if (setting.options.is_valid_button) {
             ed.addButton(formatter, {
                 title: setting.title,
                 icon: 'icon highlight-icon setting-' + id,
@@ -348,7 +348,8 @@
                     nodeChanged(ed, this, class_name);
                 }
             });
-        } else {
+        }
+        if (setting.options.is_valid_style) {
             ed.addCommand('marker_animation_preset_color' + id, function () {
                 onClick(ed, null, formatter, class_name);
             });
@@ -358,12 +359,12 @@
     /**
      * add color setting formatter
      * @param ed
-     * @param id
      * @param attrs
      * @param setting
      * @param defaultStyle
      */
-    const addColorSettingFormatter = function (ed, id, attrs, setting, defaultStyle) {
+    const addColorSettingFormatter = function (ed, attrs, setting, defaultStyle) {
+        const id = setting.id;
         const formatter = 'marker_animation-' + id;
         const class_name = marker_animation_params.class + '-' + id;
 

@@ -19,7 +19,7 @@ return [
 	'plugin_title'         => 'Marker Animation',
 
 	// db version
-	'db_version'           => '0.0.5',
+	'db_version'           => '0.0.6',
 
 	// twitter
 	'twitter'              => 'technote15',

@@ -18,14 +18,16 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
     (function ($) {
         $(function () {
             let index = 1;
-            /** @var {{settings: {options: {is_button: boolean}}[]}} marker_animation_params */
-            Object.keys(marker_animation_params.settings).forEach(function (id) {
-                const options = marker_animation_params.settings[id].options;
-                if (options.is_button) {
+            /** @var {{settings: {options: {is_valid_button: boolean, is_valid_style: boolean}}[]}} marker_animation_params */
+            Object.keys(marker_animation_params.settings).forEach(function (key) {
+                const setting = marker_animation_params.settings[key];
+                const options = setting.options;
+                if (options.is_valid_button) {
                     $('<style type="text/css">' +
-                        '.mce-btn .highlight-icon.setting-' + id + ' {background-color:' + options.color + '}' +
+                        '.mce-btn .highlight-icon.setting-' + setting.id + ' {background-color:' + options.color + '}' +
                         '</style>').appendTo('head');
-                } else {
+                }
+                if (options.is_valid_style) {
                     $('<style type="text/css">' +
                         '.mce-menu-item:nth-of-type(' + index + ') > .highlight-icon + span {background-color:' + options.color + '}' +
                         '</style>').appendTo('head');

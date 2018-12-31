@@ -123,7 +123,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'version'         => $this->app->get_plugin_version(),
 			'selector'        => $this->get_selector(),
 			'prefix'          => $this->get_data_prefix(),
-			'settings'        => $setting->get_settings(),
+			'settings'        => $setting->get_settings( 'front' ),
 			'animation_class' => $this->get_default_marker_animation_class(),
 		];
 		foreach ( $this->get_setting_details( 'front' ) as $key => $setting ) {
@@ -206,23 +206,23 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	public function get_setting_keys() {
 		return [
-			'is_valid'       => [
+			'is_valid'        => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'target' => [ 'dashboard', 'setting' ],
 				],
 			],
-			'color'          => 'color',
-			'thickness'      => 'input/text',
-			'duration'       => 'input/text',
-			'delay'          => 'input/text',
-			'function'       => [
+			'color'           => 'color',
+			'thickness'       => 'input/text',
+			'duration'        => 'input/text',
+			'delay'           => 'input/text',
+			'function'        => [
 				'form' => 'select',
 				'args' => [
 					'options' => $this->get_animation_functions(),
 				],
 			],
-			'bold'           => [
+			'bold'            => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'attributes' => [
@@ -232,14 +232,23 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 					],
 				],
 			],
-			'repeat'         => 'input/checkbox',
-			'padding_bottom' => 'input/text',
-			'is_button'      => [
-				'form'  => 'input/checkbox',
-				'args'  => [
+			'repeat'          => 'input/checkbox',
+			'padding_bottom'  => 'input/text',
+			'is_valid_button' => [
+				'form' => 'input/checkbox',
+				'args' => [
 					'target' => [ 'setting' ],
+					'value'  => 1,
+					'label'  => $this->translate( 'show' ),
 				],
-				'value' => 1,
+			],
+			'is_valid_style'  => [
+				'form' => 'input/checkbox',
+				'args' => [
+					'target' => [ 'setting' ],
+					'value'  => 0,
+					'label'  => $this->translate( 'show' ),
+				],
 			],
 		];
 	}
@@ -271,7 +280,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	private function get_setting( $name, $form ) {
 		$detail = $this->app->setting->get_setting( $name, true );
-		$value  = $this->app->utility->array_get( is_array( $form ) ? $form : [], 'value', $detail['value'] );
+		$value  = $detail['value'];
 		$ret    = [
 			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',
