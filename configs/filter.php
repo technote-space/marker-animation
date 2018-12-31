@@ -75,4 +75,13 @@ return [
 			'tiny_mce_before_init' => [ 11 ],
 		],
 	],
+
+	'\Marker_Animation\Classes\Models\Custom_Post\Setting' => [
+		'load-edit.php' => [
+			'setup_assets' => [],
+		],
+		'pre_get_posts' => [
+			'pre_get_posts' => [],
+		],
+	],
 ];

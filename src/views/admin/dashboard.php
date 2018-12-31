@@ -34,42 +34,42 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 			<?php endforeach; ?>
         </table>
         <div>
-	        <?php $instance->form( 'input/submit', $args, [
-		        'name'  => 'update',
-		        'value' => 'Update',
-		        'class' => 'button-primary left',
-	        ] ); ?>
-	        <?php $instance->form( 'input/button', $args, [
-		        'name'  => 'reset',
-		        'value' => 'Reset',
-		        'class' => 'button-primary left',
-	        ] ); ?>
+			<?php $instance->form( 'input/submit', $args, [
+				'name'  => 'update',
+				'value' => 'Update',
+				'class' => 'button-primary left',
+			] ); ?>
+			<?php $instance->form( 'input/button', $args, [
+				'name'  => 'reset',
+				'value' => 'Reset',
+				'class' => 'button-primary left',
+			] ); ?>
         </div>
         <div class="marker-setting-preview">
             Hello, Dolly<br>
-            <span class="default-color">Well, hello, Dolly</span><br>
+            <span>Well, hello, Dolly</span><br>
             It's so nice to have you back where you belong<br>
             You're lookin' swell, Dolly<br>
             I can tell, Dolly<br>
-            <span class="preset-color preset-color1">You're still glowin', you're still crowin'</span><br>
+            <span>You're still glowin', you're still crowin'</span><br>
             You're still goin' strong<br>
             I feel the room swayin'<br>
             While the band's playin'<br>
             One of our old favorite songs from way back when<br>
-            <span class="default-color">So, take her wrap, fellas<br>
+            <span>So, take her wrap, fellas<br>
             Dolly, never go away again</span><br>
             Hello, Dolly<br>
             Well, hello, Dolly<br>
             It's so nice to have you back where you belong<br>
-            <span class="preset-color preset-color2"> You're lookin' swell, Dolly<br>
+            <span> You're lookin' swell, Dolly<br>
             I can tell, Dolly<br>
             You're still glowin'</span>, you're still crowin'<br>
             You're still goin' strong<br>
             I feel the room swayin'<br>
-            <span class="default-color">While the band's playin'<br>
+            <span>While the band's playin'<br>
             One of our old favorite songs from way back when</span><br>
             So, golly, gee, fellas<br>
-            <span class="preset-color preset-color3">Have a little faith in me, fellas<br>
+            <span>Have a little faith in me, fellas<br>
             Dolly, never go away</span><br>
             Promise, you'll never go away<br>
             Dolly'll never go away again

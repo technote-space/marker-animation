@@ -70,27 +70,6 @@ return [
 					'label'   => 'padding bottom',
 					'default' => '.6em',
 				],
-				/**
-				 * @since 1.3.0
-				 */
-				'color1'                        => [
-					'label'   => 'preset color1',
-					'default' => '#ff99b4',
-				],
-				/**
-				 * @since 1.3.0
-				 */
-				'color2'                        => [
-					'label'   => 'preset color2',
-					'default' => '#99e3ff',
-				],
-				/**
-				 * @since 1.3.0
-				 */
-				'color3'                        => [
-					'label'   => 'preset color3',
-					'default' => '#99ffa8',
-				],
 			],
 		],
 	],

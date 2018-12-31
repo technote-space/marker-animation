@@ -42,10 +42,11 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			return;
 		}
 
-		$this->add_script_view( 'admin/script/editor', [
+		$this->add_script_view( 'admin/script/params', [
 			'param_name' => 'marker_animation_params',
 			'params'     => $this->get_editor_params(),
 		] );
+		$this->add_script_view( 'admin/script/classic-editor' );
 		$this->_setup_params = true;
 	}
 
@@ -75,6 +76,15 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		if ( $this->_setup_params || $this->app->post->is_block_editor() ) {
 			$mce_buttons[] = 'marker_animation';
 			$mce_buttons[] = 'marker_animation_detail';
+
+			/** @var Custom_Post\Setting $setting */
+			$setting = Custom_Post\Setting::get_instance( $this->app );
+			foreach ( $setting->get_settings() as $id => $setting ) {
+				if ( $setting['options']['is_button'] ) {
+					$mce_buttons[] = 'marker_animation-' . $id;
+				}
+			}
+
 			if ( ! in_array( 'styleselect', $mce_buttons ) ) {
 				array_splice( $mce_buttons, 1, 0, 'styleselect' );
 			}
@@ -127,22 +137,26 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		if ( $this->_setup_params || $this->app->post->is_block_editor() ) {
 			$style_formats = ! empty( $tinymce_settings['style_formats'] ) ? json_decode( $tinymce_settings['style_formats'], true ) : [];
 
-			/** @var Assets $assets */
-			$assets          = Assets::get_instance( $this->app );
+			/** @var Custom_Post\Setting $setting */
+			$setting         = Custom_Post\Setting::get_instance( $this->app );
 			$marker_settings = [];
-			for ( $i = 1, $n = $assets->get_preset_color_count(); $i <= $n; $i ++ ) {
-				$marker_settings[] = [
-					'title'  => $this->translate( 'preset color' . $i ),
-					'inline' => 'span',
-					'icon'   => 'icon highlight-icon',
-					'cmd'    => 'marker_animation_preset_color' . $i,
-				];
+			foreach ( $setting->get_settings() as $id => $setting ) {
+				if ( ! $setting['options']['is_button'] ) {
+					$marker_settings[] = [
+						'title'  => $setting['title'],
+						'inline' => 'span',
+						'icon'   => 'icon highlight-icon',
+						'cmd'    => 'marker_animation_preset_color' . $id,
+					];
+				}
 			}
-			$style_formats[]                   = [
-				'title' => $this->translate( 'Marker Animation' ),
-				'items' => $marker_settings,
-			];
-			$tinymce_settings['style_formats'] = json_encode( $style_formats );
+			if ( ! empty( $marker_settings ) ) {
+				$style_formats[]                   = [
+					'title' => $this->translate( 'Marker Animation' ),
+					'items' => $marker_settings,
+				];
+				$tinymce_settings['style_formats'] = json_encode( $style_formats );
+			}
 		}
 
 		return $tinymce_settings;
@@ -161,6 +175,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'jquery',
 		] );
 		$this->localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
+		$this->add_script_view( 'admin/script/classic-editor' );
 	}
 
 	/**
@@ -169,13 +184,15 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	private function get_editor_params() {
 		/** @var Assets $assets */
 		$assets = Assets::get_instance( $this->app );
+		/** @var Custom_Post\Setting $setting */
+		$setting = Custom_Post\Setting::get_instance( $this->app );
 
 		return [
 			'title'                 => $this->translate( 'Marker Animation' ),
 			'detail_title'          => $this->translate( 'Marker Animation (detail setting)' ),
 			'class'                 => $assets->get_default_marker_animation_class(),
 			'details'               => $assets->get_setting_details( 'editor' ),
-			'preset_color_count'    => $assets->get_preset_color_count(),
+			'settings'              => $setting->get_settings(),
 			'prefix'                => $assets->get_data_prefix(),
 			'is_valid_color_picker' => $this->app->post->is_valid_tinymce_color_picker(),
 		];
