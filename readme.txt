@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 3.9.3
 Tested up to: 5.0.2
 Requires PHP: 5.6
-Stable tag: 1.3.6
+Stable tag: 1.3.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,11 +35,17 @@ This plugin needs PHP5.6 or higher.
 
 == Upgrade Notice ==
 
-* Fixed: suppress error when activate plugin
-* Fixed: suppress error when uninstall plugin
-* Tested: against 5.0.2
+* Fixed: behavior of upgrade
 
 == Changelog ==
+
+= 1.3.8 (2019/1/2) =
+
+* Fixed: behavior of upgrade
+
+= 1.3.7 (2019/1/1) =
+
+* Changed: develop version download url
 
 = 1.3.6 (2018/12/23) =
 

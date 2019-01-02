@@ -4,6 +4,7 @@
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.5 Added: check develop version
+ * @since 1.3.7 Changed: update info file url
  * @since 1.4.0 Changed: use custom post flag
  * @since 1.4.0 Changed: db version
  * @copyright technote All Rights Reserved

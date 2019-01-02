@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Upgrade
  *
- * @version 2.9.8
+ * @version 2.9.9
  * @author technote-space
  * @since 2.4.0
  * @since 2.4.1 Added: show_plugin_update_notices method
@@ -14,6 +14,7 @@
  * @since 2.9.0 Improved: regexp
  * @since 2.9.1 Fixed: compare version
  * @since 2.9.8 Fixed: ignore if first activated
+ * @since 2.9.9 Changed: behavior to get readme file
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -175,14 +176,74 @@ class Upgrade implements \Technote\Interfaces\Loader {
 	}
 
 	/**
-	 * @since 2.4.3
+	 * @since 2.9.9
+	 * @return string|false
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function get_config_readme_url() {
+		$url = $this->app->get_config( 'config', 'readme_file_check_url' );
+		if ( ! empty( $url ) ) {
+			return $url;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @since 2.9.9
+	 * @return string|false
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function get_readme_url_from_update_info_url() {
+		$url = $this->app->get_config( 'config', 'update_info_file_url' );
+		if ( ! empty( $url ) ) {
+			$info = pathinfo( $url );
+
+			return $info['dirname'] . '/readme.txt';
+		}
+
+		return false;
+	}
+
+	/**
+	 * @since 2.9.9
 	 *
-	 * @param string $slug
+	 * @param $slug
 	 *
 	 * @return string
 	 */
-	private function get_plugin_readme( $slug ) {
-		return $this->apply_filters( 'plugin_readme', 'https://plugins.svn.wordpress.org/' . $slug . '/trunk/readme.txt', $slug );
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function get_trunk_readme_url( $slug ) {
+		return $this->apply_filters( 'trunk_readme_url', 'https://plugins.svn.wordpress.org/' . $slug . '/trunk/readme.txt', $slug );
+	}
+
+	/**
+	 * @since 2.9.9
+	 *
+	 * @param $slug
+	 *
+	 * @return array|false
+	 */
+	private function get_upgrade_notice( $slug ) {
+		$notice = $this->apply_filters( 'pre_get_update_notice', false, $slug );
+		if ( is_array( $notice ) ) {
+			return $notice;
+		}
+
+		foreach (
+			[
+				'get_config_readme_url',
+				'get_readme_url_from_update_info_url',
+				'get_trunk_readme_url',
+			] as $method
+		) {
+			$response = wp_safe_remote_get( $this->$method( $slug ) );
+			if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
+				return $this->parse_update_notice( $response['body'] );
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -204,9 +265,8 @@ class Upgrade implements \Technote\Interfaces\Loader {
 		$upgrade_notice = get_transient( $transient_name );
 
 		if ( false === $upgrade_notice ) {
-			$response = wp_safe_remote_get( $this->get_plugin_readme( $slug ) );
-			if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
-				$upgrade_notice = $this->parse_update_notice( $response['body'] );
+			$upgrade_notice = $this->get_upgrade_notice( $slug );
+			if ( $upgrade_notice ) {
 				set_transient( $transient_name, $upgrade_notice, DAY_IN_SECONDS );
 			}
 		}
