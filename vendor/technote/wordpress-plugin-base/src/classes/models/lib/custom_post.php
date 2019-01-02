@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Custom Post
  *
- * @version 2.9.7
+ * @version 2.9.10
  * @author technote-space
  * @since 2.8.0
  * @since 2.8.1 Added: filter settings
@@ -12,6 +12,7 @@
  * @since 2.9.4 Fixed: exclude untrash
  * @since 2.9.7 Changed: move register post type to traits
  * @since 2.9.7 Fixed: capability check
+ * @since 2.9.10 Improved: use user_can wrapper
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -109,9 +110,7 @@ class Custom_Post implements \Technote\Interfaces\Loader, \Technote\Interfaces\U
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function register_post_types() {
-		foreach ( $this->get_custom_posts() as $post ) {
-			$post->register_post_type();
-		}
+		$this->get_custom_posts();
 	}
 
 	/**
@@ -124,7 +123,7 @@ class Custom_Post implements \Technote\Interfaces\Loader, \Technote\Interfaces\U
 	private function manage_posts_columns( $columns, $post_type ) {
 		if ( $this->is_valid_custom_post_type( $post_type ) ) {
 			$custom_post = $this->get_custom_post_type( $post_type );
-			if ( ! $this->app->user_can( $custom_post->get_post_type_object()->cap->edit_others_posts ) ) {
+			if ( ! $custom_post->user_can( 'edit_others_posts' ) ) {
 				unset( $columns['cb'] );
 			}
 			$custom_post = $this->get_custom_post_type( $post_type );
@@ -166,7 +165,7 @@ class Custom_Post implements \Technote\Interfaces\Loader, \Technote\Interfaces\U
 			unset( $actions['edit'] );
 			unset( $actions['clone'] );
 			unset( $actions['edit_as_new_draft'] );
-			if ( ! $this->app->user_can( $custom_post->get_post_type_object()->cap->delete_posts ) ) {
+			if ( ! $custom_post->user_can( 'delete_posts' ) ) {
 				unset( $actions['trash'] );
 			}
 		}
