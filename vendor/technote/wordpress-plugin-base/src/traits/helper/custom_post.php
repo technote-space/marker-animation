@@ -2,7 +2,7 @@
 /**
  * Technote Traits Helper Custom Post
  *
- * @version 2.9.6
+ * @version 2.9.7
  * @author technote-space
  * @since 2.8.0
  * @since 2.8.3
@@ -13,6 +13,8 @@
  * @since 2.9.2 Changed: delete data arg
  * @since 2.9.3 Added: insert, update methods
  * @since 2.9.6 Improved: behavior of column which has default and nullable
+ * @since 2.9.7 Changed: move register post type from model
+ * @since 2.9.7 Fixed: capability check
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -40,6 +42,12 @@ trait Custom_Post {
 	private $_related_data = [];
 
 	/**
+	 * @since 2.9.7
+	 * @var \WP_Post_Type $_post_type_obj
+	 */
+	private $_post_type_obj;
+
+	/**
 	 * @return mixed
 	 */
 	private function apply_custom_post_filters() {
@@ -48,6 +56,34 @@ trait Custom_Post {
 		$args[0] = $this->get_post_type_slug() . '-' . $key;
 
 		return $this->apply_filters( ...$args );
+	}
+
+	/**
+	 * register post type
+	 * @since 2.9.7 Changed: move register post type from model
+	 */
+	public function register_post_type() {
+		$post_type            = $this->get_post_type();
+		$this->_post_type_obj = register_post_type( $post_type, $this->get_post_type_args() );
+		if ( is_wp_error( $this->_post_type_obj ) ) {
+			$this->app->log( $this->_post_type_obj );
+
+			return;
+		}
+		add_filter( "views_edit-{$post_type}", function ( $views ) {
+			unset( $views['mine'] );
+			unset( $views['publish'] );
+
+			return $views;
+		} );
+		add_filter( "bulk_actions-edit-{$post_type}", function ( $actions ) {
+			unset( $actions['edit'] );
+
+			return $actions;
+		} );
+		add_filter( "manage_edit-{$post_type}_sortable_columns", function ( $sortable_columns ) {
+			return $this->manage_posts_columns( $sortable_columns, true );
+		} );
 	}
 
 	/**
@@ -149,6 +185,14 @@ trait Custom_Post {
 	 */
 	public function get_post_type() {
 		return $this->get_slug( 'post_type-' . $this->get_post_type_slug(), '-' . $this->get_post_type_slug() );
+	}
+
+	/**
+	 * @since 2.9.7
+	 * @return \WP_Post_Type
+	 */
+	public function get_post_type_object() {
+		return $this->_post_type_obj;
 	}
 
 	/**
@@ -483,7 +527,7 @@ trait Custom_Post {
 	protected function set_post_data( $data, $post ) {
 		$data['post_title'] = $post->post_title;
 		$data['post']       = $post;
-		if ( $this->app->user_can( 'read_' . $this->get_post_type_slug() ) ) {
+		if ( $this->app->user_can( $this->get_post_type_object()->cap->read_post ) ) {
 			$data['edit_link'] = get_edit_post_link( $post->ID );
 		}
 
@@ -596,13 +640,12 @@ trait Custom_Post {
 			'post_type' => $this->get_post_type(),
 		] );
 		$posts    = $this->app->utility->array_combine( $posts, 'ID' );
-		$editable = $this->app->user_can( 'read_' . $this->get_post_type_slug() );
 
 		return [
 			'total'      => $total,
 			'total_page' => $total_page,
 			'page'       => $page,
-			'data'       => array_map( function ( $d ) use ( $posts, $editable ) {
+			'data'       => array_map( function ( $d ) use ( $posts ) {
 				return $this->filter_item( $this->set_post_data( $d, $posts[ $d['post_id'] ] ) );
 			}, $list ),
 		];
