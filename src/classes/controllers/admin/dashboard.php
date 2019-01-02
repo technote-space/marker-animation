@@ -1,10 +1,11 @@
 <?php
 /**
- * @version 1.3.0
+ * @version 1.4.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
  * @since 1.3.0 Added: preset color
+ * @since 1.4.0 Improved: refactoring
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -54,13 +55,9 @@ class Dashboard extends \Technote\Classes\Controllers\Admin\Base {
 	protected function common_action() {
 		$this->setup_color_picker();
 
-		$this->enqueue_script( $this->app->slug_name . '-marker_animation', 'marker-animation.min.js', [
-			'jquery',
-		] );
-
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
-		$this->localize_script( $this->app->slug_name . '-marker_animation', $assets->get_marker_object_name(), [ 'preset_color_count' => $assets->get_preset_color_count() ] );
+		$assets->enqueue_marker_animation();
 	}
 
 	/**

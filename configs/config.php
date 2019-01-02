@@ -1,10 +1,12 @@
 <?php
 /**
- * @version 1.3.7
+ * @version 1.4.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.5 Added: check develop version
  * @since 1.3.7 Changed: update info file url
+ * @since 1.4.0 Changed: use custom post flag
+ * @since 1.4.0 Changed: db version
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -20,7 +22,7 @@ return [
 	'plugin_title'         => 'Marker Animation',
 
 	// db version
-	'db_version'           => '0.0.1',
+	'db_version'           => '0.0.7',
 
 	// twitter
 	'twitter'              => 'technote15',
@@ -36,5 +38,8 @@ return [
 
 	// update
 	'update_info_file_url' => 'https://raw.githubusercontent.com/technote-space/marker-animation/develop/update.json',
+
+	// use custom post
+	'use_custom_post'      => true,
 
 ];

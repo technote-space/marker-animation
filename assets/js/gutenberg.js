@@ -1,9 +1,10 @@
 /**
- * @version 1.3.1
+ * @version 1.4.0
  * @author technote-space
  * @since 1.1.4
  * @since 1.2.4 Fixed: for IE11
  * @since 1.3.1 Fixed: preset color style
+ * @since 1.4.0 Changed: moved classic editor style
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -16,9 +17,8 @@
     * detail_title: string,
     * class: string,
     * prefix: string,
-    * details: {ignore: boolean, ignore_editor: boolean, form: string, label: string, value: string, attributes: object}[],
+    * details: {ignore: boolean, form: string, label: string, value: string, attributes: object}[],
     * is_valid_color_picker: boolean,
-    * preset_color_count: number
     * }} marker_animation_params */
 
     const el = element.createElement;
@@ -40,15 +40,6 @@
                 isActive: args.isActive,
             });
         },
-    });
-
-    $(function () {
-        /** @var {{preset_color_count: number, details: {}}} marker_animation_params */
-        for (let i = 1; i <= marker_animation_params.preset_color_count; i++) {
-            $('<style type="text/css">' +
-                '.mce-menu-item:nth-of-type(' + i + ') > .highlight-icon + span {background-color:' + marker_animation_params.details['color' + i].value + '}' +
-                '</style>').appendTo('head');
-        }
     });
 }(
     window.wp.richText,
