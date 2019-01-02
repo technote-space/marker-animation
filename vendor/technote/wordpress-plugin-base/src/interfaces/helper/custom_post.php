@@ -2,7 +2,7 @@
 /**
  * Technote Interfaces Helper Custom Post
  *
- * @version 2.9.7
+ * @version 2.9.10
  * @author technote-space
  * @since 2.8.0
  * @since 2.9.0 Changed: implements Singleton, Validate
@@ -10,6 +10,8 @@
  * @since 2.9.2 Changed: delete data arg
  * @since 2.9.3 Added: insert, update methods
  * @since 2.9.7 Added: get_post_type_object method
+ * @since 2.9.10 Changed: return type
+ * @since 2.9.10 Added: user_can method
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -65,9 +67,19 @@ interface Custom_Post extends \Technote\Interfaces\Singleton, \Technote\Interfac
 
 	/**
 	 * @since 2.9.7
-	 * @return \WP_Post_Type
+	 * @since 2.9.10 Changed: return type
+	 * @return \WP_Post_Type|\WP_Error
 	 */
 	public function get_post_type_object();
+
+	/**
+	 * @since 2.9.10
+	 *
+	 * @param $capability
+	 *
+	 * @return bool
+	 */
+	public function user_can( $capability );
 
 	/**
 	 * @param null|array $capabilities

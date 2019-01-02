@@ -2,7 +2,7 @@
 /**
  * Technote Traits Helper Custom Post
  *
- * @version 2.9.7
+ * @version 2.9.10
  * @author technote-space
  * @since 2.8.0
  * @since 2.8.3
@@ -15,6 +15,7 @@
  * @since 2.9.6 Improved: behavior of column which has default and nullable
  * @since 2.9.7 Changed: move register post type from model
  * @since 2.9.7 Fixed: capability check
+ * @since 2.9.10 Added: user_can method
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -43,9 +44,18 @@ trait Custom_Post {
 
 	/**
 	 * @since 2.9.7
-	 * @var \WP_Post_Type $_post_type_obj
+	 * @since 2.9.10 Changed: type
+	 * @var \WP_Post_Type|\WP_Error $_post_type_obj
 	 */
 	private $_post_type_obj;
+
+	/**
+	 * initialized
+	 * @since 2.9.10
+	 */
+	protected function initialized() {
+		$this->register_post_type();
+	}
 
 	/**
 	 * @return mixed
@@ -61,8 +71,9 @@ trait Custom_Post {
 	/**
 	 * register post type
 	 * @since 2.9.7 Changed: move register post type from model
+	 * @since 2.9.10 Changed: visibility (public to private)
 	 */
-	public function register_post_type() {
+	private function register_post_type() {
 		$post_type            = $this->get_post_type();
 		$this->_post_type_obj = register_post_type( $post_type, $this->get_post_type_args() );
 		if ( is_wp_error( $this->_post_type_obj ) ) {
@@ -189,10 +200,26 @@ trait Custom_Post {
 
 	/**
 	 * @since 2.9.7
-	 * @return \WP_Post_Type
+	 * @since 2.9.10 Changed: return type
+	 * @return \WP_Post_Type|\WP_Error
 	 */
 	public function get_post_type_object() {
 		return $this->_post_type_obj;
+	}
+
+	/**
+	 * @since 2.9.10
+	 *
+	 * @param $capability
+	 *
+	 * @return bool
+	 */
+	public function user_can( $capability ) {
+		if ( ! ( $this->_post_type_obj instanceof \WP_Post_Type ) ) {
+			return false;
+		}
+
+		return ! empty( $this->_post_type_obj->cap->$capability );
 	}
 
 	/**
@@ -527,7 +554,7 @@ trait Custom_Post {
 	protected function set_post_data( $data, $post ) {
 		$data['post_title'] = $post->post_title;
 		$data['post']       = $post;
-		if ( $this->app->user_can( $this->get_post_type_object()->cap->read_post ) ) {
+		if ( $this->user_can( 'read_post' ) ) {
 			$data['edit_link'] = get_edit_post_link( $post->ID );
 		}
 
