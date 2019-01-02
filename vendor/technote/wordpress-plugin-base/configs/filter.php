@@ -72,16 +72,13 @@ return [
 	 * @since 2.4.0
 	 */
 	'upgrade'   => [
-		'${prefix}app_activated'    => [
-			'upgrade' => [],
-		],
-		'upgrader_process_complete' => [
+		'init'       => [
 			'upgrade' => [],
 		],
 		/**
 		 * @since 2.6.0
 		 */
-		'admin_init'                => [
+		'admin_init' => [
 			'setup_update' => [],
 		],
 	],

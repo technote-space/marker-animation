@@ -44,6 +44,9 @@ return [
 	// update
 	'update_info_file_url'      => '',
 
+	// readme
+	'readme_file_check_url'     => '',
+
 	// menu image url
 	'menu_image'                => '',
 
