@@ -354,6 +354,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 						] as $k => $v
 					) {
 						$color = $this->app->get_option( $this->get_filter_prefix() . 'color' . $k, $v );
+						empty( $color ) and $color = $v;
 						$this->insert( [
 							'post_title' => $this->translate( 'preset color' . $k ),
 							'color'      => $color,
