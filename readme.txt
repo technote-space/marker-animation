@@ -31,7 +31,10 @@ This plugin needs PHP5.6 or higher.
 2. Settings
 3. Editor(on animation)
 4. Editor(off animation)
-5. Editor(preset color)
+5. Marker setting
+6. Marker setting list
+7. Use button setting
+8. Use style menu setting
 
 == Upgrade Notice ==
 
