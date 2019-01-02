@@ -40,10 +40,14 @@ This plugin needs PHP5.6 or higher.
 
 == Changelog ==
 
-= 1.4.0 (2019/1/1) =
+= 1.4.0 (2019/1/2) =
 
 * Deleted: preset color
 * Added: marker setting feature
+
+= 1.3.8 (2019/1/2) =
+
+* Fixed: behavior of upgrade
 
 = 1.3.7 (2019/1/1) =
 
