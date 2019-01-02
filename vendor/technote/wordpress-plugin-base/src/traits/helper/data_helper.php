@@ -2,12 +2,13 @@
 /**
  * Technote Traits Helper Data Helper
  *
- * @version 2.9.6
+ * @version 2.9.10
  * @author technote-space
  * @since 2.8.0
  * @since 2.8.3 Changed: move parse_db_type to utility
  * @since 2.9.0 Changed: move validation methods to Validate
  * @since 2.9.6 Fixed: return null if param = null (sanitize_input)
+ * @since 2.9.10 Fixed: return false if type = bool and param = null (sanitize_input)
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -54,9 +55,6 @@ trait Data_Helper {
 	 * @return mixed
 	 */
 	protected function sanitize_input( $param, $type ) {
-		if ( is_null( $param ) ) {
-			return $param;
-		}
 		switch ( $type ) {
 			case 'int':
 				if ( ! is_int( $param ) && ! ctype_digit( ltrim( $param, '-' ) ) ) {
@@ -73,6 +71,9 @@ trait Data_Helper {
 				$param -= 0;
 				break;
 			case 'bool':
+				// bool 以外は $param = null は null
+				// bool は !nullable (checkboxにチェックを入れたか入れてないかの二値しか取れない想定のため)
+				// したがって is_null のチェックはしない(null は false)
 				if ( is_string( $param ) ) {
 					$param = strtolower( trim( $param ) );
 					if ( $param === 'true' ) {
@@ -89,6 +90,9 @@ trait Data_Helper {
 				}
 				break;
 			default:
+				if ( is_null( $param ) ) {
+					return null;
+				}
 				break;
 		}
 
