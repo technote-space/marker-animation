@@ -241,19 +241,23 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'repeat'          => 'input/checkbox',
 			'padding_bottom'  => 'input/text',
 			'is_valid_button' => [
-				'form' => 'input/checkbox',
-				'args' => [
+				'form'   => 'input/checkbox',
+				'args'   => [
 					'target' => [ 'setting' ],
-					'value'  => 1,
-					'label'  => $this->translate( 'show' ),
+				],
+				'detail' => [
+					'value' => 1,
+					'label' => $this->translate( 'show' ),
 				],
 			],
 			'is_valid_style'  => [
-				'form' => 'input/checkbox',
-				'args' => [
+				'form'   => 'input/checkbox',
+				'args'   => [
 					'target' => [ 'setting' ],
-					'value'  => 0,
-					'label'  => $this->translate( 'show' ),
+				],
+				'detail' => [
+					'value' => 0,
+					'label' => $this->translate( 'show' ),
 				],
 			],
 		];
@@ -285,17 +289,17 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 * @return array
 	 */
 	private function get_setting( $name, $form ) {
-		$detail = $this->app->setting->get_setting( $name, true );
-		$value  = $detail['value'];
+		$detail = $this->app->utility->array_get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
+		$value  = $this->app->utility->array_get( $detail, 'value' );
 		$ret    = [
 			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',
 			'name'       => $this->get_name_prefix() . $name,
 			'value'      => $value,
-			'label'      => $this->translate( $detail['label'] ),
+			'label'      => $this->translate( $this->app->utility->array_get( $detail, 'label', $name ) ),
 			'attributes' => [
 				'data-value'   => $value,
-				'data-default' => $detail['default'],
+				'data-default' => $this->app->utility->array_get( $detail, 'default' ),
 			],
 			'detail'     => $detail,
 		];
