@@ -38,7 +38,7 @@ This plugin needs PHP5.6 or higher.
 
 == Upgrade Notice ==
 
-* 翻訳の修正
+* 翻訳の修正 (新規投稿を追加, Updated 設定 data.)
 
 == Changelog ==
 
