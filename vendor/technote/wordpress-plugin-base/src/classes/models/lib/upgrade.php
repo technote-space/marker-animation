@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Upgrade
  *
- * @version 2.9.9
+ * @version 2.9.11
  * @author technote-space
  * @since 2.4.0
  * @since 2.4.1 Added: show_plugin_update_notices method
@@ -15,6 +15,7 @@
  * @since 2.9.1 Fixed: compare version
  * @since 2.9.8 Fixed: ignore if first activated
  * @since 2.9.9 Changed: behavior to get readme file
+ * @since 2.9.11 Added: upgrade log
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -48,8 +49,11 @@ class Upgrade implements \Technote\Interfaces\Loader {
 			return;
 		}
 
+		$this->app->log( sprintf( $this->translate( 'upgrade: %s to %s' ), $last_version, $this->app->get_plugin_version() ) );
+
 		try {
 			$upgrades = [];
+			$count    = 0;
 			foreach ( $this->get_class_list() as $class ) {
 				/** @var \Technote\Interfaces\Upgrade $class */
 				foreach ( $class->get_upgrade_methods() as $items ) {
@@ -68,8 +72,12 @@ class Upgrade implements \Technote\Interfaces\Loader {
 						continue;
 					}
 					$upgrades[ $version ][] = is_callable( $callback ) ? $callback : [ $class, $callback ];
+					$count ++;
 				}
 			}
+
+			$this->app->log( sprintf( $this->translate( 'total upgrade process count: %d' ), $count ) );
+
 			if ( empty( $upgrades ) ) {
 				return;
 			}
@@ -79,6 +87,7 @@ class Upgrade implements \Technote\Interfaces\Loader {
 				foreach ( $items as $item ) {
 					call_user_func( $item );
 				}
+				$this->app->log( sprintf( $this->translate( 'upgrade process count of version %s: %d' ), $version, count( $items ) ) );
 			}
 		} catch ( \Exception $e ) {
 			$this->app->log( $e );

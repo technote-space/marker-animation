@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: marker-animation\n"
 "POT-Creation-Date: 2018-07-01 17:47+0900\n"
-"PO-Revision-Date: 2019-01-01 03:11+0900\n"
+"PO-Revision-Date: 2019-01-06 18:16+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -118,23 +118,8 @@ msgstr "設定"
 msgid "Settings"
 msgstr "設定"
 
-msgid "All Settings"
-msgstr "設定管理"
-
-msgid "Add Setting"
-msgstr "設定を追加"
-
-msgid "Edit Setting"
-msgstr "設定を編集"
-
-msgid "Search Settings"
-msgstr "設定を検索"
-
-msgid "No Settings found."
-msgstr "設定情報が見つかりません。"
-
-msgid "No Settings found in Trash."
-msgstr "ゴミ箱に設定情報が見つかりません。"
+msgid "All %s"
+msgstr "%s管理"
 
 msgid "Value is required."
 msgstr "必須項目です。"

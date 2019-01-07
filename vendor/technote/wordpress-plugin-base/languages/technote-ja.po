@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: technote\n"
 "POT-Creation-Date: 2018-07-01 17:47+0900\n"
-"PO-Revision-Date: 2018-12-28 04:32+0900\n"
+"PO-Revision-Date: 2019-01-06 18:25+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -216,3 +216,27 @@ msgstr "確認の値が一致しません。"
 
 msgid "Input value is too long."
 msgstr "入力された文字列は長すぎます。"
+
+msgid "Updated %s data."
+msgstr "%sデータを更新しました。"
+
+msgid "Add New"
+msgstr "新規追加"
+
+msgid "All %s"
+msgstr "全ての%s"
+
+msgid "Add New %s"
+msgstr "%sを新規追加"
+
+msgid "Edit %s"
+msgstr "%sを編集"
+
+msgid "Search %s"
+msgstr "%sを検索"
+
+msgid "No %s found."
+msgstr "%sが見つかりません。"
+
+msgid "No %s found in Trash."
+msgstr "ゴミ箱に%sが見つかりません。"
