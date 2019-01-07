@@ -2,7 +2,7 @@
 /**
  * Technote Traits Helper Custom Post
  *
- * @version 2.9.10
+ * @version 2.9.11
  * @author technote-space
  * @since 2.8.0
  * @since 2.8.3
@@ -16,6 +16,7 @@
  * @since 2.9.7 Changed: move register post type from model
  * @since 2.9.7 Fixed: capability check
  * @since 2.9.10 Added: user_can method
+ * @since 2.9.11 Changed: translation
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -263,19 +264,24 @@ trait Custom_Post {
 	}
 
 	/**
+	 * @since 2.9.11 Changed: translation
 	 * @return array
 	 */
 	public function get_post_type_labels() {
+		$plural_name = $this->app->translate( $this->get_post_type_plural_name() );
+		$single_name = $this->app->translate( $this->get_post_type_single_name() );
+
 		return $this->apply_custom_post_filters( 'labels', [
-			'name'               => $this->app->translate( $this->get_post_type_plural_name() ),
-			'singular_name'      => $this->app->translate( $this->get_post_type_single_name() ),
-			'menu_name'          => $this->app->translate( $this->get_post_type_plural_name() ),
-			'all_items'          => $this->app->translate( 'All ' . $this->get_post_type_plural_name() ),
-			'add_new'            => $this->app->translate( 'Add ' . $this->get_post_type_single_name() ),
-			'edit_item'          => $this->app->translate( 'Edit ' . $this->get_post_type_single_name() ),
-			'search_items'       => $this->app->translate( 'Search ' . $this->get_post_type_plural_name() ),
-			'not_found'          => $this->app->translate( 'No ' . $this->get_post_type_plural_name() . ' found.' ),
-			'not_found_in_trash' => $this->app->translate( 'No ' . $this->get_post_type_plural_name() . ' found in Trash.' ),
+			'name'               => $plural_name,
+			'singular_name'      => $single_name,
+			'menu_name'          => $plural_name,
+			'all_items'          => sprintf( $this->app->translate( 'All %s' ), $plural_name ),
+			'add_new'            => $this->app->translate( 'Add New' ),
+			'add_new_item'       => sprintf( $this->app->translate( 'Add New %s' ), $single_name ),
+			'edit_item'          => sprintf( $this->app->translate( 'Edit %s' ), $single_name ),
+			'search_items'       => sprintf( $this->app->translate( 'Search %s' ), $plural_name ),
+			'not_found'          => sprintf( $this->app->translate( 'No %s found.' ), $plural_name ),
+			'not_found_in_trash' => sprintf( $this->app->translate( 'No %s found in Trash.' ), $plural_name ),
 		] );
 	}
 
