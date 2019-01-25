@@ -11,23 +11,3 @@
 if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 	return;
 }
-
-add_filter( 'marker_animation-get_help_contents', function ( $contents, $slug ) {
-	if ( 'setting' === $slug ) {
-		return [];
-	}
-
-	return $contents;
-}, 10, 2 );
-
-add_filter( 'marker_animation-setting_page_title', function () {
-	return 'Detail Settings';
-} );
-
-add_filter( 'marker_animation-setting_page_priority', function () {
-	return 100;
-} );
-
-add_filter( 'marker_animation-get_setting_menu_slug', function () {
-	return 'dashboard';
-} );

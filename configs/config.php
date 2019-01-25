@@ -18,28 +18,36 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 
 return [
 
-	// plugin title
-	'plugin_title'         => 'Marker Animation',
-
 	// db version
-	'db_version'           => '0.0.7',
+	'db_version'                     => '0.0.7',
 
 	// twitter
-	'twitter'              => 'technote15',
+	'twitter'                        => 'technote15',
 
 	// github
-	'github'               => 'technote-space',
+	'github'                         => 'technote-space',
 
 	// contact url
-	'contact_url'          => 'https://technote.space/contact/',
+	'contact_url'                    => 'https://technote.space/contact/',
 
 	// menu image url
-	'menu_image'           => 'icon-24x24.png',
+	'menu_image'                     => 'icon-24x24.png',
 
 	// update
-	'update_info_file_url' => 'https://raw.githubusercontent.com/technote-space/marker-animation/develop/update.json',
+	'update_info_file_url'           => 'https://raw.githubusercontent.com/technote-space/marker-animation/develop/update.json',
 
 	// use custom post
-	'use_custom_post'      => true,
+	'use_custom_post'                => true,
 
+	// suppress setting help contents
+	'suppress_setting_help_contents' => true,
+
+	// setting page title
+	'setting_page_title'             => 'Detail Settings',
+
+	// setting page priority
+	'setting_page_priority'          => 100,
+
+	// setting page slug
+	'setting_page_slug'              => 'dashboard',
 ];
