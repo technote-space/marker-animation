@@ -31,6 +31,20 @@ class Utility implements \Technote\Interfaces\Singleton {
 	use \Technote\Traits\Singleton;
 
 	/**
+	 * @since 2.10.0
+	 * @var array $_replace_time
+	 */
+	private static $_replace_time;
+
+	/**
+	 * @since 2.10.0
+	 * @return bool
+	 */
+	protected static function is_shared_class() {
+		return true;
+	}
+
+	/**
 	 * @param array $array
 	 * @param bool $preserve_keys
 	 *
@@ -218,9 +232,8 @@ class Utility implements \Technote\Interfaces\Singleton {
 	 * @return string
 	 */
 	public function replace_time( $string ) {
-		$time = $this->app->get_shared_object( '_replace_time', 'all' );
-		if ( ! isset( $time ) ) {
-			$time = [];
+		if ( ! isset( self::$_replace_time ) ) {
+			self::$_replace_time = [];
 			foreach (
 				[
 					'Y',
@@ -237,12 +250,11 @@ class Utility implements \Technote\Interfaces\Singleton {
 					's',
 				] as $t
 			) {
-				$time[ $t ] = date_i18n( $t );
+				self::$_replace_time[ $t ] = date_i18n( $t );
 			}
-			$this->app->set_shared_object( '_replace_time', $time, 'all' );
 		}
 
-		return $this->replace( $string, $time );
+		return $this->replace( $string, self::$_replace_time );
 	}
 
 	/**
@@ -370,7 +382,7 @@ class Utility implements \Technote\Interfaces\Singleton {
 	 * @return array
 	 */
 	private function parse_backtrace_args( $args ) {
-		return $this->app->utility->array_map( $args, function ( $d ) {
+		return $this->array_map( $args, function ( $d ) {
 			$type = gettype( $d );
 			if ( 'array' === $type ) {
 				return $this->parse_backtrace_args( $d );

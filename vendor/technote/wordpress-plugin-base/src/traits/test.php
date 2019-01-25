@@ -2,10 +2,11 @@
 /**
  * Technote Traits Test
  *
- * @version 2.0.0
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -21,13 +22,17 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Trait Test
  * @package Technote\Traits
  * @property \Technote $app
+ * @mixin \PHPUnit\Framework\TestCase
  */
 trait Test {
 
 	use Singleton, Hook;
 
-	/** @var array $objects */
-	private $objects = [];
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array $_objects
+	 */
+	private $_objects = [];
 
 	/**
 	 * Test constructor.
@@ -71,20 +76,20 @@ trait Test {
 	 * @param mixed $obj
 	 */
 	protected function dump( $obj ) {
-		$this->objects[] = print_r( $obj, true );
+		$this->_objects[] = print_r( $obj, true );
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function has_dump_objects() {
-		return ! empty( $this->objects );
+		return ! empty( $this->_objects );
 	}
 
 	/**
 	 * @return array
 	 */
 	public function get_dump_objects() {
-		return $this->objects;
+		return $this->_objects;
 	}
 }

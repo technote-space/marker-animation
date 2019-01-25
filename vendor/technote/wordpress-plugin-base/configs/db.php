@@ -2,11 +2,12 @@
 /**
  * Technote Configs Db
  *
- * @version 2.9.0
+ * @version 2.9.13
  * @author technote-space
  * @since 1.0.0
  * @since 2.7.0 Added: __log table
  * @since 2.9.0 Added: level column to __log
+ * @since 2.9.13 Added: versions
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -64,32 +65,46 @@ return [
 			/**
 			 * @since 2.9.0
 			 */
-			'level'          => [
+			'level'             => [
 				'type' => 'VARCHAR(32)',
 				'null' => false,
 			],
-			'message'        => [
+			'message'           => [
 				'type' => 'TEXT',
 				'null' => false,
 			],
-			'context'        => [
+			'context'           => [
 				'type' => 'LONGTEXT',
 				'null' => true,
 			],
-			'file'           => [
+			'file'              => [
 				'type' => 'VARCHAR(255)',
 				'null' => true,
 			],
-			'line'           => [
+			'line'              => [
 				'type'     => 'INT(11)',
 				'unsigned' => true,
 				'null'     => true,
 			],
-			'lib_version'    => [
+			'lib_version'       => [
 				'type' => 'VARCHAR(32)',
 				'null' => false,
 			],
-			'plugin_version' => [
+			'plugin_version'    => [
+				'type' => 'VARCHAR(32)',
+				'null' => false,
+			],
+			/**
+			 * @since 2.9.13
+			 */
+			'php_version'       => [
+				'type' => 'VARCHAR(32)',
+				'null' => false,
+			],
+			/**
+			 * @since 2.9.13
+			 */
+			'wordpress_version' => [
 				'type' => 'VARCHAR(32)',
 				'null' => false,
 			],

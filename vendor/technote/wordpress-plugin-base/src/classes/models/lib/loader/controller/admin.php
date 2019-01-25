@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Loader Controller Admin
  *
- * @version 2.9.0
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
@@ -10,6 +10,8 @@
  * @since 2.7.0 Changed: log message
  * @since 2.8.0 Changed: visibility of get_menu_slug
  * @since 2.9.0 Improved: regexp
+ * @since 2.9.12 Improved: enable to set page slug setting from config
+ * @since 2.10.0 Improved: submenu order
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -30,8 +32,17 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 
 	use \Technote\Traits\Loader, \Technote\Traits\Nonce;
 
-	/** @var array $messages */
-	private $messages = [];
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array $_messages
+	 */
+	private $_messages = [];
+
+	/**
+	 * @since 2.10.0
+	 * @var \Technote\Classes\Controllers\Admin\Base[] $_pages
+	 */
+	private $_pages = [];
 
 	/**
 	 * @since 2.3.0
@@ -42,10 +53,11 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	];
 
 	/**
+	 * @since 2.9.12 Improved: config setting
 	 * @return string
 	 */
-	private function get_setting_slug() {
-		return $this->apply_filters( 'get_setting_slug', 'setting' );
+	protected function get_setting_slug() {
+		return $this->apply_filters( 'get_setting_slug', $this->app->get_config( 'config', 'setting_page_slug' ) );
 	}
 
 	/**
@@ -114,11 +126,11 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 			$this->do_action( 'post_load_admin_page', $this->page );
 		}
 
-		$pages = [];
+		$this->_pages = [];
 		foreach ( $this->get_class_list() as $page ) {
 			/** @var \Technote\Classes\Controllers\Admin\Base $page */
 			if ( $this->app->user_can( $this->apply_filters( 'admin_menu_capability', $page->get_capability(), $page ) ) ) {
-				$pages[] = $page;
+				$this->_pages[] = $page;
 			}
 		}
 
@@ -144,7 +156,7 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 		} );
 
 		/** @var \Technote\Classes\Controllers\Admin\Base $page */
-		foreach ( $this->app->utility->flatten( $pages ) as $page ) {
+		foreach ( $this->_pages as $page ) {
 			$hook = add_submenu_page(
 				$this->get_menu_slug(),
 				$this->app->translate( $page->get_page_title() ),
@@ -161,6 +173,66 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 				} );
 			}
 		}
+	}
+
+	/**
+	 * sort menu
+	 * @since 2.10.0
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function sort_menu() {
+		if ( ! $this->app->get_config( 'config', 'use_custom_post' ) ) {
+			return;
+		}
+
+		global $submenu;
+		$slug = $this->get_menu_slug();
+		if ( empty( $submenu[ $slug ] ) ) {
+			return;
+		}
+
+		$pages = $this->app->utility->array_map( $this->_pages, function ( $p ) {
+			/** @var \Technote\Classes\Controllers\Admin\Base $p */
+			return $this->get_page_prefix() . $p->get_page_slug();
+		} );
+		$pages = array_combine( $pages, $this->_pages );
+
+		/** @var \Technote\Classes\Models\Lib\Custom_Post $custom_post */
+		$custom_post = \Technote\Classes\Models\Lib\Custom_Post::get_instance( $this->app );
+		$types       = $custom_post->get_custom_posts();
+		$types       = array_combine( $this->app->utility->array_map( $types, function ( $p ) {
+			/** @var \Technote\Interfaces\Helper\Custom_Post $p */
+			return "edit.php?post_type={$p->get_post_type()}";
+		} ), $types );
+
+		$sort = [];
+		foreach ( $submenu[ $slug ] as $item ) {
+			if ( isset( $pages[ $item[2] ] ) ) {
+				/** @var \Technote\Classes\Controllers\Admin\Base $p */
+				$p = $pages[ $item[2] ];
+				if ( method_exists( $p, 'get_load_priority' ) ) {
+					$priority = $p->get_load_priority();
+				} else {
+					$priority = 10;
+				}
+				$sort[] = $priority;
+			} elseif ( isset( $types[ $item[2] ] ) ) {
+				/** @var \Technote\Interfaces\Helper\Custom_Post $p */
+				$p = $types[ $item[2] ];
+				if ( method_exists( $p, 'get_load_priority' ) ) {
+					$priority = $p->get_load_priority();
+				} else {
+					$priority = 10;
+				}
+				$sort[] = $priority;
+			} else {
+				$sort[] = 10;
+			}
+		}
+		if ( count( $sort ) !== count( $submenu[ $slug ] ) ) {
+			return;
+		}
+		array_multisort( $sort, $submenu[ $slug ] );
 	}
 
 	/**
@@ -233,7 +305,7 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	private function admin_notice() {
 		if ( $this->app->user_can( $this->app->get_config( 'capability', 'admin_notice_capability', 'manage_options' ) ) ) {
 			$this->get_view( 'admin/include/notice', [
-				'messages' => $this->messages,
+				'messages' => $this->_messages,
 			], true );
 		}
 	}
@@ -245,6 +317,6 @@ class Admin implements \Technote\Interfaces\Loader, \Technote\Interfaces\Nonce {
 	 * @param bool $error
 	 */
 	public function add_message( $message, $group = '', $error = false, $escape = true ) {
-		$this->messages[ $group ][ $error ? 'error' : 'updated' ][] = [ $message, $escape ];
+		$this->_messages[ $group ][ $error ? 'error' : 'updated' ][] = [ $message, $escape ];
 	}
 }

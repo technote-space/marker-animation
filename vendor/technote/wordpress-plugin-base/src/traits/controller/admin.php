@@ -2,10 +2,11 @@
 /**
  * Technote Traits Controller Admin
  *
- * @version 2.0.0
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -26,8 +27,11 @@ trait Admin {
 
 	use \Technote\Traits\Controller, \Technote\Traits\Nonce;
 
-	/** @var string $relative_namespace */
-	private $relative_namespace;
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var string $_relative_namespace
+	 */
+	private $_relative_namespace;
 
 	/**
 	 * @return string
@@ -45,14 +49,14 @@ trait Admin {
 	 * @param string $relative_namespace
 	 */
 	public function set_relative_namespace( $relative_namespace ) {
-		$this->relative_namespace = $relative_namespace;
+		$this->_relative_namespace = $relative_namespace;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function get_page_slug() {
-		return str_replace( '\\', '-', strtolower( $this->relative_namespace ) ) . $this->get_file_slug();
+		return str_replace( '\\', '-', strtolower( $this->_relative_namespace ) ) . $this->get_file_slug();
 	}
 
 	/**

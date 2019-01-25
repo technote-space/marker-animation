@@ -2,11 +2,12 @@
 /**
  * Technote mock
  *
- * @version 2.1.0
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.1.0 Changed: load textdomain from plugin data
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -29,8 +30,11 @@ define( 'TECHNOTE_IS_MOCK', true );
  */
 class Technote {
 
-	/** @var array */
-	private static $instances = array();
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array
+	 */
+	private static $_instances = array();
 
 	/** @var string $original_plugin_name */
 	public $original_plugin_name;
@@ -149,11 +153,11 @@ class Technote {
 	 * @return Technote
 	 */
 	public static function get_instance( $plugin_name, $plugin_file ) {
-		if ( ! isset( static::$instances[ $plugin_name ] ) ) {
-			static::$instances[ $plugin_name ] = new static( $plugin_name, $plugin_file );
+		if ( ! isset( self::$_instances[ $plugin_name ] ) ) {
+			self::$_instances[ $plugin_name ] = new static( $plugin_name, $plugin_file );
 		}
 
-		return static::$instances[ $plugin_name ];
+		return self::$_instances[ $plugin_name ];
 	}
 
 	/**

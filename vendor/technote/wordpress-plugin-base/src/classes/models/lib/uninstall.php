@@ -2,13 +2,14 @@
 /**
  * Technote Classes Models Lib Uninstall
  *
- * @version 2.6.0
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.0.2 Added: Uninstall priority
  * @since 2.3.1 Changed: not load uninstall if not required
  * @since 2.6.0 Fixed: search uninstall file namespace
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -28,8 +29,11 @@ class Uninstall implements \Technote\Interfaces\Loader {
 
 	use \Technote\Traits\Loader;
 
-	/** @var array $uninstall */
-	private $uninstall = [];
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array $_uninstall
+	 */
+	private $_uninstall = [];
 
 	/**
 	 * register uninstall
@@ -62,7 +66,7 @@ class Uninstall implements \Technote\Interfaces\Loader {
 	 * uninstall
 	 */
 	public function uninstall() {
-		$uninstall = $this->uninstall;
+		$uninstall = $this->_uninstall;
 		ksort( $uninstall );
 		if ( ! is_multisite() ) {
 			foreach ( $uninstall as $priority => $items ) {
@@ -91,7 +95,7 @@ class Uninstall implements \Technote\Interfaces\Loader {
 			switch_to_blog( $current_blog_id );
 		}
 
-		$this->uninstall = [];
+		$this->_uninstall = [];
 	}
 
 	/**
@@ -101,6 +105,6 @@ class Uninstall implements \Technote\Interfaces\Loader {
 	 * @param int $priority
 	 */
 	public function add_uninstall( $callback, $priority = 10 ) {
-		$this->uninstall[ $priority ][] = $callback;
+		$this->_uninstall[ $priority ][] = $callback;
 	}
 }

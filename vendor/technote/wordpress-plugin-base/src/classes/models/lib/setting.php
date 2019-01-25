@@ -2,11 +2,12 @@
 /**
  * Technote Classes Models Lib Setting
  *
- * @version 2.1.0
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.1.0 Added: edit_setting method
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -26,17 +27,29 @@ class Setting implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Ho
 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook;
 
-	/** @var array */
-	private $groups = [];
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array $_groups
+	 */
+	private $_groups = [];
 
-	/** @var array */
-	private $group_priority = [];
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array $_group_priority
+	 */
+	private $_group_priority = [];
 
-	/** @var array */
-	private $settings = [];
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array $_settings
+	 */
+	private $_settings = [];
 
-	/** @var array */
-	private $setting_priority = [];
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array $_setting_priority
+	 */
+	private $_setting_priority = [];
 
 	/**
 	 * initialize
@@ -48,14 +61,14 @@ class Setting implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Ho
 			foreach ( $groups as $group => $setting_set ) {
 				ksort( $setting_set );
 
-				$this->groups[ $group_priority ][ $group ] = [];
-				$this->group_priority[ $group ]            = $group_priority;
+				$this->_groups[ $group_priority ][ $group ] = [];
+				$this->_group_priority[ $group ]            = $group_priority;
 				foreach ( $setting_set as $setting_priority => $settings ) {
 
-					$this->groups[ $group_priority ][ $group ] = array_merge( $this->groups[ $group_priority ][ $group ], array_keys( $settings ) );
+					$this->_groups[ $group_priority ][ $group ] = array_merge( $this->_groups[ $group_priority ][ $group ], array_keys( $settings ) );
 					foreach ( $settings as $setting => $detail ) {
-						$this->settings[ $setting_priority ][ $setting ] = $detail;
-						$this->setting_priority[ $setting ]              = $setting_priority;
+						$this->_settings[ $setting_priority ][ $setting ] = $detail;
+						$this->_setting_priority[ $setting ]              = $setting_priority;
 					}
 				}
 			}
@@ -66,7 +79,7 @@ class Setting implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Ho
 	 * @return array
 	 */
 	public function get_groups() {
-		return $this->apply_filters( 'get_groups', array_keys( $this->group_priority ) );
+		return $this->apply_filters( 'get_groups', array_keys( $this->_group_priority ) );
 	}
 
 	/**
@@ -75,11 +88,11 @@ class Setting implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Ho
 	 * @return array
 	 */
 	public function get_settings( $group ) {
-		if ( ! isset( $this->group_priority[ $group ], $this->groups[ $this->group_priority[ $group ] ] ) ) {
+		if ( ! isset( $this->_group_priority[ $group ], $this->_groups[ $this->_group_priority[ $group ] ] ) ) {
 			return $this->apply_filters( 'get_settings', [], $group );
 		}
 
-		return $this->apply_filters( 'get_settings', $this->groups[ $this->group_priority[ $group ] ][ $group ], $group );
+		return $this->apply_filters( 'get_settings', $this->_groups[ $this->_group_priority[ $group ] ][ $group ], $group );
 	}
 
 	/**
@@ -93,7 +106,7 @@ class Setting implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Ho
 			return $this->apply_filters( 'get_setting', false, $setting, $detail );
 		}
 
-		$data = $this->apply_filters( 'get_setting', $this->settings[ $this->setting_priority[ $setting ] ][ $setting ], $setting );
+		$data = $this->apply_filters( 'get_setting', $this->_settings[ $this->_setting_priority[ $setting ] ][ $setting ], $setting );
 		if ( $detail ) {
 			$data = $this->get_detail_setting( $setting, $data );
 		}
@@ -111,22 +124,22 @@ class Setting implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Ho
 			return true;
 		}
 
-		$priority = $this->setting_priority[ $setting ];
-		unset( $this->settings[ $priority ][ $setting ] );
-		unset( $this->setting_priority[ $setting ] );
-		if ( empty( $this->settings[ $priority ] ) ) {
-			unset( $this->settings[ $priority ] );
+		$priority = $this->_setting_priority[ $setting ];
+		unset( $this->_settings[ $priority ][ $setting ] );
+		unset( $this->_setting_priority[ $setting ] );
+		if ( empty( $this->_settings[ $priority ] ) ) {
+			unset( $this->_settings[ $priority ] );
 		}
-		foreach ( $this->groups as $group_priority => $groups ) {
+		foreach ( $this->_groups as $group_priority => $groups ) {
 			foreach ( $groups as $group => $settings ) {
 				$key = array_search( $setting, $settings );
 				if ( false !== $key ) {
-					unset( $this->groups[ $group_priority ][ $group ][ $key ] );
-					if ( empty( $this->groups[ $group_priority ][ $group ] ) ) {
-						unset( $this->groups[ $group_priority ][ $group ] );
-						unset( $this->group_priority[ $group ] );
-						if ( empty( $this->groups[ $group_priority ] ) ) {
-							unset( $this->groups[ $group_priority ] );
+					unset( $this->_groups[ $group_priority ][ $group ][ $key ] );
+					if ( empty( $this->_groups[ $group_priority ][ $group ] ) ) {
+						unset( $this->_groups[ $group_priority ][ $group ] );
+						unset( $this->_group_priority[ $group ] );
+						if ( empty( $this->_groups[ $group_priority ] ) ) {
+							unset( $this->_groups[ $group_priority ] );
 						}
 					}
 					break;
@@ -150,8 +163,8 @@ class Setting implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Ho
 		if ( ! $this->is_setting( $setting ) ) {
 			return true;
 		}
-		$priority                                        = $this->setting_priority[ $setting ];
-		$this->settings[ $priority ][ $setting ][ $key ] = $value;
+		$priority                                         = $this->_setting_priority[ $setting ];
+		$this->_settings[ $priority ][ $setting ][ $key ] = $value;
 
 		return true;
 	}
@@ -218,6 +231,6 @@ class Setting implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Ho
 	 * @return bool
 	 */
 	public function is_setting( $setting ) {
-		return isset( $this->setting_priority[ $setting ], $this->settings[ $this->setting_priority[ $setting ] ] );
+		return isset( $this->_setting_priority[ $setting ], $this->_settings[ $this->_setting_priority[ $setting ] ] );
 	}
 }

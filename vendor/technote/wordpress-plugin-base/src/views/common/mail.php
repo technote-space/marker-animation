@@ -2,9 +2,10 @@
 /**
  * Technote Views Common Mail
  *
- * @version 2.9.0
+ * @version 2.10.0
  * @author technote-space
  * @since 2.9.0
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -33,7 +34,6 @@ $instance->add_style_view( 'common/style/mail' );
 <body bgcolor="#FFFFFF">
 <table class="body-wrap">
     <tr>
-        <td></td>
         <td class="container" bgcolor="#FFFFFF">
             <div class="content">
                 <table>
@@ -45,7 +45,6 @@ $instance->add_style_view( 'common/style/mail' );
                 </table>
             </div><!-- /content -->
         </td>
-        <td></td>
     </tr>
 </table><!-- /BODY -->
 </body>

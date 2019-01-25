@@ -2,9 +2,10 @@
 /**
  * Technote Traits Readonly
  *
- * @version 2.3.0
+ * @version 2.10.0
  * @author technote-space
  * @since 2.3.0
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -24,14 +25,17 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  */
 trait Readonly {
 
-	/** @var bool $is_allowed_access */
-	private $is_allowed_access = false;
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var bool $_is_allowed_access
+	 */
+	private $_is_allowed_access = false;
 
 	/**
 	 * @param bool $flag
 	 */
 	private function set_allowed_access( $flag ) {
-		$this->is_allowed_access = $flag;
+		$this->_is_allowed_access = $flag;
 	}
 
 	/**
@@ -40,9 +44,9 @@ trait Readonly {
 	 */
 	private function set_readonly_property( $name, $value ) {
 		if ( $this->is_readonly_property( $name ) ) {
-			$this->is_allowed_access = true;
-			$this->$name             = $value;
-			$this->is_allowed_access = false;
+			$this->_is_allowed_access = true;
+			$this->$name              = $value;
+			$this->_is_allowed_access = false;
 		} else {
 			$message = sprintf( $this->app->translate( 'you cannot access %s->%s.' ), static::class, $name );
 			throw new \OutOfRangeException( $message );
@@ -56,7 +60,7 @@ trait Readonly {
 	 * @throws \OutOfRangeException
 	 */
 	public function __set( $name, $value ) {
-		if ( $this->is_allowed_access && $this->is_readonly_property( $name ) ) {
+		if ( $this->_is_allowed_access && $this->is_readonly_property( $name ) ) {
 			$this->$name = $value;
 		} else {
 			$message = sprintf( $this->app->translate( 'you cannot access %s->%s.' ), static::class, $name );

@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Db
  *
- * @version 2.9.8
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Added: Feature to cache result of conversion type format
@@ -19,6 +19,8 @@
  * @since 2.8.3 Added: length define
  * @since 2.9.0 Added: method to get last error
  * @since 2.9.8 Fixed: upgrade message
+ * @since 2.9.14 Fixed: prevent cache
+ * @since 2.10.0 Improved: share type2format result cache
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -38,20 +40,24 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Uninstall;
 
-	/** @var array */
+	/** @var array $table_defines */
 	protected $table_defines = null;
 
 	/**
 	 * @since 2.0.0
+	 * @since 2.10.0 Improved: share result cache
 	 * @var array $_type2format
 	 */
-	private $_type2format = [];
+	private static $_type2format = [];
 
 	/**
 	 * @since 2.9.0
 	 * @var \Exception $_error
 	 */
 	private $_error = null;
+
+	/** @var int $_transaction_level */
+	private $_transaction_level = 0;
 
 	/**
 	 * initialize
@@ -70,7 +76,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @return string
 	 */
 	private function type2format( $type ) {
-		if ( ! isset( $this->_type2format[ $type ] ) ) {
+		if ( ! isset( self::$_type2format[ $type ] ) ) {
 			$format = '%s';
 			switch ( true ) {
 				case stristr( $type, 'INT' ) !== false:
@@ -95,10 +101,10 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 					$format = '%f';
 					break;
 			}
-			$this->_type2format[ $type ] = $this->apply_filters( 'type2format', $format, $type );
+			self::$_type2format[ $type ] = $this->apply_filters( 'type2format', $format, $type );
 		}
 
-		return $this->_type2format[ $type ];
+		return self::$_type2format[ $type ];
 	}
 
 	/**
@@ -577,6 +583,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 
 	/**
 	 * @since 2.0.0 Changed: return $data
+	 * @since 2.9.14 Fixed: prevent cache
 	 *
 	 * @param array $data
 	 * @param bool $create
@@ -586,8 +593,8 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 	 * @return array
 	 */
 	private function set_update_params( $data, $create, $update, $delete ) {
-		$now  = $this->apply_filters( 'set_update_params_date', date_i18n( 'Y-m-d H:i:s' ) );
-		$user = $this->apply_filters( 'set_update_params_user', substr( $this->app->user->user_name, 0, 32 ) );
+		$now  = $this->apply_filters( 'set_update_params_date', date_i18n( 'Y-m-d H:i:s' ), $data, $create, $update, $delete );
+		$user = $this->apply_filters( 'set_update_params_user', substr( $this->app->user->user_name, 0, 32 ), $data, $create, $update, $delete );
 
 		if ( $create ) {
 			$data['created_at'] = $now;
@@ -1338,17 +1345,14 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 		return $this->query( 'ROLLBACK' );
 	}
 
-	/** @var int $transaction_level */
-	private $transaction_level = 0;
-
 	/**
 	 * @param callable $func
 	 *
 	 * @return bool
 	 */
 	public function transaction( $func ) {
-		$level = $this->transaction_level;
-		$this->transaction_level ++;
+		$level = $this->_transaction_level;
+		$this->_transaction_level ++;
 		if ( $level === 0 ) {
 			$this->_error = null;
 			try {
@@ -1362,7 +1366,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 				$this->app->log( $e );
 				$this->_error = $e;
 			} finally {
-				$this->transaction_level = $level;
+				$this->_transaction_level = $level;
 			}
 		} else {
 			try {
@@ -1370,7 +1374,7 @@ class Db implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \
 
 				return true;
 			} finally {
-				$this->transaction_level = $level;
+				$this->_transaction_level = $level;
 			}
 		}
 

@@ -2,10 +2,11 @@
 /**
  * Technote Classes Controller Admin Setting
  *
- * @version 2.0.0
+ * @version 2.9.12
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Changed: translation
+ * @since 2.9.12 Improved: enable to set several settings from config
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -24,17 +25,19 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
 class Setting extends Base {
 
 	/**
+	 * @since 2.9.12 Improved: config setting
 	 * @return int
 	 */
 	public function get_load_priority() {
-		return $this->apply_filters( 'setting_page_priority', 0 );
+		return $this->apply_filters( 'setting_page_priority', $this->app->get_config( 'config', 'setting_page_priority' ) );
 	}
 
 	/**
+	 * @since 2.9.12 Improved: config setting
 	 * @return string
 	 */
 	public function get_page_title() {
-		return $this->apply_filters( 'setting_page_title', 'Dashboard' );
+		return $this->apply_filters( 'setting_page_title', $this->app->get_config( 'config', 'setting_page_title' ) );
 	}
 
 	/**
@@ -66,9 +69,14 @@ class Setting extends Base {
 	}
 
 	/**
+	 * @since 2.9.12 Improved: config setting
 	 * @return array
 	 */
 	protected function get_help_contents() {
+		if ( $this->app->get_config( 'config', 'suppress_setting_help_contents' ) ) {
+			return [];
+		}
+
 		return [
 			[
 				'title' => 'The procedure for editing the help of dashboard',

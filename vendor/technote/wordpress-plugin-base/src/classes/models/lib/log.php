@@ -2,13 +2,16 @@
 /**
  * Technote Classes Models Lib Log
  *
- * @version 2.9.0
+ * @version 2.9.13
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
  * @since 2.7.0 Changed: save log to db
  * @since 2.9.0 Improved: log level
  * @since 2.9.0 Added: send mail feature
+ * @since 2.9.13 Changed: log validity
+ * @since 2.9.13 Added: versions
+ * @since 2.9.13 Changed: moved shutdown function
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -29,11 +32,51 @@ class Log implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Presenter;
 
 	/**
+	 * setup shutdown
+	 * @since 2.9.13
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function setup_shutdown() {
+		if ( $this->apply_filters( 'capture_shutdown_error' ) && $this->is_valid() ) {
+			add_action( 'shutdown', function () {
+				$this->shutdown();
+			}, 0 );
+		}
+	}
+
+	/**
+	 * shutdown
+	 * @since 2.8.5
+	 * @since 2.9.0 Changed: capture error target
+	 * @since 2.9.13 Changed: moved function
+	 */
+	private function shutdown() {
+		$error = error_get_last();
+		if ( $error === null ) {
+			return;
+		}
+
+		if ( $error['type'] & $this->app->get_config( 'config', 'target_shutdown_error' ) ) {
+			$suppress = $this->app->get_config( 'config', 'suppress_log_messages' );
+			$message  = str_replace( [ "\r\n", "\r", "\n" ], "\n", $error['message'] );
+			$messages = explode( "\n", $message );
+			$message  = reset( $messages );
+			if ( empty( $suppress ) || ( is_array( $suppress ) && ! in_array( $message, $suppress ) ) ) {
+				$this->app->log( $message, $error, 'error' );
+			}
+		}
+	}
+
+	/**
 	 * @since 2.7.0
 	 * @return bool
 	 */
 	public function is_valid() {
-		return $this->apply_filters( 'log_validity', $this->app->utility->definedv( 'WP_DEBUG' ) && ! $this->app->get_config( 'config', 'prevent_use_log' ) );
+		if ( $this->app->get_config( 'config', 'prevent_use_log' ) ) {
+			return false;
+		}
+
+		return $this->apply_filters( 'log_validity', $this->apply_filters( 'is_valid_log' ) );
 	}
 
 	/**
@@ -48,17 +91,24 @@ class Log implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, 
 	 * @return bool
 	 */
 	public function log( $message, $context = null, $level = '' ) {
-		$log_level = $this->app->get_config( 'config', 'log_level' );
-		$level     = $this->get_log_level( $level, $log_level );
-		if ( ! $this->is_valid() || empty( $log_level[ $level ] ) ) {
+		if ( ! $this->is_valid() ) {
 			return false;
 		}
 
-		$data                   = $this->get_called_info();
-		$data['message']        = is_string( $message ) ? $this->app->translate( $message ) : json_encode( $message );
-		$data['lib_version']    = $this->app->get_library_version();
-		$data['plugin_version'] = $this->app->get_plugin_version();
-		$data['level']          = $level;
+		$log_level = $this->app->get_config( 'config', 'log_level' );
+		$level     = $this->get_log_level( $level, $log_level );
+		if ( empty( $log_level[ $level ] ) ) {
+			return false;
+		}
+
+		global $wp_version;
+		$data                      = $this->get_called_info();
+		$data['message']           = is_string( $message ) ? $this->app->translate( $message ) : json_encode( $message );
+		$data['lib_version']       = $this->app->get_library_version();
+		$data['plugin_version']    = $this->app->get_plugin_version();
+		$data['php_version']       = phpversion();
+		$data['wordpress_version'] = $wp_version;
+		$data['level']             = $level;
 		if ( isset( $context ) ) {
 			$data['context'] = json_encode( $context );
 		}

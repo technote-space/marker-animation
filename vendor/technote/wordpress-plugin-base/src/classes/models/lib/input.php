@@ -2,10 +2,11 @@
 /**
  * Technote Classes Models Lib Input
  *
- * @version 2.0.0
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -25,21 +26,35 @@ class Input implements \Technote\Interfaces\Singleton {
 
 	use \Technote\Traits\Singleton;
 
-	/** @var array */
-	private static $input = null;
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array $_input
+	 */
+	private static $_input = null;
 
-	/** @var string */
-	private static $php_input = null;
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var string $_php_input
+	 */
+	private static $_php_input = null;
+
+	/**
+	 * @since 2.10.0
+	 * @return bool
+	 */
+	protected static function is_shared_class() {
+		return true;
+	}
 
 	/**
 	 * @return array
 	 */
 	public function all() {
-		if ( ! isset( self::$input ) ) {
-			self::$input = array_merge( $_GET, $_POST );
+		if ( ! isset( self::$_input ) ) {
+			self::$_input = array_merge( $_GET, $_POST );
 		}
 
-		return self::$input;
+		return self::$_input;
 	}
 
 	/**
@@ -143,11 +158,11 @@ class Input implements \Technote\Interfaces\Singleton {
 	 * @return bool|string
 	 */
 	public function php_input() {
-		if ( ! isset( self::$php_input ) ) {
-			self::$php_input = file_get_contents( 'php://input' );
+		if ( ! isset( self::$_php_input ) ) {
+			self::$_php_input = file_get_contents( 'php://input' );
 		}
 
-		return self::$php_input;
+		return self::$_php_input;
 	}
 
 	/**
@@ -168,13 +183,13 @@ class Input implements \Technote\Interfaces\Singleton {
 	 * @return string
 	 */
 	public function get_current_host() {
-		return ( is_ssl() ? "https://" : "http://" ) . $this->app->input->server( 'HTTP_HOST' );
+		return ( is_ssl() ? "https://" : "http://" ) . $this->server( 'HTTP_HOST' );
 	}
 
 	/**
 	 * @return string
 	 */
 	public function get_current_path() {
-		return $this->app->input->server( 'REQUEST_URI' );
+		return $this->server( 'REQUEST_URI' );
 	}
 }

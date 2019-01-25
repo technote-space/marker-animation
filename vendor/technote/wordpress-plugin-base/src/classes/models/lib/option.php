@@ -2,11 +2,12 @@
 /**
  * Technote Classes Models Lib Option
  *
- * @version 2.0.2
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Changed: not to flush cache when initialize
  * @since 2.0.2 Added: Uninstall priority
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -26,8 +27,11 @@ class Option implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Uninstall;
 
-	/** @var array */
-	private $options;
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var array $_options
+	 */
+	private $_options;
 
 	/** @var bool $_suspend_reload */
 	private $_suspend_reload = false;
@@ -53,7 +57,7 @@ class Option implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 		if ( $this->_suspend_reload ) {
 			return;
 		}
-		$this->options = wp_parse_args(
+		$this->_options = wp_parse_args(
 			$this->get_option(), []
 		);
 		$this->unescape_options();
@@ -84,9 +88,9 @@ class Option implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 * unescape options
 	 */
 	private function unescape_options() {
-		foreach ( $this->options as $key => $value ) {
+		foreach ( $this->_options as $key => $value ) {
 			if ( is_string( $value ) ) {
-				$this->options[ $key ] = stripslashes( htmlspecialchars_decode( $this->options[ $key ] ) );
+				$this->_options[ $key ] = stripslashes( htmlspecialchars_decode( $this->_options[ $key ] ) );
 			}
 		}
 	}
@@ -98,8 +102,8 @@ class Option implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 * @return mixed
 	 */
 	public function get( $key, $default = '' ) {
-		if ( array_key_exists( $key, $this->options ) ) {
-			return $this->apply_filters( 'get_option', $this->options[ $key ], $key, $default );
+		if ( array_key_exists( $key, $this->_options ) ) {
+			return $this->apply_filters( 'get_option', $this->_options[ $key ], $key, $default );
 		}
 
 		return $this->apply_filters( 'get_option', $default, $key, $default );
@@ -113,9 +117,9 @@ class Option implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	public function set( $key, $value ) {
 		$this->reload_options();
-		$suspend_reload        = $this->_suspend_reload;
-		$prev                  = isset( $this->options[ $key ] ) ? $this->options[ $key ] : null;
-		$this->options[ $key ] = $value;
+		$suspend_reload         = $this->_suspend_reload;
+		$prev                   = isset( $this->_options[ $key ] ) ? $this->_options[ $key ] : null;
+		$this->_options[ $key ] = $value;
 		if ( $prev !== $value ) {
 			$this->_suspend_reload = true;
 			$this->do_action( 'changed_option', $key, $value, $prev );
@@ -133,9 +137,9 @@ class Option implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	public function delete( $key ) {
 		$this->reload_options();
 		$suspend_reload = $this->_suspend_reload;
-		if ( array_key_exists( $key, $this->options ) ) {
-			$prev = $this->options[ $key ];
-			unset( $this->options[ $key ] );
+		if ( array_key_exists( $key, $this->_options ) ) {
+			$prev = $this->_options[ $key ];
+			unset( $this->_options[ $key ] );
 			$this->_suspend_reload = true;
 			$this->do_action( 'deleted_option', $key, $prev );
 			$this->_suspend_reload = $suspend_reload;
@@ -166,7 +170,7 @@ class Option implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 * @return bool
 	 */
 	private function save() {
-		$options = $this->options;
+		$options = $this->_options;
 		foreach ( $options as $key => $value ) {
 			if ( is_string( $value ) ) {
 				$options[ $key ] = htmlspecialchars( $value );

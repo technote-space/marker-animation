@@ -2,13 +2,14 @@
 /**
  * Technote Classes Models Lib Define
  *
- * @version 2.5.0
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0 Changed: directory structure
  * @since 2.1.0 Changed: load textdomain from plugin data
  * @since 2.3.0 Changed: public properties to readonly properties
  * @since 2.5.0 Changed: views directory
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -129,13 +130,13 @@ class Define implements \Technote\Interfaces\Singleton {
 		$this->plugin_src_dir     = $this->plugin_dir . DS . 'src';
 		$this->plugin_configs_dir = $this->plugin_dir . DS . 'configs';
 		$this->plugin_views_dir   = $this->plugin_src_dir . DS . 'views';
-		$domain_path              = trim( $this->app->plugin_data['DomainPath'], '/' . DS );
+		$domain_path              = trim( $this->app->get_plugin_data( 'DomainPath' ), '/' . DS );
 		if ( empty( $domain_path ) || ! is_dir( $this->plugin_dir . DS . $domain_path ) ) {
 			$this->plugin_textdomain         = false;
 			$this->plugin_languages_dir      = false;
 			$this->plugin_languages_rel_path = false;
 		} else {
-			$this->plugin_textdomain         = $this->app->plugin_data['TextDomain'];
+			$this->plugin_textdomain         = $this->app->get_plugin_data( 'TextDomain' );
 			$this->plugin_languages_dir      = $this->plugin_dir . DS . $domain_path;
 			$this->plugin_languages_rel_path = ltrim( str_replace( WP_PLUGIN_DIR, '', $this->plugin_languages_dir ), DS );
 		}

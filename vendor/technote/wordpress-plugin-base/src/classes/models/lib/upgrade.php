@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Upgrade
  *
- * @version 2.9.11
+ * @version 2.10.0
  * @author technote-space
  * @since 2.4.0
  * @since 2.4.1 Added: show_plugin_update_notices method
@@ -16,6 +16,7 @@
  * @since 2.9.8 Fixed: ignore if first activated
  * @since 2.9.9 Changed: behavior to get readme file
  * @since 2.9.11 Added: upgrade log
+ * @since 2.10.0 Changed: multiple version
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -300,21 +301,41 @@ class Upgrade implements \Technote\Interfaces\Loader {
 
 	/**
 	 * @since 2.4.3
+	 * @since 2.10.0 Improved: multiple version
 	 *
 	 * @param string $content
 	 *
 	 * @return array
 	 */
 	private function parse_update_notice( $content ) {
-		$notices = [];
+		$notices         = [];
+		$version_notices = [];
 		if ( preg_match( '#==\s*Upgrade Notice\s*==([\s\S]+?)==#', $content, $matches ) ) {
+			$version = false;
 			foreach ( (array) preg_split( '~[\r\n]+~', trim( $matches[1] ) ) as $line ) {
 				$line = preg_replace( '~\[([^\]]*)\]\(([^\)]*)\)~', '<a href="${2}">${1}</a>', $line );
 				$line = preg_replace( '#\A\s*\*+\s*#', '', $line );
+				if ( preg_match( '#\A\s*=\s*([^\s]+)\s*=\s*\z#', $line, $m1 ) && preg_match( '#\s*(v\.?)?(\d+[\d.]*)*\s*#', $m1[1], $m2 ) ) {
+					$version = $m2[2];
+					continue;
+				}
+				if ( $version && version_compare( $version, $this->app->get_plugin_version(), '<=' ) ) {
+					continue;
+				}
 				$line = preg_replace( '#\A\s*=\s*([^\s]+)\s*=\s*\z#', '[ $1 ]', $line );
 				$line = trim( $line );
 				if ( '' !== $line ) {
-					$notices[] = $line;
+					if ( $version ) {
+						$version_notices[ $version ][] = $line;
+					} else {
+						$notices[] = $line;
+					}
+				}
+			}
+			if ( ! empty( $version_notices ) ) {
+				ksort( $version_notices );
+				foreach ( $version_notices as $version => $items ) {
+					$notices[ $version ] = $items;
 				}
 			}
 		}

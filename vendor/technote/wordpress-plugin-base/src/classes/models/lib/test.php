@@ -2,7 +2,7 @@
 /**
  * Technote Classes Models Lib Test
  *
- * @version 2.3.1
+ * @version 2.10.0
  * @author technote-space
  * @since 1.0.0
  * @since 2.0.0
@@ -10,6 +10,7 @@
  * @since 2.0.1 Changed: hide menu if there is no tests
  * @since 2.3.0 Changed: property access to getter access
  * @since 2.3.1 Changed: not load test if not required
+ * @since 2.10.0 Changed: trivial change
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -29,8 +30,11 @@ class Test implements \Technote\Interfaces\Loader {
 
 	use \Technote\Traits\Loader;
 
-	/** @var bool $is_valid */
-	private $is_valid = false;
+	/**
+	 * @since 2.10.0 Changed: trivial change
+	 * @var bool $_is_valid
+	 */
+	private $_is_valid = false;
 
 	/**
 	 * initialize
@@ -49,21 +53,21 @@ class Test implements \Technote\Interfaces\Loader {
 			}
 		}
 
-		$this->is_valid = true;
+		$this->_is_valid = true;
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function is_valid() {
-		return $this->is_valid && count( $this->get_tests() ) > 0;
+		return $this->_is_valid && count( $this->get_tests() ) > 0;
 	}
 
 	/**
 	 * @return array
 	 */
 	private function get_tests() {
-		if ( ! $this->is_valid ) {
+		if ( ! $this->_is_valid ) {
 			return [];
 		}
 
@@ -97,7 +101,7 @@ class Test implements \Technote\Interfaces\Loader {
 	 * @return array
 	 */
 	public function do_tests() {
-		if ( ! $this->is_valid ) {
+		if ( ! $this->_is_valid ) {
 			return [];
 		}
 

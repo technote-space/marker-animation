@@ -2,9 +2,11 @@
 /**
  * Technote Classes Models Lib Mail
  *
- * @version 2.9.0
+ * @version 2.9.12
  * @author technote-space
  * @since 2.9.0
+ * @since 2.9.12 Fixed: subject to single line
+ * @since 2.9.12 Fixed: content type
  * @copyright technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -38,10 +40,11 @@ class Mail implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook,
 	 * @return bool
 	 */
 	public function send( $to, $subject, $body, $text = false ) {
-		if ( empty( $to ) || empty( $subject ) || ( empty( $body ) && empty( $text ) ) ) {
+		if ( $this->_is_sending || empty( $to ) || empty( $subject ) || ( empty( $body ) && empty( $text ) ) ) {
 			return false;
 		}
 
+		$subject = str_replace( [ "\r\n", "\r", "\n" ], '', $subject );
 		$this->remove_special_space( $subject );
 		$this->remove_special_space( $body );
 
@@ -79,13 +82,7 @@ class Mail implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook,
 		// このチケットがマージされたら以下の処理は不要
 		// https://core.trac.wordpress.org/ticket/15448
 
-		add_filter( 'wp_mail_content_type', $set_content_type = function () use ( &$set_content_type, $content_type ) {
-			remove_filter( 'wp_mail_content_type', $set_content_type );
-
-			return $content_type;
-		} );
-
-		add_action( 'phpmailer_init', $set_phpmailer = function ( $phpmailer ) use ( &$set_phpmailer, $messages ) {
+		add_action( 'phpmailer_init', $set_phpmailer = function ( $phpmailer ) use ( &$set_phpmailer, $messages, $content_type ) {
 			/** @var \PHPMailer $phpmailer */
 			remove_action( 'phpmailer_init', $set_phpmailer );
 			$phpmailer->Body    = '';
@@ -97,6 +94,7 @@ class Mail implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook,
 					$phpmailer->AltBody = $message;
 				}
 			}
+			$phpmailer->ContentType = $content_type;
 		} );
 
 		// suppress error

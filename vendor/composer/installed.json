@@ -168,23 +168,23 @@
     },
     {
         "name": "symfony/css-selector",
-        "version": "v3.4.20",
-        "version_normalized": "3.4.20.0",
+        "version": "v3.4.21",
+        "version_normalized": "3.4.21.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/css-selector.git",
-            "reference": "345b9a48595d1ab9630db791dbc3e721bf0233e8"
+            "reference": "12f86295c46c36af9896cf21db6b6b8a1465315d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/css-selector/zipball/345b9a48595d1ab9630db791dbc3e721bf0233e8",
-            "reference": "345b9a48595d1ab9630db791dbc3e721bf0233e8",
+            "url": "https://api.github.com/repos/symfony/css-selector/zipball/12f86295c46c36af9896cf21db6b6b8a1465315d",
+            "reference": "12f86295c46c36af9896cf21db6b6b8a1465315d",
             "shasum": ""
         },
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2018-11-11T19:48:54+00:00",
+        "time": "2019-01-02T09:30:52+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -223,17 +223,17 @@
     },
     {
         "name": "technote/wordpress-plugin-base",
-        "version": "v2.9.11",
-        "version_normalized": "2.9.11.0",
+        "version": "v2.10.0",
+        "version_normalized": "2.10.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/technote-space/wordpress-plugin-base.git",
-            "reference": "4c12ba823e2c2f1367621dc45b99b3c4b82b0bab"
+            "reference": "8a9674ccbcdf1de24c28c5933891de5550c8aa18"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/technote-space/wordpress-plugin-base/zipball/4c12ba823e2c2f1367621dc45b99b3c4b82b0bab",
-            "reference": "4c12ba823e2c2f1367621dc45b99b3c4b82b0bab",
+            "url": "https://api.github.com/repos/technote-space/wordpress-plugin-base/zipball/8a9674ccbcdf1de24c28c5933891de5550c8aa18",
+            "reference": "8a9674ccbcdf1de24c28c5933891de5550c8aa18",
             "shasum": ""
         },
         "require": {
@@ -247,7 +247,7 @@
             "phake/phake": "2.*",
             "phpunit/phpunit": "4.*"
         },
-        "time": "2019-01-06T14:27:06+00:00",
+        "time": "2019-01-19T17:40:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
