@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.4.0
+ * @version 1.5.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
@@ -10,20 +10,25 @@
  * @since 1.3.0 Added: preset color
  * @since 1.4.0 Deleted: preset color
  * @since 1.4.0 Added: marker setting feature
- * @copyright technote All Rights Reserved
+ * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
 
 namespace Marker_Animation\Classes\Models;
 
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
+	exit;
+}
+
 /**
  * Class Editor
  * @package Marker_Animation\Classes\Models
  */
-class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \Technote\Interfaces\Presenter {
+class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\Interfaces\Hook, \WP_Framework_Presenter\Interfaces\Presenter {
 
-	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Presenter;
+	use \WP_Framework_Core\Traits\Singleton, \WP_Framework_Core\Traits\Hook, \WP_Framework_Presenter\Traits\Presenter, \WP_Framework_Common\Traits\Package;
 
 	/** @var bool $_setup_params */
 	private $_setup_params = false;
@@ -40,7 +45,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_editor_params() {
 		$this->add_style_view( 'admin/style/editor' );
-		if ( $this->app->post->is_block_editor() ) {
+		if ( $this->app->utility->is_block_editor() ) {
 			return;
 		}
 
@@ -59,7 +64,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_external_plugins( $external_plugins ) {
-		if ( $this->_setup_params || $this->app->post->is_block_editor() ) {
+		if ( $this->_setup_params || $this->app->utility->is_block_editor() ) {
 			$external_plugins['marker_animation_button_plugin'] = $this->get_assets_url( 'js/editor.js' );
 		}
 
@@ -75,7 +80,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_buttons( $mce_buttons ) {
-		if ( $this->_setup_params || $this->app->post->is_block_editor() ) {
+		if ( $this->_setup_params || $this->app->utility->is_block_editor() ) {
 			$mce_buttons[] = 'marker_animation';
 			$mce_buttons[] = 'marker_animation_detail';
 
@@ -136,7 +141,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function tiny_mce_before_init( $tinymce_settings ) {
-		if ( $this->_setup_params || $this->app->post->is_block_editor() ) {
+		if ( $this->_setup_params || $this->app->utility->is_block_editor() ) {
 			$style_formats = ! empty( $tinymce_settings['style_formats'] ) ? json_decode( $tinymce_settings['style_formats'], true ) : [];
 
 			/** @var Custom_Post\Setting $setting */
@@ -196,7 +201,7 @@ class Editor implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'details'               => $assets->get_setting_details( 'editor' ),
 			'settings'              => $setting->get_settings( 'editor' ),
 			'prefix'                => $assets->get_data_prefix(),
-			'is_valid_color_picker' => $this->app->post->is_valid_tinymce_color_picker(),
+			'is_valid_color_picker' => $this->app->utility->is_valid_tinymce_color_picker(),
 		];
 	}
 }

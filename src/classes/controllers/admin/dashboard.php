@@ -1,19 +1,20 @@
 <?php
 /**
- * @version 1.4.0
+ * @version 1.5.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
  * @since 1.3.0 Added: preset color
  * @since 1.4.0 Improved: refactoring
- * @copyright technote All Rights Reserved
+ * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
 
 namespace Marker_Animation\Classes\Controllers\Admin;
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
 
@@ -21,7 +22,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Class Dashboard
  * @package Marker_Animation\Classes\Controllers\Admin
  */
-class Dashboard extends \Technote\Classes\Controllers\Admin\Base {
+class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 
 	/**
 	 * @return int

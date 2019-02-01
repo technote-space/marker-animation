@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'cbd6bada88b6bca5d1b8b1b5733f514e' => $vendorDir . '/wp-content-framework/core/autoload.php',
     '89ff252b349d4d088742a09c25f5dd74' => $vendorDir . '/yahnis-elsts/plugin-update-checker/plugin-update-checker.php',
-    '80eb7cf98ea5bf392ac4e00a0e1c6212' => $vendorDir . '/technote/wordpress-plugin-base/technote.php',
 );
