@@ -8,7 +8,7 @@
  * @link https://technote.space/
  */
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
 

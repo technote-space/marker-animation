@@ -8,10 +8,10 @@
  * @link https://technote.space/
  */
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
-/** @var \Technote\Interfaces\Presenter $instance */
+/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 /** @var string $name_prefix */
 ?>
 
@@ -23,8 +23,8 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
                 const options = {};
                 $target.each(function () {
                     const name = $(this).attr('name');
-                    if (name && name.match(/^<?php $instance->h( preg_quote( $name_prefix ) );?>/)) {
-                        let option_name = name.replace(/^<?php $instance->h( preg_quote( $name_prefix ) );?>/, '');
+                    if (name && name.match(/^<?php $instance->h( preg_quote( $name_prefix, '/' ) );?>/)) {
+                        let option_name = name.replace(/^<?php $instance->h( preg_quote( $name_prefix, '/' ) );?>/, '');
                         let option_value = $(this).val();
                         if ('checkbox' === $(this).attr('type')) {
                             const _option_value_true = $(this).data('option_value-true'), _option_value_false = $(this).data('option_value-false');

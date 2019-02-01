@@ -10,7 +10,7 @@
 
 namespace Marker_Animation\Classes\Models\Custom_Post;
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
 
@@ -18,9 +18,9 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Class Setting
  * @package Marker_Animation\Classes\Models\Custom_Post
  */
-class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Technote\Interfaces\Upgrade {
+class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Framework_Upgrade\Interfaces\Upgrade {
 
-	use \Marker_Animation\Traits\Models\Custom_Post, \Technote\Traits\Upgrade;
+	use \Marker_Animation\Traits\Models\Custom_Post, \WP_Framework_Upgrade\Traits\Upgrade;
 
 	/**
 	 * setup assets
@@ -140,7 +140,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	 * @return null|string
 	 */
 	protected function get_post_column_title() {
-		return $this->app->translate( 'Setting name' );
+		return $this->translate( 'Setting name' );
 	}
 
 	/**
@@ -149,10 +149,10 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	protected function get_manage_posts_columns() {
 		return [
 			'is_valid' => function ( $value ) {
-				return ! empty( $value ) ? $this->app->translate( 'Valid' ) : $this->app->translate( 'Invalid' );
+				return ! empty( $value ) ? $this->translate( 'Valid' ) : $this->translate( 'Invalid' );
 			},
 			'display'  => [
-				'name'     => $this->app->translate( 'display' ),
+				'name'     => $this->translate( 'display' ),
 				'callback' => function (
 					/** @noinspection PhpUnusedParameterInspection */
 					$value, $data, $post
@@ -178,12 +178,12 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 							'padding_bottom',
 						] ) ) {
 							if ( $is_default ) {
-								$details[ $setting['label'] ] = $this->app->translate( 'default' ) . " ({$setting['value']})";
+								$details[ $setting['label'] ] = $this->translate( 'default' ) . " ({$setting['value']})";
 							} else {
 								if ( 'function' === $name ) {
-									$details[ $setting['label'] ] = $this->app->translate( $data[ $key ] );
+									$details[ $setting['label'] ] = $this->translate( $data[ $key ] );
 								} elseif ( 'bold' === $name ) {
-									$details[ $setting['label'] ] = empty( $data[ $key ] ) ? $this->app->translate( 'No' ) : $this->app->translate( 'Yes' );
+									$details[ $setting['label'] ] = empty( $data[ $key ] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' );
 								} else {
 									$details[ $setting['label'] ] = $data[ $key ];
 								}
@@ -202,7 +202,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 				'unescape' => true,
 			],
 			'others'   => [
-				'name'     => $this->app->translate( 'others' ),
+				'name'     => $this->translate( 'others' ),
 				'callback' => function (
 					/** @noinspection PhpUnusedParameterInspection */
 					$value, $data, $post
@@ -239,7 +239,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	/**
 	 * @param \WP_Post $post
 	 */
-	public function output_after_editor( $post ) {
+	public function output_after_editor( \WP_Post $post ) {
 		$this->get_view( 'admin/custom_post/setting/test', [], true );
 	}
 
@@ -262,7 +262,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	 * @param array $old
 	 * @param array $new
 	 */
-	public function data_updated( $post_id, $post, $old, $new ) {
+	public function data_updated( $post_id, \WP_Post $post, array $old, array $new ) {
 		$this->clear_options_cache();
 	}
 
@@ -271,7 +271,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	 * @param \WP_Post $post
 	 * @param array $data
 	 */
-	public function data_inserted( $post_id, $post, $data ) {
+	public function data_inserted( $post_id, \WP_Post $post, array $data ) {
 		$this->clear_options_cache();
 	}
 

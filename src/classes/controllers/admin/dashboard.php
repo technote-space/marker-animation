@@ -13,7 +13,7 @@
 
 namespace Marker_Animation\Classes\Controllers\Admin;
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
 
@@ -21,7 +21,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Class Dashboard
  * @package Marker_Animation\Classes\Controllers\Admin
  */
-class Dashboard extends \Technote\Classes\Controllers\Admin\Base {
+class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 
 	/**
 	 * @return int

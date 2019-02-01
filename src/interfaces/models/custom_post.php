@@ -10,7 +10,7 @@
 
 namespace Marker_Animation\Interfaces\Models;
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
 
@@ -18,6 +18,6 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Interface Custom_Post
  * @package Marker_Animation\Interfaces\Models
  */
-interface Custom_Post extends \Technote\Interfaces\Helper\Custom_Post {
+interface Custom_Post extends \WP_Framework_Custom_Post\Interfaces\Custom_Post {
 
 }

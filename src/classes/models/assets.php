@@ -16,13 +16,17 @@
 
 namespace Marker_Animation\Classes\Models;
 
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
+	exit;
+}
+
 /**
  * Class Assets
  * @package Marker_Animation\Classes\Models
  */
-class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \Technote\Interfaces\Presenter {
+class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\Interfaces\Hook, \WP_Framework_Presenter\Interfaces\Presenter {
 
-	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Presenter;
+	use \WP_Framework_Core\Traits\Singleton, \WP_Framework_Core\Traits\Hook, \WP_Framework_Presenter\Traits\Presenter, \WP_Framework_Common\Traits\Package;
 
 	/**
 	 * setup assets
@@ -338,6 +342,9 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 * @return string
 	 */
 	public function get_name_prefix() {
-		return $this->get_filter_prefix();
+		/** @var Custom_Post\Setting $setting */
+		$setting = Custom_Post\Setting::get_instance( $this->app );
+
+		return $setting->get_post_field_name_prefix();
 	}
 }

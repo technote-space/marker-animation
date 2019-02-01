@@ -8,10 +8,10 @@
  * @link https://technote.space/
  */
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
-/** @var \Technote\Interfaces\Presenter $instance */
+/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 /** @var string $param_name */
 /** @var array $params */
 ?>
