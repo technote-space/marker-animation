@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Classes Models Custom Post
  *
- * @version 0.0.4
+ * @version 0.0.10
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -421,7 +421,9 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 		if ( $this->is_valid_custom_post_type( $post->post_type ) ) {
 			$custom_post = $this->get_custom_post_type( $post->post_type );
 			if ( ! empty( $custom_post ) ) {
-				$this->app->api->set_use_all_api_flag( true );
+				if ( $this->app->is_valid_package( 'api' ) ) {
+					$this->app->api->set_use_all_api_flag( true );
+				}
 				$this->app->session->delete( 'validation_errors' );
 				$this->app->session->delete( 'updated_message' );
 				$custom_post->output_edit_form( $post );

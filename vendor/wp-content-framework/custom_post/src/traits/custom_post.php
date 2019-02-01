@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Traits Custom Post
  *
- * @version 0.0.8
+ * @version 0.0.10
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -23,7 +23,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  */
 trait Custom_Post {
 
-	use \WP_Framework_Core\Traits\Singleton, \WP_Framework_Core\Traits\Hook, \WP_Framework_Presenter\Traits\Presenter;
+	use \WP_Framework_Core\Traits\Singleton, \WP_Framework_Core\Traits\Hook, \WP_Framework_Presenter\Traits\Presenter, Package;
 
 	/**
 	 * @var string $_slug
