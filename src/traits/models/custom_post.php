@@ -1,16 +1,17 @@
 <?php
 /**
- * @version 1.4.0
+ * @version 1.5.0
  * @author technote-space
  * @since 1.4.0
- * @copyright technote All Rights Reserved
+ * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
 
 namespace Marker_Animation\Traits\Models;
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
 
@@ -20,7 +21,7 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  */
 trait Custom_Post {
 
-	use \Technote\Traits\Helper\Custom_Post, \Technote\Traits\Helper\Data_Helper, \Technote\Traits\Helper\Validate;
+	use \WP_Framework_Custom_Post\Traits\Custom_Post, \WP_Framework_Core\Traits\Helper\Data_Helper, \WP_Framework_Core\Traits\Helper\Validate;
 
 	/**
 	 * @return string
@@ -40,7 +41,7 @@ trait Custom_Post {
 	 * @return string|false
 	 */
 	protected function get_post_type_parent() {
-		return $this->app->loader->admin->get_menu_slug();
+		return $this->app->admin->get_menu_slug();
 	}
 
 	/**

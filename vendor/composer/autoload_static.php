@@ -7,19 +7,11 @@ namespace Composer\Autoload;
 class ComposerStaticInit9f337c6be72c714b3f1387d390e267d8
 {
     public static $files = array (
+        'cbd6bada88b6bca5d1b8b1b5733f514e' => __DIR__ . '/..' . '/wp-content-framework/core/autoload.php',
         '89ff252b349d4d088742a09c25f5dd74' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/plugin-update-checker.php',
-        '80eb7cf98ea5bf392ac4e00a0e1c6212' => __DIR__ . '/..' . '/technote/wordpress-plugin-base/technote.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        'T' => 
-        array (
-            'TijsVerkoyen\\CssToInlineStyles\\' => 31,
-        ),
-        'S' => 
-        array (
-            'Symfony\\Component\\CssSelector\\' => 30,
-        ),
         'M' => 
         array (
             'MatthiasMullie\\PathConverter\\' => 29,
@@ -28,14 +20,6 @@ class ComposerStaticInit9f337c6be72c714b3f1387d390e267d8
     );
 
     public static $prefixDirsPsr4 = array (
-        'TijsVerkoyen\\CssToInlineStyles\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src',
-        ),
-        'Symfony\\Component\\CssSelector\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/css-selector',
-        ),
         'MatthiasMullie\\PathConverter\\' => 
         array (
             0 => __DIR__ . '/..' . '/matthiasmullie/path-converter/src',
@@ -46,27 +30,11 @@ class ComposerStaticInit9f337c6be72c714b3f1387d390e267d8
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'D' => 
-        array (
-            'Detection' => 
-            array (
-                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
-            ),
-        ),
-    );
-
-    public static $classMap = array (
-        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
-    );
-
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit9f337c6be72c714b3f1387d390e267d8::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit9f337c6be72c714b3f1387d390e267d8::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit9f337c6be72c714b3f1387d390e267d8::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit9f337c6be72c714b3f1387d390e267d8::$classMap;
 
         }, null, ClassLoader::class);
     }
