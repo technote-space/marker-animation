@@ -101,3 +101,10 @@
 
 ### マーカー位置の調整
 マーカーの表示位置を調整する値を設定します。
+
+## Author
+[GitHub (technote-space)](https://github.com/technote-space)  
+[homepage](https://technote.space)
+
+## プラグイン作成用フレームワーク
+[WP Content Framework](https://github.com/wp-content-framework/core)
