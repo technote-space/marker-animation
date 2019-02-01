@@ -6,15 +6,15 @@
  * @since 1.3.0 Added: preset color
  * @since 1.3.1 Updated: preview
  * @since 1.4.0 Deleted: preset color
- * @copyright technote All Rights Reserved
+ * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
-/** @var \Technote\Interfaces\Presenter $instance */
+/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 /** @var array $args */
 /** @var array $setting */
 ?>

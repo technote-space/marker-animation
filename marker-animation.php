@@ -16,4 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 @require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-Technote::get_instance( 'Marker_Animation', __FILE__ );
+define( 'MARKER_ANIMATION', 'Marker_Animation' );
+
+WP_Framework::get_instance( MARKER_ANIMATION, __FILE__ );

@@ -3,14 +3,14 @@
  * @version 1.4.0
  * @author technote-space
  * @since 1.4.0
- * @copyright technote All Rights Reserved
+ * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
 
 namespace Marker_Animation\Interfaces\Models;
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
 
@@ -18,6 +18,6 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Interface Custom_Post
  * @package Marker_Animation\Interfaces\Models
  */
-interface Custom_Post extends \Technote\Interfaces\Helper\Custom_Post {
+interface Custom_Post extends \WP_Framework_Custom_Post\Interfaces\Custom_Post {
 
 }
