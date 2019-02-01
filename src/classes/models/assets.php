@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.4.1
+ * @version 1.5.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
@@ -9,6 +9,7 @@
  * @since 1.4.0 Deleted: preset color
  * @since 1.4.0 Added: marker setting feature
  * @since 1.4.1 Fixed: default value of setting form
+ * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
