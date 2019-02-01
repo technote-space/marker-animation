@@ -5,7 +5,7 @@
  * @since 1.2.4 Fixed: for IE11
  * @since 1.3.1 Fixed: preset color style
  * @since 1.4.0 Changed: moved classic editor style
- * @copyright technote All Rights Reserved
+ * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
