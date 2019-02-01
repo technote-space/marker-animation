@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Traits Singleton
  *
- * @version 0.0.13
+ * @version 0.0.23
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -226,31 +226,6 @@ trait Singleton {
 		$slug     = end( $exploded );
 
 		return strtolower( $slug );
-	}
-
-	/**
-	 * @param string $name
-	 * @param callable $func
-	 *
-	 * @return bool
-	 */
-	protected function lock_process( $name, callable $func ) {
-		$name .= '__LOCK_PROCESS__';
-		$this->app->option->reload_options();
-		$check = $this->app->option->get( $name );
-		if ( ! empty( $check ) ) {
-			return false;
-		}
-		$rand = md5( uniqid() );
-		$this->app->option->set( $name, $rand );
-		$this->app->option->reload_options();
-		if ( $this->app->option->get( $name ) != $rand ) {
-			return false;
-		}
-		$func();
-		$this->app->option->delete( $name );
-
-		return true;
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Traits Loader
  *
- * @version 0.0.1
+ * @version 0.0.23
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -195,12 +195,12 @@ trait Loader {
 	}
 
 	/**
-	 * @param array $class_setting
+	 * @param array|false $class_setting
 	 * @param string $instanceof
 	 *
 	 * @return bool|Singleton
 	 */
-	protected function get_class_instance( array $class_setting, $instanceof ) {
+	protected function get_class_instance( $class_setting, $instanceof ) {
 		if ( false !== $class_setting && class_exists( $class_setting[0] ) && is_subclass_of( $class_setting[0], '\WP_Framework_Core\Interfaces\Singleton' ) ) {
 			try {
 				/** @var Singleton[] $class_setting */
