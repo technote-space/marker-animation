@@ -1,12 +1,13 @@
 <?php
 /**
- * @version 1.5.0
+ * @version 1.6.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
  * @since 1.3.0 Added: preset color
  * @since 1.4.0 Improved: refactoring
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -62,6 +63,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 	}
 
 	/**
+	 * @since 1.6.0 Fixed: #41
 	 * @return array
 	 */
 	protected function get_view_args() {
@@ -69,8 +71,8 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 
 		return [
-			'setting'     => $assets->get_setting_details( 'dashboard' ),
-			'name_prefix' => $assets->get_name_prefix(),
+			'setting'     => $assets->get_setting_details( 'dashboard', $this->get_filter_prefix() ),
+			'name_prefix' => $this->get_filter_prefix(),
 			'id_prefix'   => $assets->get_id_prefix(),
 		];
 	}
