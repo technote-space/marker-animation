@@ -14,8 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+if ( defined( 'MARKER_ANIMATION' ) ) {
+	return;
+}
 
 define( 'MARKER_ANIMATION', 'Marker_Animation' );
+
+@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 WP_Framework::get_instance( MARKER_ANIMATION, __FILE__ );
