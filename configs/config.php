@@ -20,7 +20,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 return [
 
 	// db version
-	'db_version'                     => '0.0.7',
+	'db_version'                     => '0.0.8',
 
 	// menu image url
 	'menu_image'                     => 'icon-24x24.png',
