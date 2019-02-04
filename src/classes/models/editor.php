@@ -184,7 +184,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'wp-element',
 			'wp-rich-text',
 			'wp-components',
-			'jquery',
+			'lodash',
 		] );
 		$this->localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
 		$this->add_script_view( 'admin/script/classic-editor' );
