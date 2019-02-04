@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.5.0
+ * @version 1.6.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
@@ -10,6 +10,8 @@
  * @since 1.4.0 Added: marker setting feature
  * @since 1.4.1 Fixed: default value of setting form
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
+ * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -215,6 +217,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	/**
 	 * @since 1.3.0 Added: preset color
 	 * @since 1.4.1 Added: detail setting
+	 * @since 1.6.0 #3
 	 * @return array
 	 */
 	public function get_setting_keys() {
@@ -282,6 +285,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * @since 1.3.0 Added: target filter
+	 * @since 1.6.0 #41
 	 *
 	 * @param string $target
 	 * @param null|string $prefix
@@ -302,6 +306,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * @since 1.4.1 Changed: use detail setting if exists
+	 * @since 1.6.0 #41
 	 *
 	 * @param string $name
 	 * @param string|array $form

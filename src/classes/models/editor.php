@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.5.0
+ * @version 1.6.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
@@ -11,6 +11,7 @@
  * @since 1.4.0 Deleted: preset color
  * @since 1.4.0 Added: marker setting feature
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -58,6 +59,8 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
+	 * @since 1.6.0 #3
+	 *
 	 * @param array $external_plugins
 	 *
 	 * @return array
@@ -171,6 +174,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * enqueue css for gutenberg
+	 * @since 1.6.0 #3
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_block_editor_assets() {
