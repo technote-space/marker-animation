@@ -65,7 +65,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_external_plugins( $external_plugins ) {
 		if ( $this->_setup_params || $this->app->utility->is_block_editor() ) {
-			$external_plugins['marker_animation_button_plugin'] = $this->get_assets_url( 'js/editor.js' );
+			$external_plugins['marker_animation_button_plugin'] = $this->get_assets_url( 'js/marker-animation-editor.min.js' );
 		}
 
 		return $external_plugins;
@@ -175,10 +175,11 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_block_editor_assets() {
 		$this->enqueue_style( 'marker_animation-editor', 'gutenberg.css' );
-		$this->enqueue_script( 'marker_animation-editor', 'gutenberg.js', [
+		$this->enqueue_script( 'marker_animation-editor', 'marker-animation-gutenberg.min.js', [
 			'wp-blocks',
 			'wp-element',
 			'wp-rich-text',
+			'wp-components',
 			'jquery',
 		] );
 		$this->localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );

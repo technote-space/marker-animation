@@ -1,2 +1,9 @@
 node_modules/
+src/
 v8-compile-cache-0/
+
+gutenberg.config.js
+editor.config.js
+marker-animation.config.js
+package.json
+package-lock.json
