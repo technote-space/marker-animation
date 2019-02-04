@@ -284,16 +284,17 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 * @since 1.3.0 Added: target filter
 	 *
 	 * @param string $target
+	 * @param null|string $prefix
 	 *
 	 * @return array
 	 */
-	public function get_setting_details( $target ) {
+	public function get_setting_details( $target, $prefix = null ) {
 		$args = [];
 		foreach ( $this->get_setting_keys() as $key => $form ) {
 			if ( is_array( $form ) && ! empty( $form['args']['target'] ) && ! in_array( $target, $form['args']['target'] ) ) {
 				continue;
 			}
-			$args[ $key ] = $this->get_setting( $key, $form );
+			$args[ $key ] = $this->get_setting( $key, $form, $prefix );
 		}
 
 		return $args;
@@ -304,16 +305,17 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 *
 	 * @param string $name
 	 * @param string|array $form
+	 * @param null|string $prefix
 	 *
 	 * @return array
 	 */
-	private function get_setting( $name, $form ) {
+	private function get_setting( $name, $form, $prefix = null ) {
 		$detail = $this->app->utility->array_get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
 		$value  = $this->app->utility->array_get( $detail, 'value' );
 		$ret    = [
 			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',
-			'name'       => $this->get_name_prefix() . $name,
+			'name'       => ( isset( $prefix ) ? $prefix : $this->get_name_prefix() ) . $name,
 			'value'      => $value,
 			'label'      => $this->translate( $this->app->utility->array_get( $detail, 'label', $name ) ),
 			'attributes' => [
