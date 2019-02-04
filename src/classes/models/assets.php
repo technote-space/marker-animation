@@ -219,23 +219,23 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 */
 	public function get_setting_keys() {
 		return [
-			'is_valid'        => [
+			'is_valid'                     => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'target' => [ 'dashboard', 'setting' ],
 				],
 			],
-			'color'           => 'color',
-			'thickness'       => 'input/text',
-			'duration'        => 'input/text',
-			'delay'           => 'input/text',
-			'function'        => [
+			'color'                        => 'color',
+			'thickness'                    => 'input/text',
+			'duration'                     => 'input/text',
+			'delay'                        => 'input/text',
+			'function'                     => [
 				'form' => 'select',
 				'args' => [
 					'options' => $this->get_animation_functions(),
 				],
 			],
-			'bold'            => [
+			'bold'                         => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'attributes' => [
@@ -245,9 +245,9 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 					],
 				],
 			],
-			'repeat'          => 'input/checkbox',
-			'padding_bottom'  => 'input/text',
-			'is_valid_button' => [
+			'repeat'                       => 'input/checkbox',
+			'padding_bottom'               => 'input/text',
+			'is_valid_button'              => [
 				'form'   => 'input/checkbox',
 				'args'   => [
 					'target' => [ 'setting' ],
@@ -257,7 +257,17 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 					'label' => $this->translate( 'show' ),
 				],
 			],
-			'is_valid_style'  => [
+			'is_valid_style'               => [
+				'form'   => 'input/checkbox',
+				'args'   => [
+					'target' => [ 'setting' ],
+				],
+				'detail' => [
+					'value' => 0,
+					'label' => $this->translate( 'show' ),
+				],
+			],
+			'is_valid_button_block_editor' => [
 				'form'   => 'input/checkbox',
 				'args'   => [
 					'target' => [ 'setting' ],

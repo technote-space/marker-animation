@@ -134,6 +134,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			'padding_bottom'  => 'padding_bottom',
 			'is_valid_button' => 'is_valid_button',
 			'is_valid_style'  => 'is_valid_style',
+			'is_valid_button_block_editor' => 'is_valid_button_block_editor',
 		];
 	}
 
@@ -213,6 +214,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 							'repeat'          => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 							'is valid button' => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 							'is valid style'  => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 							'selector'        => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
 						],
 					] );
@@ -312,7 +314,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			$options = [];
 			foreach ( $this->get_setting_list() as $key => $name ) {
 				$is_default = '' === (string) ( $data[ $key ] );
-				if ( 'is_valid_button' === $name || 'is_valid_style' === $name ) {
+				if ( 'is_valid_button' === $name || 'is_valid_style' === $name || 'is_valid_button_block_editor' === $name ) {
 					$options[ $name ] = $data[ $key ];
 					continue;
 				}
