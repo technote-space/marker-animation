@@ -70,7 +70,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 
 		return [
 			'setting'     => $assets->get_setting_details( 'dashboard' ),
-			'name_prefix' => $assets->get_name_prefix(),
+			'name_prefix' => $this->get_filter_prefix(),
 			'id_prefix'   => $assets->get_id_prefix(),
 		];
 	}
