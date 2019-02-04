@@ -123,17 +123,17 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 */
 	private function get_setting_list() {
 		return [
-			'is_valid'        => 'is_valid',
-			'color'           => 'color',
-			'thickness'       => 'thickness',
-			'duration'        => 'duration',
-			'delay'           => 'delay',
-			'function'        => 'function',
-			'is_font_bold'    => 'bold',
-			'is_repeat'       => 'repeat',
-			'padding_bottom'  => 'padding_bottom',
-			'is_valid_button' => 'is_valid_button',
-			'is_valid_style'  => 'is_valid_style',
+			'is_valid'                     => 'is_valid',
+			'color'                        => 'color',
+			'thickness'                    => 'thickness',
+			'duration'                     => 'duration',
+			'delay'                        => 'delay',
+			'function'                     => 'function',
+			'is_font_bold'                 => 'bold',
+			'is_repeat'                    => 'repeat',
+			'padding_bottom'               => 'padding_bottom',
+			'is_valid_button'              => 'is_valid_button',
+			'is_valid_style'               => 'is_valid_style',
 			'is_valid_button_block_editor' => 'is_valid_button_block_editor',
 		];
 	}
@@ -211,11 +211,11 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				) {
 					return $this->get_view( 'admin/custom_post/setting/others', [
 						'details' => [
-							'repeat'          => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'is valid button' => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'is valid style'  => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'repeat'                       => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 							'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'selector'        => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
+							'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
 						],
 					] );
 				},
@@ -330,6 +330,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			/** @var \WP_Post $post */
 			$post                = $data['post'];
 			$options['selector'] = $this->get_default_class( $post->ID );
+			$options['class']    = $this->get_default_class( $post->ID, false );
 			! empty( $data['selector'] ) and $options['selector'] .= ', ' . $data['selector'];
 			$settings[] = [
 				'id'      => $post->ID,

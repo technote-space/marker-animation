@@ -17,3 +17,21 @@
     font-weight: bold;
     padding-bottom: .6em;
 }
+
+.marker-animation-hidden-button {
+    display: none !important;
+}
+
+.marker-animation-is-active.components-dropdown-menu .components-dropdown-menu__toggle {
+    box-shadow: none;
+    background-color: #555d66;
+    color: #fff;
+}
+
+.marker-animation-nav .components-dropdown-menu__menu-item {
+    background-position: left -100% bottom 10% !important;
+    background-size: 200% 1em !important;
+    font-weight: normal !important;
+    padding: 6px !important;
+    display: flex !important;
+}
