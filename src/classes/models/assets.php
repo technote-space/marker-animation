@@ -276,7 +276,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 					'target' => [ 'setting' ],
 				],
 				'detail' => [
-					'value' => 0,
+					'value' => 1,
 					'label' => $this->translate( 'show' ),
 				],
 			],
