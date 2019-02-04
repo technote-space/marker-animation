@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Classes Main
  *
- * @version 0.0.22
+ * @version 0.0.26
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -250,7 +250,7 @@ class Main {
 	private function setup_property() {
 		if ( $this->app->is_uninstall() ) {
 			foreach ( $this->_properties as $name => $class ) {
-				if ( $this->app->is_valid_package( $name ) ) {
+				if ( ! $this->app->is_valid_package( $name ) ) {
 					continue;
 				}
 				$this->$name;
