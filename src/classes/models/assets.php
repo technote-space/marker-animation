@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.5.0
+ * @version 1.6.0
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
@@ -10,6 +10,8 @@
  * @since 1.4.0 Added: marker setting feature
  * @since 1.4.1 Fixed: default value of setting form
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
+ * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -215,27 +217,28 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	/**
 	 * @since 1.3.0 Added: preset color
 	 * @since 1.4.1 Added: detail setting
+	 * @since 1.6.0 #3
 	 * @return array
 	 */
 	public function get_setting_keys() {
 		return [
-			'is_valid'        => [
+			'is_valid'                     => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'target' => [ 'dashboard', 'setting' ],
 				],
 			],
-			'color'           => 'color',
-			'thickness'       => 'input/text',
-			'duration'        => 'input/text',
-			'delay'           => 'input/text',
-			'function'        => [
+			'color'                        => 'color',
+			'thickness'                    => 'input/text',
+			'duration'                     => 'input/text',
+			'delay'                        => 'input/text',
+			'function'                     => [
 				'form' => 'select',
 				'args' => [
 					'options' => $this->get_animation_functions(),
 				],
 			],
-			'bold'            => [
+			'bold'                         => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'attributes' => [
@@ -245,9 +248,9 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 					],
 				],
 			],
-			'repeat'          => 'input/checkbox',
-			'padding_bottom'  => 'input/text',
-			'is_valid_button' => [
+			'repeat'                       => 'input/checkbox',
+			'padding_bottom'               => 'input/text',
+			'is_valid_button'              => [
 				'form'   => 'input/checkbox',
 				'args'   => [
 					'target' => [ 'setting' ],
@@ -257,7 +260,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 					'label' => $this->translate( 'show' ),
 				],
 			],
-			'is_valid_style'  => [
+			'is_valid_style'               => [
 				'form'   => 'input/checkbox',
 				'args'   => [
 					'target' => [ 'setting' ],
@@ -267,23 +270,35 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 					'label' => $this->translate( 'show' ),
 				],
 			],
+			'is_valid_button_block_editor' => [
+				'form'   => 'input/checkbox',
+				'args'   => [
+					'target' => [ 'setting' ],
+				],
+				'detail' => [
+					'value' => 1,
+					'label' => $this->translate( 'show' ),
+				],
+			],
 		];
 	}
 
 	/**
 	 * @since 1.3.0 Added: target filter
+	 * @since 1.6.0 #41
 	 *
 	 * @param string $target
+	 * @param null|string $prefix
 	 *
 	 * @return array
 	 */
-	public function get_setting_details( $target ) {
+	public function get_setting_details( $target, $prefix = null ) {
 		$args = [];
 		foreach ( $this->get_setting_keys() as $key => $form ) {
 			if ( is_array( $form ) && ! empty( $form['args']['target'] ) && ! in_array( $target, $form['args']['target'] ) ) {
 				continue;
 			}
-			$args[ $key ] = $this->get_setting( $key, $form );
+			$args[ $key ] = $this->get_setting( $key, $form, $prefix );
 		}
 
 		return $args;
@@ -291,19 +306,21 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * @since 1.4.1 Changed: use detail setting if exists
+	 * @since 1.6.0 #41
 	 *
 	 * @param string $name
 	 * @param string|array $form
+	 * @param null|string $prefix
 	 *
 	 * @return array
 	 */
-	private function get_setting( $name, $form ) {
+	private function get_setting( $name, $form, $prefix = null ) {
 		$detail = $this->app->utility->array_get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
 		$value  = $this->app->utility->array_get( $detail, 'value' );
 		$ret    = [
 			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',
-			'name'       => $this->get_name_prefix() . $name,
+			'name'       => ( isset( $prefix ) ? $prefix : $this->get_name_prefix() ) . $name,
 			'value'      => $value,
 			'label'      => $this->translate( $this->app->utility->array_get( $detail, 'label', $name ) ),
 			'attributes' => [

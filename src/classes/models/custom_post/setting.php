@@ -1,9 +1,10 @@
 <?php
 /**
- * @version 1.5.0
+ * @version 1.6.0
  * @author technote-space
  * @since 1.4.0
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -119,21 +120,23 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
+	 * @since 1.6.0 #3
 	 * @return array
 	 */
 	private function get_setting_list() {
 		return [
-			'is_valid'        => 'is_valid',
-			'color'           => 'color',
-			'thickness'       => 'thickness',
-			'duration'        => 'duration',
-			'delay'           => 'delay',
-			'function'        => 'function',
-			'is_font_bold'    => 'bold',
-			'is_repeat'       => 'repeat',
-			'padding_bottom'  => 'padding_bottom',
-			'is_valid_button' => 'is_valid_button',
-			'is_valid_style'  => 'is_valid_style',
+			'is_valid'                     => 'is_valid',
+			'color'                        => 'color',
+			'thickness'                    => 'thickness',
+			'duration'                     => 'duration',
+			'delay'                        => 'delay',
+			'function'                     => 'function',
+			'is_font_bold'                 => 'bold',
+			'is_repeat'                    => 'repeat',
+			'padding_bottom'               => 'padding_bottom',
+			'is_valid_button'              => 'is_valid_button',
+			'is_valid_style'               => 'is_valid_style',
+			'is_valid_button_block_editor' => 'is_valid_button_block_editor',
 		];
 	}
 
@@ -145,6 +148,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
+	 * @since 1.6.0 #3
 	 * @return array
 	 */
 	protected function get_manage_posts_columns() {
@@ -210,10 +214,11 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				) {
 					return $this->get_view( 'admin/custom_post/setting/others', [
 						'details' => [
-							'repeat'          => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'is valid button' => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'is valid style'  => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'selector'        => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
+							'repeat'                       => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+							'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
 						],
 					] );
 				},
@@ -293,6 +298,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
+	 * @since 1.6.0 #3
+	 *
 	 * @param string $target
 	 *
 	 * @return array
@@ -312,7 +319,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			$options = [];
 			foreach ( $this->get_setting_list() as $key => $name ) {
 				$is_default = '' === (string) ( $data[ $key ] );
-				if ( 'is_valid_button' === $name || 'is_valid_style' === $name ) {
+				if ( 'is_valid_button' === $name || 'is_valid_style' === $name || 'is_valid_button_block_editor' === $name ) {
 					$options[ $name ] = $data[ $key ];
 					continue;
 				}
@@ -328,6 +335,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			/** @var \WP_Post $post */
 			$post                = $data['post'];
 			$options['selector'] = $this->get_default_class( $post->ID );
+			$options['class']    = $this->get_default_class( $post->ID, false );
 			! empty( $data['selector'] ) and $options['selector'] .= ', ' . $data['selector'];
 			$settings[] = [
 				'id'      => $post->ID,

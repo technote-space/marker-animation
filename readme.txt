@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 3.9.3
 Tested up to: 5.0.3
 Requires PHP: 5.6
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,16 +29,27 @@ This plugin needs PHP5.6 or higher.
 
 1. Marker animation
 2. Settings
-3. Editor(on animation)
-4. Editor(off animation)
+3. Classic Editor(on animation)
+4. Classic Editor(off animation)
 5. Marker setting
 6. Marker setting list
 7. Use button setting
 8. Use style menu setting
+9. Block Editor(on animation)
+10. Block Editor(off animation)
 
 == Upgrade Notice ==
 
+= 1.6.0 =
+* Gutenbergにボタン追加
+* Gutenbergでの動作改善
+
 == Changelog ==
+
+= 1.6.0 (2019/2/4) =
+
+* Improved: Block editor
+* Fixed: dashboard setting
 
 = 1.5.0 (2019/2/2) =
 

@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Common Classes Models Define
  *
- * @version 0.0.1
+ * @version 0.0.16
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -30,7 +30,6 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  * @property-read string $plugin_views_dir
  * @property-read string|false $plugin_textdomain
  * @property-read string|false $plugin_languages_dir
- * @property-read string $plugin_logs_dir
  * @property-read string $plugin_url
  * @property-read string $plugin_assets_url
  * @property-read string $child_theme_dir
@@ -59,7 +58,6 @@ class Define implements \WP_Framework_Core\Interfaces\Singleton {
 		'plugin_views_dir',
 		'plugin_textdomain',
 		'plugin_languages_dir',
-		'plugin_logs_dir',
 		'plugin_url',
 		'plugin_assets_url',
 		'child_theme_dir',
