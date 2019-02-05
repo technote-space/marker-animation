@@ -238,17 +238,17 @@
     },
     {
         "name": "wp-content-framework/core",
-        "version": "v0.0.26",
-        "version_normalized": "0.0.26.0",
+        "version": "v0.0.27",
+        "version_normalized": "0.0.27.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wp-content-framework/core.git",
-            "reference": "0340b8ce2cf1ee41a7f929d4bae7417654e986c6"
+            "reference": "b37a283ce256e501c025b68a70fc378ab72dbfb8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wp-content-framework/core/zipball/0340b8ce2cf1ee41a7f929d4bae7417654e986c6",
-            "reference": "0340b8ce2cf1ee41a7f929d4bae7417654e986c6",
+            "url": "https://api.github.com/repos/wp-content-framework/core/zipball/b37a283ce256e501c025b68a70fc378ab72dbfb8",
+            "reference": "b37a283ce256e501c025b68a70fc378ab72dbfb8",
             "shasum": ""
         },
         "require": {
@@ -259,7 +259,7 @@
             "phake/phake": "~2.0",
             "phpunit/phpunit": "~5.7"
         },
-        "time": "2019-02-04T19:30:19+00:00",
+        "time": "2019-02-05T07:12:13+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

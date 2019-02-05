@@ -2,7 +2,7 @@
 /**
  * WP_Framework Package Base
  *
- * @version 0.0.22
+ * @version 0.0.27
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -68,7 +68,11 @@ abstract class Package_Base {
 	 * @return Package_Base
 	 */
 	public static function get_instance( \WP_Framework $app, $package, $dir, $version ) {
-		! isset( self::$_instances[ $package ] ) and self::$_instances[ $package ] = new static( $app, $package, $dir, $version );
+		if ( ! isset( self::$_instances[ $package ] ) ) {
+			self::$_instances[ $package ] = new static( $app, $package, $dir, $version );
+		} else {
+			self::$_instances[ $package ]->setup( $app, $package, $dir, $version );
+		}
 
 		return self::$_instances[ $package ];
 	}
@@ -82,11 +86,25 @@ abstract class Package_Base {
 	 * @param string $version
 	 */
 	private function __construct( $app, $package, $dir, $version ) {
+		$this->setup( $app, $package, $dir, $version );
+		$this->initialize();
+	}
+
+	/**
+	 * @param \WP_Framework $app
+	 * @param string $package
+	 * @param string $dir
+	 * @param string $version
+	 */
+	private function setup( $app, $package, $dir, $version ) {
 		$this->_app     = $app;
 		$this->_package = $package;
 		$this->_dir     = $dir;
 		$this->_version = $version;
-		$this->initialize();
+
+		$this->_namespace = null;
+		$this->_configs   = [];
+		$this->_url       = null;
 	}
 
 	/**

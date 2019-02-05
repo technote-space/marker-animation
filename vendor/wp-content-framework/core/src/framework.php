@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.20
+ * @version 0.0.27
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -518,7 +518,7 @@ class WP_Framework {
 	 */
 	private static function initialize_framework() {
 		/** @noinspection PhpIncludeInspection */
-		require_once self::$_instances[self::$_framework_package_plugin_names['core']]->_framework_root_directory . DS . 'core' . DS . 'package_base.php';
+		require_once self::$_instances[ self::$_framework_package_plugin_names['core'] ]->_framework_root_directory . DS . 'core' . DS . 'package_base.php';
 		$priority = [];
 		$packages = [];
 		foreach ( self::$_framework_package_plugin_names as $key => $plugin_name ) {
@@ -584,7 +584,7 @@ class WP_Framework {
 			} );
 
 			add_action( 'activated_plugin', function ( $plugin ) {
-				$this->plugins_loaded();
+				$this->plugins_loaded( true );
 				if ( $this->is_enough_version() ) {
 					$this->main_init();
 					if ( $this->define->plugin_base_name === $plugin ) {
@@ -608,15 +608,15 @@ class WP_Framework {
 	}
 
 	/**
-	 * load basic files
+	 * @param bool $initialize_framework
 	 */
-	private function plugins_loaded() {
+	private function plugins_loaded( $initialize_framework = false ) {
 		if ( $this->_plugins_loaded ) {
 			return;
 		}
 		$this->_plugins_loaded = true;
 
-		if ( ! self::$_is_framework_initialized ) {
+		if ( ! self::$_is_framework_initialized || $initialize_framework ) {
 			self::$_is_framework_initialized = true;
 			self::initialize_framework();
 		}
@@ -710,7 +710,7 @@ class WP_Framework {
 		}
 
 		$app->_is_uninstall = true;
-		$app->plugins_loaded();
+		$app->plugins_loaded( true );
 		if ( $app->is_enough_version() ) {
 			$app->main_init();
 			$app->uninstall->uninstall();
@@ -728,7 +728,7 @@ class WP_Framework {
 			if ( $instance->is_theme ) {
 				continue;
 			}
-			$instance->plugins_loaded();
+			$instance->plugins_loaded( true );
 			if ( $instance->define->plugin_base_name === $plugin_base_name ) {
 				return $instance;
 			}
