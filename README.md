@@ -11,29 +11,32 @@
 [WordPress公式ディレクトリ](https://ja.wordpress.org/plugins/marker-animation/)
 
 ## スクリーンショット
-- 動作
+### 動作
 
 ![動作](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-1.gif)
 
-- デフォルト設定画面
+### デフォルト設定画面
 
 ![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030129.png)
 
-- マーカー設定画面（設定管理）
+### マーカー設定画面（設定管理）
 
-![一覧画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030132.png)
+![一覧画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051635.png)
 
-![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030135.png)
+![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051631.png)
 
-- 投稿編集画面
+### 投稿編集画面
+#### ブロックエディタ
+  
+![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-9.gif)
+
+![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-10.gif)
+
+#### クラシックエディタ
 
 ![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-3.gif)
 
 ![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-4.gif)
-
-![ボタン設定の使用](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030420.gif)
-
-![メニュー設定の使用](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030421.gif)
 
 ## 要件
 - PHP 5.6 以上
@@ -52,16 +55,24 @@
 3. アニメーションを外したい場合は対象の文にカーソルを合わせた状態でマーカーペンアイコンを押下
 
 ## コントロールの種類
-### マーカーアニメーションボタン
+### ブロックエディタ
+#### マーカーアニメーションボタン
+デフォルト設定画面で設定した値でマーカーが動作します。
+![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051620.png)
+#### マーカー設定で「ブロックエディタにボタン表示させるかどうか」を有効にして登録したボタン
+マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
+![ボタン2](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051621.png)
+### クラシックエディタ
+#### マーカーアニメーションボタン
 デフォルト設定画面で設定した値でマーカーが動作します。
 ![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030454.png)
-### マーカーアニメーション(詳細設定)ボタン
+#### マーカーアニメーション(詳細設定)ボタン
 細かく値を指定することができます。
 ![ボタン2](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030455.png)
-### マーカー設定で「ボタン表示させるかどうか」を有効にして登録したボタン
+#### マーカー設定で「クラシックエディタにボタン表示させるかどうか」を有効にして登録したボタン
 マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
 ![ボタン3](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030134.png)
-### マーカー設定で「スタイルメニューに表示させるかどうか」を有効にして登録したメニュー
+#### マーカー設定で「クラシックエディタにスタイルメニューに表示させるかどうか」を有効にして登録したメニュー
 マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。  
 ![メニュー](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030136.png)
 
