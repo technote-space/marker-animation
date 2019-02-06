@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.27
+ * @version 0.0.28
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -440,9 +440,11 @@ class WP_Framework {
 			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
 		}
 		if ( ! isset( $this->_main ) ) {
-			$path = $this->get_package_directory() . DS . 'src' . DS . 'classes' . DS . 'main.php';
-			/** @noinspection PhpIncludeInspection */
-			require_once $path;
+			if ( ! class_exists( '\WP_Framework_Core\Classes\Main' ) ) {
+				$path = $this->get_package_directory() . DS . 'src' . DS . 'classes' . DS . 'main.php';
+				/** @noinspection PhpIncludeInspection */
+				require_once $path;
+			}
 			$this->_main = \WP_Framework_Core\Classes\Main::get_instance( $this );
 		}
 
@@ -517,8 +519,10 @@ class WP_Framework {
 	 * initialize framework
 	 */
 	private static function initialize_framework() {
-		/** @noinspection PhpIncludeInspection */
-		require_once self::$_instances[ self::$_framework_package_plugin_names['core'] ]->_framework_root_directory . DS . 'core' . DS . 'package_base.php';
+		if ( ! class_exists( '\WP_Framework\Package_Base' ) ) {
+			/** @noinspection PhpIncludeInspection */
+			require_once self::$_instances[ self::$_framework_package_plugin_names['core'] ]->_framework_root_directory . DS . 'core' . DS . 'package_base.php';
+		}
 		$priority = [];
 		$packages = [];
 		foreach ( self::$_framework_package_plugin_names as $key => $plugin_name ) {
@@ -533,16 +537,19 @@ class WP_Framework {
 				$directory = $app->_framework_root_directory . DS . $package;
 				$namespace = 'WP_Framework';
 			}
-			$path = $directory . DS . 'package_' . $package . '.php';
-			if ( ! is_readable( $path ) ) {
-				self::wp_die( [ 'invalid package', 'package name: ' . $key ], __FILE__, __LINE__ );
-			}
-			/** @noinspection PhpIncludeInspection */
-			require_once $path;
 
 			$class = "\\{$namespace}\Package_" . ucwords( $package, '_' );
 			if ( ! class_exists( $class ) ) {
-				self::wp_die( [ 'invalid package', 'package name: ' . $key, 'class name: ' . $class ], __FILE__, __LINE__ );
+				$path = $directory . DS . 'package_' . $package . '.php';
+				if ( ! is_readable( $path ) ) {
+					self::wp_die( [ 'invalid package', 'package name: ' . $key ], __FILE__, __LINE__ );
+				}
+				/** @noinspection PhpIncludeInspection */
+				require_once $path;
+
+				if ( ! class_exists( $class ) ) {
+					self::wp_die( [ 'invalid package', 'package name: ' . $key, 'class name: ' . $class ], __FILE__, __LINE__ );
+				}
 			}
 
 			$version = self::$_framework_package_versions[ $key ];
@@ -568,7 +575,7 @@ class WP_Framework {
 			} );
 
 			add_action( 'after_switch_theme', function () {
-				$this->plugins_loaded();
+				$this->plugins_loaded( true );
 				if ( $this->is_enough_version() ) {
 					$this->main_init();
 					$this->filter->do_action( 'app_activated', $this );

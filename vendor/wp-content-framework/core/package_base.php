@@ -2,7 +2,7 @@
 /**
  * WP_Framework Package Base
  *
- * @version 0.0.27
+ * @version 0.0.28
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -21,8 +21,15 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  */
 abstract class Package_Base {
 
-	/** @var Package_Base[] $_instances */
+	/**
+	 * @var Package_Base[] $_instances
+	 */
 	private static $_instances = [];
+
+	/**
+	 * @var array
+	 */
+	private $_caches = [];
 
 	/**
 	 * @var \WP_Framework $_app
@@ -149,20 +156,24 @@ abstract class Package_Base {
 	 * @return array
 	 */
 	public function get_config( $name, $app = null ) {
-		if ( ! isset( $this->_configs[ $name ] ) ) {
-			if ( ! in_array( $name, $this->get_configs() ) ) {
-				$this->_configs[ $name ] = [];
-			} else {
-				$this->_configs[ $name ] = $this->load_package_config( $name );
+		$key = $name . ( $app ? '/' . $app->plugin_name : '' );
+		if ( ! isset( $this->_caches['config'][ $key ] ) ) {
+			if ( ! isset( $this->_configs[ $name ] ) ) {
+				if ( ! in_array( $name, $this->get_configs() ) ) {
+					$this->_configs[ $name ] = [];
+				} else {
+					$this->_configs[ $name ] = $this->load_package_config( $name );
+				}
 			}
+
+			$config = $this->_configs[ $name ];
+			if ( $app ) {
+				$config = array_replace_recursive( $config, $this->load_plugin_config( $name, $app ) );
+			}
+			$this->_caches['config'][ $key ] = $config;
 		}
 
-		$config = $this->_configs[ $name ];
-		if ( $app ) {
-			$config = array_replace_recursive( $config, $this->load_plugin_config( $name, $app ) );
-		}
-
-		return $config;
+		return $this->_caches['config'][ $key ];
 	}
 
 	/**
@@ -192,12 +203,16 @@ abstract class Package_Base {
 	 * @return array
 	 */
 	public function namespace_to_dir( $namespace ) {
-		$relative = $this->trim_namespace( $namespace );
-		if ( $relative ) {
-			return [ $this->get_dir() . DS . 'src', $relative ];
+		if ( ! isset( $this->_caches['namespace_to_dir'][ $namespace ] ) ) {
+			$relative = $this->trim_namespace( $namespace );
+			if ( $relative ) {
+				$this->_caches['namespace_to_dir'][ $namespace ] = [ $this->get_dir() . DS . 'src', $relative ];
+			} else {
+				$this->_caches['namespace_to_dir'][ $namespace ] = [ null, null ];
+			}
 		}
 
-		return [ null, null ];
+		return $this->_caches['namespace_to_dir'][ $namespace ];
 	}
 
 	/**
@@ -272,7 +287,7 @@ abstract class Package_Base {
 	protected function load_package_config( $name ) {
 		$package_config = $this->load_config_file( $this->get_dir() . DS . 'configs', $name );
 
-		return apply_filters( 'wp_framework/load_config', $package_config, $name, $package_config );
+		return apply_filters( 'wp_framework/load_package_config', $package_config, $name, $package_config );
 	}
 
 	/**
@@ -284,7 +299,7 @@ abstract class Package_Base {
 	protected function load_plugin_config( $name, $app ) {
 		$plugin_config = $this->load_config_file( $app->plugin_dir . DS . 'configs' . DS . $name, $this->get_package() );
 
-		return apply_filters( 'wp_framework/load_config', $plugin_config, $name, $plugin_config, $app );
+		return apply_filters( 'wp_framework/load_plugin_config', $plugin_config, $name, $plugin_config, $app );
 	}
 
 	/**
@@ -313,79 +328,87 @@ abstract class Package_Base {
 	 * @return array
 	 */
 	public function get_assets_settings( $allow_multiple = false ) {
-		if ( 'view' === $this->_package ) {
+		return $this->get_settings_common( 'view', $allow_multiple ? 'assets/m' : 'assets/s', function () {
 			return [ $this->get_assets_dir() => $this->get_assets_url() ];
-		}
-
-		if ( $this->_app->is_valid_package( 'view' ) ) {
-			$view = $this->_app->get_package_instance( 'view' )->get_assets_settings();
-		} else {
-			$view = [];
-		}
-		if ( ! $this->is_valid_assets() ) {
-			return $view;
-		}
-
-		if ( $allow_multiple ) {
-			$settings                            = $view;
-			$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
-		} else {
-			$settings                            = [];
-			$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
-			foreach ( $view as $k => $v ) {
-				$settings[ $k ] = $v;
+		}, 'get_assets_settings', 'is_valid_assets', function ( $default ) use ( $allow_multiple ) {
+			if ( $allow_multiple ) {
+				$settings                            = $default;
+				$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
+			} else {
+				$settings                            = [];
+				$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
+				foreach ( $default as $k => $v ) {
+					$settings[ $k ] = $v;
+				}
 			}
-		}
 
-		return $settings;
+			return $settings;
+		} );
 	}
 
 	/**
 	 * @return array
 	 */
 	public function get_views_dirs() {
-		if ( 'view' === $this->_package ) {
+		return $this->get_settings_common( 'view', 'views', function () {
 			return [ $this->get_views_dir() ];
-		}
+		}, 'get_views_dirs', 'is_valid_view', function ( $default ) {
+			$dirs   = [];
+			$dirs[] = $this->get_views_dir();
+			foreach ( $default as $dir ) {
+				$dirs[] = $dir;
+			}
 
-		if ( $this->_app->is_valid_package( 'view' ) ) {
-			$view = $this->_app->get_package_instance( 'view' )->get_views_dirs();
-		} else {
-			$view = [];
-		}
-		if ( ! $this->is_valid_view() ) {
-			return $view;
-		}
-
-		$dirs   = [];
-		$dirs[] = $this->get_views_dir();
-		foreach ( $view as $dir ) {
-			$dirs[] = $dir;
-		}
-
-		return $dirs;
+			return $dirs;
+		} );
 	}
 
 	/**
 	 * @return array
 	 */
 	public function get_translate_settings() {
-		if ( 'common' === $this->_package ) {
+		return $this->get_settings_common( 'common', 'translate', function () {
 			return [ $this->get_textdomain() => $this->get_language_directory() ];
+		}, 'get_translate_settings', 'is_valid_translate', function ( $default ) {
+			$settings                            = [];
+			$settings[ $this->get_textdomain() ] = $this->get_language_directory();
+			foreach ( $default as $k => $v ) {
+				$settings[ $k ] = $v;
+			}
+
+			return $settings;
+		} );
+	}
+
+	/**
+	 * @param string $default_package
+	 * @param string $cache_key
+	 * @param callable $get_default
+	 * @param string $called_method
+	 * @param string $validity_check_method
+	 * @param callable $merge_settings
+	 *
+	 * @return array
+	 */
+	private function get_settings_common( $default_package, $cache_key, $get_default, $called_method, $validity_check_method, $merge_settings ) {
+		if ( ! isset( $this->_caches[ $cache_key ] ) ) {
+			if ( $default_package === $this->_package ) {
+				$this->_caches[ $cache_key ] = $get_default();
+			} else {
+				if ( $this->_app->is_valid_package( $default_package ) ) {
+					$default = $this->_app->get_package_instance( $default_package )->$called_method();
+				} else {
+					$default = [];
+				}
+				if ( ! $this->$validity_check_method() ) {
+					$this->_caches[ $cache_key ] = $default;
+				} else {
+					$this->_caches[ $cache_key ] = $merge_settings( $default );
+				}
+			}
 		}
 
-		$common = $this->_app->get_package_instance( 'common' );
-		if ( ! $this->is_valid_translate() ) {
-			return $common->get_translate_settings();
-		}
-
-		$settings                            = [];
-		$settings[ $this->get_textdomain() ] = $this->get_language_directory();
-		foreach ( $common->get_translate_settings() as $k => $v ) {
-			$settings[ $k ] = $v;
-		}
-
-		return $settings;
+		return $this->_caches[ $cache_key ];
 	}
 
 	/**
