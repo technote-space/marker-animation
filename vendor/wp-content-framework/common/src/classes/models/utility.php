@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Common Classes Models Utility
  *
- * @version 0.0.15
+ * @version 0.0.18
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -524,37 +524,38 @@ class Utility implements \WP_Framework_Core\Interfaces\Singleton {
 	}
 
 	/**
+	 * @param \WP_Framework $app
 	 * @param string $name
 	 * @param callable $func
 	 * @param int $timeout
 	 *
 	 * @return bool
 	 */
-	public function lock_process( $name, callable $func, $timeout = 60 ) {
+	public function lock_process( $app, $name, callable $func, $timeout = 60 ) {
 		$name         .= '__LOCK_PROCESS__';
 		$timeout_name = $name . 'TIMEOUT__';
-		$this->app->option->reload_options();
-		$check = $this->app->option->get( $name );
+		$app->option->reload_options();
+		$check = $app->option->get( $name );
 		if ( ! empty( $check ) ) {
-			$expired = $this->app->option->get( $timeout_name, 0 ) < time();
+			$expired = $app->option->get( $timeout_name, 0 ) < time();
 			if ( ! $expired ) {
 				return false;
 			}
 		}
 		$rand = md5( uniqid() );
-		$this->app->option->set( $name, $rand );
-		$this->app->option->reload_options();
-		if ( $this->app->option->get( $name ) != $rand ) {
+		$app->option->set( $name, $rand );
+		$app->option->reload_options();
+		if ( $app->option->get( $name ) != $rand ) {
 			return false;
 		}
-		$this->app->option->set( $timeout_name, time() + $timeout );
+		$app->option->set( $timeout_name, time() + $timeout );
 		try {
 			$func();
 		} catch ( \Exception $e ) {
-			$this->app->log( $e );
+			$app->log( $e );
 		} finally {
-			$this->app->option->delete( $name );
-			$this->app->option->delete( $timeout_name );
+			$app->option->delete( $name );
+			$app->option->delete( $timeout_name );
 		}
 
 		return true;

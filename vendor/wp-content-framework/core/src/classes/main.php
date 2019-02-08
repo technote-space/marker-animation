@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Classes Main
  *
- * @version 0.0.26
+ * @version 0.0.30
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -242,6 +242,10 @@ class Main {
 		$this->filter->do_action( 'app_initialize', $this );
 		$this->setup_property();
 		$this->filter->do_action( 'app_initialized', $this );
+
+		if ( ! $this->option->is_app_activated() ) {
+			$this->filter->do_action( 'app_activated' );
+		}
 	}
 
 	/**
@@ -550,5 +554,16 @@ class Main {
 	public function delete_shared_object( $key, $target = null ) {
 		! isset( $target ) and $target = $this->app->plugin_name;
 		unset( self::$_shared_object[ $target ][ $key ] );
+	}
+
+	/**
+	 * @param string $name
+	 * @param callable $func
+	 * @param int $timeout
+	 *
+	 * @return bool
+	 */
+	public function lock_process( $name, callable $func, $timeout = 60 ) {
+		return $this->utility->lock_process( $this->app, $name, $func, $timeout );
 	}
 }

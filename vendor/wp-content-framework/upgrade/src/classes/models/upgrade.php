@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Upgrade Classes Models Upgrade
  *
- * @version 0.0.5
+ * @version 0.0.6
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -40,10 +40,10 @@ class Upgrade implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework_Pre
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function upgrade() {
-		$this->app->utility->lock_process( 'upgrade', function () {
-			if ( ! $this->is_required_upgrade() ) {
-				return;
-			}
+		if ( ! $this->is_required_upgrade() ) {
+			return;
+		}
+		$this->app->lock_process( 'upgrade', function () {
 			$this->do_framework_action( 'start_upgrade' );
 			$last_version = $this->get_last_upgrade_version();
 			$this->set_last_upgrade_version();
