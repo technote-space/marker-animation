@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Traits Custom Post
  *
- * @version 0.0.10
+ * @version 0.0.11
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -1045,6 +1045,16 @@ trait Custom_Post {
 
 		return array_map( function ( $d ) use ( $key, $columns ) {
 			$key = $this->table_column_to_name( $key, $columns );
+			/** @noinspection HtmlUnknownTarget */
+			$d = preg_replace( '#\[(https?://([\w-]+\.)+[\w-]+(/[\w-./?%&=\#]*)?)\]\s*\(([^()]+?)\)#', '<a href="${1}" target="_blank">${4}</a>', $d );
+			$d = wp_kses( $d, [
+				'a'      => [ 'href' => true, 'target' => true ],
+				'b'      => [],
+				'br'     => [],
+				'sub'    => [],
+				'sup'    => [],
+				'strong' => [],
+			] );
 
 			return "$d: [{$key}]";
 		}, $errors );
@@ -1083,7 +1093,7 @@ trait Custom_Post {
 	 * @return string
 	 */
 	protected function replace_set_param_variable( $str ) {
-		return preg_replace( '#\$\{([\.\w]+)\}#', '<span class="set_param" data-set_param="$1"></span>', $str );
+		return preg_replace( '#\$\{([\.\w]+)\}#', '<span class="set_param" data-set_param="${1}"/>', $str );
 	}
 
 	/**

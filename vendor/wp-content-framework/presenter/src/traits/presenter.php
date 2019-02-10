@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Presenter Traits Presenter
  *
- * @version 0.0.1
+ * @version 0.0.7
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -312,24 +312,26 @@ trait Presenter {
 
 	/**
 	 * @param bool $append_version
+	 * @param string $v
 	 * @param string $q
 	 *
 	 * @return string
 	 */
-	private function get_assets_version( $append_version, $q = 'v' ) {
+	private function get_assets_version( $append_version, $v = 'v', $q = '?' ) {
 		if ( ! $append_version ) {
-			return '';
-		}
-		$append = trim( $this->apply_filters( 'assets_version' ) );
-		if ( $append !== '' ) {
-			if ( $q ) {
-				return '?' . $q . '=' . $append;
+			$append = '';
+		} else {
+			$append = trim( $this->apply_filters( 'assets_version' ) );
+			if ( $append !== '' ) {
+				if ( $v ) {
+					$append = $v . '=' . $append;
+				}
 			}
-
-			return '?' . $append;
 		}
+		$append = trim( $this->apply_filters( 'get_assets_version', $append, $append_version, $v, $q ) );
+		'' !== $append and $append = $q . $append;
 
-		return '';
+		return $append;
 	}
 
 	/**
@@ -365,14 +367,22 @@ trait Presenter {
 	}
 
 	/**
+	 * @return array
+	 */
+	protected function get_upload_dir() {
+		return [ $this->app->define->upload_dir => $this->app->define->upload_url ];
+	}
+
+	/**
 	 * @param string $path
 	 * @param string $default
 	 * @param bool $url
 	 * @param bool $append_version
+	 * @param bool $use_upload_dir
 	 *
 	 * @return string
 	 */
-	private function get_assets( $path, $default = '', $url = false, $append_version = true ) {
+	private function get_assets( $path, $default = '', $url = false, $append_version = true, $use_upload_dir = false ) {
 		if ( empty( $path ) ) {
 			return '';
 		}
@@ -381,11 +391,11 @@ trait Presenter {
 		$path = trim( $path, '/' . DS );
 		$path = str_replace( '/', DS, $path );
 
-		foreach ( $this->get_check_assets_dirs() as $_dir => $_url ) {
+		foreach ( $use_upload_dir ? $this->get_upload_dir() : $this->get_check_assets_dirs() as $_dir => $_url ) {
 			$_dir = rtrim( $_dir, DS . '/' );
 			if ( file_exists( $_dir . DS . $path ) && is_file( $_dir . DS . $path ) ) {
 				if ( $url ) {
-					return rtrim( $_url, '/' ) . '/' . str_replace( DS, '/', $path ) . $this->apply_filters( 'get_assets_version', $this->get_assets_version( $append_version ), $append_version );
+					return rtrim( $_url, '/' ) . '/' . str_replace( DS, '/', $path ) . $this->get_assets_version( $append_version );
 				}
 
 				return $_dir . DS . $path;
@@ -393,6 +403,9 @@ trait Presenter {
 		}
 		if ( empty( $default ) ) {
 			return '';
+		}
+		if ( $use_upload_dir ) {
+			return $this->get_assets( $path, $default, $url, $append_version );
 		}
 
 		return $this->get_assets( $default, '', $url, false );
@@ -412,11 +425,23 @@ trait Presenter {
 	/**
 	 * @param string $path
 	 * @param string $default
+	 * @param bool $append_version
 	 *
 	 * @return string
 	 */
-	protected function get_assets_path( $path, $default = '' ) {
-		return $this->get_assets( $path, $default );
+	public function get_upload_assets_url( $path, $default = '', $append_version = true ) {
+		return $this->get_assets( $path, $default, true, $append_version, true );
+	}
+
+	/**
+	 * @param string $path
+	 * @param string $default
+	 * @param bool $use_upload_dir
+	 *
+	 * @return string
+	 */
+	protected function get_assets_path( $path, $default = '', $use_upload_dir = false ) {
+		return $this->get_assets( $path, $default, false, true, $use_upload_dir );
 	}
 
 	/**
@@ -433,21 +458,23 @@ trait Presenter {
 	/**
 	 * @param string $path
 	 * @param string $default
+	 * @param bool $use_upload_dir
 	 *
 	 * @return string
 	 */
-	protected function get_css_path( $path, $default = '' ) {
-		return empty( $path ) ? '' : $this->get_assets_path( 'css/' . $path, $default );
+	protected function get_css_path( $path, $default = '', $use_upload_dir = false ) {
+		return empty( $path ) ? '' : $this->get_assets_path( 'css/' . $path, $default, $use_upload_dir );
 	}
 
 	/**
 	 * @param string $path
 	 * @param string $default
+	 * @param bool $use_upload_dir
 	 *
 	 * @return string
 	 */
-	protected function get_js_path( $path, $default = '' ) {
-		return empty ( $path ) ? '' : $this->get_assets_path( 'js/' . $path, $default );
+	protected function get_js_path( $path, $default = '', $use_upload_dir = false ) {
+		return empty ( $path ) ? '' : $this->get_assets_path( 'js/' . $path, $default, $use_upload_dir );
 	}
 
 	/**
@@ -499,11 +526,12 @@ trait Presenter {
 	/**
 	 * @param string $path
 	 * @param int $priority
+	 * @param bool $use_upload_dir
 	 *
 	 * @return bool
 	 */
-	public function css( $path, $priority = 10 ) {
-		$css = $this->get_css_path( $path );
+	public function css( $path, $priority = 10, $use_upload_dir = false ) {
+		$css = $this->get_css_path( $path, '', $use_upload_dir );
 		if ( ! empty( $css ) ) {
 			$this->app->minify->register_css_file( $css, $priority );
 
@@ -516,11 +544,12 @@ trait Presenter {
 	/**
 	 * @param string $path
 	 * @param int $priority
+	 * @param bool $use_upload_dir
 	 *
 	 * @return bool
 	 */
-	public function js( $path, $priority = 10 ) {
-		$js = $this->get_js_path( $path );
+	public function js( $path, $priority = 10, $use_upload_dir = false ) {
+		$js = $this->get_js_path( $path, '', $use_upload_dir );
 		if ( ! empty( $js ) ) {
 			$this->app->minify->register_js_file( $js, $priority );
 
@@ -528,6 +557,22 @@ trait Presenter {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param string|bool|null $ver
+	 *
+	 * @return string|bool|null
+	 */
+	private function get_enqueue_ver( $ver ) {
+		if ( false === $ver ) {
+			$ver = $this->get_assets_version( true, '', '' );
+			if ( '' === $ver ) {
+				$ver = false;
+			}
+		}
+
+		return $ver;
 	}
 
 	/**
@@ -541,9 +586,33 @@ trait Presenter {
 	 * @return bool
 	 */
 	public function enqueue_style( $handle, $file, array $depends = [], $ver = false, $media = 'all', $dir = 'css' ) {
+		$ver = $this->get_enqueue_ver( $ver );
+
 		return $this->enqueue_assets( $handle, $file, $dir, function ( $handle, $path ) use ( $depends, $ver, $media ) {
 			wp_enqueue_style( $handle, $path, $depends, $ver, $media );
+		}, false );
+	}
+
+	/**
+	 * @param string $handle
+	 * @param string $file
+	 * @param callable $generator
+	 * @param array $depends
+	 * @param string|bool|null $ver
+	 * @param string $media
+	 * @param string $dir
+	 *
+	 * @return bool
+	 */
+	public function enqueue_upload_style( $handle, $file, $generator, array $depends = [], $ver = false, $media = 'all', $dir = 'css' ) {
+		$ver = $this->get_enqueue_ver( $ver );
+		$this->app->utility->create_upload_file_if_not_exists( $this->app, $dir . DS . $file, function () use ( $generator ) {
+			return $this->app->minify->minify_css( $generator(), false );
 		} );
+
+		return $this->enqueue_assets( $handle, $file, $dir, function ( $handle, $path ) use ( $depends, $ver, $media ) {
+			wp_enqueue_style( $handle, $path, $depends, $ver, $media );
+		}, true );
 	}
 
 	/**
@@ -557,9 +626,33 @@ trait Presenter {
 	 * @return bool
 	 */
 	public function enqueue_script( $handle, $file, array $depends = [], $ver = false, $in_footer = true, $dir = 'js' ) {
+		$ver = $this->get_enqueue_ver( $ver );
+
 		return $this->enqueue_assets( $handle, $file, $dir, function ( $handle, $path ) use ( $depends, $ver, $in_footer ) {
 			wp_enqueue_script( $handle, $path, $depends, $ver, $in_footer );
+		}, false );
+	}
+
+	/**
+	 * @param string $handle
+	 * @param string $file
+	 * @param callable $generator
+	 * @param array $depends
+	 * @param string|bool|null $ver
+	 * @param bool $in_footer
+	 * @param string $dir
+	 *
+	 * @return bool
+	 */
+	public function enqueue_upload_script( $handle, $file, $generator, array $depends = [], $ver = false, $in_footer = true, $dir = 'js' ) {
+		$ver = $this->get_enqueue_ver( $ver );
+		$this->app->utility->create_upload_file_if_not_exists( $this->app, $dir . DS . $file, function () use ( $generator ) {
+			return $this->app->minify->minify_js( $generator(), false );
 		} );
+
+		return $this->enqueue_assets( $handle, $file, $dir, function ( $handle, $path ) use ( $depends, $ver, $in_footer ) {
+			wp_enqueue_script( $handle, $path, $depends, $ver, $in_footer );
+		}, true );
 	}
 
 	/**
@@ -567,15 +660,16 @@ trait Presenter {
 	 * @param string $file
 	 * @param string $dir
 	 * @param callable $enqueue
+	 * @param bool $use_upload_dir
 	 *
 	 * @return bool
 	 */
-	private function enqueue_assets( $handle, $file, $dir, $enqueue ) {
+	private function enqueue_assets( $handle, $file, $dir, $enqueue, $use_upload_dir ) {
 		$path    = $dir . DS . $file;
 		$result  = false;
 		$_handle = $handle;
 		$index   = 0;
-		foreach ( $this->get_check_assets_dirs( true ) as $_dir => $_url ) {
+		foreach ( $use_upload_dir ? $this->get_upload_dir() : $this->get_check_assets_dirs( true ) as $_dir => $_url ) {
 			$_dir = rtrim( $_dir, DS . '/' );
 			if ( file_exists( $_dir . DS . $path ) && is_file( $_dir . DS . $path ) ) {
 				$enqueue( $handle, $_url . '/' . $dir . '/' . $file );

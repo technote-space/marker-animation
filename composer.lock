@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c104607c63de4729941c7cf4a38391c",
+    "content-hash": "869fb8d8952eec926bb4822114a0315f",
     "packages": [
         {
             "name": "matthiasmullie/minify",
@@ -156,16 +156,16 @@
         },
         {
             "name": "wp-content-framework/common",
-            "version": "v0.0.18",
+            "version": "v0.0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/common.git",
-                "reference": "064411e4501c94a60e788938997141168fdd7f80"
+                "reference": "9d571a6692caf29a3a5fa7ab2c23cef9d9128b4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/064411e4501c94a60e788938997141168fdd7f80",
-                "reference": "064411e4501c94a60e788938997141168fdd7f80",
+                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/9d571a6692caf29a3a5fa7ab2c23cef9d9128b4f",
+                "reference": "9d571a6692caf29a3a5fa7ab2c23cef9d9128b4f",
                 "shasum": ""
             },
             "require": {
@@ -193,7 +193,7 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-02-07T17:52:24+00:00"
+            "time": "2019-02-09T08:30:57+00:00"
         },
         {
             "name": "wp-content-framework/controller",
@@ -281,62 +281,24 @@
             "time": "2019-02-08T08:27:12+00:00"
         },
         {
-            "name": "wp-content-framework/cron",
-            "version": "v0.0.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wp-content-framework/cron.git",
-                "reference": "0dd5c1c8f810f257f32ac212aeb370d77a5ca03b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/cron/zipball/0dd5c1c8f810f257f32ac212aeb370d77a5ca03b",
-                "reference": "0dd5c1c8f810f257f32ac212aeb370d77a5ca03b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0",
-                "wp-content-framework/core": "~0.0.1"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "technote",
-                    "email": "technote.space@gmail.com",
-                    "homepage": "https://technote.space"
-                }
-            ],
-            "description": "Wordpress content framework",
-            "homepage": "https://github.com/wp-content-framework",
-            "keywords": [
-                "framework",
-                "wordpress"
-            ],
-            "time": "2019-02-02T19:07:45+00:00"
-        },
-        {
             "name": "wp-content-framework/custom_post",
-            "version": "v0.0.10",
+            "version": "v0.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/custom_post.git",
-                "reference": "f06f767bd3229a0f5badb7480b8552b17371d6e5"
+                "reference": "443a31e56e4cf76346c3220ffc546102366b0e8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/custom_post/zipball/f06f767bd3229a0f5badb7480b8552b17371d6e5",
-                "reference": "f06f767bd3229a0f5badb7480b8552b17371d6e5",
+                "url": "https://api.github.com/repos/wp-content-framework/custom_post/zipball/443a31e56e4cf76346c3220ffc546102366b0e8e",
+                "reference": "443a31e56e4cf76346c3220ffc546102366b0e8e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6.0",
+                "wp-content-framework/admin": "~0.0.1",
                 "wp-content-framework/db": "~0.0.1",
-                "wp-content-framework/session": "~0.0.1",
-                "wp-content-framework/view": "~0.0.1"
+                "wp-content-framework/session": "~0.0.1"
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
@@ -356,7 +318,7 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-02-01T15:54:19+00:00"
+            "time": "2019-02-10T14:55:10+00:00"
         },
         {
             "name": "wp-content-framework/db",
@@ -401,95 +363,17 @@
             "time": "2019-02-07T17:37:50+00:00"
         },
         {
-            "name": "wp-content-framework/log",
-            "version": "v0.0.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wp-content-framework/log.git",
-                "reference": "c609de63cd811ca5596f6d786f8620b76e729c9a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/log/zipball/c609de63cd811ca5596f6d786f8620b76e729c9a",
-                "reference": "c609de63cd811ca5596f6d786f8620b76e729c9a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0",
-                "wp-content-framework/admin": "~0.0.1",
-                "wp-content-framework/cron": "~0.0.1",
-                "wp-content-framework/db": "~0.0.1"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "technote",
-                    "email": "technote.space@gmail.com",
-                    "homepage": "https://technote.space"
-                }
-            ],
-            "description": "Wordpress content framework",
-            "homepage": "https://github.com/wp-content-framework",
-            "keywords": [
-                "framework",
-                "wordpress"
-            ],
-            "time": "2019-01-30T08:31:46+00:00"
-        },
-        {
-            "name": "wp-content-framework/mail",
-            "version": "v0.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wp-content-framework/mail.git",
-                "reference": "2b4a81f966e8bed8fcc565d197b0cf5c9c367b8c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/mail/zipball/2b4a81f966e8bed8fcc565d197b0cf5c9c367b8c",
-                "reference": "2b4a81f966e8bed8fcc565d197b0cf5c9c367b8c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0",
-                "wp-content-framework/presenter": "~0.0.1"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "technote",
-                    "email": "technote.space@gmail.com",
-                    "homepage": "https://technote.space"
-                }
-            ],
-            "description": "Wordpress content framework",
-            "homepage": "https://github.com/wp-content-framework",
-            "keywords": [
-                "framework",
-                "wordpress"
-            ],
-            "time": "2019-01-26T20:42:50+00:00"
-        },
-        {
             "name": "wp-content-framework/presenter",
-            "version": "v0.0.6",
+            "version": "v0.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/presenter.git",
-                "reference": "6ed8e9a0b32cacccb7e1fea6522265cecf35ed49"
+                "reference": "8b7ca2d66bd5d4c5899f4a970ef8360769c6ef97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/presenter/zipball/6ed8e9a0b32cacccb7e1fea6522265cecf35ed49",
-                "reference": "6ed8e9a0b32cacccb7e1fea6522265cecf35ed49",
+                "url": "https://api.github.com/repos/wp-content-framework/presenter/zipball/8b7ca2d66bd5d4c5899f4a970ef8360769c6ef97",
+                "reference": "8b7ca2d66bd5d4c5899f4a970ef8360769c6ef97",
                 "shasum": ""
             },
             "require": {
@@ -515,7 +399,7 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-02-02T19:07:11+00:00"
+            "time": "2019-02-10T15:28:26+00:00"
         },
         {
             "name": "wp-content-framework/session",
