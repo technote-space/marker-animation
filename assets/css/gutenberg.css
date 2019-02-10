@@ -1,10 +1,11 @@
 /**
- * @version 1.6.3
+ * @version 1.6.4
  * @author technote-space
  * @since 1.2.4
  * @since 1.5.0 Changed: trivial change
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
  * @since 1.6.3 Changed: trivial change
+ * @since 1.6.4 Changed: trivial change
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -14,10 +15,6 @@
     display: inline;
     background-position: left -100% center;
     background-repeat: repeat-x;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, #ff6 50%);
-    background-size: 200% .6em;
-    font-weight: bold;
-    padding-bottom: .6em;
 }
 
 .marker-animation-is-active.components-dropdown-menu .components-dropdown-menu__toggle {
@@ -27,9 +24,15 @@
 }
 
 .marker-animation-nav .components-dropdown-menu__menu-item {
+    display: flex !important;
     background-position: left -100% bottom 10% !important;
     background-size: 200% 1em !important;
     font-weight: normal !important;
     padding: 6px !important;
-    display: flex !important;
+}
+
+.components-button.marker-animation-nav-item,
+.components-button.marker-animation-nav-item:hover {
+    background-position: left -100% bottom 10% !important;
+    background-repeat: repeat-x !important;
 }

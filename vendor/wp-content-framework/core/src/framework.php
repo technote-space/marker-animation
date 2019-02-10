@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.28
+ * @version 0.0.31
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -74,6 +74,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @method void enqueue_style( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string | bool | null $ver = false, string $media = 'all', string $dir = 'css' )
  * @method void enqueue_script( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string | bool | null $ver = false, bool $in_footer = true, string $dir = 'js' )
  * @method bool localize_script( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $name, array $data )
+ * @method bool lock_process( string $name, callable $func, int $timeout = 60 )
  */
 class WP_Framework {
 
@@ -93,9 +94,9 @@ class WP_Framework {
 	private static $_framework_package_plugin_names = [];
 
 	/**
-	 * @var bool $_is_framework_initialized
+	 * @var bool $_packages_loaded
 	 */
-	private static $_is_framework_initialized = false;
+	private static $_packages_loaded = false;
 
 	/**
 	 * @var \WP_Framework\Package_Base[]
@@ -126,6 +127,11 @@ class WP_Framework {
 	 * @var bool $_plugins_loaded
 	 */
 	private $_plugins_loaded = false;
+
+	/**
+	 * @var bool $_framework_initialized
+	 */
+	private $_framework_initialized = false;
 
 	/**
 	 * @var \WP_Framework_Core\Classes\Main $_main
@@ -199,6 +205,7 @@ class WP_Framework {
 
 		$this->setup_framework_version();
 		$this->setup_actions();
+		$this->load_pluggable();
 	}
 
 	/**
@@ -306,7 +313,7 @@ class WP_Framework {
 	 * @return string[]
 	 */
 	public function get_package_names() {
-		if ( ! $this->_plugins_loaded ) {
+		if ( ! $this->_framework_initialized ) {
 			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
 		}
 
@@ -369,7 +376,7 @@ class WP_Framework {
 	 * @return string
 	 */
 	public function get_package_version( $package = 'core' ) {
-		if ( ! $this->_plugins_loaded ) {
+		if ( ! $this->_framework_initialized ) {
 			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
 		}
 		if ( ! isset( $this->_package_versions[ $package ] ) ) {
@@ -422,13 +429,13 @@ class WP_Framework {
 	 * @return WP_Framework[]
 	 */
 	public function get_instances() {
-		if ( ! $this->_plugins_loaded ) {
+		if ( ! $this->_framework_initialized ) {
 			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
 		}
 
 		return array_filter( self::$_instances, function ( $instance ) {
 			/** @var \WP_Framework $instance */
-			return $instance->_plugins_loaded;
+			return $instance->_framework_initialized;
 		} );
 	}
 
@@ -436,7 +443,7 @@ class WP_Framework {
 	 * @return \WP_Framework_Core\Classes\Main|\WP_Framework_Core\Interfaces\Singleton
 	 */
 	private function get_main() {
-		if ( ! $this->_plugins_loaded ) {
+		if ( ! $this->_framework_initialized ) {
 			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
 		}
 		if ( ! isset( $this->_main ) ) {
@@ -518,7 +525,7 @@ class WP_Framework {
 	/**
 	 * initialize framework
 	 */
-	private static function initialize_framework() {
+	private static function load_packages() {
 		if ( ! class_exists( '\WP_Framework\Package_Base' ) ) {
 			/** @noinspection PhpIncludeInspection */
 			require_once self::$_instances[ self::$_framework_package_plugin_names['core'] ]->_framework_root_directory . DS . 'core' . DS . 'package_base.php';
@@ -569,19 +576,11 @@ class WP_Framework {
 	 * setup actions
 	 */
 	private function setup_actions() {
+		add_action( 'after_setup_theme', function () {
+			$this->initialize_framework();
+		} );
+
 		if ( $this->is_theme ) {
-			add_action( 'after_setup_theme', function () {
-				$this->plugins_loaded();
-			} );
-
-			add_action( 'after_switch_theme', function () {
-				$this->plugins_loaded( true );
-				if ( $this->is_enough_version() ) {
-					$this->main_init();
-					$this->filter->do_action( 'app_activated', $this );
-				}
-			} );
-
 			add_action( 'switch_theme', function () {
 				$this->filter->do_action( 'app_deactivated', $this );
 			} );
@@ -589,17 +588,6 @@ class WP_Framework {
 			add_action( 'plugins_loaded', function () {
 				$this->plugins_loaded();
 			} );
-
-			add_action( 'activated_plugin', function ( $plugin ) {
-				$this->plugins_loaded( true );
-				if ( $this->is_enough_version() ) {
-					$this->main_init();
-					if ( $this->define->plugin_base_name === $plugin ) {
-						$this->filter->do_action( 'app_activated', $this );
-					}
-				}
-			} );
-
 			add_action( 'deactivated_plugin', function ( $plugin ) {
 				if ( $this->define->plugin_base_name === $plugin ) {
 					$this->filter->do_action( 'app_deactivated', $this );
@@ -615,17 +603,29 @@ class WP_Framework {
 	}
 
 	/**
-	 * @param bool $initialize_framework
+	 * plugin loaded
 	 */
-	private function plugins_loaded( $initialize_framework = false ) {
-		if ( $this->_plugins_loaded ) {
+	private function plugins_loaded() {
+		if ( $this->_plugins_loaded || $this->is_theme ) {
 			return;
 		}
 		$this->_plugins_loaded = true;
+		$this->load_functions();
+	}
 
-		if ( ! self::$_is_framework_initialized || $initialize_framework ) {
-			self::$_is_framework_initialized = true;
-			self::initialize_framework();
+	/**
+	 * @param bool $load_packages
+	 */
+	private function initialize_framework( $load_packages = false ) {
+		$this->plugins_loaded();
+		if ( $this->_framework_initialized ) {
+			return;
+		}
+		$this->_framework_initialized = true;
+
+		if ( ! self::$_packages_loaded || $load_packages ) {
+			self::$_packages_loaded = true;
+			self::load_packages();
 		}
 
 		spl_autoload_register( function ( $class ) {
@@ -633,7 +633,48 @@ class WP_Framework {
 		} );
 
 		$this->check_required_version();
-		$this->load_functions();
+		$this->load_setup();
+	}
+
+	/**
+	 * @param string $name
+	 */
+	private function load_plugin_file( $name ) {
+		$path = $this->plugin_dir . DS . $name . '.php';
+		if ( is_readable( $path ) ) {
+			/** @noinspection PhpIncludeInspection */
+			require_once $path;
+		}
+	}
+
+	/**
+	 * load pluggable file
+	 */
+	private function load_pluggable() {
+		if ( $this->is_theme ) {
+			return;
+		}
+		$this->load_plugin_file( 'pluggable' );
+	}
+
+	/**
+	 * load functions file
+	 */
+	private function load_functions() {
+		if ( $this->is_theme ) {
+			return;
+		}
+		$this->load_plugin_file( 'functions' );
+	}
+
+	/**
+	 * load setup file
+	 */
+	private function load_setup() {
+		if ( ! $this->is_enough_version() ) {
+			return;
+		}
+		$this->load_plugin_file( 'setup' );
 	}
 
 	/**
@@ -647,20 +688,6 @@ class WP_Framework {
 		$this->_not_enough_wordpress_version = ! empty( $wp_version ) && version_compare( $wp_version, $this->_required_wordpress_version, '<' );
 		if ( ! $this->is_enough_version() ) {
 			$this->set_unsupported();
-		}
-	}
-
-	/**
-	 * load functions file
-	 */
-	private function load_functions() {
-		if ( ! $this->is_enough_version() || $this->is_theme ) {
-			return;
-		}
-		$functions = $this->define->plugin_dir . DS . 'functions.php';
-		if ( is_readable( $functions ) ) {
-			/** @noinspection PhpIncludeInspection */
-			require_once $functions;
 		}
 	}
 
@@ -687,9 +714,9 @@ class WP_Framework {
 	 */
 	private function get_unsupported_php_version_message() {
 		$messages   = [];
-		$messages[] = sprintf( $this->utility->translate( 'Your PHP version is %s.' ), phpversion() );
-		$messages[] = $this->utility->translate( 'Please update your PHP.' );
-		$messages[] = sprintf( $this->utility->translate( '<strong>%s</strong> requires PHP version %s or above.' ), $this->utility->translate( $this->original_plugin_name ), $this->_required_php_version );
+		$messages[] = sprintf( $this->filter->translate( 'Your PHP version is %s.' ), phpversion() );
+		$messages[] = $this->filter->translate( 'Please update your PHP.' );
+		$messages[] = sprintf( $this->filter->translate( '<strong>%s</strong> requires PHP version %s or above.' ), $this->filter->translate( $this->original_plugin_name ), $this->_required_php_version );
 
 		return implode( '<br>', $messages );
 	}
@@ -700,9 +727,9 @@ class WP_Framework {
 	private function get_unsupported_wp_version_message() {
 		global $wp_version;
 		$messages   = [];
-		$messages[] = sprintf( $this->utility->translate( 'Your WordPress version is %s.' ), $wp_version );
-		$messages[] = $this->utility->translate( 'Please update your WordPress.' );
-		$messages[] = sprintf( $this->utility->translate( '<strong>%s</strong> requires WordPress version %s or above.' ), $this->utility->translate( $this->original_plugin_name ), $this->_required_wordpress_version );
+		$messages[] = sprintf( $this->filter->translate( 'Your WordPress version is %s.' ), $wp_version );
+		$messages[] = $this->filter->translate( 'Please update your WordPress.' );
+		$messages[] = sprintf( $this->filter->translate( '<strong>%s</strong> requires WordPress version %s or above.' ), $this->filter->translate( $this->original_plugin_name ), $this->_required_wordpress_version );
 
 		return implode( '<br>', $messages );
 	}
@@ -717,7 +744,6 @@ class WP_Framework {
 		}
 
 		$app->_is_uninstall = true;
-		$app->plugins_loaded( true );
 		if ( $app->is_enough_version() ) {
 			$app->main_init();
 			$app->uninstall->uninstall();
@@ -735,7 +761,7 @@ class WP_Framework {
 			if ( $instance->is_theme ) {
 				continue;
 			}
-			$instance->plugins_loaded( true );
+			$instance->initialize_framework( true );
 			if ( $instance->define->plugin_base_name === $plugin_base_name ) {
 				return $instance;
 			}

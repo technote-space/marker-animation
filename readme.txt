@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 3.9.3
 Tested up to: 5.0.3
 Requires PHP: 5.6
-Stable tag: 1.6.3
+Stable tag: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,7 @@ This plugin will add "Marker animation" function
 This plugin will add "Marker animation" function
 [日本語の説明](https://technote.space/marker-animation "Documentation in Japanese")
 [GitHub](https://github.com/technote-space/marker-animation)
+[Issues](https://github.com/technote-space/marker-animation/issues)
 
 This plugin needs PHP5.6 or higher.
 
@@ -47,7 +48,17 @@ This plugin needs PHP5.6 or higher.
 = 1.6.3 =
 * data属性の設定を反映
 
+= 1.6.4 =
+* 「有効かどうか」の設定がfalseの場合にエディタにボタンを出さないように修正
+* 「塗る時間」と「遅れ時間」が「0」の場合にアニメーションなしでの利用を想定した動作に修正
+
 == Changelog ==
+
+= 1.6.4 (2019/2/11) =
+
+* Changed: hide buttons if validity setting is false
+* Improved: off animation if duration and delay settings are "0"
+* Improved: refactoring
 
 = 1.6.3 (2019/2/7) =
 

@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Presenter Classes Models Minify
  *
- * @version 0.0.1
+ * @version 0.0.7
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -111,6 +111,27 @@ class Minify implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
+	 * @param string $script
+	 * @param bool $wrap
+	 *
+	 * @return string
+	 */
+	public function minify_js( $script, $wrap = true ) {
+		$script = preg_replace( '/<\s*\/?script\s*>/', '', $script );
+		if ( $this->apply_filters( 'minify_js' ) ) {
+			$minify = new \MatthiasMullie\Minify\JS();
+			$minify->add( $script );
+			$script = $minify->minify();
+		}
+
+		if ( $wrap ) {
+			return "<script>{$script}</script>";
+		}
+
+		return $script;
+	}
+
+	/**
 	 * @param bool $clear_cache
 	 */
 	public function output_js( $clear_cache = false ) {
@@ -125,13 +146,7 @@ class Minify implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			return implode( "\n", $s );
 		}, $this->_script ) );
 
-		if ( $this->apply_filters( 'minify_js' ) ) {
-			$minify = new \MatthiasMullie\Minify\JS();
-			$minify->add( $script );
-			echo '<script>' . $minify->minify() . '</script>';
-		} else {
-			echo '<script>' . $script . '</script>';
-		}
+		echo $this->minify_js( $script );
 		$this->_script            = [];
 		$this->_has_output_script = true;
 	}
@@ -173,6 +188,27 @@ class Minify implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
+	 * @param string $css
+	 * @param bool $wrap
+	 *
+	 * @return string
+	 */
+	public function minify_css( $css, $wrap = true ) {
+		$css = preg_replace( '/<\s*\/?style\s*>/', '', $css );
+		if ( $this->apply_filters( 'minify_css' ) ) {
+			$minify = new \MatthiasMullie\Minify\CSS();
+			$minify->add( $css );
+			$css = $minify->minify();
+		}
+
+		if ( $wrap ) {
+			return "<style>{$css}</style>";
+		}
+
+		return $css;
+	}
+
+	/**
 	 * @param bool $clear_cache
 	 */
 	public function output_css( $clear_cache = false ) {
@@ -187,13 +223,7 @@ class Minify implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			return implode( "\n", $s );
 		}, $this->_css ) );
 
-		if ( $this->apply_filters( 'minify_css' ) ) {
-			$minify = new \MatthiasMullie\Minify\CSS();
-			$minify->add( $css );
-			echo '<style>' . $minify->minify() . '</style>';
-		} else {
-			echo '<style>' . $css . '</style>';
-		}
+		echo $this->minify_css( $css );
 		$this->_css = [];
 	}
 

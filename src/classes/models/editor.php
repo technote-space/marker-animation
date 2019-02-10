@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.6.0
+ * @version 1.6.4
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
@@ -12,6 +12,7 @@
  * @since 1.4.0 Added: marker setting feature
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
+ * @since 1.6.4 Changed: 有効でない場合にエディタにボタンを追加しない (#61)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -42,9 +43,13 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * enqueue editor params
+	 * @since 1.6.4 #61
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_editor_params() {
+		if ( ! $this->apply_filters( 'is_valid' ) ) {
+			return;
+		}
 		$this->add_style_view( 'admin/style/editor' );
 		if ( $this->app->utility->is_block_editor() ) {
 			return;
@@ -60,6 +65,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * @since 1.6.0 #3
+	 * @since 1.6.4 #61
 	 *
 	 * @param array $external_plugins
 	 *
@@ -67,6 +73,9 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_external_plugins( $external_plugins ) {
+		if ( ! $this->apply_filters( 'is_valid' ) ) {
+			return $external_plugins;
+		}
 		if ( $this->_setup_params || $this->app->utility->is_block_editor() ) {
 			$external_plugins['marker_animation_button_plugin'] = $this->get_assets_url( 'js/marker-animation-editor.min.js' );
 		}
@@ -76,6 +85,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * @since 1.3.1 Added: style button
+	 * @since 1.6.4 #61
 	 *
 	 * @param array $mce_buttons
 	 *
@@ -83,6 +93,9 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function mce_buttons( $mce_buttons ) {
+		if ( ! $this->apply_filters( 'is_valid' ) ) {
+			return $mce_buttons;
+		}
 		if ( $this->_setup_params || $this->app->utility->is_block_editor() ) {
 			$mce_buttons[] = 'marker_animation';
 			$mce_buttons[] = 'marker_animation_detail';
@@ -137,6 +150,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	/**
 	 * @since 1.3.0
 	 * @since 1.3.1 Fixed: setup only when required parameter has loaded
+	 * @since 1.6.4 #61
 	 *
 	 * @param array $tinymce_settings
 	 *
@@ -144,6 +158,9 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function tiny_mce_before_init( $tinymce_settings ) {
+		if ( ! $this->apply_filters( 'is_valid' ) ) {
+			return $tinymce_settings;
+		}
 		if ( $this->_setup_params || $this->app->utility->is_block_editor() ) {
 			$style_formats = ! empty( $tinymce_settings['style_formats'] ) ? json_decode( $tinymce_settings['style_formats'], true ) : [];
 
@@ -175,9 +192,13 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	/**
 	 * enqueue css for gutenberg
 	 * @since 1.6.0 #3
+	 * @since 1.6.4 #61
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_block_editor_assets() {
+		if ( ! $this->apply_filters( 'is_valid' ) ) {
+			return;
+		}
 		$this->enqueue_style( 'marker_animation-editor', 'gutenberg.css' );
 		$this->enqueue_script( 'marker_animation-editor', 'marker-animation-gutenberg.min.js', [
 			'wp-blocks',

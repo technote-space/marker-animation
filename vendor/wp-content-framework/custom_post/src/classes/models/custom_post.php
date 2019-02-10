@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Classes Models Custom Post
  *
- * @version 0.0.10
+ * @version 0.0.11
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -401,7 +401,7 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 					if ( ! empty( $validation_errors ) ) {
 						foreach ( $validation_errors as $key => $validation_error ) {
 							foreach ( $custom_post->get_error_messages( $key, $validation_error ) as $message ) {
-								$this->app->add_message( $message, 'validation', true );
+								$this->app->add_message( $message, 'validation', true, false );
 							}
 						}
 					}
