@@ -15,6 +15,7 @@ This plugin will add "Marker animation" function
 This plugin will add "Marker animation" function
 [日本語の説明](https://technote.space/marker-animation "Documentation in Japanese")
 [GitHub](https://github.com/technote-space/marker-animation)
+[Issues](https://github.com/technote-space/marker-animation/issues)
 
 This plugin needs PHP5.6 or higher.
 
