@@ -36,7 +36,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function setup_assets() {
-		if ( ! $this->is_valid() ) {
+		if ( ! $this->apply_filters( 'is_valid' ) ) {
 			return;
 		}
 
@@ -52,13 +52,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'jquery',
 		] );
 		$this->localize_script( $this->app->slug_name . '-marker_animation', $this->get_marker_object_name(), $this->get_marker_options() );
-	}
-
-	/**
-	 * @return bool
-	 */
-	private function is_valid() {
-		return $this->apply_filters( 'is_valid' );
 	}
 
 	/**
