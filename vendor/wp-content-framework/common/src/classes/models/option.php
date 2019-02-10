@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Common Classes Models Option
  *
- * @version 0.0.8
+ * @version 0.0.17
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -44,6 +44,29 @@ class Option implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	protected function initialize() {
 		$this->reload_options();
 		$this->_initialized = true;
+	}
+
+	/**
+	 * app deactivated
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function app_deactivated() {
+		$this->delete( '__app_activated' );
+	}
+
+	/**
+	 * app activated
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function app_activated() {
+		$this->set( '__app_activated', true );
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_app_activated() {
+		return ! empty( $this->get( '__app_activated' ) );
 	}
 
 	/**

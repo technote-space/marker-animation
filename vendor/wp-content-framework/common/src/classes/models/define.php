@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Common Classes Models Define
  *
- * @version 0.0.16
+ * @version 0.0.19
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -37,6 +37,8 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  * @property-read string $child_theme_url
  * @property-read string $child_theme_assets_url
  * @property-read string $child_theme_views_dir
+ * @property-read string $upload_dir
+ * @property-read string $upload_url
  */
 class Define implements \WP_Framework_Core\Interfaces\Singleton {
 
@@ -65,6 +67,8 @@ class Define implements \WP_Framework_Core\Interfaces\Singleton {
 		'child_theme_assets_dir',
 		'child_theme_assets_url',
 		'child_theme_views_dir',
+		'upload_dir',
+		'upload_url',
 	];
 
 	/**
@@ -73,9 +77,9 @@ class Define implements \WP_Framework_Core\Interfaces\Singleton {
 	protected function initialize() {
 		$this->plugin_name = $this->app->plugin_name;
 		$this->plugin_file = $this->app->plugin_file;
+		$this->plugin_dir  = $this->app->plugin_dir;
 
 		$this->plugin_namespace = ucwords( strtolower( $this->plugin_name ), '_' );
-		$this->plugin_dir       = dirname( $this->plugin_file );
 		$this->plugin_dir_name  = basename( $this->plugin_dir );
 		$this->plugin_base_name = $this->app->is_theme ? 'theme/' . $this->plugin_dir : plugin_basename( $this->plugin_file );
 
@@ -105,5 +109,7 @@ class Define implements \WP_Framework_Core\Interfaces\Singleton {
 			$this->plugin_url = plugins_url( '', $this->plugin_file );
 		}
 		$this->plugin_assets_url = $this->plugin_url . '/assets';
+		$this->upload_dir        = WP_CONTENT_DIR . DS . 'uploads' . DS . $this->plugin_name;
+		$this->upload_url        = WP_CONTENT_URL . '/uploads/' . $this->plugin_name;
 	}
 }

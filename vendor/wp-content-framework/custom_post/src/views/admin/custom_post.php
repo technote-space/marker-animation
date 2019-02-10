@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Views Admin Custom Post
  *
- * @version 0.0.1
+ * @version 0.0.11
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -23,8 +23,10 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 		<?php foreach ( $columns as $name => $column ): ?>
 			<?php if ( empty( $column['is_user_defined'] ) || 'post_id' === $column['name'] ): continue; endif; ?>
             <dt>
-				<?php $instance->h( $instance->app->utility->array_get( $column, 'comment', $column['name'] ) ); ?>
-				<?php if ( ! empty( $column['required'] ) ): ?><span class="required">*</span><?php endif; ?>
+                <label for="<?php $instance->h( $prefix . $name ); ?>">
+					<?php $instance->h( $instance->app->utility->array_get( $column, 'comment', $column['name'] ) ); ?>
+					<?php if ( ! empty( $column['required'] ) ): ?><span class="required">*</span><?php endif; ?>
+                </label>
             </dt>
             <dd>
 				<?php $instance->get_view( 'admin/include/custom_post/' . $column['form_type'], [

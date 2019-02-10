@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.6.0
+ * @version 1.6.4
  * @author technote-space
  * @since 1.0.0
  * @since 1.2.0
@@ -12,6 +12,7 @@
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
  * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
+ * @since 1.6.4 Changed: trivial change
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -36,7 +37,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function setup_assets() {
-		if ( ! $this->is_valid() ) {
+		if ( ! $this->apply_filters( 'is_valid' ) ) {
 			return;
 		}
 
@@ -52,13 +53,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'jquery',
 		] );
 		$this->localize_script( $this->app->slug_name . '-marker_animation', $this->get_marker_object_name(), $this->get_marker_options() );
-	}
-
-	/**
-	 * @return bool
-	 */
-	private function is_valid() {
-		return $this->apply_filters( 'is_valid' );
 	}
 
 	/**
