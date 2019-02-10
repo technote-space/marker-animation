@@ -14,10 +14,6 @@
     display: inline;
     background-position: left -100% center;
     background-repeat: repeat-x;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, #ff6 50%);
-    background-size: 200% .6em;
-    font-weight: bold;
-    padding-bottom: .6em;
 }
 
 .marker-animation-is-active.components-dropdown-menu .components-dropdown-menu__toggle {
@@ -27,9 +23,15 @@
 }
 
 .marker-animation-nav .components-dropdown-menu__menu-item {
+    display: flex !important;
     background-position: left -100% bottom 10% !important;
     background-size: 200% 1em !important;
     font-weight: normal !important;
     padding: 6px !important;
-    display: flex !important;
+}
+
+.components-button.marker-animation-nav-item,
+.components-button.marker-animation-nav-item:hover {
+    background-position: left -100% bottom 10% !important;
+    background-repeat: repeat-x !important;
 }
