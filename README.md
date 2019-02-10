@@ -113,6 +113,9 @@
 ### マーカー位置の調整
 マーカーの表示位置を調整する値を設定します。
 
+## アニメーションなしでの利用
+塗る時間と遅れ時間を0に設定するとアニメーションなしでの利用が可能です。
+
 ## Author
 [GitHub (technote-space)](https://github.com/technote-space)  
 [homepage](https://technote.space)
