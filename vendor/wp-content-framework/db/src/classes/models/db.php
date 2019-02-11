@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Db Classes Models Db
  *
- * @version 0.0.7
+ * @version 0.0.11
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -104,7 +104,7 @@ class Db implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\
 
 		$this->table_defines = $this->app->config->load( 'db' );
 		empty( $this->table_defines ) and $this->table_defines = [];
-		$added_tables = $this->app->option->get( 'added_tables', [] );
+		$added_tables = $this->app->get_option( 'added_tables', [] );
 
 		foreach ( $this->table_defines as $table => $define ) {
 			list( $id, $columns ) = $this->setup_table_columns( $table, $define );
@@ -308,14 +308,17 @@ class Db implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\
 
 	/**
 	 * @param string $table
+	 * @param bool $not_check
 	 *
 	 * @return string
 	 */
-	public function get_table( $table ) {
+	public function get_table( $table, $not_check = false ) {
 		if (
-			! isset( $this->table_defines[ $table ] ) ||
-			! empty( $this->table_defines[ $table ]['wordpress'] ) ||
-			! empty( $this->table_defines[ $table ]['global'] )
+			! $not_check && (
+				! isset( $this->table_defines[ $table ] ) ||
+				! empty( $this->table_defines[ $table ]['wordpress'] ) ||
+				! empty( $this->table_defines[ $table ]['global'] )
+			)
 		) {
 			return $table;
 		}
@@ -1353,9 +1356,9 @@ class Db implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\
 	 * uninstall
 	 */
 	public function uninstall() {
-		$added_tables = $this->app->option->get( 'added_tables', [] );
+		$added_tables = $this->app->get_option( 'added_tables', [] );
 		foreach ( $added_tables as $table ) {
-			$sql = 'DROP TABLE IF EXISTS `' . $this->get_table( $table ) . '`';
+			$sql = 'DROP TABLE IF EXISTS `' . $this->get_table( $table, true ) . '`';
 			$this->query( $sql );
 		}
 	}

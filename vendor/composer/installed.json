@@ -329,17 +329,17 @@
     },
     {
         "name": "wp-content-framework/db",
-        "version": "v0.0.10",
-        "version_normalized": "0.0.10.0",
+        "version": "v0.0.11",
+        "version_normalized": "0.0.11.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wp-content-framework/db.git",
-            "reference": "30260d6fae95d4da041ee61489254914d51897db"
+            "reference": "192ff39aecedcee6803a68e088837986515e2e77"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wp-content-framework/db/zipball/30260d6fae95d4da041ee61489254914d51897db",
-            "reference": "30260d6fae95d4da041ee61489254914d51897db",
+            "url": "https://api.github.com/repos/wp-content-framework/db/zipball/192ff39aecedcee6803a68e088837986515e2e77",
+            "reference": "192ff39aecedcee6803a68e088837986515e2e77",
             "shasum": ""
         },
         "require": {
@@ -350,7 +350,7 @@
             "phake/phake": "~2.0",
             "phpunit/phpunit": "~5.7"
         },
-        "time": "2019-02-07T17:37:50+00:00",
+        "time": "2019-02-11T15:13:14+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -373,17 +373,17 @@
     },
     {
         "name": "wp-content-framework/presenter",
-        "version": "v0.0.7",
-        "version_normalized": "0.0.7.0",
+        "version": "v0.0.8",
+        "version_normalized": "0.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wp-content-framework/presenter.git",
-            "reference": "8b7ca2d66bd5d4c5899f4a970ef8360769c6ef97"
+            "reference": "0b495656a137173b4c74feed97473ec9d0352013"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wp-content-framework/presenter/zipball/8b7ca2d66bd5d4c5899f4a970ef8360769c6ef97",
-            "reference": "8b7ca2d66bd5d4c5899f4a970ef8360769c6ef97",
+            "url": "https://api.github.com/repos/wp-content-framework/presenter/zipball/0b495656a137173b4c74feed97473ec9d0352013",
+            "reference": "0b495656a137173b4c74feed97473ec9d0352013",
             "shasum": ""
         },
         "require": {
@@ -391,7 +391,7 @@
             "php": ">=5.6.0",
             "wp-content-framework/core": "~0.0.1"
         },
-        "time": "2019-02-10T15:28:26+00:00",
+        "time": "2019-02-10T19:29:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
