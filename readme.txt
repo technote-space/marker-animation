@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 3.9.3
 Tested up to: 5.0.3
 Requires PHP: 5.6
-Stable tag: 1.6.5
+Stable tag: 1.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,10 @@ This plugin needs PHP5.6 or higher.
 * 「塗る時間」と「遅れ時間」が「0」の場合にアニメーションなしでの利用を想定した動作に修正
 
 == Changelog ==
+
+= 1.6.6 (2019/2/13) =
+
+* Changed: update framework
 
 = 1.6.5 (2019/2/11) =
 

@@ -2,7 +2,7 @@
 /**
  * WP_Framework Package View
  *
- * @version 0.0.1
+ * @version 0.0.3
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -26,5 +26,14 @@ class Package_View extends Package_Base {
 	 */
 	public function get_priority() {
 		return 50;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_configs() {
+		return [
+			'dashicon',
+		];
 	}
 }

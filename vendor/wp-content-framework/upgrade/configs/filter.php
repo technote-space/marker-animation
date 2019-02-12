@@ -17,13 +17,13 @@ return [
 
 	'upgrade' => [
 		'${prefix}app_initialized' => [
-			'setup_settings' => [],
+			'setup_settings',
 		],
 		'init'                     => [
-			'upgrade' => [],
+			'upgrade',
 		],
 		'admin_init'               => [
-			'setup_update' => [],
+			'setup_update',
 		],
 	],
 

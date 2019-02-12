@@ -1,10 +1,11 @@
 <?php
 /**
- * @version 1.6.0
+ * @version 1.6.6
  * @author technote-space
  * @since 1.4.0
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
+ * @since 1.6.6 Changed: フレームワークの更新 (#76)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -38,36 +39,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		$assets->enqueue_marker_animation();
 		$this->add_script_view( 'admin/script/custom_post/setting_list' );
-	}
-
-	/**
-	 * @param \WP_Query $wp_query
-	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function pre_get_posts( $wp_query ) {
-		if ( ! $wp_query->is_admin ) {
-			return;
-		}
-
-		if ( $wp_query->get( 'post_type' ) !== $this->get_post_type() ) {
-			return;
-		}
-
-		if ( $wp_query->get( 'orderby' ) ) {
-			return;
-		}
-
-		add_filter( 'posts_orderby', $func = function (
-			/** @noinspection PhpUnusedParameterInspection */
-			$orderby, $wp_query
-		) use ( &$func ) {
-			/** @var string $orderby */
-			/** @var \WP_Query $wp_query */
-			$table = $this->app->db->get_table( $this->get_related_table_name() );
-			remove_filter( 'posts_orderby', $func );
-
-			return "{$table}.priority ASC, {$orderby}";
-		}, 10, 2 );
 	}
 
 	/**
@@ -149,6 +120,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * @since 1.6.0 #3
+	 * @since 1.6.6 #76
 	 * @return array
 	 */
 	protected function get_manage_posts_columns() {
@@ -223,6 +195,13 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					] );
 				},
 				'unescape' => true,
+			],
+			'priority' => [
+				'name'         => $this->translate( 'priority' ),
+				'value'        => '',
+				'sortable'     => true,
+				'default_sort' => true,
+				'hide'         => true,
 			],
 		];
 	}
