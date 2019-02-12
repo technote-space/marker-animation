@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Classes Models Custom Post
  *
- * @version 0.0.11
+ * @version 0.0.13
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -154,6 +154,28 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 		}
 
 		return $join;
+	}
+
+	/**
+	 * @param \WP_Query $wp_query
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function pre_get_posts( $wp_query ) {
+		if ( ! $wp_query->is_admin ) {
+			return;
+		}
+
+		$post_type = $wp_query->get( 'post_type' );
+		if ( empty( $post_type ) ) {
+			return;
+		}
+
+		$custom_post = $this->get_custom_post_type( $post_type );
+		if ( empty( $custom_post ) ) {
+			return;
+		}
+
+		$custom_post->pre_get_posts( $wp_query );
 	}
 
 	/**

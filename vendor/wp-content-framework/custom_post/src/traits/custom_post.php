@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Traits Custom Post
  *
- * @version 0.0.11
+ * @version 0.0.13
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -389,6 +389,53 @@ trait Custom_Post {
 	}
 
 	/**
+	 * @param \WP_Query $wp_query
+	 */
+	public function pre_get_posts( $wp_query ) {
+		$orderby = $wp_query->get( 'orderby' );
+		$table   = $this->app->db->get_table( $this->get_related_table_name() );
+		foreach ( $this->get_manage_posts_columns() as $k => $v ) {
+			if ( ! is_array( $v ) || empty( $v['sortable'] ) ) {
+				continue;
+			}
+			$key = $this->get_post_type() . '-' . $k;
+			if ( empty( $orderby ) ) {
+				if ( ! empty( $v['default_sort'] ) ) {
+					$func = function (
+						/** @noinspection PhpUnusedParameterInspection */
+						$orderby, $wp_query
+					) use ( &$func, $k, $v, $table ) {
+						/** @var string $orderby */
+						/** @var \WP_Query $wp_query */
+						remove_filter( 'posts_orderby', $func );
+						$_orderby = $this->app->utility->array_get( $v, 'orderby', "{$table}.{$k}" );
+						$_order   = $this->app->utility->array_get( $v, 'desc', false ) ? 'DESC' : 'ASC';
+
+						return "{$_orderby} {$_order}";
+					};
+					add_filter( 'posts_orderby', $func, 10, 2 );
+					break;
+				}
+			} elseif ( $key === $orderby ) {
+				$_order = $wp_query->get( 'order', 'ASC' );
+				$func   = function (
+					/** @noinspection PhpUnusedParameterInspection */
+					$orderby, $wp_query
+				) use ( &$func, $k, $v, $table, $_order ) {
+					/** @var string $orderby */
+					/** @var \WP_Query $wp_query */
+					remove_filter( 'posts_orderby', $func );
+					$_orderby = $this->app->utility->array_get( $v, 'orderby', "{$table}.{$k}" );
+
+					return "{$_orderby} {$_order}, {$orderby}";
+				};
+				add_filter( 'posts_orderby', $func, 10, 2 );
+				break;
+			}
+		}
+	}
+
+	/**
 	 * @param array $columns
 	 * @param bool $sortable
 	 *
@@ -432,14 +479,24 @@ trait Custom_Post {
 		unset( $columns['memo'] );
 		unset( $columns['word-count'] );
 
-		$_columns = $this->app->db->get_columns( $this->get_related_table_name() );
+		$_columns     = $this->app->db->get_columns( $this->get_related_table_name() );
+		$default_sort = false;
 		foreach ( $this->get_manage_posts_columns() as $k => $v ) {
 			if ( $sortable && ( ! is_array( $v ) || empty( $v['sortable'] ) ) ) {
 				continue;
 			}
+			if ( is_array( $v ) && ! empty( $v['hide'] ) ) {
+				continue;
+			}
+
 			$key = $this->get_post_type() . '-' . $k;
 			if ( $sortable ) {
-				$columns[ $key ] = [ $key, ! empty( $v['desc'] ) ];
+				$order = ! empty( $v['desc'] );
+				if ( ! $default_sort ) {
+					$default_sort = true;
+					! empty( $v['default_sort'] ) and $order = ! $order;
+				}
+				$columns[ $key ] = [ $key, $order ];
 				continue;
 			}
 

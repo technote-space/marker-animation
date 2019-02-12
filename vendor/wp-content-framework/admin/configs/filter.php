@@ -17,11 +17,11 @@ return [
 
 	'admin' => [
 		'admin_menu'    => [
-			'add_menu'  => [ 9 ],
-			'sort_menu' => [ 11 ],
+			'add_menu'  => 9,
+			'sort_menu' => 11,
 		],
 		'admin_notices' => [
-			'admin_notice' => [],
+			'admin_notice',
 		],
 	],
 

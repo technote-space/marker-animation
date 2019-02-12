@@ -41,36 +41,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
-	 * @param \WP_Query $wp_query
-	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function pre_get_posts( $wp_query ) {
-		if ( ! $wp_query->is_admin ) {
-			return;
-		}
-
-		if ( $wp_query->get( 'post_type' ) !== $this->get_post_type() ) {
-			return;
-		}
-
-		if ( $wp_query->get( 'orderby' ) ) {
-			return;
-		}
-
-		add_filter( 'posts_orderby', $func = function (
-			/** @noinspection PhpUnusedParameterInspection */
-			$orderby, $wp_query
-		) use ( &$func ) {
-			/** @var string $orderby */
-			/** @var \WP_Query $wp_query */
-			$table = $this->app->db->get_table( $this->get_related_table_name() );
-			remove_filter( 'posts_orderby', $func );
-
-			return "{$table}.priority ASC, {$orderby}";
-		}, 10, 2 );
-	}
-
-	/**
 	 * @param int $post_id
 	 * @param bool $is_selector
 	 *
@@ -223,6 +193,13 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					] );
 				},
 				'unescape' => true,
+			],
+			'priority' => [
+				'name'         => $this->translate( 'priority' ),
+				'value'        => '',
+				'sortable'     => true,
+				'default_sort' => true,
+				'hide'         => true,
 			],
 		];
 	}

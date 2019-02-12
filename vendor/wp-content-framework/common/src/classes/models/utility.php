@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Common Classes Models Utility
  *
- * @version 0.0.20
+ * @version 0.0.21
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -535,9 +535,9 @@ class Utility implements \WP_Framework_Core\Interfaces\Singleton {
 		$name         .= '__LOCK_PROCESS__';
 		$timeout_name = $name . 'TIMEOUT__';
 		$app->option->reload_options();
-		$check = $app->option->get( $name );
+		$check = $app->get_option( $name );
 		if ( ! empty( $check ) ) {
-			$expired = $app->option->get( $timeout_name, 0 ) < time();
+			$expired = $app->get_option( $timeout_name, 0 ) < time();
 			if ( ! $expired ) {
 				return false;
 			}
@@ -545,7 +545,7 @@ class Utility implements \WP_Framework_Core\Interfaces\Singleton {
 		$rand = md5( uniqid() );
 		$app->option->set( $name, $rand );
 		$app->option->reload_options();
-		if ( $app->option->get( $name ) != $rand ) {
+		if ( $app->get_option( $name ) != $rand ) {
 			return false;
 		}
 		$app->option->set( $timeout_name, time() + $timeout );
