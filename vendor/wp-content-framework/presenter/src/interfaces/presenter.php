@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Presenter Interfaces Presenter
  *
- * @version 0.0.8
+ * @version 0.0.9
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -138,30 +138,30 @@ interface Presenter {
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $append_version
 	 *
 	 * @return string
 	 */
-	public function get_assets_url( $path, $default = '', $append_version = true );
+	public function get_assets_url( $path, $default = null, $append_version = true );
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $append_version
 	 *
 	 * @return string
 	 */
-	public function get_upload_assets_url( $path, $default = '', $append_version = true );
+	public function get_upload_assets_url( $path, $default = null, $append_version = true );
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $append_version
 	 *
 	 * @return string
 	 */
-	public function get_img_url( $path, $default = 'img/no_img.png', $append_version = true );
+	public function get_img_url( $path, $default = null, $append_version = true );
 
 	/**
 	 * @param string $url
@@ -282,6 +282,13 @@ interface Presenter {
 	public function setup_modal();
 
 	/**
+	 * @param bool $echo
+	 *
+	 * @return string
+	 */
+	public function modal_class( $echo = true );
+
+	/**
 	 * setup color picker
 	 */
 	public function setup_color_picker();
@@ -292,11 +299,24 @@ interface Presenter {
 	public function get_color_picker_class();
 
 	/**
-	 * @param bool $echo
-	 *
+	 * setup dashicon picker
+	 */
+	public function setup_dashicon_picker();
+
+	/**
 	 * @return string
 	 */
-	public function modal_class( $echo = true );
+	public function get_dashicon_picker_class();
+
+	/**
+	 * setup media uploader
+	 */
+	public function setup_media_uploader();
+
+	/**
+	 * @return string
+	 */
+	public function get_media_uploader_class();
 
 	/**
 	 * @param string $handle

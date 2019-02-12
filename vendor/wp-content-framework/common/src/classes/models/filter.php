@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Common Classes Models Filter
  *
- * @version 0.0.13
+ * @version 0.0.21
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -60,12 +60,9 @@ class Filter implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		if ( empty( $class ) || empty( $tag ) || ! is_array( $methods ) ) {
 			return;
 		}
-		foreach ( $methods as $method => $params ) {
-			if ( ! is_array( $params ) && is_string( $params ) ) {
-				$method = $params;
-				$params = [];
-			}
-			if ( empty( $method ) || ! is_string( $method ) ) {
+		foreach ( $methods as $key => $value ) {
+			list( $method, $params ) = $this->parse_method_params( $key, $value );
+			if ( empty( $method ) || ! is_string( $method ) || ! is_array( $params ) ) {
 				continue;
 			}
 			list( $priority, $accepted_args ) = $this->get_filter_params( $params );
@@ -112,6 +109,23 @@ class Filter implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		}
 
 		return $this->_target_app[ $class ];
+	}
+
+	/**
+	 * @param mixed $key
+	 * @param mixed $value
+	 *
+	 * @return array
+	 */
+	private function parse_method_params( $key, $value ) {
+		if ( is_int( $key ) && is_string( $value ) ) {
+			return [ $value, [] ];
+		}
+		if ( is_string( $key ) && is_int( $value ) ) {
+			return [ $key, [ $value ] ];
+		}
+
+		return [ $key, $value ];
 	}
 
 	/**

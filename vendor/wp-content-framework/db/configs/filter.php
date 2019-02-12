@@ -17,7 +17,7 @@ return [
 
 	'db' => [
 		'switch_blog' => [
-			'switch_blog' => [],
+			'switch_blog',
 		],
 	],
 
