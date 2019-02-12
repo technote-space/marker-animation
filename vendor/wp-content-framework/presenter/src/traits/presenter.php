@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Presenter Traits Presenter
  *
- * @version 0.0.7
+ * @version 0.0.9
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -375,14 +375,14 @@ trait Presenter {
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $url
 	 * @param bool $append_version
 	 * @param bool $use_upload_dir
 	 *
 	 * @return string
 	 */
-	private function get_assets( $path, $default = '', $url = false, $append_version = true, $use_upload_dir = false ) {
+	private function get_assets( $path, $default = null, $url = false, $append_version = true, $use_upload_dir = false ) {
 		if ( empty( $path ) ) {
 			return '';
 		}
@@ -413,67 +413,67 @@ trait Presenter {
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $append_version
 	 *
 	 * @return string
 	 */
-	public function get_assets_url( $path, $default = '', $append_version = true ) {
+	public function get_assets_url( $path, $default = null, $append_version = true ) {
 		return $this->get_assets( $path, $default, true, $append_version );
 	}
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $append_version
 	 *
 	 * @return string
 	 */
-	public function get_upload_assets_url( $path, $default = '', $append_version = true ) {
+	public function get_upload_assets_url( $path, $default = null, $append_version = true ) {
 		return $this->get_assets( $path, $default, true, $append_version, true );
 	}
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $use_upload_dir
 	 *
 	 * @return string
 	 */
-	protected function get_assets_path( $path, $default = '', $use_upload_dir = false ) {
+	protected function get_assets_path( $path, $default = null, $use_upload_dir = false ) {
 		return $this->get_assets( $path, $default, false, true, $use_upload_dir );
 	}
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $append_version
 	 *
 	 * @return string
 	 */
-	public function get_img_url( $path, $default = 'img/no_img.png', $append_version = true ) {
-		return empty( $path ) ? '' : $this->get_assets_url( 'img/' . $path, $default, $append_version );
+	public function get_img_url( $path, $default = null, $append_version = true ) {
+		return empty( $path ) ? '' : $this->get_assets_url( 'img/' . $path, isset( $default ) ? $default : 'img/no_img.png', $append_version );
 	}
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $use_upload_dir
 	 *
 	 * @return string
 	 */
-	protected function get_css_path( $path, $default = '', $use_upload_dir = false ) {
+	protected function get_css_path( $path, $default = null, $use_upload_dir = false ) {
 		return empty( $path ) ? '' : $this->get_assets_path( 'css/' . $path, $default, $use_upload_dir );
 	}
 
 	/**
 	 * @param string $path
-	 * @param string $default
+	 * @param string|null $default
 	 * @param bool $use_upload_dir
 	 *
 	 * @return string
 	 */
-	protected function get_js_path( $path, $default = '', $use_upload_dir = false ) {
+	protected function get_js_path( $path, $default = null, $use_upload_dir = false ) {
 		return empty ( $path ) ? '' : $this->get_assets_path( 'js/' . $path, $default, $use_upload_dir );
 	}
 
@@ -701,14 +701,25 @@ trait Presenter {
 	 * setup modal
 	 */
 	public function setup_modal() {
+		$this->app->get_package_instance( 'view' );
 		$this->add_script_view( 'include/script/modal', [], 1 );
 		$this->add_style_view( 'include/style/modal', [], 1 );
+	}
+
+	/**
+	 * @param bool $echo
+	 *
+	 * @return string
+	 */
+	public function modal_class( $echo = true ) {
+		return $this->h( $this->get_slug( 'modal_class', '_modal' ), false, $echo );
 	}
 
 	/**
 	 * setup color picker
 	 */
 	public function setup_color_picker() {
+		$this->app->get_package_instance( 'view' );
 		wp_enqueue_script( 'wp-color-picker' );
 		$this->add_script_view( 'include/script/color', [], 1 );
 	}
@@ -721,12 +732,37 @@ trait Presenter {
 	}
 
 	/**
-	 * @param bool $echo
-	 *
+	 * setup dashicon picker
+	 */
+	public function setup_dashicon_picker() {
+		$this->app->get_package_instance( 'view' );
+		$this->add_script_view( 'include/script/dashicon', [], 1 );
+		$this->add_style_view( 'include/style/dashicon', [], 1 );
+	}
+
+	/**
 	 * @return string
 	 */
-	public function modal_class( $echo = true ) {
-		return $this->h( $this->get_slug( 'modal_class', '_modal' ), false, $echo );
+	public function get_dashicon_picker_class() {
+		return $this->get_slug( 'dashicon_picker_class', '-dashicon_picker' );
+	}
+
+	/**
+	 * setup media uploader
+	 */
+	public function setup_media_uploader() {
+		$this->app->get_package_instance( 'view' );
+		wp_enqueue_script( 'media-upload' );
+		wp_enqueue_script( 'thickbox' );
+		wp_enqueue_style( 'thickbox' );
+		$this->add_script_view( 'include/script/uploader', [], 1 );
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_media_uploader_class() {
+		return $this->get_slug( 'color_picker_class', '-media_uploader' );
 	}
 
 	/**

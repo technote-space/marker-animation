@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework_View Views Include Form Color
+ * WP_Framework_View Views Include Form Uploader
  *
  * @version 0.0.3
  * @author technote-space
@@ -14,13 +14,9 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 }
 /** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 /** @var array $args */
-$args['class'] .= ' ' . $instance->get_color_picker_class();
+/** @var string $target */
+$args['class']                     .= ' ' . $instance->get_media_uploader_class();
+$args['attributes']['data-target'] = $target;
+! isset( $args['name'] ) and $args['name'] = '';
 ?>
-<?php if ( isset( $label ) ): ?>
-    <label>
-		<?php $instance->h( $label, true ); ?>
-		<?php $instance->form( 'input/text', $args ); ?>
-    </label>
-<?php else: ?>
-	<?php $instance->form( 'input/text', $args ); ?>
-<?php endif; ?>
+<?php $instance->form( 'input/button', $args ); ?>
