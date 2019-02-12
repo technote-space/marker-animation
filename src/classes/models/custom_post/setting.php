@@ -1,10 +1,11 @@
 <?php
 /**
- * @version 1.6.0
+ * @version 1.6.6
  * @author technote-space
  * @since 1.4.0
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
+ * @since 1.6.6 Changed: フレームワークの更新 (#76)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -119,6 +120,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * @since 1.6.0 #3
+	 * @since 1.6.6 #76
 	 * @return array
 	 */
 	protected function get_manage_posts_columns() {
