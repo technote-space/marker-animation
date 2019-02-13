@@ -39,12 +39,12 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 			<?php $instance->form( 'input/submit', $args, [
 				'name'  => 'update',
 				'value' => 'Update',
-				'class' => 'button-primary left',
+				'class' => 'button-primary large',
 			] ); ?>
 			<?php $instance->form( 'input/button', $args, [
 				'name'  => 'reset',
 				'value' => 'Reset',
-				'class' => 'button-primary left',
+				'class' => 'button-primary',
 			] ); ?>
         </div>
         <div class="marker-setting-preview">

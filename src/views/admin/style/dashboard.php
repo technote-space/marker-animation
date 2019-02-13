@@ -25,8 +25,4 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
         background: white;
         border: 1px solid #CCC;
     }
-
-    #<?php $instance->id(); ?>-main-contents input[type="submit"].button-primary.left {
-        margin-right: 10px;
-    }
 </style>
