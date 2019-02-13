@@ -117,16 +117,16 @@
         },
         {
             "name": "wp-content-framework/admin",
-            "version": "v0.0.7",
+            "version": "v0.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/admin.git",
-                "reference": "44906430747becc856efb97a39471ed11f3ac204"
+                "reference": "fcc7b6f45590d2ca5fb4601a376169df1b49c851"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/admin/zipball/44906430747becc856efb97a39471ed11f3ac204",
-                "reference": "44906430747becc856efb97a39471ed11f3ac204",
+                "url": "https://api.github.com/repos/wp-content-framework/admin/zipball/fcc7b6f45590d2ca5fb4601a376169df1b49c851",
+                "reference": "fcc7b6f45590d2ca5fb4601a376169df1b49c851",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-02-12T17:47:37+00:00"
+            "time": "2019-02-13T17:39:45+00:00"
         },
         {
             "name": "wp-content-framework/common",
@@ -282,16 +282,16 @@
         },
         {
             "name": "wp-content-framework/custom_post",
-            "version": "v0.0.13",
+            "version": "v0.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/custom_post.git",
-                "reference": "845e83ef40c77dda56960c65d82fdab970605ff3"
+                "reference": "19b1e120971d580a5e19a05bdaa754a8ee828e7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/custom_post/zipball/845e83ef40c77dda56960c65d82fdab970605ff3",
-                "reference": "845e83ef40c77dda56960c65d82fdab970605ff3",
+                "url": "https://api.github.com/repos/wp-content-framework/custom_post/zipball/19b1e120971d580a5e19a05bdaa754a8ee828e7b",
+                "reference": "19b1e120971d580a5e19a05bdaa754a8ee828e7b",
                 "shasum": ""
             },
             "require": {
@@ -318,7 +318,7 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-02-12T17:45:49+00:00"
+            "time": "2019-02-13T17:49:00+00:00"
         },
         {
             "name": "wp-content-framework/db",
@@ -364,16 +364,16 @@
         },
         {
             "name": "wp-content-framework/presenter",
-            "version": "v0.0.10",
+            "version": "v0.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/presenter.git",
-                "reference": "75a1d7fbfd2ff3e40f8c9c52378a1537e45f06d7"
+                "reference": "b6026d08b710dcfff921faf57f3274d330c481a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/presenter/zipball/75a1d7fbfd2ff3e40f8c9c52378a1537e45f06d7",
-                "reference": "75a1d7fbfd2ff3e40f8c9c52378a1537e45f06d7",
+                "url": "https://api.github.com/repos/wp-content-framework/presenter/zipball/b6026d08b710dcfff921faf57f3274d330c481a3",
+                "reference": "b6026d08b710dcfff921faf57f3274d330c481a3",
                 "shasum": ""
             },
             "require": {
@@ -399,7 +399,7 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-02-12T17:51:19+00:00"
+            "time": "2019-02-13T17:46:06+00:00"
         },
         {
             "name": "wp-content-framework/session",
@@ -441,16 +441,16 @@
         },
         {
             "name": "wp-content-framework/upgrade",
-            "version": "v0.0.7",
+            "version": "v0.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/upgrade.git",
-                "reference": "2e739ac3ef178eef9907a4a9fed7bda6df1dd220"
+                "reference": "6088532b1787a779eb2aed73388c11e46f07511d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/upgrade/zipball/2e739ac3ef178eef9907a4a9fed7bda6df1dd220",
-                "reference": "2e739ac3ef178eef9907a4a9fed7bda6df1dd220",
+                "url": "https://api.github.com/repos/wp-content-framework/upgrade/zipball/6088532b1787a779eb2aed73388c11e46f07511d",
+                "reference": "6088532b1787a779eb2aed73388c11e46f07511d",
                 "shasum": ""
             },
             "require": {
@@ -476,20 +476,20 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-02-12T17:52:08+00:00"
+            "time": "2019-02-13T18:15:59+00:00"
         },
         {
             "name": "wp-content-framework/view",
-            "version": "v0.0.3",
+            "version": "v0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/view.git",
-                "reference": "e04596e996d56e8d7980b91d50b874994072c23b"
+                "reference": "37d3b3e4598635feaf806631b85ece8894497b1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/view/zipball/e04596e996d56e8d7980b91d50b874994072c23b",
-                "reference": "e04596e996d56e8d7980b91d50b874994072c23b",
+                "url": "https://api.github.com/repos/wp-content-framework/view/zipball/37d3b3e4598635feaf806631b85ece8894497b1e",
+                "reference": "37d3b3e4598635feaf806631b85ece8894497b1e",
                 "shasum": ""
             },
             "require": {
@@ -514,7 +514,7 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-02-12T14:30:19+00:00"
+            "time": "2019-02-13T10:25:21+00:00"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",

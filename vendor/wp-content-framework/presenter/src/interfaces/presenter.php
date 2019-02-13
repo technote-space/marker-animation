@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Presenter Interfaces Presenter
  *
- * @version 0.0.9
+ * @version 0.0.11
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -325,9 +325,10 @@ interface Presenter {
 
 	/**
 	 * @param string $type
+	 * @param bool $parse_db_type
 	 *
 	 * @return string
 	 */
-	public function get_form_by_type( $type );
+	public function get_form_by_type( $type, $parse_db_type = true );
 
 }
