@@ -1,9 +1,10 @@
 <?php
 /**
- * @version 1.5.0
+ * @version 1.6.7
  * @author technote-space
  * @since 1.4.0
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @since 1.6.7 Changed: trivial change
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -34,7 +35,7 @@ trait Custom_Post {
 	 * @return array
 	 */
 	protected function get_capabilities() {
-		return $this->get_post_capabilities();
+		return (array) get_post_type_object( 'post' )->cap;
 	}
 
 	/**
@@ -42,12 +43,5 @@ trait Custom_Post {
 	 */
 	protected function get_post_type_parent() {
 		return $this->app->admin->get_menu_slug();
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function get_post_capabilities() {
-		return (array) get_post_type_object( 'post' )->cap;
 	}
 }

@@ -66,7 +66,7 @@ $icons = $instance->app->get_config( 'dashicon', 'available', [] );
                         $('a', control).on('click', function (e) {
                             e.preventDefault();
                             if ($(this).data('direction') === 'back') {
-                                $('li:gt(' + ($this.op.length - 26) + ')', list).prependTo(list);
+                                $('li:gt(' + ($this.op.icons.length - 26) + ')', list).prependTo(list);
                             } else {
                                 $('li:lt(25)', list).appendTo(list);
                             }

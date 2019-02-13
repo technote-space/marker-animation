@@ -1,8 +1,8 @@
 <?php
 /**
- * WP_Framework_Core Views Admin Include Custom Post Text
+ * WP_Framework_Core Views Admin Include Custom Post Input Number
  *
- * @version 0.0.1
+ * @version 0.0.14
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -18,12 +18,15 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 /** @var string $name */
 /** @var string $prefix */
 $attr = $instance->app->utility->array_get( $column, 'attributes', [] );
-if ( isset( $column['length'] ) ) {
-	$attr['maxlength'] = $column['length'];
+if ( isset( $column['maxlength'] ) ) {
+	$attr['maxlength'] = $column['maxlength'];
+}
+if ( ! empty( $column['unsigned'] ) ) {
+	$attr['min'] = 0;
 }
 $attr['placeholder'] = $instance->app->utility->array_get( $column, 'default', '' );
 ?>
-<?php $instance->form( 'input/text', [
+<?php $instance->form( 'input/number', [
 	'name'       => $prefix . $name,
 	'id'         => $prefix . $name,
 	'value'      => $instance->old( $prefix . $name, $data, $name ),
