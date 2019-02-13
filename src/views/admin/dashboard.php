@@ -1,12 +1,13 @@
 <?php
 /**
- * @version 1.5.0
+ * @version 1.6.7
  * @author technote-space
  * @since 1.0.0
  * @since 1.3.0 Added: preset color
  * @since 1.3.1 Updated: preview
  * @since 1.4.0 Deleted: preset color
  * @since 1.5.0 Changed: trivial change
+ * @since 1.6.7 Changed: trivial change
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -39,12 +40,12 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 			<?php $instance->form( 'input/submit', $args, [
 				'name'  => 'update',
 				'value' => 'Update',
-				'class' => 'button-primary left',
+				'class' => 'button-primary large',
 			] ); ?>
 			<?php $instance->form( 'input/button', $args, [
 				'name'  => 'reset',
 				'value' => 'Reset',
-				'class' => 'button-primary left',
+				'class' => 'button-primary',
 			] ); ?>
         </div>
         <div class="marker-setting-preview">
