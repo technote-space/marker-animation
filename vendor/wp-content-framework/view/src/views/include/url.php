@@ -2,7 +2,7 @@
 /**
  * WP_Framework_View Views Include Img
  *
- * @version 0.0.1
+ * @version 0.0.5
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -25,6 +25,7 @@ isset( $id ) and $attributes['id'] = $id;
 isset( $class ) and $attributes['class'] = $class;
 $attributes['href'] = $href;
 isset( $target ) and $attributes['target'] = $target;
+isset( $target ) and '_blank' === $target and $attributes['rel'] = 'noopener noreferrer';
 ! isset( $contents ) and $contents = '';
 ?>
 <a <?php $instance->get_view( 'include/attributes', array_merge( $args, [ 'attributes' => $attributes ] ), true ); ?> >
