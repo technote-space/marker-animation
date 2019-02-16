@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Classes Models Custom Post
  *
- * @version 0.0.13
+ * @version 0.0.16
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -404,6 +404,20 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 		}
 
 		return $location;
+	}
+
+	/**
+	 * setup page
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function setup_page() {
+		global $typenow;
+		if ( ! empty( $typenow ) && $this->is_valid_custom_post_type( $typenow ) ) {
+			$custom_post = $this->get_custom_post_type( $typenow );
+			if ( ! empty( $custom_post ) ) {
+				$custom_post->setup_page();
+			}
+		}
 	}
 
 	/**

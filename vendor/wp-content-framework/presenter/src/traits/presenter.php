@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Presenter Traits Presenter
  *
- * @version 0.0.11
+ * @version 0.0.13
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -26,7 +26,12 @@ trait Presenter {
 	/**
 	 * @var array $_prev_post
 	 */
-	private $_prev_post = null;
+	private static $_prev_post = null;
+
+	/**
+	 * @var array $_setup_fontawesome
+	 */
+	private static $_setup_fontawesome = [];
 
 	/**
 	 * @var bool $_set_script_translations
@@ -161,18 +166,20 @@ trait Presenter {
 		} elseif ( ! isset( $key ) ) {
 			$default = $data;
 		}
-		if ( ! isset( $this->_prev_post ) ) {
-			$this->_prev_post = $this->app->session->get( $this->get_old_post_session_key(), null );
-			if ( empty( $this->_prev_post ) ) {
-				$this->_prev_post = [];
+		if ( ! isset( self::$_prev_post ) ) {
+			self::$_prev_post = $this->app->session->get( $this->get_old_post_session_key(), null );
+			if ( empty( self::$_prev_post ) ) {
+				self::$_prev_post = [];
+			} else {
+				self::$_prev_post = stripslashes_deep( self::$_prev_post );
 			}
 			$this->app->session->delete( $this->get_old_post_session_key() );
 		}
-		if ( $checkbox && ! empty( $this->_prev_post ) ) {
+		if ( $checkbox && ! empty( self::$_prev_post ) ) {
 			$default = false;
 		}
 
-		return $this->app->utility->array_get( $this->_prev_post, $name, $default );
+		return $this->app->utility->array_get( self::$_prev_post, $name, $default );
 	}
 
 	/**
@@ -763,6 +770,24 @@ trait Presenter {
 	 */
 	public function get_media_uploader_class() {
 		return $this->get_slug( 'color_picker_class', '-media_uploader' );
+	}
+
+	/**
+	 * setup fontawesome
+	 */
+	public function setup_fontawesome() {
+		$handle = $this->app->get_config( 'config', 'fontawesome_handle' );
+		if ( isset( self::$_setup_fontawesome[ $handle ] ) ) {
+			return;
+		}
+		self::$_setup_fontawesome[ $handle ] = true;
+
+		wp_enqueue_style( $handle, $this->app->get_config( 'config', 'fontawesome_url' ) );
+		$this->app->filter->register_class_filter( 'drawer', [
+			'style_loader_tag' => [
+				'style_loader_tag',
+			],
+		] );
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Presenter Classes Models Drawer
  *
- * @version 0.0.7
+ * @version 0.0.13
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -43,6 +43,36 @@ class Drawer implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 */
 	public function set_package( \WP_Framework_Core\Interfaces\Package $package ) {
 		$this->_package = $package->get_package();
+	}
+
+	/**
+	 * @param string $html
+	 * @param string $handle
+	 * @param string $href
+	 * @param string $media
+	 *
+	 * @return string
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function style_loader_tag(
+		/** @noinspection PhpUnusedParameterInspection */
+		$html, $handle, $href, $media
+	) {
+		if ( $handle === $this->app->get_config( 'config', 'fontawesome_handle' ) ) {
+			$integrity   = $this->app->get_config( 'config', 'fontawesome_integrity' );
+			$crossorigin = $this->app->get_config( 'config', 'fontawesome_crossorigin' );
+			if ( empty( $integrity ) && empty( $crossorigin ) ) {
+				return $html;
+			}
+
+			$replace = "media='{$media}'";
+			! empty( $integrity ) and $replace .= " integrity='{$integrity}'";
+			! empty( $crossorigin ) and $replace .= " crossorigin='{$crossorigin}'";
+
+			return str_replace( "media='{$media}' />", "{$replace}  />", $html );
+		}
+
+		return $html;
 	}
 
 	/**
