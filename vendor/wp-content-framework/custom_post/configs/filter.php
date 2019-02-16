@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Configs Filter
  *
- * @version 0.0.13
+ * @version 0.0.16
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -65,7 +65,11 @@ return [
 			'redirect_post_location',
 		],
 		'load-post.php'                => [
+			'setup_page',
 			'set_admin_notices',
+		],
+		'load-post-new.php'            => [
+			'setup_page',
 		],
 		'edit_form_after_title'        => [
 			'edit_form_after_title',

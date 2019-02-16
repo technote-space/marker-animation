@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Views Admin Custom Post
  *
- * @version 0.0.11
+ * @version 0.0.15
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -18,7 +18,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 /** @var array $columns */
 /** @var string $prefix */
 ?>
-<div class="block form">
+<div class="block form custom-post">
     <dl>
 		<?php foreach ( $columns as $name => $column ): ?>
 			<?php if ( empty( $column['is_user_defined'] ) || 'post_id' === $column['name'] ): continue; endif; ?>

@@ -2,6 +2,7 @@
     "require": {
         "wp-content-framework/core": "~0.0",
         "wp-content-framework/custom_post": "~0.0",
+        "wp-content-framework/update": "~0.0",
         "wp-content-framework/upgrade": "~0.0"
     },
     "config": {

@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Traits Custom Post
  *
- * @version 0.0.13
+ * @version 0.0.16
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -724,7 +724,7 @@ trait Custom_Post {
 	 *
 	 * @return array
 	 */
-	protected function filter_item( $d ) {
+	protected function filter_item( array $d ) {
 		return $d;
 	}
 
@@ -1087,6 +1087,13 @@ trait Custom_Post {
 	}
 
 	/**
+	 * setup page
+	 */
+	public function setup_page() {
+
+	}
+
+	/**
 	 * @param string $key
 	 * @param array $errors
 	 *
@@ -1103,9 +1110,11 @@ trait Custom_Post {
 		return array_map( function ( $d ) use ( $key, $columns ) {
 			$key = $this->table_column_to_name( $key, $columns );
 			/** @noinspection HtmlUnknownTarget */
-			$d = preg_replace( '#\[(https?://([\w-]+\.)+[\w-]+(/[\w-./?%&=\#]*)?)\]\s*\(([^()]+?)\)#', '<a href="${1}" target="_blank">${4}</a>', $d );
+			$d = preg_replace_callback( '#\[(https?://([\w-]+\.)+[\w-]+(/[\w-./?%&=\#]*)?)\]\s*\(([^()]+?)\)#', function ( $matches ) {
+				return $this->url( $matches[1], $matches[4], false, true, [], false );
+			}, $d );
 			$d = wp_kses( $d, [
-				'a'      => [ 'href' => true, 'target' => true ],
+				'a'      => [ 'href' => true, 'target' => true, 'rel' => true ],
 				'b'      => [],
 				'br'     => [],
 				'sub'    => [],
