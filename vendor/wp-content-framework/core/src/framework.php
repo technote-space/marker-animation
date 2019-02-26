@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.32
+ * @version 0.0.38
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -56,13 +56,13 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @method bool has_initialized()
  * @method array get_mapped_class( string $class )
  * @method string get_plugin_version()
- * @method mixed get_config( string $name, string $key, mixed $default = null )
+ * @method mixed get_config( string $name, string | null $key = null, mixed $default = null )
  * @method mixed get_option( string $key, mixed $default = '' )
  * @method mixed get_session( string $key, mixed $default = '' )
  * @method mixed set_session( string $key, mixed $value, int | null $duration = null )
  * @method bool user_can( null | string | false $capability = null )
- * @method void log( string $message, mixed $context = null, string $level = '' )
- * @method void add_message( string $message, string $group = '', bool $error = false, bool $escape = true )
+ * @method void log( mixed $message, mixed $context = null, string $level = '' )
+ * @method void add_message( string $message, string $group = '', bool $error = false, bool $escape = true, null | array $override_allowed_html = null )
  * @method string get_page_slug( string $file )
  * @method mixed get_shared_object( string $key, string | null $target = null )
  * @method void set_shared_object( string $key, mixed $object, string | null $target = null )
@@ -418,12 +418,20 @@ class WP_Framework {
 	 */
 	public static function wp_die( $message, $file, $line, $title = '', $output_file_info = true ) {
 		! is_array( $message ) and $message = [ '[wp content framework]', $message ];
-		if ( $output_file_info && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if ( $output_file_info ) {
 			$message[] = 'File: ' . $file;
 			$message[] = 'Line: ' . $line;
 		}
-		$message = '<ul><li>' . implode( '</li><li>', $message ) . '</li></ul>';
-		wp_die( $message, $title );
+
+		if ( is_admin() || ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY ) ) {
+			$message = '<ul><li>' . implode( '</li><li>', $message ) . '</li></ul>';
+			wp_die( $message, $title );
+		} else {
+			if ( $title ) {
+				error_log( $title );
+			}
+			error_log( print_r( $message, true ) );
+		}
 		exit;
 	}
 
