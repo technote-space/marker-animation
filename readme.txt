@@ -1,10 +1,10 @@
 === Marker Animation ===
 Contributors: technote0space
 Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アンダーライン
-Requires at least: 3.9.3
-Tested up to: 5.0.3
+Requires at least: 4.6
+Tested up to: 5.1.0
 Requires PHP: 5.6
-Stable tag: 1.6.8
+Stable tag: 1.6.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,17 +42,25 @@ This plugin needs PHP5.6 or higher.
 == Upgrade Notice ==
 
 = 1.6.0 =
-* Gutenbergにボタン追加
-* Gutenbergでの動作改善
+* Gutenbergにボタンが追加されます。
+* Gutenbergでの動作が改善されます。
 
 = 1.6.3 =
-* data属性の設定を反映
+* data属性の設定が反映されます。
 
 = 1.6.4 =
-* 「有効かどうか」の設定がfalseの場合にエディタにボタンを出さないように修正
-* 「塗る時間」と「遅れ時間」が「0」の場合にアニメーションなしでの利用を想定した動作に修正
+* 「有効かどうか」の設定がfalseの場合にエディタにボタンを出さないように修正しました。
+* 「塗る時間」と「遅れ時間」が「0」の場合にアニメーションなしでの利用を想定した動作に修正しました。
+
+= 1.6.9 =
+* 設定のエクスポート及びインポートが可能になります。
 
 == Changelog ==
+
+= 1.6.9 (2019/3/4) =
+
+* Added: export and import
+* Tested: against 5.1.0
 
 = 1.6.8 (2019/2/16) =
 
