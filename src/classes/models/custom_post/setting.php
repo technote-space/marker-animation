@@ -86,6 +86,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$params['columns']['function']['form_type'] = 'select';
 		$params['columns']['function']['options']   = $assets->get_animation_functions();
 		$params['name_prefix']                      = $assets->get_name_prefix();
+		if ( ! $this->app->utility->can_use_block_editor() ) {
+			unset( $params['columns']['is_valid_button_block_editor'] );
+		}
 
 		return $params;
 	}
@@ -184,14 +187,19 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					/** @noinspection PhpUnusedParameterInspection */
 					$value, $data, $post
 				) {
+					$details = [
+						'repeat'                       => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
+					];
+					if ( ! $this->app->utility->can_use_block_editor() ) {
+						unset( $details['is valid block editor button'] );
+					}
+
 					return $this->get_view( 'admin/custom_post/setting/others', [
-						'details' => [
-							'repeat'                       => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
-						],
+						'details' => $details,
 					] );
 				},
 				'unescape' => true,
@@ -274,6 +282,25 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		$assets->clear_options_cache();
+	}
+
+	/**
+	 * @param string $key
+	 * @param mixed $value
+	 * @param mixed $default
+	 * @param array|null $post_array
+	 *
+	 * @return mixed
+	 */
+	protected function filter_post_field(
+		/** @noinspection PhpUnusedParameterInspection */
+		$key, $value, $default, $post_array
+	) {
+		if ( 'is_valid_button_block_editor' === $key ) {
+			return $this->app->input->post( $this->get_post_field_name( 'is_valid_button' ) );
+		}
+
+		return $value;
 	}
 
 	/**
