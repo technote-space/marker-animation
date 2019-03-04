@@ -4,7 +4,7 @@ Plugin Name: Marker Animation
 Plugin URI: https://wordpress.org/plugins/marker-animation
 Description: This plugin will add "Marker animation" function
 Author: Technote
-Version: 1.6.10
+Version: 1.6.11
 Author URI: https://technote.space
 Text Domain: marker-animation
 Domain Path: /languages/
