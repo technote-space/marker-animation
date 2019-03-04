@@ -2,9 +2,9 @@
 /**
  * WP_Framework_Custom_Post Traits Custom Post
  *
- * @version 0.0.16
- * @author technote-space
- * @copyright technote-space All Rights Reserved
+ * @version 0.0.22
+ * @author Technote
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
  */
@@ -70,16 +70,14 @@ trait Custom_Post {
 			return;
 		}
 		add_filter( "views_edit-{$post_type}", function ( $views ) {
-			unset( $views['mine'] );
-			unset( $views['publish'] );
-
-			return $views;
+			return $this->view_edit( $views );
 		} );
 		add_filter( "bulk_actions-edit-{$post_type}", function ( $actions ) {
-			unset( $actions['edit'] );
-
-			return $actions;
+			return $this->bulk_actions( $actions );
 		} );
+		add_filter( "handle_bulk_actions-edit-{$post_type}", function ( $sendback, $doaction, $post_ids ) {
+			return $this->handle_bulk_actions( $sendback, $doaction, (array) $post_ids );
+		}, 10, 3 );
 		add_filter( "manage_edit-{$post_type}_sortable_columns", function ( $sortable_columns ) {
 			return $this->manage_posts_columns( $sortable_columns, true );
 		} );
@@ -96,6 +94,7 @@ trait Custom_Post {
 		$_data['post_type']    = $this->get_post_type();
 		$_data['post_title']   = $this->app->utility->array_get( $data, 'post_title', '' );
 		$_data['post_content'] = $this->app->utility->array_get( $data, 'post_content', '' );
+		$_data['post_excerpt'] = $this->app->utility->array_get( $data, 'post_excerpt', '' );
 		$_data['post_status']  = $this->app->utility->array_get( $data, 'post_status', 'publish' );
 		unset( $data['post_type'] );
 		unset( $data['post_title'] );
@@ -157,6 +156,37 @@ trait Custom_Post {
 		}
 
 		return wp_update_post( $_data );
+	}
+
+	/**
+	 * @param array $data
+	 * @param bool $convert_name
+	 *
+	 * @return array
+	 */
+	public function validate_insert( array $data, $convert_name = true ) {
+		$_data                 = [];
+		$_data['post_type']    = $this->get_post_type();
+		$_data['post_title']   = $this->app->utility->array_get( $data, 'post_title', '' );
+		$_data['post_content'] = $this->app->utility->array_get( $data, 'post_content', '' );
+		$_data['post_excerpt'] = $this->app->utility->array_get( $data, 'post_excerpt', '' );
+		$_data['post_status']  = $this->app->utility->array_get( $data, 'post_status', 'publish' );
+		unset( $data['post_type'] );
+		unset( $data['post_title'] );
+		unset( $data['post_content'] );
+		unset( $data['post_status'] );
+
+		foreach ( $this->get_data_field_settings() as $k => $v ) {
+			$name = $convert_name ? $this->get_post_field_name( $k ) : $k;
+			$this->app->input->delete_post( $name );
+		}
+		foreach ( $data as $k => $v ) {
+			$name           = $convert_name ? $this->get_post_field_name( $k ) : $k;
+			$_data[ $name ] = $v;
+			$this->app->input->set_post( $name, $v );
+		}
+
+		return $this->validate_input( $_data );
 	}
 
 	/**
@@ -391,48 +421,325 @@ trait Custom_Post {
 	/**
 	 * @param \WP_Query $wp_query
 	 */
-	public function pre_get_posts( $wp_query ) {
+	public function setup_posts_orderby( $wp_query ) {
+		if ( method_exists( $this, 'pre_get_posts' ) ) {
+			return;
+		}
+
 		$orderby = $wp_query->get( 'orderby' );
 		$table   = $this->app->db->get_table( $this->get_related_table_name() );
-		foreach ( $this->get_manage_posts_columns() as $k => $v ) {
-			if ( ! is_array( $v ) || empty( $v['sortable'] ) ) {
-				continue;
-			}
-			$key = $this->get_post_type() . '-' . $k;
-			if ( empty( $orderby ) ) {
+
+		if ( empty( $orderby ) ) {
+			$_orderby_list = [];
+			foreach ( $this->get_manage_posts_columns() as $k => $v ) {
+				if ( ! is_array( $v ) || empty( $v['sortable'] ) ) {
+					continue;
+				}
 				if ( ! empty( $v['default_sort'] ) ) {
-					$func = function (
+					$_priority                     = $this->app->utility->array_get( $v, 'default_sort_priority', 10 );
+					$_orderby                      = $this->app->utility->array_get( $v, 'orderby', "{$table}.{$k}" );
+					$_order                        = $this->app->utility->array_get( $v, 'desc', false ) ? 'DESC' : 'ASC';
+					$_orderby_list[ $_priority ][] = "{$_orderby} {$_order}";
+				}
+			}
+			ksort( $_orderby_list );
+			$_orderby_list   = $this->app->utility->flatten( $_orderby_list );
+			$_orderby_list[] = "{$table}.updated_at DESC";
+
+			$func = function (
+				/** @noinspection PhpUnusedParameterInspection */
+				$orderby, $wp_query
+			) use ( &$func, $_orderby_list ) {
+				/** @var string $orderby */
+				/** @var \WP_Query $wp_query */
+				remove_filter( 'posts_orderby', $func );
+
+				$_orderby_list[] = $orderby;
+
+				return implode( ', ', $_orderby_list );
+			};
+			add_filter( 'posts_orderby', $func, 10, 2 );
+		} else {
+			foreach ( $this->get_manage_posts_columns() as $k => $v ) {
+				if ( ! is_array( $v ) || empty( $v['sortable'] ) ) {
+					continue;
+				}
+				$key = $this->get_post_type() . '-' . $k;
+				if ( $key === $orderby ) {
+					$_order = $wp_query->get( 'order', 'ASC' );
+					$func   = function (
 						/** @noinspection PhpUnusedParameterInspection */
 						$orderby, $wp_query
-					) use ( &$func, $k, $v, $table ) {
+					) use ( &$func, $k, $v, $table, $_order ) {
 						/** @var string $orderby */
 						/** @var \WP_Query $wp_query */
 						remove_filter( 'posts_orderby', $func );
 						$_orderby = $this->app->utility->array_get( $v, 'orderby', "{$table}.{$k}" );
-						$_order   = $this->app->utility->array_get( $v, 'desc', false ) ? 'DESC' : 'ASC';
 
-						return "{$_orderby} {$_order}";
+						return "{$_orderby} {$_order}, {$orderby}";
 					};
 					add_filter( 'posts_orderby', $func, 10, 2 );
 					break;
 				}
-			} elseif ( $key === $orderby ) {
-				$_order = $wp_query->get( 'order', 'ASC' );
-				$func   = function (
-					/** @noinspection PhpUnusedParameterInspection */
-					$orderby, $wp_query
-				) use ( &$func, $k, $v, $table, $_order ) {
-					/** @var string $orderby */
-					/** @var \WP_Query $wp_query */
-					remove_filter( 'posts_orderby', $func );
-					$_orderby = $this->app->utility->array_get( $v, 'orderby', "{$table}.{$k}" );
-
-					return "{$_orderby} {$_order}, {$orderby}";
-				};
-				add_filter( 'posts_orderby', $func, 10, 2 );
-				break;
 			}
 		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_support_io() {
+		return ! empty( $this->app->get_config( 'io', $this->get_post_type_slug() ) ) && $this->user_can( 'edit_others_posts' );
+	}
+
+	/**
+	 * @param array $actions
+	 * @param \WP_Post $post
+	 *
+	 * @return array
+	 */
+	public function post_row_actions( array $actions, \WP_Post $post ) {
+		unset( $actions['inline hide-if-no-js'] );
+		unset( $actions['edit'] );
+		unset( $actions['clone'] );
+		unset( $actions['edit_as_new_draft'] );
+		if ( ! $this->user_can( 'delete_posts' ) ) {
+			unset( $actions['trash'] );
+		}
+
+		$row_actions = $this->get_post_row_actions();
+		if ( $this->is_support_io() ) {
+			$row_actions['export'] = 'Export as JSON';
+		}
+		foreach ( $row_actions as $key => $value ) {
+			$actions[ $key ] = $this->url( wp_nonce_url( add_query_arg( [
+				'action'    => $key,
+				'post_type' => $this->get_post_type(),
+				'ids'       => $post->ID,
+			], admin_url( 'edit.php' ) ), 'bulk-posts' ), $value, true, false, [], false );
+		}
+
+		return $this->filter_post_row_actions( $actions, $post );
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function get_post_row_actions() {
+		return [];
+	}
+
+	/**
+	 * @param array $actions
+	 * @param \WP_Post $post
+	 *
+	 * @return array
+	 */
+	protected function filter_post_row_actions(
+		/** @noinspection PhpUnusedParameterInspection */
+		array $actions, \WP_Post $post
+	) {
+		return $actions;
+	}
+
+	/**
+	 * @param array $views
+	 *
+	 * @return array
+	 */
+	protected function view_edit( array $views ) {
+		unset( $views['mine'] );
+		unset( $views['publish'] );
+
+		return $this->filter_view_edit( $views );
+	}
+
+	/**
+	 * @param array $views
+	 *
+	 * @return array
+	 */
+	protected function filter_view_edit( array $views ) {
+		return $views;
+	}
+
+	/**
+	 * @param array $actions
+	 *
+	 * @return array
+	 */
+	protected function bulk_actions( array $actions ) {
+		unset( $actions['edit'] );
+		if ( $this->is_support_io() ) {
+			$actions['export'] = $this->translate( 'Export as JSON' );
+		}
+
+		return $this->filter_bulk_actions( $actions );
+	}
+
+	/**
+	 * @param array $actions
+	 *
+	 * @return array
+	 */
+	protected function filter_bulk_actions( array $actions ) {
+		return $actions;
+	}
+
+	/**
+	 * @param string $sendback
+	 * @param string $doaction
+	 * @param array $post_ids
+	 *
+	 * @return string
+	 */
+	protected function handle_bulk_actions(
+		/** @noinspection PhpUnusedParameterInspection */
+		$sendback, $doaction, array $post_ids
+	) {
+		if ( ! empty( $post_ids ) && 'export' === $doaction && $this->is_support_io() ) {
+			$this->export( $post_ids );
+		}
+
+		return $this->filter_handle_bulk_actions( $sendback, $doaction, $post_ids );
+	}
+
+	/**
+	 * @param string $sendback
+	 * @param string $doaction
+	 * @param array $post_ids
+	 *
+	 * @return string
+	 */
+	protected function filter_handle_bulk_actions(
+		/** @noinspection PhpUnusedParameterInspection */
+		$sendback, $doaction, array $post_ids
+	) {
+		return $sendback;
+	}
+
+	/**
+	 * @param array $post_ids
+	 */
+	private function export( $post_ids ) {
+		$export_data = [];
+		$setting     = $this->app->get_config( 'io', $this->get_post_type_slug() );
+		foreach (
+			$this->list_data( false, null, 1, [
+				'p.ID' => [ 'IN', $post_ids ],
+			] )['data'] as $d
+		) {
+			$data = [];
+			if ( in_array( 'title', $this->get_post_type_supports() ) ) {
+				$data['post_title'] = $d['post']->post_title;
+			}
+			if ( in_array( 'editor', $this->get_post_type_supports() ) ) {
+				$data['post_content'] = $d['post']->post_content;
+			}
+			if ( in_array( 'excerpt', $this->get_post_type_supports() ) ) {
+				$data['post_excerpt'] = $d['post']->post_excerpt;
+			}
+			foreach ( $setting as $k => $v ) {
+				if ( ! is_array( $v ) ) {
+					$k = $v;
+					$v = [];
+				}
+				if ( ! array_key_exists( $k, $d ) ) {
+					continue;
+				}
+				if ( isset( $v['export'] ) && is_callable( $v['export'] ) ) {
+					$data[ $k ] = ( $v['export'] )( $d[ $k ] );
+				} else {
+					$data[ $k ] = $d[ $k ];
+				}
+			}
+			$export_data[] = $data;
+		}
+
+		$this->output_json_file( [
+			'plugin' => $this->app->plugin_name,
+			'table'  => $this->get_related_table_name(),
+			'data'   => $export_data,
+		] );
+		exit;
+	}
+
+	/**
+	 * @param array $data
+	 */
+	private function output_json_file( $data ) {
+		$json = @json_encode( $data );
+		header( 'Content-Type: application/json' );
+		header( 'Content-Length: ' . strlen( $json ) );
+		header( 'Content-Disposition: attachment; filename="' . $this->get_export_filename() . '"' );
+		header( 'Pragma: no-cache' );
+		header( 'Cache-Control: no-cache' );
+		echo $json;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function get_export_filename() {
+		return $this->app->utility->replace_time( $this->apply_filters( 'export_filename', 'export${Y}${m}${d}${H}${i}${s}' ) ) . '.json';
+	}
+
+	/**
+	 * @param mixed $data
+	 *
+	 * @return array {
+	 *  int $result
+	 *  string $message
+	 *  int $success
+	 *  int $fail
+	 * }
+	 */
+	public function import( $data ) {
+		if ( empty( $data ) ) {
+			return [ 0, $this->translate( 'Invalid JSON file' ), 0, 0 ];
+		}
+
+		$json = @json_decode( $data, true );
+		if ( empty( $json ) || empty( $json['plugin'] ) || empty( $json['table'] ) || ! isset( $json['data'] ) || ! is_array( $json['data'] ) ) {
+			return [ 0, $this->translate( 'Invalid JSON file' ), 0, 0 ];
+		}
+
+		if ( $json['plugin'] !== $this->app->plugin_name || $json['table'] !== $this->get_related_table_name() ) {
+			return [ 0, $this->translate( 'Invalid JSON file' ), 0, 0 ];
+		}
+
+		$success = 0;
+		$failed  = [];
+		foreach ( $json['data'] as $item ) {
+			$validation = $this->validate_insert( $item );
+			if ( empty( $validation ) ) {
+				$this->insert( $item );
+				$success ++;
+			} else {
+				$failed[] = [ $item, $validation ];
+			}
+		}
+		$fail = count( $failed );
+
+		return [
+			1,
+			$this->get_import_result( [
+				'total'   => $success + $fail,
+				'success' => $success,
+				'failed'  => $failed,
+			] ),
+			$success,
+			$fail,
+		];
+	}
+
+	/**
+	 * @param array $data
+	 *
+	 * @return string
+	 */
+	private function get_import_result( array $data ) {
+		return $this->get_view( 'admin/import_custom_post', $data );
 	}
 
 	/**
@@ -479,8 +786,7 @@ trait Custom_Post {
 		unset( $columns['memo'] );
 		unset( $columns['word-count'] );
 
-		$_columns     = $this->app->db->get_columns( $this->get_related_table_name() );
-		$default_sort = false;
+		$_columns = $this->app->db->get_columns( $this->get_related_table_name() );
 		foreach ( $this->get_manage_posts_columns() as $k => $v ) {
 			if ( $sortable && ( ! is_array( $v ) || empty( $v['sortable'] ) ) ) {
 				continue;
@@ -492,10 +798,7 @@ trait Custom_Post {
 			$key = $this->get_post_type() . '-' . $k;
 			if ( $sortable ) {
 				$order = ! empty( $v['desc'] );
-				if ( ! $default_sort ) {
-					$default_sort = true;
-					! empty( $v['default_sort'] ) and $order = ! $order;
-				}
+				! empty( $v['default_sort'] ) and $order = ! $order;
 				$columns[ $key ] = [ $key, $order ];
 				continue;
 			}
@@ -704,8 +1007,9 @@ trait Custom_Post {
 
 		$post_ids = $this->app->utility->array_pluck( $list, 'post_id' );
 		$posts    = get_posts( [
-			'include'   => $post_ids,
-			'post_type' => $this->get_post_type(),
+			'include'     => $post_ids,
+			'post_type'   => $this->get_post_type(),
+			'post_status' => 'any',
 		] );
 		$posts    = $this->app->utility->array_combine( $posts, 'ID' );
 
@@ -799,6 +1103,14 @@ trait Custom_Post {
 		}
 
 		return $params;
+	}
+
+	/**
+	 * @param int $post_id
+	 * @param \WP_Post $post
+	 */
+	public function untrash_post( $post_id, \WP_Post $post ) {
+
 	}
 
 	/**
@@ -1087,6 +1399,13 @@ trait Custom_Post {
 	}
 
 	/**
+	 * setup list
+	 */
+	public function setup_list() {
+
+	}
+
+	/**
 	 * setup page
 	 */
 	public function setup_page() {
@@ -1109,18 +1428,6 @@ trait Custom_Post {
 
 		return array_map( function ( $d ) use ( $key, $columns ) {
 			$key = $this->table_column_to_name( $key, $columns );
-			/** @noinspection HtmlUnknownTarget */
-			$d = preg_replace_callback( '#\[(https?://([\w-]+\.)+[\w-]+(/[\w-./?%&=\#]*)?)\]\s*\(([^()]+?)\)#', function ( $matches ) {
-				return $this->url( $matches[1], $matches[4], false, true, [], false );
-			}, $d );
-			$d = wp_kses( $d, [
-				'a'      => [ 'href' => true, 'target' => true, 'rel' => true ],
-				'b'      => [],
-				'br'     => [],
-				'sub'    => [],
-				'sup'    => [],
-				'strong' => [],
-			] );
 
 			return "$d: [{$key}]";
 		}, $errors );
@@ -1163,17 +1470,24 @@ trait Custom_Post {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function get_post_type_link() {
+		return admin_url( 'edit.php?post_type=' . $this->get_post_type() );
+	}
+
+	/**
 	 * @param int $post_id
 	 *
 	 * @return string
 	 */
 	public function get_edit_post_link( $post_id ) {
 		if ( ! $post = get_post( $post_id ) ) {
-			return admin_url( 'edit.php?post_type=' . $this->get_post_type() );
+			return $this->get_post_type_link();
 		}
 		$post_type_object = get_post_type_object( $post->post_type );
 		if ( ! $post_type_object ) {
-			return admin_url( 'edit.php?post_type=' . $this->get_post_type() );
+			return $this->get_post_type_link();
 		}
 		$action = '&action=edit';
 

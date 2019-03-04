@@ -2,9 +2,9 @@
 /**
  * WP_Framework_Custom_Post Classes Models Custom Post
  *
- * @version 0.0.16
- * @author technote-space
- * @copyright technote-space All Rights Reserved
+ * @version 0.0.22
+ * @author Technote
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
  */
@@ -91,16 +91,11 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 	 * @return array
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function delete_edit_links( array $actions, \WP_Post $post ) {
+	private function post_row_actions( array $actions, \WP_Post $post ) {
 		if ( $this->is_valid_custom_post_type( $post->post_type ) ) {
 			$custom_post = $this->get_custom_post_type( $post->post_type );
-			unset( $actions['inline hide-if-no-js'] );
-			unset( $actions['edit'] );
-			unset( $actions['clone'] );
-			unset( $actions['edit_as_new_draft'] );
-			if ( ! $custom_post->user_can( 'delete_posts' ) ) {
-				unset( $actions['trash'] );
-			}
+
+			return $custom_post->post_row_actions( $actions, $post );
 		}
 
 		return $actions;
@@ -160,7 +155,7 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 	 * @param \WP_Query $wp_query
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function pre_get_posts( $wp_query ) {
+	private function setup_posts_orderby( $wp_query ) {
 		if ( ! $wp_query->is_admin ) {
 			return;
 		}
@@ -175,7 +170,7 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 			return;
 		}
 
-		$custom_post->pre_get_posts( $wp_query );
+		$custom_post->setup_posts_orderby( $wp_query );
 	}
 
 	/**
@@ -265,6 +260,20 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 						],
 					];
 				}
+			}
+		}
+	}
+
+	/**
+	 * @param int $post_id
+	 * @param \WP_Post $post
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function untrash_post( $post_id, \WP_Post $post ) {
+		if ( $this->is_valid_update( $post->post_status, $post->post_type, true ) ) {
+			$custom_post = $this->get_custom_post_type( $post->post_type );
+			if ( ! empty( $custom_post ) ) {
+				$custom_post->untrash_post( $post_id, $post );
 			}
 		}
 	}
@@ -399,11 +408,33 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 			$this->app->set_session( $this->get_old_post_session_key(), $this->app->input->post(), 60 );
 		} else {
 			global $typenow;
-			$post_type = get_post_type_object( $typenow );
-			$this->app->set_session( 'updated_message', sprintf( $this->translate( 'Updated %s data.' ), $post_type->labels->singular_name ), 60 );
+			if ( ! empty( $typenow ) && $this->is_valid_custom_post_type( $typenow ) ) {
+				$custom_post = $this->get_custom_post_type( $typenow );
+				$this->app->set_session( 'updated_message', sprintf( $this->translate( 'Updated %s data.<br>[Back to list page](%s)' ), $custom_post->get_post_type_single_name(), $custom_post->get_post_type_link() ), 60 );
+			}
 		}
 
 		return $location;
+	}
+
+	/**
+	 * setup list
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function setup_list() {
+		global $typenow;
+		if ( ! empty( $typenow ) && $this->is_valid_custom_post_type( $typenow ) ) {
+			$custom_post = $this->get_custom_post_type( $typenow );
+			if ( ! empty( $custom_post ) ) {
+				if ( $custom_post->is_support_io() ) {
+					$this->add_style_view( 'admin/style/import_custom_post' );
+					$this->add_script_view( 'admin/script/import_custom_post', [ 'post_type' => $custom_post->get_post_type() ] );
+					$this->setup_modal();
+					$this->app->api->add_use_api_name( 'import_custom_post' );
+				}
+				$custom_post->setup_list();
+			}
+		}
 	}
 
 	/**
@@ -442,7 +473,7 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 						}
 					}
 					if ( ! empty( $updated_message ) ) {
-						$this->app->add_message( $updated_message, 'updated' );
+						$this->app->add_message( $updated_message, 'updated', false, false );
 					}
 				}
 			}
@@ -540,18 +571,22 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 	}
 
 	/**
-	 * @param string $post_type
+	 * @param string|array $post_type
 	 *
 	 * @return bool
 	 */
 	public function is_valid_custom_post_type( $post_type ) {
+		if ( is_array( $post_type ) ) {
+			return false;
+		}
+
 		$custom_posts = $this->get_custom_posts();
 
 		return isset( $custom_posts[ $post_type ] );
 	}
 
 	/**
-	 * @param string $post_type
+	 * @param string|array $post_type
 	 *
 	 * @return \WP_Framework_Custom_Post\Interfaces\Custom_Post|null
 	 */
@@ -568,10 +603,11 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 	/**
 	 * @param string $post_status
 	 * @param string $post_type
+	 * @param bool $untrash
 	 *
 	 * @return bool
 	 */
-	private function is_valid_update( $post_status, $post_type ) {
+	private function is_valid_update( $post_status, $post_type, $untrash = false ) {
 		return ! $this->app->utility->defined( 'DOING_AUTOSAVE' ) && in_array( $post_status, [
 				'publish',
 				'future',
@@ -579,7 +615,7 @@ class Custom_Post implements \WP_Framework_Core\Interfaces\Loader, \WP_Framework
 				'draft',
 				'pending',
 				'private',
-			] ) && $this->is_valid_custom_post_type( $post_type ) && 'untrash' !== $this->app->input->get( 'action' );
+			] ) && $this->is_valid_custom_post_type( $post_type ) && ( $untrash || 'untrash' !== $this->app->input->get( 'action' ) );
 	}
 
 	/**

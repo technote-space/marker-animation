@@ -1,7 +1,7 @@
 <?php
 /**
- * @version 1.6.0
- * @author technote-space
+ * @version 1.6.9
+ * @author Technote
  * @since 1.0.0
  * @since 1.2.5 Added: check develop version
  * @since 1.3.7 Changed: update info file url
@@ -9,7 +9,8 @@
  * @since 1.4.0 Changed: db version
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
- * @copyright technote-space All Rights Reserved
+ * @since 1.6.9 Deleted: update checker の設定を削除 (#87)
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
@@ -25,9 +26,6 @@ return [
 
 	// menu image url
 	'menu_image'                     => 'icon-24x24.png',
-
-	// update
-	'update_info_file_url'           => 'https://raw.githubusercontent.com/technote-space/marker-animation/develop/update.json',
 
 	// suppress setting help contents
 	'suppress_setting_help_contents' => true,

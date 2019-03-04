@@ -2,9 +2,9 @@
 /**
  * WP_Framework_Custom_Post Configs Filter
  *
- * @version 0.0.16
- * @author technote-space
- * @copyright technote-space All Rights Reserved
+ * @version 0.0.21
+ * @author Technote
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
  */
@@ -26,7 +26,7 @@ return [
 			'manage_posts_custom_column',
 		],
 		'post_row_actions'             => [
-			'delete_edit_links',
+			'post_row_actions',
 		],
 		'wp_count_posts'               => [
 			'wp_count_posts',
@@ -38,10 +38,11 @@ return [
 			'posts_search',
 		],
 		'pre_get_posts'                => [
-			'pre_get_posts',
+			'setup_posts_orderby',
 		],
 		'save_post'                    => [
 			'save_post',
+			'untrash_post',
 		],
 		'wp_trash_post'                => [
 			'wp_trash_post',
@@ -63,6 +64,9 @@ return [
 		],
 		'redirect_post_location'       => [
 			'redirect_post_location',
+		],
+		'load-edit.php'                => [
+			'setup_list',
 		],
 		'load-post.php'                => [
 			'setup_page',

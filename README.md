@@ -2,7 +2,7 @@
 
 [![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![PHP: >=5.6](https://img.shields.io/badge/PHP-%3E%3D5.6-orange.svg)](http://php.net/)
-[![WordPress: >=3.9.3](https://img.shields.io/badge/WordPress-%3E%3D3.9.3-brightgreen.svg)](https://wordpress.org/)
+[![WordPress: >=4.6](https://img.shields.io/badge/WordPress-%3E%3D4.6-brightgreen.svg)](https://wordpress.org/)
 
 ![バナー](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/banner-772x250.png)
 
@@ -40,7 +40,7 @@
 
 ## 要件
 - PHP 5.6 以上
-- WordPress 3.9.3 以上
+- WordPress 4.6 以上
 
 ## 導入手順
 1. 管理画面のプラグインから「新規追加」  
@@ -117,8 +117,8 @@
 塗る時間と遅れ時間を0に設定するとアニメーションなしでの利用が可能です。
 
 ## Author
-[GitHub (technote-space)](https://github.com/technote-space)  
-[homepage](https://technote.space)
+[GitHub (Technote)](https://github.com/technote-space)  
+[Blog](https://technote.space)
 
 ## プラグイン作成用フレームワーク
 [WP Content Framework](https://github.com/wp-content-framework/core)
