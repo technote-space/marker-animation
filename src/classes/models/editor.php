@@ -228,6 +228,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'settings'              => $setting->get_settings( 'editor' ),
 			'prefix'                => $assets->get_data_prefix(),
 			'is_valid_color_picker' => $this->app->utility->is_valid_tinymce_color_picker(),
+			'is_block_editor'       => $this->app->utility->is_block_editor(),
 		];
 	}
 }
