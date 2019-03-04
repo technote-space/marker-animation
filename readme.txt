@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 4.6
 Tested up to: 5.1.0
 Requires PHP: 5.6
-Stable tag: 1.6.10
+Stable tag: 1.6.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,7 +55,14 @@ This plugin needs PHP5.6 or higher.
 = 1.6.9 =
 * 設定のエクスポート及びインポートが可能になります(WP v4.7以上)
 
+= 1.6.10 =
+* Classic editor でのボタンの動作が改善されます。
+
 == Changelog ==
+
+= 1.6.11 (2019/3/4) =
+
+* Improved: Hide `block editor setting` if block editor is invalid
 
 = 1.6.10 (2019/3/4) =
 
