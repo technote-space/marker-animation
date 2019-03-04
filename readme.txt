@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 4.6
 Tested up to: 5.1.0
 Requires PHP: 5.6
-Stable tag: 1.6.9
+Stable tag: 1.6.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,9 +53,13 @@ This plugin needs PHP5.6 or higher.
 * 「塗る時間」と「遅れ時間」が「0」の場合にアニメーションなしでの利用を想定した動作に修正しました。
 
 = 1.6.9 =
-* 設定のエクスポート及びインポートが可能になります。
+* 設定のエクスポート及びインポートが可能になります(WP v4.7以上)
 
 == Changelog ==
+
+= 1.6.10 (2019/3/4) =
+
+* Improved: Behavior of classic editor's button
 
 = 1.6.9 (2019/3/4) =
 
