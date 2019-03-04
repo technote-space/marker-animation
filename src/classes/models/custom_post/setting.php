@@ -297,7 +297,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$key, $value, $default, $post_array
 	) {
 		if ( 'is_valid_button_block_editor' === $key ) {
-			return $this->app->input->post( $this->get_post_field_name( 'is_valid_button' ) );
+			if ( ! $this->app->utility->can_use_block_editor() ) {
+				return $this->app->input->post( $this->get_post_field_name( 'is_valid_button' ) );
+			}
 		}
 
 		return $value;
