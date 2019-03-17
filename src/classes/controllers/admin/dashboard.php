@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.0
+ * @version 1.7.1
  * @author Technote
  * @since 1.0.0
  * @since 1.2.0
@@ -9,6 +9,7 @@
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
  * @since 1.7.0 wp-content-framework/admin#20, wp-content-framework/common#57
+ * @since 1.7.1 #103
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -49,6 +50,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 		foreach ( $assets->get_setting_keys() as $key => $form ) {
 			$this->update_setting( $key );
 		}
+		$assets->clear_options_cache();
 		$this->app->add_message( 'Settings updated.', 'setting' );
 	}
 

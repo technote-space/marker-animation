@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.0
+ * @version 1.7.1
  * @author Technote
  * @since 1.4.0
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
@@ -8,6 +8,7 @@
  * @since 1.6.6 Changed: フレームワークの更新 (#76)
  * @since 1.6.11 #85
  * @since 1.7.0 wp-content-framework/db#9, wp-content-framework/common#57
+ * @since 1.7.1 #102
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -26,6 +27,27 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Framework_Upgrade\Interfaces\Upgrade {
 
 	use \Marker_Animation\Traits\Models\Custom_Post, \WP_Framework_Upgrade\Traits\Upgrade;
+
+	/**
+	 * insert presets
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function insert_presets() {
+		if ( $this->app->get_option( 'has_inserted_presets' ) ) {
+			return;
+		}
+		$this->app->option->set( 'has_inserted_presets', true );
+
+		if ( ! $this->is_empty() ) {
+			return;
+		}
+
+		foreach ( $this->apply_filters( 'get_setting_presets', $this->app->get_config( 'preset' ) ) as $item ) {
+			$item['post_title'] = $this->translate( $this->app->array->get( $item, 'name', '' ) );
+			unset( $item['name'] );
+			$this->insert( $item );
+		}
+	}
 
 	/**
 	 * setup assets
