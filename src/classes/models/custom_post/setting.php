@@ -319,11 +319,11 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$setting_details = $assets->get_setting_details( $target );
 		$settings        = [];
 		foreach (
-			$this->list_data( true, null, 1, [
-				'is_valid' => 1,
-			], [
-				'priority' => 'ASC',
-			] )['data'] as $data
+			$this->get_list_data( function ( $query ) {
+				/** @var \WP_Framework_Db\Classes\Models\Query\Builder $query */
+				$query->where( 'is_valid', 1 )
+				      ->order_by( 'priority' );
+			} )['data'] as $data
 		) {
 			$options = [];
 			foreach ( $this->get_setting_list() as $key => $name ) {
