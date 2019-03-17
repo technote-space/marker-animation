@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.6.4
+ * @version 1.7.0
  * @author Technote
  * @since 1.0.0
  * @since 1.2.0
@@ -13,6 +13,7 @@
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
  * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
  * @since 1.6.4 Changed: trivial change
+ * @since 1.7.0 wp-content-framework/admin#20, wp-content-framework/common#57, #99
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
