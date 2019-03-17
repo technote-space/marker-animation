@@ -2,9 +2,9 @@
 /**
  * WP_Framework_Upgrade Classes Models Upgrade
  *
- * @version 0.0.9
- * @author technote-space
- * @copyright technote-space All Rights Reserved
+ * @version 0.0.10
+ * @author Technote
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
  */
@@ -48,23 +48,25 @@ class Upgrade implements \WP_Framework_Core\Interfaces\Loader {
 				$upgrades = [];
 				$count    = 0;
 				foreach ( $this->get_class_list() as $class ) {
-					/** @var \WP_Framework_Upgrade\Interfaces\Upgrade $class */
+					/** @var \WP_Framework_Upgrade\Interfaces\Upgrade|\WP_Framework_Core\Interfaces\Singleton $class */
 					foreach ( $class->get_upgrade_methods() as $items ) {
 						if ( ! is_array( $items ) ) {
 							continue;
 						}
-						$version  = $this->app->utility->array_get( $items, 'version' );
-						$callback = $this->app->utility->array_get( $items, 'callback' );
+						$version  = $this->app->array->get( $items, 'version' );
+						$callback = $this->app->array->get( $items, 'callback' );
 						if ( ! isset( $version ) || empty( $callback ) || ! is_string( $version ) ) {
 							continue;
 						}
 						if ( version_compare( $version, $last_version, '<=' ) ) {
 							continue;
 						}
-						if ( ! is_callable( $callback ) && ( ! is_string( $callback ) || ! method_exists( $class, $callback ) || ! is_callable( [ $class, $callback ] ) ) ) {
+						if ( ! $this->is_closure( $callback ) && ! $class->is_filter_callable( $callback ) ) {
 							continue;
 						}
-						$upgrades[ $version ][] = is_callable( $callback ) ? $callback : [ $class, $callback ];
+						$upgrades[ $version ][] = $this->is_closure( $callback ) ? $callback : function () use ( $class, $callback ) {
+							$class->filter_callback( $callback, [] );
+						};
 						$count ++;
 					}
 				}
@@ -79,10 +81,10 @@ class Upgrade implements \WP_Framework_Core\Interfaces\Loader {
 
 				uksort( $upgrades, 'version_compare' );
 				foreach ( $upgrades as $version => $items ) {
+					$this->app->log( sprintf( $this->translate( 'upgrade process count of version %s: %d' ), $version, count( $items ) ) );
 					foreach ( $items as $item ) {
 						call_user_func( $item );
 					}
-					$this->app->log( sprintf( $this->translate( 'upgrade process count of version %s: %d' ), $version, count( $items ) ) );
 				}
 			} catch ( \Exception $e ) {
 				$this->app->log( $e );

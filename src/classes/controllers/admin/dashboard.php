@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.6.0
+ * @version 1.7.0
  * @author Technote
  * @since 1.0.0
  * @since 1.2.0
@@ -8,6 +8,7 @@
  * @since 1.4.0 Improved: refactoring
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
+ * @since 1.7.0 wp-content-framework/admin#20, wp-content-framework/common#57
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -71,7 +72,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 
 		return [
-			'setting'     => $assets->get_setting_details( 'dashboard', $this->get_filter_prefix() ),
+			'settings'    => $assets->get_setting_details( 'dashboard', $this->get_filter_prefix() ),
 			'name_prefix' => $this->get_filter_prefix(),
 			'id_prefix'   => $assets->get_id_prefix(),
 		];
@@ -85,7 +86,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 	private function update_setting( $name ) {
 		$detail  = $this->app->setting->get_setting( $name, true );
 		$default = null;
-		if ( $this->app->utility->array_get( $detail, 'type' ) === 'bool' ) {
+		if ( $this->app->array->get( $detail, 'type' ) === 'bool' ) {
 			$default = 0;
 		}
 

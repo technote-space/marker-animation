@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.6.9
+ * @version 1.7.0
  * @author Technote
  * @since 1.0.0
  * @since 1.2.5 Added: check develop version
@@ -10,6 +10,7 @@
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
  * @since 1.6.9 Deleted: update checker の設定を削除 (#87)
+ * @since 1.7.0 wp-content-framework/admin#20
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -38,4 +39,13 @@ return [
 
 	// setting page slug
 	'setting_page_slug'              => 'dashboard',
+
+	// detail url
+	'detail_url'                     => 'https://technote.space/marker-animation',
+
+	// twitter
+	'twitter'                        => 'technote15',
+
+	// github repo
+	'github_repo'                    => 'technote-space/marker-animation',
 ];

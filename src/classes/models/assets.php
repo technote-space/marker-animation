@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.6.4
+ * @version 1.7.0
  * @author Technote
  * @since 1.0.0
  * @since 1.2.0
@@ -13,6 +13,7 @@
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
  * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
  * @since 1.6.4 Changed: trivial change
+ * @since 1.7.0 wp-content-framework/admin#20, wp-content-framework/common#57, #99
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -180,7 +181,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function changed_option( $key ) {
-		if ( $this->app->utility->starts_with( $key, $this->get_filter_prefix() ) ) {
+		if ( $this->app->string->starts_with( $key, $this->get_filter_prefix() ) ) {
 			$this->clear_options_cache();
 		}
 	}
@@ -309,29 +310,31 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 * @return array
 	 */
 	private function get_setting( $name, $form, $prefix = null ) {
-		$detail = $this->app->utility->array_get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
-		$value  = $this->app->utility->array_get( $detail, 'value' );
-		$ret    = [
+		$detail       = $this->app->array->get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
+		$value        = $this->app->array->get( $detail, 'value' );
+		$ret          = [
 			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',
 			'name'       => ( isset( $prefix ) ? $prefix : $this->get_name_prefix() ) . $name,
 			'value'      => $value,
-			'label'      => $this->translate( $this->app->utility->array_get( $detail, 'label', $name ) ),
+			'label'      => $this->translate( $this->app->array->get( $detail, 'label', $name ) ),
 			'attributes' => [
 				'data-value'   => $value,
-				'data-default' => $this->app->utility->array_get( $detail, 'default' ),
+				'data-default' => $this->app->array->get( $detail, 'default' ),
 			],
 			'detail'     => $detail,
 		];
+		$ret['title'] = $ret['label'];
 		if ( is_array( $form ) ) {
 			$ret['form'] = $form['form'];
 			$ret         = array_replace_recursive( $ret, isset( $form['args'] ) && is_array( $form['args'] ) ? $form['args'] : [] );
 		} else {
 			$ret['form'] = $form;
 		}
-		if ( $this->app->utility->array_get( $detail, 'type' ) === 'bool' ) {
+		if ( $this->app->array->get( $detail, 'type' ) === 'bool' ) {
 			$ret['value'] = 1;
 			! empty( $value ) and $ret['attributes']['checked'] = 'checked';
+			$ret['label'] = $this->translate( 'Valid' );
 		}
 		if ( $ret['form'] === 'select' ) {
 			$ret['selected'] = $value;

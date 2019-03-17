@@ -1,12 +1,13 @@
 <?php
 /**
- * @version 1.6.11
+ * @version 1.7.0
  * @author Technote
  * @since 1.4.0
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
  * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
  * @since 1.6.6 Changed: フレームワークの更新 (#76)
  * @since 1.6.11 #85
+ * @since 1.7.0 wp-content-framework/db#9, wp-content-framework/common#57
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -69,7 +70,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( 'setting' );
 		foreach ( $this->get_setting_list() as $key => $name ) {
-			$params['columns'][ $key ]['args'] = $this->app->utility->array_get( $setting_details, $name );
+			$params['columns'][ $key ]['args'] = $this->app->array->get( $setting_details, $name );
 			unset( $params['columns'][ $key ]['args']['name'] );
 			unset( $params['columns'][ $key ]['args']['value'] );
 			unset( $params['columns'][ $key ]['args']['selected'] );
@@ -144,7 +145,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					$attributes      = [];
 					$details         = [];
 					foreach ( $this->get_setting_list() as $key => $name ) {
-						$setting = $this->app->utility->array_get( $setting_details, $name );
+						$setting = $this->app->array->get( $setting_details, $name );
 						if ( empty( $setting ) ) {
 							continue;
 						}
@@ -319,11 +320,11 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$setting_details = $assets->get_setting_details( $target );
 		$settings        = [];
 		foreach (
-			$this->list_data( true, null, 1, [
-				'is_valid' => 1,
-			], [
-				'priority' => 'ASC',
-			] )['data'] as $data
+			$this->get_list_data( function ( $query ) {
+				/** @var \WP_Framework_Db\Classes\Models\Query\Builder $query */
+				$query->where( 'is_valid', 1 )
+				      ->order_by( 'priority' );
+			} )['data'] as $data
 		) {
 			$options = [];
 			foreach ( $this->get_setting_list() as $key => $name ) {
@@ -332,7 +333,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					$options[ $name ] = $data[ $key ];
 					continue;
 				}
-				$setting = $this->app->utility->array_get( $setting_details, $name );
+				$setting = $this->app->array->get( $setting_details, $name );
 				if ( empty( $setting ) ) {
 					continue;
 				}
