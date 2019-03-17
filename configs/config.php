@@ -38,4 +38,13 @@ return [
 
 	// setting page slug
 	'setting_page_slug'              => 'dashboard',
+
+	// detail url
+	'detail_url'                     => 'https://technote.space/marker-animation',
+
+	// twitter
+	'twitter'                        => 'technote15',
+
+	// github repo
+	'github_repo'                    => 'technote-space/marker-animation',
 ];

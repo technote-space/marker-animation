@@ -71,7 +71,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 
 		return [
-			'setting'     => $assets->get_setting_details( 'dashboard', $this->get_filter_prefix() ),
+			'settings'    => $assets->get_setting_details( 'dashboard', $this->get_filter_prefix() ),
 			'name_prefix' => $this->get_filter_prefix(),
 			'id_prefix'   => $assets->get_id_prefix(),
 		];

@@ -323,6 +323,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			],
 			'detail'     => $detail,
 		];
+		$ret['title'] = $ret['label'];
 		if ( is_array( $form ) ) {
 			$ret['form'] = $form['form'];
 			$ret         = array_replace_recursive( $ret, isset( $form['args'] ) && is_array( $form['args'] ) ? $form['args'] : [] );
