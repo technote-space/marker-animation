@@ -85,7 +85,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 	private function update_setting( $name ) {
 		$detail  = $this->app->setting->get_setting( $name, true );
 		$default = null;
-		if ( $this->app->utility->array_get( $detail, 'type' ) === 'bool' ) {
+		if ( $this->app->array->get( $detail, 'type' ) === 'bool' ) {
 			$default = 0;
 		}
 

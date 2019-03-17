@@ -17,8 +17,8 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 /** @var array $column */
 /** @var string $name */
 /** @var string $prefix */
-$attr     = $instance->app->utility->array_get( $column, 'attributes', [] );
-$options  = $instance->app->utility->array_get( $column, 'options', [] );
+$attr     = $instance->app->array->get( $column, 'attributes', [] );
+$options  = $instance->app->array->get( $column, 'options', [] );
 $selected = [];
 $value    = $instance->old( $prefix . $name, $data, $name );
 if ( ! empty( $value ) ) {
@@ -33,4 +33,4 @@ if ( ! empty( $value ) ) {
 	'attributes' => $attr,
 	'options'    => $options,
 	'selected'   => $selected,
-], $instance->app->utility->array_get( $column, 'args', [] ) ); ?>
+], $instance->app->array->get( $column, 'args', [] ) ); ?>

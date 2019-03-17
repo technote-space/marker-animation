@@ -69,7 +69,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( 'setting' );
 		foreach ( $this->get_setting_list() as $key => $name ) {
-			$params['columns'][ $key ]['args'] = $this->app->utility->array_get( $setting_details, $name );
+			$params['columns'][ $key ]['args'] = $this->app->array->get( $setting_details, $name );
 			unset( $params['columns'][ $key ]['args']['name'] );
 			unset( $params['columns'][ $key ]['args']['value'] );
 			unset( $params['columns'][ $key ]['args']['selected'] );
@@ -144,7 +144,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					$attributes      = [];
 					$details         = [];
 					foreach ( $this->get_setting_list() as $key => $name ) {
-						$setting = $this->app->utility->array_get( $setting_details, $name );
+						$setting = $this->app->array->get( $setting_details, $name );
 						if ( empty( $setting ) ) {
 							continue;
 						}
@@ -332,7 +332,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					$options[ $name ] = $data[ $key ];
 					continue;
 				}
-				$setting = $this->app->utility->array_get( $setting_details, $name );
+				$setting = $this->app->array->get( $setting_details, $name );
 				if ( empty( $setting ) ) {
 					continue;
 				}

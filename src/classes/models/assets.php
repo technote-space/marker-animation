@@ -180,7 +180,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function changed_option( $key ) {
-		if ( $this->app->utility->starts_with( $key, $this->get_filter_prefix() ) ) {
+		if ( $this->app->string->starts_with( $key, $this->get_filter_prefix() ) ) {
 			$this->clear_options_cache();
 		}
 	}
@@ -309,17 +309,17 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 * @return array
 	 */
 	private function get_setting( $name, $form, $prefix = null ) {
-		$detail = $this->app->utility->array_get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
-		$value  = $this->app->utility->array_get( $detail, 'value' );
-		$ret    = [
+		$detail       = $this->app->array->get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
+		$value        = $this->app->array->get( $detail, 'value' );
+		$ret          = [
 			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',
 			'name'       => ( isset( $prefix ) ? $prefix : $this->get_name_prefix() ) . $name,
 			'value'      => $value,
-			'label'      => $this->translate( $this->app->utility->array_get( $detail, 'label', $name ) ),
+			'label'      => $this->translate( $this->app->array->get( $detail, 'label', $name ) ),
 			'attributes' => [
 				'data-value'   => $value,
-				'data-default' => $this->app->utility->array_get( $detail, 'default' ),
+				'data-default' => $this->app->array->get( $detail, 'default' ),
 			],
 			'detail'     => $detail,
 		];
@@ -330,9 +330,10 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		} else {
 			$ret['form'] = $form;
 		}
-		if ( $this->app->utility->array_get( $detail, 'type' ) === 'bool' ) {
+		if ( $this->app->array->get( $detail, 'type' ) === 'bool' ) {
 			$ret['value'] = 1;
 			! empty( $value ) and $ret['attributes']['checked'] = 'checked';
+			$ret['label'] = $this->translate( 'Valid' );
 		}
 		if ( $ret['form'] === 'select' ) {
 			$ret['selected'] = $value;
