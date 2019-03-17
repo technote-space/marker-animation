@@ -73,7 +73,7 @@ This plugin needs PHP5.6 or higher.
 = 1.7.1 (2019/3/18) =
 * Added: [Presets](https://github.com/technote-space/marker-animation/issues/102)
 * Fixed: [Delete cache when update default settings](https://github.com/technote-space/marker-animation/issues/103)
-* Fixed: [Export setting](https://github.com/wp-content-framework/custom_post#73)
+* Fixed: [Export setting](https://github.com/wp-content-framework/custom_post/issues/73)
 
 = 1.7.0 (2019/3/17) =
 * Improved: [Performance issues](https://github.com/wp-content-framework/core/issues/138)
