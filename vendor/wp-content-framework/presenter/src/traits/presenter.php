@@ -2,9 +2,9 @@
 /**
  * WP_Framework_Presenter Traits Presenter
  *
- * @version 0.0.14
- * @author technote-space
- * @copyright technote-space All Rights Reserved
+ * @version 0.0.16
+ * @author Technote
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
  */
@@ -113,7 +113,7 @@ trait Presenter {
 	 * @return array
 	 */
 	private function get_presenter_args( array $args ) {
-		$args['field'] = array_merge( $this->app->utility->array_get( $args, 'field', [] ), $this->app->input->all() );
+		$args['field'] = array_merge( $this->app->array->get( $args, 'field', [] ), $this->app->input->all() );
 		if ( $this instanceof \WP_Framework_Core\Interfaces\Nonce ) {
 			$args['nonce_key']   = $this->get_nonce_key();
 			$args['nonce_value'] = $this->create_nonce();
@@ -160,7 +160,7 @@ trait Presenter {
 	 */
 	public function old( $name, $data, $key = null, $default = '', $checkbox = false ) {
 		if ( is_array( $data ) ) {
-			$default = $this->app->utility->array_get( $data, $key, $default );
+			$default = $this->app->array->get( $data, $key, $default );
 		} elseif ( $data instanceof \stdClass ) {
 			$default = property_exists( $data, $key ) ? $data->$key : $default;
 		} elseif ( ! isset( $key ) ) {
@@ -179,7 +179,7 @@ trait Presenter {
 			$default = false;
 		}
 
-		return $this->app->utility->array_get( self::$_prev_post, $name, $default );
+		return $this->app->array->get( self::$_prev_post, $name, $default );
 	}
 
 	/**
@@ -267,7 +267,7 @@ trait Presenter {
 	 * @return string
 	 */
 	public function json( $value, $echo = true ) {
-		return $this->h( json_encode( $value ), false, $echo, false );
+		return $this->h( @json_encode( $value ), false, $echo, false );
 	}
 
 	/**
@@ -288,7 +288,7 @@ trait Presenter {
 	public function n( array $data, $echo = true ) {
 		$count = count( $data );
 		if ( $echo ) {
-			echo $count;
+			$this->h( $count, false, true, false );
 		}
 
 		return $count;
@@ -593,10 +593,8 @@ trait Presenter {
 	 * @return bool
 	 */
 	public function enqueue_style( $handle, $file, array $depends = [], $ver = false, $media = 'all', $dir = 'css' ) {
-		$ver = $this->get_enqueue_ver( $ver );
-
 		return $this->enqueue_assets( $handle, $file, $dir, function ( $handle, $path ) use ( $depends, $ver, $media ) {
-			wp_enqueue_style( $handle, $path, $depends, $ver, $media );
+			wp_enqueue_style( $handle, $path, $depends, $this->get_enqueue_ver( $ver ), $media );
 		}, false );
 	}
 
@@ -612,13 +610,12 @@ trait Presenter {
 	 * @return bool
 	 */
 	public function enqueue_upload_style( $handle, $file, $generator, array $depends = [], $ver = false, $media = 'all', $dir = 'css' ) {
-		$ver = $this->get_enqueue_ver( $ver );
-		$this->app->utility->create_upload_file_if_not_exists( $this->app, $dir . DS . $file, function () use ( $generator ) {
+		$this->app->file->create_upload_file_if_not_exists( $this->app, $dir . DS . $file, function () use ( $generator ) {
 			return $this->app->minify->minify_css( $generator(), false );
 		} );
 
 		return $this->enqueue_assets( $handle, $file, $dir, function ( $handle, $path ) use ( $depends, $ver, $media ) {
-			wp_enqueue_style( $handle, $path, $depends, $ver, $media );
+			wp_enqueue_style( $handle, $path, $depends, $this->get_enqueue_ver( $ver ), $media );
 		}, true );
 	}
 
@@ -633,10 +630,8 @@ trait Presenter {
 	 * @return bool
 	 */
 	public function enqueue_script( $handle, $file, array $depends = [], $ver = false, $in_footer = true, $dir = 'js' ) {
-		$ver = $this->get_enqueue_ver( $ver );
-
 		return $this->enqueue_assets( $handle, $file, $dir, function ( $handle, $path ) use ( $depends, $ver, $in_footer ) {
-			wp_enqueue_script( $handle, $path, $depends, $ver, $in_footer );
+			wp_enqueue_script( $handle, $path, $depends, $this->get_enqueue_ver( $ver ), $in_footer );
 		}, false );
 	}
 
@@ -652,13 +647,12 @@ trait Presenter {
 	 * @return bool
 	 */
 	public function enqueue_upload_script( $handle, $file, $generator, array $depends = [], $ver = false, $in_footer = true, $dir = 'js' ) {
-		$ver = $this->get_enqueue_ver( $ver );
-		$this->app->utility->create_upload_file_if_not_exists( $this->app, $dir . DS . $file, function () use ( $generator ) {
+		$this->app->file->create_upload_file_if_not_exists( $this->app, $dir . DS . $file, function () use ( $generator ) {
 			return $this->app->minify->minify_js( $generator(), false );
 		} );
 
 		return $this->enqueue_assets( $handle, $file, $dir, function ( $handle, $path ) use ( $depends, $ver, $in_footer ) {
-			wp_enqueue_script( $handle, $path, $depends, $ver, $in_footer );
+			wp_enqueue_script( $handle, $path, $depends, $this->get_enqueue_ver( $ver ), $in_footer );
 		}, true );
 	}
 
