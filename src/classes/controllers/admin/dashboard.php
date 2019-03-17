@@ -49,6 +49,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 		foreach ( $assets->get_setting_keys() as $key => $form ) {
 			$this->update_setting( $key );
 		}
+		$assets->clear_options_cache();
 		$this->app->add_message( 'Settings updated.', 'setting' );
 	}
 
