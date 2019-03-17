@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.0
+ * @version 1.7.1
  * @author Technote
  * @since 1.4.0
  * @since 1.5.0 Changed: ライブラリの変更 (#37)
@@ -8,6 +8,7 @@
  * @since 1.6.6 Changed: フレームワークの更新 (#76)
  * @since 1.6.11 #85
  * @since 1.7.0 wp-content-framework/db#9, wp-content-framework/common#57
+ * @since 1.7.1 #102
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/

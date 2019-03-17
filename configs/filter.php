@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.6.6
+ * @version 1.7.1
  * @author Technote
  * @since 1.0.0
  * @since 1.2.0
@@ -11,6 +11,7 @@
  * @since 1.4.0 Added: filter of marker setting
  * @since 1.5.0 Changed: trivial change
  * @since 1.6.6 Changed: trivial change
+ * @since 1.7.1 #102
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/

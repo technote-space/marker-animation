@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 5.1.1
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,6 +41,11 @@ This plugin needs PHP5.6 or higher.
 
 == Upgrade Notice ==
 
+= 1.7.1 =
+* 『設定』のエクスポートが正しく動作しない問題を修正しました [詳細](https://github.com/wp-content-framework/custom_post/issues/73)
+* デフォルト設定の更新時に『設定』のデフォルト値が更新されない問題を修正しました [詳細](https://github.com/technote-space/marker-animation/issues/103)
+* [その他の差分](https://github.com/technote-space/marker-animation/pull/106)
+
 = 1.7.0 =
 * クラシックエディタの詳細設定の項目名を修正しました。
 * いくつかのパフォーマンスの改善を行いました [詳細](https://github.com/wp-content-framework/core/issues/138)
@@ -64,6 +69,11 @@ This plugin needs PHP5.6 or higher.
 * クラシックエディタでのボタンの動作が改善されます。
 
 == Changelog ==
+
+= 1.7.1 (2019/3/18) =
+* Added: [Presets](https://github.com/technote-space/marker-animation/issues/102)
+* Fixed: [Delete cache when update default settings](https://github.com/technote-space/marker-animation/issues/103)
+* Fixed: [Export setting](https://github.com/wp-content-framework/custom_post#73)
 
 = 1.7.0 (2019/3/17) =
 * Improved: [Performance issues](https://github.com/wp-content-framework/core/issues/138)
