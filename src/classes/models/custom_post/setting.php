@@ -28,6 +28,27 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	use \Marker_Animation\Traits\Models\Custom_Post, \WP_Framework_Upgrade\Traits\Upgrade;
 
 	/**
+	 * insert presets
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function insert_presets() {
+		if ( $this->app->get_option( 'has_inserted_presets' ) ) {
+			return;
+		}
+		$this->app->option->set( 'has_inserted_presets', true );
+
+		if ( ! $this->is_empty() ) {
+			return;
+		}
+
+		foreach ( $this->apply_filters( 'get_setting_presets', $this->app->get_config( 'preset' ) ) as $item ) {
+			$item['post_title'] = $this->translate( $this->app->array->get( $item, 'name', '' ) );
+			unset( $item['name'] );
+			$this->insert( $item );
+		}
+	}
+
+	/**
 	 * setup assets
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */

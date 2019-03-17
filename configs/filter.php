@@ -83,7 +83,13 @@ return [
 	 * @since 1.4.0
 	 */
 	'\Marker_Animation\Classes\Models\Custom_Post\Setting' => [
-		'load-edit.php' => [
+		/**
+		 * @since 1.7.1
+		 */
+		'${prefix}app_activated' => [
+			'insert_presets',
+		],
+		'load-edit.php'          => [
 			'setup_assets',
 		],
 	],
