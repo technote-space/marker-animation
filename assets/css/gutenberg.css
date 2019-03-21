@@ -17,10 +17,30 @@
     background-repeat: repeat-x;
 }
 
+.marker-animation-nav.editor-styles-wrapper {
+    background: white;
+}
+
 .marker-animation-is-active.components-dropdown-menu .components-dropdown-menu__toggle {
     box-shadow: none;
     background-color: #555d66;
     color: #fff;
+}
+
+.components-tooltip .components-popover__content .marker-animation-nav-item-title {
+    color: black;
+    background-color: white;
+    font-size: 1em !important;
+    line-height: 1.5em;
+    display: flex !important;
+    background-position: left -100% bottom -40% !important;
+    background-size: 200% 1em !important;
+    padding: 2px !important;
+}
+
+.marker-animation-nav-item-title-wrapper {
+    width: 100%;
+    text-align: left;
 }
 
 .marker-animation-nav .components-dropdown-menu__menu-item {
