@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: marker-animation\n"
 "POT-Creation-Date: 2018-07-01 17:47+0900\n"
-"PO-Revision-Date: 2019-03-18 02:26+0900\n"
+"PO-Revision-Date: 2019-03-21 05:22+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,17 +22,8 @@ msgstr "マーカーアニメーション"
 msgid "This plugin will add \"Marker animation\" function"
 msgstr "このプラグインは「マーカーアニメーション」機能を追加します"
 
-msgid "Dashboard"
-msgstr "ダッシュボード"
-
 msgid "Detail Settings"
 msgstr "詳細設定"
-
-msgid "Settings updated."
-msgstr "設定を更新しました。"
-
-msgid "Reset"
-msgstr "リセット"
 
 msgid "validity"
 msgstr "有効かどうか"

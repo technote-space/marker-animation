@@ -52,30 +52,9 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
             });
             $('.marker-setting-preview span').markerAnimation(options);
         };
-        const reset_options = function () {
-            $target.each(function () {
-                const name = $(this).attr('name');
-                if (name && name.match(/^<?php $instance->h( preg_quote( $name_prefix, '/' ) );?>/)) {
-                    let option_value = $(this).data('default');
-                    if ('checkbox' === $(this).attr('type')) {
-                        $(this).prop('checked', option_value);
-                    } else {
-                        $(this).val(option_value);
-                        if ($(this).hasClass('<?php $instance->h( $instance->get_color_picker_class() );?>')) {
-                            $(this).wpColorPicker('color', option_value);
-                        }
-                    }
-                }
-            });
-            setup_options();
-        };
 
         $target.on('change <?php $instance->h( $instance->app->slug_name . '-' );?>cleared', function () {
             setup_options();
-        });
-        $('[name="reset"]').on('click', function () {
-            reset_options();
-            return false;
         });
         setup_options();
     })(jQuery);

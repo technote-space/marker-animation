@@ -47,11 +47,19 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 	protected function post_action() {
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
-		foreach ( $assets->get_setting_keys() as $key => $form ) {
-			$this->update_setting( $key );
+		if ( $this->app->input->post( 'update' ) ) {
+			foreach ( $assets->get_setting_details( 'dashboard' ) as $name => $setting ) {
+				$this->update_setting( $name );
+			}
+			$this->app->add_message( 'Settings have been updated.', 'setting' );
+		} else {
+			foreach ( $assets->get_setting_details( 'dashboard' ) as $name => $setting ) {
+				$this->app->option->delete( $this->get_filter_prefix() . $name );
+				$this->delete_hook_cache( $name );
+			}
+			$this->app->add_message( 'Settings have been reset.', 'setting' );
 		}
 		$assets->clear_options_cache();
-		$this->app->add_message( 'Settings updated.', 'setting' );
 	}
 
 	/**
