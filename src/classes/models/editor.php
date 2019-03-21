@@ -206,6 +206,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'wp-element',
 			'wp-rich-text',
 			'wp-components',
+			'wp-hooks',
 			'lodash',
 		] );
 		$this->localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
@@ -230,6 +231,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'prefix'                => $assets->get_data_prefix(),
 			'is_valid_color_picker' => $this->app->utility->is_valid_tinymce_color_picker(),
 			'is_block_editor'       => $this->app->utility->is_block_editor(),
+			'default_icon'          => $this->get_img_url( 'icon-24x24.png' ),
 		];
 	}
 }
