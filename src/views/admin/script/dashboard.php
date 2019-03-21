@@ -1,11 +1,12 @@
 <?php
 /**
- * @version 1.5.0
+ * @version 1.7.2
  * @author Technote
  * @since 1.0.0
  * @since 1.3.0 Added: preset color
  * @since 1.4.0 Deleted: preset color
  * @since 1.5.0 Changed: trivial change
+ * @since 1.7.2 wp-content-framework/admin#26
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
