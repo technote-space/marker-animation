@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.1
+ * @version 1.7.2
  * @author Technote
  * @since 1.0.0
  * @since 1.2.0
@@ -10,6 +10,7 @@
  * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
  * @since 1.7.0 wp-content-framework/admin#20, wp-content-framework/common#57
  * @since 1.7.1 #103
+ * @since 1.7.2 wp-content-framework/admin#26
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -47,11 +48,19 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 	protected function post_action() {
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
-		foreach ( $assets->get_setting_keys() as $key => $form ) {
-			$this->update_setting( $key );
+		if ( $this->app->input->post( 'update' ) ) {
+			foreach ( $assets->get_setting_details( 'dashboard' ) as $name => $setting ) {
+				$this->update_setting( $name );
+			}
+			$this->app->add_message( 'Settings have been updated.', 'setting' );
+		} else {
+			foreach ( $assets->get_setting_details( 'dashboard' ) as $name => $setting ) {
+				$this->app->option->delete( $this->get_filter_prefix() . $name );
+				$this->delete_hook_cache( $name );
+			}
+			$this->app->add_message( 'Settings have been reset.', 'setting' );
 		}
 		$assets->clear_options_cache();
-		$this->app->add_message( 'Settings updated.', 'setting' );
 	}
 
 	/**
