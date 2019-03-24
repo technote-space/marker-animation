@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Upgrade Classes Models Upgrade
  *
- * @version 0.0.10
+ * @version 0.0.13
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -100,6 +100,13 @@ class Upgrade implements \WP_Framework_Core\Interfaces\Loader {
 		return [
 			$this->app->define->plugin_namespace . '\\Classes',
 		];
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function is_common_cache_class_settings() {
+		return true;
 	}
 
 	/**
