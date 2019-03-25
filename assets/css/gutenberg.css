@@ -56,6 +56,7 @@
 .components-button.marker-animation-nav-item:hover {
     background-position: left -100% bottom 10% !important;
     background-repeat: repeat-x !important;
+    padding-bottom: 3px !important;
 }
 
 .marker-animation-nav.editor-styles-wrapper::before,
