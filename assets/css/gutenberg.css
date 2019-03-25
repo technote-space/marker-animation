@@ -57,3 +57,18 @@
     background-position: left -100% bottom 10% !important;
     background-repeat: repeat-x !important;
 }
+
+.marker-animation-nav.editor-styles-wrapper::before,
+.marker-animation-nav.editor-styles-wrapper::after,
+.marker-animation-nav-item-title-wrapper.editor-styles-wrapper::before,
+.marker-animation-nav-item-title-wrapper.editor-styles-wrapper::after,
+.components-toolbar > .editor-styles-wrapper::before,
+.components-toolbar > .editor-styles-wrapper::after {
+    content: none;
+    display: none;
+}
+
+.marker-animation-nav-item-title-wrapper.editor-styles-wrapper,
+.components-toolbar > .editor-styles-wrapper {
+    background: transparent !important;
+}
