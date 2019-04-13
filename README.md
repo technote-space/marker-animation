@@ -13,7 +13,7 @@
 ## スクリーンショット
 ### 動作
 
-![動作](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-1.gif)
+![動作](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-1.gif)
 
 ### デフォルト設定画面
 
@@ -28,15 +28,15 @@
 ### 投稿編集画面
 #### ブロックエディタ
   
-![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-9.gif)
+![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-9.gif)
 
-![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-10.gif)
+![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-10.gif)
 
 #### クラシックエディタ
 
-![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-3.gif)
+![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-3.gif)
 
-![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/master/screenshot-4.gif)
+![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-4.gif)
 
 ## 要件
 - PHP 5.6 以上
