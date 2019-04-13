@@ -1,10 +1,10 @@
 === Marker Animation ===
 Contributors: technote0space
 Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アンダーライン
-Requires at least: 3.9.3
-Tested up to: 5.0.2
+Requires at least: 4.6
 Requires PHP: 5.6
-Stable tag: 1.4.0
+Tested up to: 5.1.1
+Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,8 @@ This plugin will add "Marker animation" function
 
 This plugin will add "Marker animation" function
 [日本語の説明](https://technote.space/marker-animation "Documentation in Japanese")
-[GitHub](https://github.com/technote-space/marker-animation)
+[GitHub (More details)](https://github.com/technote-space/marker-animation)
+[Issues (Reporting a new bug or feature request)](https://github.com/technote-space/marker-animation/issues)
 
 This plugin needs PHP5.6 or higher.
 
@@ -29,16 +30,139 @@ This plugin needs PHP5.6 or higher.
 
 1. Marker animation
 2. Settings
-3. Editor(on animation)
-4. Editor(off animation)
-5. Editor(preset color)
+3. Classic Editor(on animation)
+4. Classic Editor(off animation)
+5. Marker setting
+6. Marker setting list
+7. Use button setting
+8. Use style menu setting
+9. Block Editor(on animation)
+10. Block Editor(off animation)
 
 == Upgrade Notice ==
 
-* Deleted: preset color
-* Added: marker setting feature
+= 1.7.3 =
+* マルチサイトへの対応を行いました。 [詳細](https://github.com/wp-content-framework/core/issues/164)
+* Gutenbergエディタの動作を調整しました。
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/110)
+
+= 1.7.2 =
+* Gutenberg v5.3 に対応しました。 [詳細](https://github.com/technote-space/marker-animation/issues/107)
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/109)
+
+= 1.7.1 =
+* 『設定』のエクスポートが正しく動作しない問題を修正しました。 [詳細](https://github.com/wp-content-framework/custom_post/issues/73)
+* デフォルト設定の更新時に『設定』のデフォルト値が更新されない問題を修正しました。 [詳細](https://github.com/technote-space/marker-animation/issues/103)
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/106)
+
+= 1.7.0 =
+* クラシックエディタの詳細設定の項目名を修正しました。
+* いくつかのパフォーマンスの改善を行いました。 [詳細](https://github.com/wp-content-framework/core/issues/138)
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/101)
+
+= 1.6.0 =
+* Gutenbergにボタンが追加されます。
+* Gutenbergでの動作が改善されます。
+
+= 1.6.3 =
+* data属性の設定が反映されます。
+
+= 1.6.4 =
+* 「有効かどうか」の設定がfalseの場合にエディタにボタンを出さないように修正しました。
+* 「塗る時間」と「遅れ時間」が「0」の場合にアニメーションなしでの利用を想定した動作に修正しました。
+
+= 1.6.9 =
+* 設定のエクスポート及びインポートが可能になります(WP v4.7以上)
+
+= 1.6.10 =
+* クラシックエディタでのボタンの動作が改善されます。
 
 == Changelog ==
+
+= 1.7.3 (2019/3/25) =
+* Fixed: [For multisite](https://github.com/wp-content-framework/core/issues/164)
+
+= 1.7.2 (2019/3/22) =
+* Fixed: [Gutenberg v5.3](https://github.com/technote-space/marker-animation/issues/107)
+* Changed: [Reset setting behavior](https://github.com/wp-content-framework/admin/issues/26)
+* Improved: [Performance](https://github.com/wp-content-framework/core/issues/160)
+
+= 1.7.1 (2019/3/18) =
+* Added: [Presets](https://github.com/technote-space/marker-animation/issues/102)
+* Fixed: [Delete cache when update default settings](https://github.com/technote-space/marker-animation/issues/103)
+* Fixed: [Export setting](https://github.com/wp-content-framework/custom_post/issues/73)
+
+= 1.7.0 (2019/3/17) =
+* Improved: [Performance issues](https://github.com/wp-content-framework/core/issues/138)
+* Improved: [Dashboard page](https://github.com/wp-content-framework/admin/issues/20)
+* Fixed: [Detail setting label of classic editor](https://github.com/technote-space/marker-animation/issues/99)
+* Tested: against 5.1.1
+
+= 1.6.11 (2019/3/4) =
+
+* Improved: Hide `block editor setting` if block editor is invalid
+
+= 1.6.10 (2019/3/4) =
+
+* Improved: Behavior of classic editor's button
+
+= 1.6.9 (2019/3/4) =
+
+* Added: export and import
+* Tested: against 5.1.0
+
+= 1.6.8 (2019/2/16) =
+
+* Fixed: for under v5.0.0
+
+= 1.6.7 (2019/2/14) =
+
+* Fixed: minor bug fix
+
+= 1.6.6 (2019/2/13) =
+
+* Changed: update framework
+
+= 1.6.5 (2019/2/11) =
+
+* Fixed: minor bug fix
+
+= 1.6.4 (2019/2/11) =
+
+* Changed: hide buttons if validity setting is false
+* Improved: off animation if duration and delay settings are "0"
+* Improved: refactoring
+
+= 1.6.3 (2019/2/7) =
+
+* Improved: reflect the data attribute settings
+* Improved: refactoring
+
+= 1.6.2 (2019/2/5) =
+
+* Fixed: minor bug fix
+
+= 1.6.1 (2019/2/4) =
+
+* Fixed: minor bug fix
+
+= 1.6.0 (2019/2/4) =
+
+* Improved: Block editor
+* Fixed: dashboard setting
+
+= 1.5.0 (2019/2/2) =
+
+* Changed: framework
+* Tested: against 5.0.3
+
+= 1.4.2 (2019/1/7) =
+
+* Fixed: translations
+
+= 1.4.1 (2019/1/3) =
+
+* Fixed: behavior of checkbox
 
 = 1.4.0 (2019/1/2) =
 

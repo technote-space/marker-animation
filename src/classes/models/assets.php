@@ -1,34 +1,44 @@
 <?php
 /**
- * @version 1.4.0
- * @author technote-space
+ * @version 1.7.0
+ * @author Technote
  * @since 1.0.0
  * @since 1.2.0
  * @since 1.2.7 Added: cache options
  * @since 1.3.0 Added: preset color
  * @since 1.4.0 Deleted: preset color
  * @since 1.4.0 Added: marker setting feature
- * @copyright technote All Rights Reserved
+ * @since 1.4.1 Fixed: default value of setting form
+ * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
+ * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
+ * @since 1.6.4 Changed: trivial change
+ * @since 1.7.0 wp-content-framework/admin#20, wp-content-framework/common#57, #99
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
 
 namespace Marker_Animation\Classes\Models;
 
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
+	exit;
+}
+
 /**
  * Class Assets
  * @package Marker_Animation\Classes\Models
  */
-class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hook, \Technote\Interfaces\Presenter {
+class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\Interfaces\Hook, \WP_Framework_Presenter\Interfaces\Presenter {
 
-	use \Technote\Traits\Singleton, \Technote\Traits\Hook, \Technote\Traits\Presenter;
+	use \WP_Framework_Core\Traits\Singleton, \WP_Framework_Core\Traits\Hook, \WP_Framework_Presenter\Traits\Presenter, \WP_Framework_Common\Traits\Package;
 
 	/**
 	 * setup assets
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function setup_assets() {
-		if ( ! $this->is_valid() ) {
+		if ( ! $this->apply_filters( 'is_valid' ) ) {
 			return;
 		}
 
@@ -44,13 +54,6 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 			'jquery',
 		] );
 		$this->localize_script( $this->app->slug_name . '-marker_animation', $this->get_marker_object_name(), $this->get_marker_options() );
-	}
-
-	/**
-	 * @return bool
-	 */
-	private function is_valid() {
-		return $this->apply_filters( 'is_valid' );
 	}
 
 	/**
@@ -178,7 +181,7 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function changed_option( $key ) {
-		if ( $this->app->utility->starts_with( $key, $this->get_filter_prefix() ) ) {
+		if ( $this->app->string->starts_with( $key, $this->get_filter_prefix() ) ) {
 			$this->clear_options_cache();
 		}
 	}
@@ -208,27 +211,29 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	/**
 	 * @since 1.3.0 Added: preset color
+	 * @since 1.4.1 Added: detail setting
+	 * @since 1.6.0 #3
 	 * @return array
 	 */
 	public function get_setting_keys() {
 		return [
-			'is_valid'        => [
+			'is_valid'                     => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'target' => [ 'dashboard', 'setting' ],
 				],
 			],
-			'color'           => 'color',
-			'thickness'       => 'input/text',
-			'duration'        => 'input/text',
-			'delay'           => 'input/text',
-			'function'        => [
+			'color'                        => 'color',
+			'thickness'                    => 'input/text',
+			'duration'                     => 'input/text',
+			'delay'                        => 'input/text',
+			'function'                     => [
 				'form' => 'select',
 				'args' => [
 					'options' => $this->get_animation_functions(),
 				],
 			],
-			'bold'            => [
+			'bold'                         => [
 				'form' => 'input/checkbox',
 				'args' => [
 					'attributes' => [
@@ -238,22 +243,36 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 					],
 				],
 			],
-			'repeat'          => 'input/checkbox',
-			'padding_bottom'  => 'input/text',
-			'is_valid_button' => [
-				'form' => 'input/checkbox',
-				'args' => [
+			'repeat'                       => 'input/checkbox',
+			'padding_bottom'               => 'input/text',
+			'is_valid_button'              => [
+				'form'   => 'input/checkbox',
+				'args'   => [
 					'target' => [ 'setting' ],
-					'value'  => 1,
-					'label'  => $this->translate( 'show' ),
+				],
+				'detail' => [
+					'value' => 1,
+					'label' => $this->translate( 'show' ),
 				],
 			],
-			'is_valid_style'  => [
-				'form' => 'input/checkbox',
-				'args' => [
+			'is_valid_style'               => [
+				'form'   => 'input/checkbox',
+				'args'   => [
 					'target' => [ 'setting' ],
-					'value'  => 0,
-					'label'  => $this->translate( 'show' ),
+				],
+				'detail' => [
+					'value' => 0,
+					'label' => $this->translate( 'show' ),
+				],
+			],
+			'is_valid_button_block_editor' => [
+				'form'   => 'input/checkbox',
+				'args'   => [
+					'target' => [ 'setting' ],
+				],
+				'detail' => [
+					'value' => 1,
+					'label' => $this->translate( 'show' ),
 				],
 			],
 		];
@@ -261,53 +280,61 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 
 	/**
 	 * @since 1.3.0 Added: target filter
+	 * @since 1.6.0 #41
 	 *
 	 * @param string $target
+	 * @param null|string $prefix
 	 *
 	 * @return array
 	 */
-	public function get_setting_details( $target ) {
+	public function get_setting_details( $target, $prefix = null ) {
 		$args = [];
 		foreach ( $this->get_setting_keys() as $key => $form ) {
 			if ( is_array( $form ) && ! empty( $form['args']['target'] ) && ! in_array( $target, $form['args']['target'] ) ) {
 				continue;
 			}
-			$args[ $key ] = $this->get_setting( $key, $form );
+			$args[ $key ] = $this->get_setting( $key, $form, $prefix );
 		}
 
 		return $args;
 	}
 
 	/**
+	 * @since 1.4.1 Changed: use detail setting if exists
+	 * @since 1.6.0 #41
+	 *
 	 * @param string $name
 	 * @param string|array $form
+	 * @param null|string $prefix
 	 *
 	 * @return array
 	 */
-	private function get_setting( $name, $form ) {
-		$detail = $this->app->setting->get_setting( $name, true );
-		$value  = $detail['value'];
-		$ret    = [
+	private function get_setting( $name, $form, $prefix = null ) {
+		$detail       = $this->app->array->get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
+		$value        = $this->app->array->get( $detail, 'value' );
+		$ret          = [
 			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',
-			'name'       => $this->get_name_prefix() . $name,
+			'name'       => ( isset( $prefix ) ? $prefix : $this->get_name_prefix() ) . $name,
 			'value'      => $value,
-			'label'      => $this->translate( $detail['label'] ),
+			'label'      => $this->translate( $this->app->array->get( $detail, 'label', $name ) ),
 			'attributes' => [
 				'data-value'   => $value,
-				'data-default' => $detail['default'],
+				'data-default' => $this->app->array->get( $detail, 'default' ),
 			],
 			'detail'     => $detail,
 		];
+		$ret['title'] = $ret['label'];
 		if ( is_array( $form ) ) {
 			$ret['form'] = $form['form'];
 			$ret         = array_replace_recursive( $ret, isset( $form['args'] ) && is_array( $form['args'] ) ? $form['args'] : [] );
 		} else {
 			$ret['form'] = $form;
 		}
-		if ( $this->app->utility->array_get( $detail, 'type' ) === 'bool' ) {
+		if ( $this->app->array->get( $detail, 'type' ) === 'bool' ) {
 			$ret['value'] = 1;
 			! empty( $value ) and $ret['attributes']['checked'] = 'checked';
+			$ret['label'] = $this->translate( 'Valid' );
 		}
 		if ( $ret['form'] === 'select' ) {
 			$ret['selected'] = $value;
@@ -330,6 +357,9 @@ class Assets implements \Technote\Interfaces\Singleton, \Technote\Interfaces\Hoo
 	 * @return string
 	 */
 	public function get_name_prefix() {
-		return $this->get_filter_prefix();
+		/** @var Custom_Post\Setting $setting */
+		$setting = Custom_Post\Setting::get_instance( $this->app );
+
+		return $setting->get_post_field_name_prefix();
 	}
 }

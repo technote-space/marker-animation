@@ -1,8 +1,14 @@
 /**
- * @version 1.2.4
- * @author technote-space
+ * @version 1.7.3
+ * @author Technote
  * @since 1.2.4
- * @copyright technote All Rights Reserved
+ * @since 1.5.0 trivial change
+ * @since 1.6.0 #3
+ * @since 1.6.3 trivial change
+ * @since 1.6.4 trivial change
+ * @since 1.7.2 #107
+ * @since 1.7.3 trivial change
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
@@ -11,8 +17,60 @@
     display: inline;
     background-position: left -100% center;
     background-repeat: repeat-x;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, #ff6 50%);
-    background-size: 200% .6em;
-    font-weight: bold;
-    padding-bottom: .6em;
+}
+
+.marker-animation-nav.editor-styles-wrapper {
+    background: white;
+}
+
+.marker-animation-is-active.components-dropdown-menu .components-dropdown-menu__toggle {
+    box-shadow: none;
+    background-color: #555d66;
+    color: #fff;
+}
+
+.components-tooltip .components-popover__content .marker-animation-nav-item-title {
+    color: black;
+    background-color: white;
+    font-size: 1em !important;
+    line-height: 1.5em;
+    display: flex !important;
+    background-position: left -100% bottom -40% !important;
+    background-size: 200% 1em !important;
+    padding: 2px !important;
+}
+
+.marker-animation-nav-item-title-wrapper {
+    width: 100%;
+    text-align: left;
+}
+
+.marker-animation-nav .components-dropdown-menu__menu-item {
+    display: flex !important;
+    background-position: left -100% bottom 10% !important;
+    background-size: 200% 1em !important;
+    font-weight: normal !important;
+    padding: 6px !important;
+}
+
+.components-button.marker-animation-nav-item,
+.components-button.marker-animation-nav-item:hover {
+    background-position: left -100% bottom 10% !important;
+    background-repeat: repeat-x !important;
+    padding-bottom: 3px !important;
+}
+
+.marker-animation-nav.editor-styles-wrapper::before,
+.marker-animation-nav.editor-styles-wrapper::after,
+.marker-animation-nav-item-title-wrapper.editor-styles-wrapper::before,
+.marker-animation-nav-item-title-wrapper.editor-styles-wrapper::after,
+.components-toolbar > .editor-styles-wrapper::before,
+.components-toolbar > .editor-styles-wrapper::after {
+    content: none;
+    display: none;
+}
+
+.marker-animation-nav-item-title-wrapper.editor-styles-wrapper,
+.components-toolbar > .editor-styles-wrapper {
+    background: transparent !important;
 }

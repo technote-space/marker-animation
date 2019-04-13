@@ -1,16 +1,22 @@
 <?php
 /**
- * @version 1.4.0
- * @author technote-space
+ * @version 1.7.1
+ * @author Technote
  * @since 1.4.0
- * @copyright technote All Rights Reserved
+ * @since 1.5.0 Changed: ライブラリの変更 (#37)
+ * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
+ * @since 1.6.6 Changed: フレームワークの更新 (#76)
+ * @since 1.6.11 #85
+ * @since 1.7.0 wp-content-framework/db#9, wp-content-framework/common#57
+ * @since 1.7.1 #102
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
 
 namespace Marker_Animation\Classes\Models\Custom_Post;
 
-if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
+if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
 
@@ -18,9 +24,30 @@ if ( ! defined( 'TECHNOTE_PLUGIN' ) ) {
  * Class Setting
  * @package Marker_Animation\Classes\Models\Custom_Post
  */
-class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Technote\Interfaces\Upgrade {
+class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Framework_Upgrade\Interfaces\Upgrade {
 
-	use \Marker_Animation\Traits\Models\Custom_Post, \Technote\Traits\Upgrade;
+	use \Marker_Animation\Traits\Models\Custom_Post, \WP_Framework_Upgrade\Traits\Upgrade;
+
+	/**
+	 * insert presets
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function insert_presets() {
+		if ( $this->app->get_option( 'has_inserted_presets' ) ) {
+			return;
+		}
+		$this->app->option->set( 'has_inserted_presets', true );
+
+		if ( ! $this->is_empty() ) {
+			return;
+		}
+
+		foreach ( $this->apply_filters( 'get_setting_presets', $this->app->get_config( 'preset' ) ) as $item ) {
+			$item['post_title'] = $this->translate( $this->app->array->get( $item, 'name', '' ) );
+			unset( $item['name'] );
+			$this->insert( $item );
+		}
+	}
 
 	/**
 	 * setup assets
@@ -36,36 +63,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		$assets->enqueue_marker_animation();
 		$this->add_script_view( 'admin/script/custom_post/setting_list' );
-	}
-
-	/**
-	 * @param \WP_Query $wp_query
-	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function pre_get_posts( $wp_query ) {
-		if ( ! $wp_query->is_admin ) {
-			return;
-		}
-
-		if ( $wp_query->get( 'post_type' ) !== $this->get_post_type() ) {
-			return;
-		}
-
-		if ( $wp_query->get( 'orderby' ) ) {
-			return;
-		}
-
-		add_filter( 'posts_orderby', $func = function (
-			/** @noinspection PhpUnusedParameterInspection */
-			$orderby, $wp_query
-		) use ( &$func ) {
-			/** @var string $orderby */
-			/** @var \WP_Query $wp_query */
-			$table = $this->app->db->get_table( $this->get_related_table_name() );
-			remove_filter( 'posts_orderby', $func );
-
-			return "{$table}.priority ASC, {$orderby}";
-		}, 10, 2 );
 	}
 
 	/**
@@ -95,7 +92,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( 'setting' );
 		foreach ( $this->get_setting_list() as $key => $name ) {
-			$params['columns'][ $key ]['args'] = $this->app->utility->array_get( $setting_details, $name );
+			$params['columns'][ $key ]['args'] = $this->app->array->get( $setting_details, $name );
 			unset( $params['columns'][ $key ]['args']['name'] );
 			unset( $params['columns'][ $key ]['args']['value'] );
 			unset( $params['columns'][ $key ]['args']['selected'] );
@@ -113,26 +110,31 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 		$params['columns']['function']['form_type'] = 'select';
 		$params['columns']['function']['options']   = $assets->get_animation_functions();
 		$params['name_prefix']                      = $assets->get_name_prefix();
+		if ( ! $this->app->utility->can_use_block_editor() ) {
+			unset( $params['columns']['is_valid_button_block_editor'] );
+		}
 
 		return $params;
 	}
 
 	/**
+	 * @since 1.6.0 #3
 	 * @return array
 	 */
 	private function get_setting_list() {
 		return [
-			'is_valid'        => 'is_valid',
-			'color'           => 'color',
-			'thickness'       => 'thickness',
-			'duration'        => 'duration',
-			'delay'           => 'delay',
-			'function'        => 'function',
-			'is_font_bold'    => 'bold',
-			'is_repeat'       => 'repeat',
-			'padding_bottom'  => 'padding_bottom',
-			'is_valid_button' => 'is_valid_button',
-			'is_valid_style'  => 'is_valid_style',
+			'is_valid'                     => 'is_valid',
+			'color'                        => 'color',
+			'thickness'                    => 'thickness',
+			'duration'                     => 'duration',
+			'delay'                        => 'delay',
+			'function'                     => 'function',
+			'is_font_bold'                 => 'bold',
+			'is_repeat'                    => 'repeat',
+			'padding_bottom'               => 'padding_bottom',
+			'is_valid_button'              => 'is_valid_button',
+			'is_valid_style'               => 'is_valid_style',
+			'is_valid_button_block_editor' => 'is_valid_button_block_editor',
 		];
 	}
 
@@ -140,19 +142,21 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	 * @return null|string
 	 */
 	protected function get_post_column_title() {
-		return $this->app->translate( 'Setting name' );
+		return $this->translate( 'Setting name' );
 	}
 
 	/**
+	 * @since 1.6.0 #3
+	 * @since 1.6.6 #76
 	 * @return array
 	 */
 	protected function get_manage_posts_columns() {
 		return [
 			'is_valid' => function ( $value ) {
-				return ! empty( $value ) ? $this->app->translate( 'Valid' ) : $this->app->translate( 'Invalid' );
+				return ! empty( $value ) ? $this->translate( 'Valid' ) : $this->translate( 'Invalid' );
 			},
 			'display'  => [
-				'name'     => $this->app->translate( 'display' ),
+				'name'     => $this->translate( 'display' ),
 				'callback' => function (
 					/** @noinspection PhpUnusedParameterInspection */
 					$value, $data, $post
@@ -163,7 +167,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 					$attributes      = [];
 					$details         = [];
 					foreach ( $this->get_setting_list() as $key => $name ) {
-						$setting = $this->app->utility->array_get( $setting_details, $name );
+						$setting = $this->app->array->get( $setting_details, $name );
 						if ( empty( $setting ) ) {
 							continue;
 						}
@@ -178,12 +182,12 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 							'padding_bottom',
 						] ) ) {
 							if ( $is_default ) {
-								$details[ $setting['label'] ] = $this->app->translate( 'default' ) . " ({$setting['value']})";
+								$details[ $setting['label'] ] = $this->translate( 'default' ) . " ({$setting['value']})";
 							} else {
 								if ( 'function' === $name ) {
-									$details[ $setting['label'] ] = $this->app->translate( $data[ $key ] );
+									$details[ $setting['label'] ] = $this->translate( $data[ $key ] );
 								} elseif ( 'bold' === $name ) {
-									$details[ $setting['label'] ] = empty( $data[ $key ] ) ? $this->app->translate( 'No' ) : $this->app->translate( 'Yes' );
+									$details[ $setting['label'] ] = empty( $data[ $key ] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' );
 								} else {
 									$details[ $setting['label'] ] = $data[ $key ];
 								}
@@ -202,21 +206,34 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 				'unescape' => true,
 			],
 			'others'   => [
-				'name'     => $this->app->translate( 'others' ),
+				'name'     => $this->translate( 'others' ),
 				'callback' => function (
 					/** @noinspection PhpUnusedParameterInspection */
 					$value, $data, $post
 				) {
+					$details = [
+						'repeat'                       => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
+					];
+					if ( ! $this->app->utility->can_use_block_editor() ) {
+						unset( $details['is valid block editor button'] );
+					}
+
 					return $this->get_view( 'admin/custom_post/setting/others', [
-						'details' => [
-							'repeat'          => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'is valid button' => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'is valid style'  => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-							'selector'        => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
-						],
+						'details' => $details,
 					] );
 				},
 				'unescape' => true,
+			],
+			'priority' => [
+				'name'         => $this->translate( 'priority' ),
+				'value'        => '',
+				'sortable'     => true,
+				'default_sort' => true,
+				'hide'         => true,
 			],
 		];
 	}
@@ -239,7 +256,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	/**
 	 * @param \WP_Post $post
 	 */
-	public function output_after_editor( $post ) {
+	public function output_after_editor( \WP_Post $post ) {
 		$this->get_view( 'admin/custom_post/setting/test', [], true );
 	}
 
@@ -262,7 +279,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	 * @param array $old
 	 * @param array $new
 	 */
-	public function data_updated( $post_id, $post, $old, $new ) {
+	public function data_updated( $post_id, \WP_Post $post, array $old, array $new ) {
 		$this->clear_options_cache();
 	}
 
@@ -271,7 +288,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	 * @param \WP_Post $post
 	 * @param array $data
 	 */
-	public function data_inserted( $post_id, $post, $data ) {
+	public function data_inserted( $post_id, \WP_Post $post, array $data ) {
 		$this->clear_options_cache();
 	}
 
@@ -292,6 +309,29 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 	}
 
 	/**
+	 * @param string $key
+	 * @param mixed $value
+	 * @param mixed $default
+	 * @param array|null $post_array
+	 *
+	 * @return mixed
+	 */
+	protected function filter_post_field(
+		/** @noinspection PhpUnusedParameterInspection */
+		$key, $value, $default, $post_array
+	) {
+		if ( 'is_valid_button_block_editor' === $key ) {
+			if ( ! $this->app->utility->can_use_block_editor() ) {
+				return $this->app->input->post( $this->get_post_field_name( 'is_valid_button' ) );
+			}
+		}
+
+		return $value;
+	}
+
+	/**
+	 * @since 1.6.0 #3
+	 *
 	 * @param string $target
 	 *
 	 * @return array
@@ -302,20 +342,20 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 		$setting_details = $assets->get_setting_details( $target );
 		$settings        = [];
 		foreach (
-			$this->list_data( true, null, 1, [
-				'is_valid' => 1,
-			], [
-				'priority' => 'ASC',
-			] )['data'] as $data
+			$this->get_list_data( function ( $query ) {
+				/** @var \WP_Framework_Db\Classes\Models\Query\Builder $query */
+				$query->where( 'is_valid', 1 )
+				      ->order_by( 'priority' );
+			} )['data'] as $data
 		) {
 			$options = [];
 			foreach ( $this->get_setting_list() as $key => $name ) {
 				$is_default = '' === (string) ( $data[ $key ] );
-				if ( 'is_valid_button' === $name || 'is_valid_style' === $name ) {
+				if ( 'is_valid_button' === $name || 'is_valid_style' === $name || 'is_valid_button_block_editor' === $name ) {
 					$options[ $name ] = $data[ $key ];
 					continue;
 				}
-				$setting = $this->app->utility->array_get( $setting_details, $name );
+				$setting = $this->app->array->get( $setting_details, $name );
 				if ( empty( $setting ) ) {
 					continue;
 				}
@@ -327,6 +367,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 			/** @var \WP_Post $post */
 			$post                = $data['post'];
 			$options['selector'] = $this->get_default_class( $post->ID );
+			$options['class']    = $this->get_default_class( $post->ID, false );
 			! empty( $data['selector'] ) and $options['selector'] .= ', ' . $data['selector'];
 			$settings[] = [
 				'id'      => $post->ID,
@@ -354,6 +395,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \Techn
 						] as $k => $v
 					) {
 						$color = $this->app->get_option( $this->get_filter_prefix() . 'color' . $k, $v );
+						empty( $color ) and $color = $v;
 						$this->insert( [
 							'post_title' => $this->translate( 'preset color' . $k ),
 							'color'      => $color,
