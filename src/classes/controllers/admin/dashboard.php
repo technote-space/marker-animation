@@ -3,14 +3,6 @@
  * @version 1.7.2
  * @author Technote
  * @since 1.0.0
- * @since 1.2.0
- * @since 1.3.0 Added: preset color
- * @since 1.4.0 Improved: refactoring
- * @since 1.5.0 Changed: ライブラリの変更 (#37)
- * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
- * @since 1.7.0 wp-content-framework/admin#20, wp-content-framework/common#57
- * @since 1.7.1 #103
- * @since 1.7.2 wp-content-framework/admin#26
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/

@@ -3,19 +3,6 @@
  * @version 1.7.3
  * @author Technote
  * @since 1.0.0
- * @since 1.2.0
- * @since 1.2.4
- * @since 1.2.6 Updated: use library method to determine whether gutenberg editor is used
- * @since 1.2.6 Changed: variable name
- * @since 1.3.0 Added: preset color
- * @since 1.4.0 Deleted: preset color
- * @since 1.4.0 Added: marker setting feature
- * @since 1.5.0 Changed: ライブラリの変更 (#37)
- * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
- * @since 1.6.4 Changed: 有効でない場合にエディタにボタンを追加しない (#61)
- * @since 1.6.10 #93
- * @since 1.7.2 #107
- * @since 1.7.3 trivial change
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -39,14 +26,12 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	private $_setup_params = false;
 
 	/**
-	 * @since 1.1.7
 	 * @var bool $_enqueue_editor_stylesheets
 	 */
 	private $_enqueue_editor_stylesheets = false;
 
 	/**
 	 * enqueue editor params
-	 * @since 1.6.4 #61
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_editor_params() {
@@ -67,9 +52,6 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.6.0 #3
-	 * @since 1.6.4 #61
-	 *
 	 * @param array $external_plugins
 	 *
 	 * @return array
@@ -87,9 +69,6 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.3.1 Added: style button
-	 * @since 1.6.4 #61
-	 *
 	 * @param array $mce_buttons
 	 *
 	 * @return array
@@ -135,8 +114,6 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.1.7
-	 *
 	 * @param string $mce_css
 	 *
 	 * @return string
@@ -151,10 +128,6 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.3.0
-	 * @since 1.3.1 Fixed: setup only when required parameter has loaded
-	 * @since 1.6.4 #61
-	 *
 	 * @param array $tinymce_settings
 	 *
 	 * @return array
@@ -194,8 +167,6 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * enqueue css for gutenberg
-	 * @since 1.6.0 #3
-	 * @since 1.6.4 #61
 	 */
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_block_editor_assets() {

@@ -3,8 +3,6 @@
  * @version 1.6.0
  * @author Technote
  * @since 1.4.0
- * @since 1.5.0 Changed: trivial change
- * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -96,9 +94,6 @@ return [
 				'default'  => 0,
 				'comment'  => 'is valid style',
 			],
-			/**
-			 * @since 1.6.0
-			 */
 			'is_valid_button_block_editor' => [
 				'type'     => 'TINYINT(1)',
 				'unsigned' => true,

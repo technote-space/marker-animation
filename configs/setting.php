@@ -3,10 +3,6 @@
  * @version 1.5.0
  * @author Technote
  * @since 1.0.0
- * @since 1.2.7 Added: cache validity setting
- * @since 1.3.0 Added: preset color
- * @since 1.4.0 Deleted: preset color
- * @since 1.5.0 Changed: trivial change
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -26,9 +22,6 @@ return [
 					'type'    => 'bool',
 					'default' => true,
 				],
-				/**
-				 * @since 1.2.7
-				 */
 				'is_valid_marker_options_cache' => [
 					'label'   => 'cache validity',
 					'type'    => 'bool',
