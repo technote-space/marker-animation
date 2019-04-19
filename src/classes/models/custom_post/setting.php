@@ -212,7 +212,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					$value, $data, $post
 				) {
 					$details = [
-						'repeat'                       => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'repeat'                       => empty( $data['is_repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
