@@ -16,9 +16,9 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 ?>
 
 <script>
-    (function ($) {
-        $(function () {
-            $('.marker-animation-preview').markerAnimation();
-        });
-    })(jQuery);
+	( function( $ ) {
+		$( function() {
+			$( '.marker-animation-preview' ).markerAnimation();
+		} );
+	} )( jQuery );
 </script>

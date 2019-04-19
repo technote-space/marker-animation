@@ -114,6 +114,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			unset( $params['columns']['is_valid_button_block_editor'] );
 		}
 
+		$params['target_selector']        = '.marker-animation-option';
+		$params['marker_target_selector'] = '.marker-setting-preview .marker-animation';
+
 		return $params;
 	}
 

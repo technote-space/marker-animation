@@ -18,5 +18,5 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 ?>
 
 <script>
-    const <?php $instance->h( $param_name );?>=<?php $instance->json( $params );?>;
+	const <?php $instance->h( $param_name );?>=<?php $instance->json( $params );?>;
 </script>
