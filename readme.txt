@@ -41,9 +41,14 @@ This plugin needs PHP5.6 or higher.
 
 == Upgrade Notice ==
 
+= 1.7.4 =
+* ブロックエディタでサイドバーから細かく設定できるように対応しました。 [詳細](https://github.com/technote-space/marker-animation/issues/51)
+* 設定一覧の「繰り返すかどうか」が正しく反映されないバグの修正。 [詳細](https://github.com/technote-space/marker-animation/issues/117)
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/121)
+
 = 1.7.3 =
 * マルチサイトへの対応を行いました。 [詳細](https://github.com/wp-content-framework/core/issues/164)
-* Gutenbergエディタの動作を調整しました。
+* ブロックエディタの動作を調整しました。
 * [すべての差分](https://github.com/technote-space/marker-animation/pull/110)
 
 = 1.7.2 =
@@ -78,6 +83,12 @@ This plugin needs PHP5.6 or higher.
 * クラシックエディタでのボタンの動作が改善されます。
 
 == Changelog ==
+
+= 1.7.4 (2019/4/23) =
+* Added: [Detail settings for gutenberg](https://github.com/technote-space/marker-animation/issues/51)
+* Fixed: [Display of repeat setting](https://github.com/technote-space/marker-animation/issues/117)
+* Changed: trivial changes
+* Tested: against 5.2
 
 = 1.7.3 (2019/3/25) =
 * Fixed: [For multisite](https://github.com/wp-content-framework/core/issues/164)
