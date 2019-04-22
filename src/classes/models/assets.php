@@ -3,17 +3,6 @@
  * @version 1.7.0
  * @author Technote
  * @since 1.0.0
- * @since 1.2.0
- * @since 1.2.7 Added: cache options
- * @since 1.3.0 Added: preset color
- * @since 1.4.0 Deleted: preset color
- * @since 1.4.0 Added: marker setting feature
- * @since 1.4.1 Fixed: default value of setting form
- * @since 1.5.0 Changed: ライブラリの変更 (#37)
- * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
- * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
- * @since 1.6.4 Changed: trivial change
- * @since 1.7.0 wp-content-framework/admin#20, wp-content-framework/common#57, #99
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -47,7 +36,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * enqueue marker animation
-	 * @since 1.4.0
 	 */
 	public function enqueue_marker_animation() {
 		$this->enqueue_script( $this->app->slug_name . '-marker_animation', 'marker-animation.min.js', [
@@ -84,7 +72,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.2.7
 	 * @return string
 	 */
 	private function get_marker_options_cache_key() {
@@ -92,7 +79,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.3.0
 	 * @return string
 	 */
 	public function get_data_prefix() {
@@ -100,7 +86,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.2.7 Added: cache options
 	 * @return array
 	 */
 	public function get_marker_options() {
@@ -119,7 +104,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.2.7
 	 * @return array
 	 */
 	private function load_marker_options() {
@@ -140,8 +124,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.4.0
-	 *
 	 * @param array $setting
 	 * @param string $key
 	 *
@@ -175,7 +157,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * clear cache when changed option
-	 * @since 1.2.7
 	 *
 	 * @param string $key
 	 */
@@ -188,15 +169,12 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * clear options cache
-	 * @since 1.3.0
-	 * @since 1.4.0 Changed: visibility (private to public)
 	 */
 	public function clear_options_cache() {
 		$this->app->option->delete( $this->get_marker_options_cache_key() );
 	}
 
 	/**
-	 * @since 1.4.0
 	 * @return array
 	 */
 	public function get_animation_functions() {
@@ -210,9 +188,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.3.0 Added: preset color
-	 * @since 1.4.1 Added: detail setting
-	 * @since 1.6.0 #3
 	 * @return array
 	 */
 	public function get_setting_keys() {
@@ -279,9 +254,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.3.0 Added: target filter
-	 * @since 1.6.0 #41
-	 *
 	 * @param string $target
 	 * @param null|string $prefix
 	 *
@@ -300,9 +272,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
-	 * @since 1.4.1 Changed: use detail setting if exists
-	 * @since 1.6.0 #41
-	 *
 	 * @param string $name
 	 * @param string|array $form
 	 * @param null|string $prefix

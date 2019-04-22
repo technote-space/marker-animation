@@ -3,14 +3,6 @@
  * @version 1.7.2
  * @author Technote
  * @since 1.0.0
- * @since 1.2.0
- * @since 1.3.0 Added: preset color
- * @since 1.4.0 Improved: refactoring
- * @since 1.5.0 Changed: ライブラリの変更 (#37)
- * @since 1.6.0 Fixed: デフォルト値の保存が正しく動作していない (#41)
- * @since 1.7.0 wp-content-framework/admin#20, wp-content-framework/common#57
- * @since 1.7.1 #103
- * @since 1.7.2 wp-content-framework/admin#26
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -28,39 +20,50 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
  */
 class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 
+	use \WP_Framework_Admin\Traits\Dashboard;
+
 	/**
-	 * @return int
+	 * @return \Marker_Animation\Classes\Models\Assets|string
 	 */
-	public function get_load_priority() {
-		return 0;
+	private function get_assets() {
+		return \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function get_page_title() {
-		return 'Dashboard';
+	protected function get_setting_list() {
+		return $this->app->array->map( $this->app->array->filter( $this->get_assets()->get_setting_keys(), function ( $data ) {
+			return ! is_array( $data ) || empty( $data['args']['target'] ) || in_array( 'dashboard', $data['args']['target'] );
+		} ), function ( $data ) {
+			if ( ! is_array( $data ) ) {
+				return [
+					'form' => $data,
+				];
+			}
+			if ( isset( $data['args']['options'] ) ) {
+				return [
+					'form'    => $data['form'],
+					'options' => $data['args']['options'],
+				];
+			}
+
+			return $data;
+		} );
 	}
 
 	/**
-	 * post
+	 * after update
 	 */
-	protected function post_action() {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
-		if ( $this->app->input->post( 'update' ) ) {
-			foreach ( $assets->get_setting_details( 'dashboard' ) as $name => $setting ) {
-				$this->update_setting( $name );
-			}
-			$this->app->add_message( 'Settings have been updated.', 'setting' );
-		} else {
-			foreach ( $assets->get_setting_details( 'dashboard' ) as $name => $setting ) {
-				$this->app->option->delete( $this->get_filter_prefix() . $name );
-				$this->delete_hook_cache( $name );
-			}
-			$this->app->add_message( 'Settings have been reset.', 'setting' );
-		}
-		$assets->clear_options_cache();
+	protected function after_update() {
+		$this->get_assets()->clear_options_cache();
+	}
+
+	/**
+	 * after delete
+	 */
+	protected function after_delete() {
+		$this->get_assets()->clear_options_cache();
 	}
 
 	/**
@@ -68,39 +71,38 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 	 */
 	protected function common_action() {
 		$this->setup_color_picker();
-
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
-		$assets->enqueue_marker_animation();
+		$this->get_assets()->enqueue_marker_animation();
 	}
 
 	/**
-	 * @since 1.6.0 Fixed: #41
+	 * @param array $args
+	 *
 	 * @return array
 	 */
-	protected function get_view_args() {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+	protected function filter_view_args( array $args ) {
+		$args['name_prefix']            = $this->get_filter_prefix();
+		$args['target_selector']        = '#' . $this->id( false ) . '-content-wrap .marker-animation-option';
+		$args['marker_target_selector'] = '.marker-setting-preview span';
 
-		return [
-			'settings'    => $assets->get_setting_details( 'dashboard', $this->get_filter_prefix() ),
-			'name_prefix' => $this->get_filter_prefix(),
-			'id_prefix'   => $assets->get_id_prefix(),
-		];
+		return $args;
 	}
 
 	/**
+	 * @param array $detail
 	 * @param string $name
+	 * @param array $option
 	 *
-	 * @return bool
+	 * @return array
 	 */
-	private function update_setting( $name ) {
-		$detail  = $this->app->setting->get_setting( $name, true );
-		$default = null;
-		if ( $this->app->array->get( $detail, 'type' ) === 'bool' ) {
-			$default = 0;
-		}
+	protected function filter_detail(
+		/** @noinspection PhpUnusedParameterInspection */
+		$detail, $name, array $option
+	) {
+		$detail['class']                      = 'marker-animation-option';
+		$detail['attributes']['data-value']   = $this->app->array->get( $detail, 'value' );
+		$detail['attributes']['data-default'] = $this->app->array->get( $detail, 'default' );
+		isset( $option['args']['attributes'] ) and $detail['attributes'] = $option['args']['attributes'];
 
-		return $this->app->option->set_post_value( $this->get_filter_prefix() . $name, $default );
+		return $detail;
 	}
 }

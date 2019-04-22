@@ -3,12 +3,6 @@
  * @version 1.7.1
  * @author Technote
  * @since 1.4.0
- * @since 1.5.0 Changed: ライブラリの変更 (#37)
- * @since 1.6.0 Changed: Gutenbergへの対応 (#3)
- * @since 1.6.6 Changed: フレームワークの更新 (#76)
- * @since 1.6.11 #85
- * @since 1.7.0 wp-content-framework/db#9, wp-content-framework/common#57
- * @since 1.7.1 #102
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -114,11 +108,13 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			unset( $params['columns']['is_valid_button_block_editor'] );
 		}
 
+		$params['target_selector']        = '.marker-animation-option';
+		$params['marker_target_selector'] = '.marker-setting-preview .marker-animation';
+
 		return $params;
 	}
 
 	/**
-	 * @since 1.6.0 #3
 	 * @return array
 	 */
 	private function get_setting_list() {
@@ -146,8 +142,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
-	 * @since 1.6.0 #3
-	 * @since 1.6.6 #76
 	 * @return array
 	 */
 	protected function get_manage_posts_columns() {
@@ -182,14 +176,14 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 							'padding_bottom',
 						] ) ) {
 							if ( $is_default ) {
-								$details[ $setting['label'] ] = $this->translate( 'default' ) . " ({$setting['value']})";
+								$details[ $setting['title'] ] = $this->translate( 'default' ) . " ({$setting['value']})";
 							} else {
 								if ( 'function' === $name ) {
-									$details[ $setting['label'] ] = $this->translate( $data[ $key ] );
+									$details[ $setting['title'] ] = $this->translate( $data[ $key ] );
 								} elseif ( 'bold' === $name ) {
-									$details[ $setting['label'] ] = empty( $data[ $key ] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' );
+									$details[ $setting['title'] ] = empty( $data[ $key ] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' );
 								} else {
-									$details[ $setting['label'] ] = $data[ $key ];
+									$details[ $setting['title'] ] = $data[ $key ];
 								}
 							}
 						}
@@ -212,7 +206,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					$value, $data, $post
 				) {
 					$details = [
-						'repeat'                       => empty( $data['repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+						'repeat'                       => empty( $data['is_repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
@@ -330,8 +324,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
-	 * @since 1.6.0 #3
-	 *
 	 * @param string $target
 	 *
 	 * @return array
