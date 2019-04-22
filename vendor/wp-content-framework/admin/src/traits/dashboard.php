@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Admin Traits Dashboard
  *
- * @version 0.0.28
+ * @version 0.0.29
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -107,7 +107,10 @@ trait Dashboard {
 	 * before update
 	 */
 	protected function before_update() {
-
+		// support v0.0.24 - v0.0.27
+		if ( method_exists( $this, 'pre_update' ) ) {
+			$this->pre_update();
+		}
 	}
 
 	/**
