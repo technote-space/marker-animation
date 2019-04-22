@@ -57,8 +57,11 @@
 ## コントロールの種類
 ### ブロックエディタ
 #### マーカーアニメーションボタン
-デフォルト設定画面で設定した値でマーカーが動作します。
-![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051620.png)
+デフォルト設定画面で設定した値でマーカーが動作します。  
+![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051620.png)  
+
+サイドバーで細かく値を指定できます。  
+![詳細設定](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/sidebar.png)  
 #### マーカー設定で「ブロックエディタにボタン表示させるかどうか」を有効にして登録したボタン
 マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
 ![ボタン2](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051621.png)
@@ -67,7 +70,7 @@
 デフォルト設定画面で設定した値でマーカーが動作します。
 ![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030454.png)
 #### マーカーアニメーション(詳細設定)ボタン
-細かく値を指定することができます。
+細かく値を指定できます。
 ![ボタン2](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030455.png)
 #### マーカー設定で「クラシックエディタにボタン表示させるかどうか」を有効にして登録したボタン
 マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
