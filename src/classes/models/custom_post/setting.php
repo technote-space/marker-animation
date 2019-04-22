@@ -176,14 +176,14 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 							'padding_bottom',
 						] ) ) {
 							if ( $is_default ) {
-								$details[ $setting['label'] ] = $this->translate( 'default' ) . " ({$setting['value']})";
+								$details[ $setting['title'] ] = $this->translate( 'default' ) . " ({$setting['value']})";
 							} else {
 								if ( 'function' === $name ) {
-									$details[ $setting['label'] ] = $this->translate( $data[ $key ] );
+									$details[ $setting['title'] ] = $this->translate( $data[ $key ] );
 								} elseif ( 'bold' === $name ) {
-									$details[ $setting['label'] ] = empty( $data[ $key ] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' );
+									$details[ $setting['title'] ] = empty( $data[ $key ] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' );
 								} else {
-									$details[ $setting['label'] ] = $data[ $key ];
+									$details[ $setting['title'] ] = $data[ $key ];
 								}
 							}
 						}
