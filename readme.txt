@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 5.2
-Stable tag: 1.7.4
+Stable tag: 1.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,9 @@ This plugin needs PHP5.6 or higher.
 10. Block Editor(off animation)
 
 == Upgrade Notice ==
+
+= 1.7.5 =
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/123)
 
 = 1.7.4 =
 * ブロックエディタでサイドバーから細かく設定できるように対応しました。 [詳細](https://github.com/technote-space/marker-animation/issues/51)
@@ -83,6 +86,9 @@ This plugin needs PHP5.6 or higher.
 * クラシックエディタでのボタンの動作が改善されます。
 
 == Changelog ==
+
+= 1.7.5 (2019/4/28) =
+* Improved: [Consider incorrect argument](https://github.com/wp-content-framework/admin/issues/58)
 
 = 1.7.4 (2019/4/23) =
 * Added: [Detail settings for gutenberg](https://github.com/technote-space/marker-animation/issues/51)
