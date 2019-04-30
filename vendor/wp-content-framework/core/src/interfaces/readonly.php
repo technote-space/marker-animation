@@ -11,6 +11,8 @@
 
 namespace WP_Framework_Core\Interfaces;
 
+use OutOfRangeException;
+
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
 }
@@ -25,7 +27,7 @@ interface Readonly {
 	 * @param string $name
 	 * @param mixed $value
 	 *
-	 * @throws \OutOfRangeException
+	 * @throws OutOfRangeException
 	 */
 	public function __set( $name, $value );
 
@@ -33,7 +35,7 @@ interface Readonly {
 	 * @param string $name
 	 *
 	 * @return mixed
-	 * @throws \OutOfRangeException
+	 * @throws OutOfRangeException
 	 */
 	public function __get( $name );
 

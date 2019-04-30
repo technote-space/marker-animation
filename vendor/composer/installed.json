@@ -321,17 +321,17 @@
     },
     {
         "name": "wp-content-framework/core",
-        "version": "v0.0.53",
-        "version_normalized": "0.0.53.0",
+        "version": "v0.0.54",
+        "version_normalized": "0.0.54.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wp-content-framework/core.git",
-            "reference": "4050e157b066490170e1ae7d5275a5371206b065"
+            "reference": "982ae373316863976fa6a0913bd33fc2c1046807"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wp-content-framework/core/zipball/4050e157b066490170e1ae7d5275a5371206b065",
-            "reference": "4050e157b066490170e1ae7d5275a5371206b065",
+            "url": "https://api.github.com/repos/wp-content-framework/core/zipball/982ae373316863976fa6a0913bd33fc2c1046807",
+            "reference": "982ae373316863976fa6a0913bd33fc2c1046807",
             "shasum": ""
         },
         "require": {
@@ -343,7 +343,7 @@
             "phake/phake": "~2.0",
             "phpunit/phpunit": "~5.7"
         },
-        "time": "2019-04-12T05:53:51+00:00",
+        "time": "2019-05-17T07:06:35+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -371,17 +371,17 @@
     },
     {
         "name": "wp-content-framework/custom_post",
-        "version": "v0.0.33",
-        "version_normalized": "0.0.33.0",
+        "version": "v0.0.34",
+        "version_normalized": "0.0.34.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wp-content-framework/custom_post.git",
-            "reference": "cef8510d72c411d78363be190b6b695471ce3203"
+            "reference": "5b18e7fea4600c6d11438fe25013eb4d9be7ea82"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wp-content-framework/custom_post/zipball/cef8510d72c411d78363be190b6b695471ce3203",
-            "reference": "cef8510d72c411d78363be190b6b695471ce3203",
+            "url": "https://api.github.com/repos/wp-content-framework/custom_post/zipball/5b18e7fea4600c6d11438fe25013eb4d9be7ea82",
+            "reference": "5b18e7fea4600c6d11438fe25013eb4d9be7ea82",
             "shasum": ""
         },
         "require": {
@@ -395,7 +395,7 @@
             "phake/phake": "~2.0",
             "phpunit/phpunit": "~5.7"
         },
-        "time": "2019-04-23T09:59:54+00:00",
+        "time": "2019-05-17T07:26:10+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -418,17 +418,17 @@
     },
     {
         "name": "wp-content-framework/db",
-        "version": "v0.0.19",
-        "version_normalized": "0.0.19.0",
+        "version": "v0.0.20",
+        "version_normalized": "0.0.20.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wp-content-framework/db.git",
-            "reference": "63717e3d2874d6cbced42dfa51d21bbe88ad354a"
+            "reference": "d11b21fa565b70163d766ed56bd8c8499c461476"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wp-content-framework/db/zipball/63717e3d2874d6cbced42dfa51d21bbe88ad354a",
-            "reference": "63717e3d2874d6cbced42dfa51d21bbe88ad354a",
+            "url": "https://api.github.com/repos/wp-content-framework/db/zipball/d11b21fa565b70163d766ed56bd8c8499c461476",
+            "reference": "d11b21fa565b70163d766ed56bd8c8499c461476",
             "shasum": ""
         },
         "require": {
@@ -438,7 +438,7 @@
             "phake/phake": "~2.0",
             "phpunit/phpunit": "~5.7"
         },
-        "time": "2019-04-06T07:51:50+00:00",
+        "time": "2019-05-15T07:46:06+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -461,24 +461,24 @@
     },
     {
         "name": "wp-content-framework/presenter",
-        "version": "v0.0.19",
-        "version_normalized": "0.0.19.0",
+        "version": "v0.0.21",
+        "version_normalized": "0.0.21.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wp-content-framework/presenter.git",
-            "reference": "926a4c7743ce0d2c2b66d59f8adc66f9c15bd36f"
+            "reference": "a78e2b2d516120b95c1f403e30985f9132a5942b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wp-content-framework/presenter/zipball/926a4c7743ce0d2c2b66d59f8adc66f9c15bd36f",
-            "reference": "926a4c7743ce0d2c2b66d59f8adc66f9c15bd36f",
+            "url": "https://api.github.com/repos/wp-content-framework/presenter/zipball/a78e2b2d516120b95c1f403e30985f9132a5942b",
+            "reference": "a78e2b2d516120b95c1f403e30985f9132a5942b",
             "shasum": ""
         },
         "require": {
             "matthiasmullie/minify": "^1.3",
             "php": ">=5.6.0"
         },
-        "time": "2019-04-18T07:09:43+00:00",
+        "time": "2019-05-15T16:01:07+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -619,24 +619,24 @@
     },
     {
         "name": "wp-content-framework/view",
-        "version": "v0.0.8",
-        "version_normalized": "0.0.8.0",
+        "version": "v0.0.9",
+        "version_normalized": "0.0.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wp-content-framework/view.git",
-            "reference": "7f735286dd98ed11c9b24afd0798410eff6743fa"
+            "reference": "51c2fb9c87f969dd3be818bf564327755f776024"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wp-content-framework/view/zipball/7f735286dd98ed11c9b24afd0798410eff6743fa",
-            "reference": "7f735286dd98ed11c9b24afd0798410eff6743fa",
+            "url": "https://api.github.com/repos/wp-content-framework/view/zipball/51c2fb9c87f969dd3be818bf564327755f776024",
+            "reference": "51c2fb9c87f969dd3be818bf564327755f776024",
             "shasum": ""
         },
         "require": {
             "php": ">=5.6.0",
             "wp-content-framework/presenter": "~0.0.1"
         },
-        "time": "2019-04-17T07:11:50+00:00",
+        "time": "2019-05-15T16:16:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",

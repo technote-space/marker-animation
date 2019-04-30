@@ -11,6 +11,8 @@
 
 namespace WP_Framework_Core\Interfaces;
 
+use wpdb;
+
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
 }
@@ -22,7 +24,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 interface Utility {
 
 	/**
-	 * @return \wpdb
+	 * @return wpdb
 	 */
 	public function wpdb();
 

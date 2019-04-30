@@ -11,6 +11,8 @@
 
 namespace WP_Framework_Core\Interfaces;
 
+use WP_Framework;
+
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
 }
@@ -22,11 +24,11 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 interface Singleton extends Readonly, Translate, Utility, Package {
 
 	/**
-	 * @param \WP_Framework $app
+	 * @param WP_Framework $app
 	 *
 	 * @return \WP_Framework_Core\Traits\Singleton
 	 */
-	public static function get_instance( \WP_Framework $app );
+	public static function get_instance( WP_Framework $app );
 
 	/**
 	 * @param string $config_name

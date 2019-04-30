@@ -11,6 +11,8 @@
 
 namespace WP_Framework_Core\Traits;
 
+use WP_Framework;
+
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
 }
@@ -18,7 +20,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 /**
  * Trait Nonce
  * @package WP_Framework_Core\Traits
- * @property \WP_Framework $app
+ * @property WP_Framework $app
  * @mixin Hook
  */
 trait Nonce {
