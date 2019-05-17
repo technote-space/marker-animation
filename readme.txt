@@ -19,6 +19,8 @@ This plugin will add "Marker animation" function
 
 This plugin needs PHP5.6 or higher.
 
+The classic editor will not be supported on next major update.
+
 == Installation ==
 
 1. Upload the `marker-animation` folder to the `/wp-content/plugins/` directory.
@@ -40,6 +42,10 @@ This plugin needs PHP5.6 or higher.
 10. Block Editor(off animation)
 
 == Upgrade Notice ==
+
+= 1.7.6 =
+* [[次のメジャーアップデートでクラシックエディタでは使用できなくなります。]](color:red;font-weight:bold)
+* [詳細はこちら](https://github.com/technote-space/marker-animation/issues/119)
 
 = 1.7.5 =
 * [すべての差分](https://github.com/technote-space/marker-animation/pull/123)
