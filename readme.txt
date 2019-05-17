@@ -44,7 +44,7 @@ The classic editor will not be supported on next major update.
 == Upgrade Notice ==
 
 = 1.7.6 =
-* [[次のメジャーアップデートでクラシックエディタでは使用できなくなります。]](color:red;font-weight:bold)
+* [[次のメジャーアップデートでクラシックエディタでは使用できなくなります (2019/6/1 予定)]](color:red;font-weight:bold)
 * [詳細はこちら](https://github.com/technote-space/marker-animation/issues/119)
 
 = 1.7.5 =
