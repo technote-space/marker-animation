@@ -85,8 +85,10 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		/** @var \Marker_Animation\Classes\Models\Assets $assets */
 		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( 'setting' );
+
 		foreach ( $this->get_setting_list() as $key => $name ) {
-			$params['columns'][ $key ]['args'] = $this->app->array->get( $setting_details, $name );
+			$args                              = $this->app->array->get( $setting_details, $name );
+			$params['columns'][ $key ]['args'] = $args;
 			unset( $params['columns'][ $key ]['args']['name'] );
 			unset( $params['columns'][ $key ]['args']['value'] );
 			unset( $params['columns'][ $key ]['args']['selected'] );
@@ -96,14 +98,14 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			if ( empty( $params['columns'][ $key ]['args']['attributes']['data-option_name'] ) ) {
 				$params['columns'][ $key ]['args']['attributes']['data-option_name'] = $name;
 			}
+			$params['columns'][ $key ]['form_type'] = $this->app->array->get( $args, 'form' );
+			$options                                = $this->app->array->get( $args, 'args.options' );
+			$options and $params['columns'][ $key ]['options'] = $options;
 		}
 		$params['columns']['selector']['args']['attributes']['data-default'] = $this->get_default_class( $post->ID );
 		$params['columns']['selector']['default']                            = $params['columns']['selector']['args']['attributes']['data-default'];
 
-		$params['columns']['color']['form_type']    = 'color';
-		$params['columns']['function']['form_type'] = 'select';
-		$params['columns']['function']['options']   = $assets->get_animation_functions();
-		$params['name_prefix']                      = $assets->get_name_prefix();
+		$params['name_prefix'] = $assets->get_name_prefix();
 		if ( ! $this->app->utility->can_use_block_editor() ) {
 			unset( $params['columns']['is_valid_button_block_editor'] );
 		}
@@ -165,7 +167,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 						if ( empty( $setting ) ) {
 							continue;
 						}
-						$is_default = '' === (string) ( $data[ $key ] );
+						$is_default = $this->is_default( $data[ $key ] );
 						if ( in_array( $name, [
 							'color',
 							'thickness',
@@ -173,21 +175,30 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 							'delay',
 							'function',
 							'bold',
+							'repeat',
 							'padding_bottom',
 						] ) ) {
+							$value = $data[ $key ];
 							if ( $is_default ) {
-								$details[ $setting['title'] ] = $this->translate( 'default' ) . " ({$setting['value']})";
+								if ( 'bool' === $setting['type'] ) {
+									$value   = $this->app->array->get( $setting, 'attributes.checked' ) ? 1 : 0;
+									$default = $value ? $this->translate( 'Yes' ) : $this->translate( 'No' );
+								} else {
+									$value   = $setting['value'];
+									$default = $value;
+								}
+								$details[ $setting['title'] ] = $this->translate( 'default' ) . " ({$default})";
 							} else {
 								if ( 'function' === $name ) {
 									$details[ $setting['title'] ] = $this->translate( $data[ $key ] );
-								} elseif ( 'bold' === $name ) {
+								} elseif ( 'bool' === $setting['type'] ) {
 									$details[ $setting['title'] ] = empty( $data[ $key ] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' );
 								} else {
 									$details[ $setting['title'] ] = $data[ $key ];
 								}
 							}
 						}
-						$setting['attributes']['data-value'] = $is_default ? $setting['value'] : $data[ $key ];
+						$setting['attributes']['data-value'] = $is_default ? $value : $data[ $key ];
 						list( $name, $value ) = $assets->parse_setting( $setting, $name );
 						$attributes[] = "data-ma_{$name}=\"{$value}\"";
 					}
@@ -206,7 +217,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					$value, $data, $post
 				) {
 					$details = [
-						'repeat'                       => empty( $data['is_repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
@@ -342,7 +352,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		) {
 			$options = [];
 			foreach ( $this->get_setting_list() as $key => $name ) {
-				$is_default = '' === (string) ( $data[ $key ] );
+				$is_default = $this->is_default( $data[ $key ] );
 				if ( 'is_valid_button' === $name || 'is_valid_style' === $name || 'is_valid_button_block_editor' === $name ) {
 					$options[ $name ] = $data[ $key ];
 					continue;

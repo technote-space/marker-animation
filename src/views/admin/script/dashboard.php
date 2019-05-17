@@ -32,24 +32,27 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 							option_name = _option_name;
 						}
 
-						let option_value = $( this ).val();
-						if ( 'checkbox' === $( this ).attr( 'type' ) ) {
-							const _option_value_true = $( this ).data( 'option_value-true' ), _option_value_false = $( this ).data( 'option_value-false' );
-							if ( $( this ).prop( 'checked' ) ) {
-								if ( undefined === _option_value_true ) {
+						let option_value = $( this ).val().replace( /^\s+|\s+$/g, '' );
+						if ( $( this ).data( 'nullable' ) ) {
+							if ( 'checkbox' === $( this ).attr( 'type' ) ) {
+								if ( $( this ).prop( 'checked' ) ) {
 									option_value = 1;
 								} else {
-									option_value = _option_value_true;
-								}
-							} else {
-								if ( undefined === _option_value_false ) {
 									option_value = 0;
-								} else {
-									option_value = _option_value_false;
 								}
+							} else if ( option_value === '' ) {
+								option_value = $( this ).data( 'default' );
+							}
+
+							const _option_value = $( this ).data( 'option_value-' + option_value );
+							if ( undefined !== _option_value ) {
+								option_value = _option_value;
 							}
 						} else if ( option_value === '' ) {
 							option_value = $( this ).data( 'default' );
+						}
+						if ( /^-?\d+$/.test( option_value ) ) {
+							option_value = option_value - 0;
 						}
 						options[ option_name ] = option_value;
 					}

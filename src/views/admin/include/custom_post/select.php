@@ -8,10 +8,12 @@
  * @link https://technote.space
  */
 
+use WP_Framework_Presenter\Traits\Presenter;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
-/** @var \WP_Framework_Presenter\Traits\Presenter $instance */
+/** @var Presenter $instance */
 /** @var array $data */
 /** @var array $column */
 /** @var string $name */
@@ -19,8 +21,8 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 $attr     = $instance->app->array->get( $column, 'attributes', [] );
 $options  = $instance->app->array->get( $column, 'options', [] );
 $selected = [];
-$value    = $instance->old( $prefix . $name, $data, $name );
-if ( ! empty( $value ) ) {
+$value    = $instance->old( $prefix . $name, $data, $name, '' );
+if ( '' !== $value ) {
 	$selected[] = $value;
 } else {
 	$selected[] = $column['default'];
