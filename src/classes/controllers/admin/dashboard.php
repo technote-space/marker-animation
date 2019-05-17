@@ -43,8 +43,9 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 			}
 			if ( isset( $data['args']['options'] ) ) {
 				return [
-					'form'    => $data['form'],
-					'options' => $data['args']['options'],
+					'form'     => $data['form'],
+					'options'  => $data['args']['options'],
+					'nullable' => $data['nullable'],
 				];
 			}
 
@@ -102,6 +103,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 		$detail['attributes']['data-value']   = $this->app->array->get( $detail, 'value' );
 		$detail['attributes']['data-default'] = $this->app->array->get( $detail, 'default' );
 		isset( $option['args']['attributes'] ) and $detail['attributes'] = $option['args']['attributes'];
+		$detail['attributes']['data-nullable'] = $this->app->array->get( $option, 'nullable', false );
 
 		return $detail;
 	}
