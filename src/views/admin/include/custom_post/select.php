@@ -18,10 +18,9 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 /** @var array $column */
 /** @var string $name */
 /** @var string $prefix */
-$attr     = $instance->app->array->get( $column, 'attributes', [] );
 $options  = $instance->app->array->get( $column, 'options', [] );
 $selected = [];
-$value    = $instance->old( $prefix . $name, $data, $name, '' );
+$value    = false === $data && isset( $options[ null ] ) ? null : $instance->old( $prefix . $name, $data, $name, '' );
 if ( '' !== $value ) {
 	$selected[] = $value;
 } else {
@@ -29,9 +28,8 @@ if ( '' !== $value ) {
 }
 ?>
 <?php $instance->form( 'select', [
-	'name'       => $prefix . $name,
-	'id'         => $prefix . $name,
-	'attributes' => $attr,
-	'options'    => $options,
-	'selected'   => $selected,
+	'name'     => $prefix . $name,
+	'id'       => $prefix . $name,
+	'options'  => $options,
+	'selected' => $selected,
 ], $instance->app->array->get( $column, 'args', [] ) ); ?>

@@ -220,6 +220,10 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 				],
 				'nullable' => true,
 			],
+			'stripe'                       => [
+				'form'     => 'input/checkbox',
+				'nullable' => true,
+			],
 			'repeat'                       => [
 				'form'     => 'input/checkbox',
 				'nullable' => true,
