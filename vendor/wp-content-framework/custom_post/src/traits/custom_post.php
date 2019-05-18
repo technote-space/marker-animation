@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Traits Custom Post
  *
- * @version 0.0.34
+ * @version 0.0.35
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -1155,23 +1155,36 @@ trait Custom_Post {
 	) {
 		$params = [];
 		foreach ( $this->get_data_field_settings() as $k => $v ) {
-			$params[ $k ] = $this->get_post_field( $k, $update || ! $v['required'] ? null : $v['default'], null, $v, true, $update );
-			$params[ $k ] = $this->sanitize_input( $params[ $k ], $v['type'], ! $update && $v['unset_if_null'], $v['nullable'], $update );
+			$is_bool  = 'bool' === $v['type'];
+			$not_sent = null === $this->app->input->post( $this->get_post_field_name( $k ) );
+			if ( $is_bool && $not_sent ) {
+				if ( $v['nullable'] ) {
+					if ( $update ) {
+						continue;
+					}
+					$params[ $k ] = null;
+				} else {
+					$params[ $k ] = 0;
+				}
+			} else {
+				$params[ $k ] = $this->get_post_field( $k, $update || ! $v['required'] ? null : $v['default'], null, $v, true, $update );
+				$params[ $k ] = $this->sanitize_input( $params[ $k ], $v['type'], ! $update && $v['unset_if_null'], $v['nullable'], $update );
 
-			if ( ! isset( $params[ $k ] ) ) {
-				if ( $update ) {
-					if ( '' === $this->app->input->post( $this->get_post_field_name( $k ) ) ) {
+				if ( ! isset( $params[ $k ] ) ) {
+					if ( ! $not_sent ) {
 						if ( $v['unset_if_null'] ) {
 							$params[ $k ] = $v['default'];
 						} else {
 							$params[ $k ] = null;
 						}
 					} else {
-						unset( $params[ $k ] );
-					}
-				} else {
-					if ( $v['unset_if_null'] ) {
-						unset( $params[ $k ] );
+						if ( $update ) {
+							unset( $params[ $k ] );
+						} else {
+							if ( $v['unset_if_null'] ) {
+								unset( $params[ $k ] );
+							}
+						}
 					}
 				}
 			}
@@ -1310,8 +1323,8 @@ trait Custom_Post {
 			$columns[ $k ]['default']       = isset( $v['default'] ) ? $v['default'] : ( 'string' === $type || 'text' === $type ? '' : 0 );
 			$columns[ $k ]['type']          = $type;
 			$columns[ $k ]['nullable']      = ! isset( $v['null'] ) || ! empty( $v['null'] );
-			$columns[ $k ]['required']      = ! isset( $v['default'] ) && ! $columns[ $k ]['nullable'] && 'bool' !== $columns[ $k ]['type'];
-			$columns[ $k ]['unset_if_null'] = ! $columns[ $k ]['nullable'] && ( 'bool' !== $columns[ $k ]['type'] || isset( $v['default'] ) );
+			$columns[ $k ]['required']      = ! isset( $v['default'] ) && ! $columns[ $k ]['nullable'] && 'bool' !== $type;
+			$columns[ $k ]['unset_if_null'] = ! $columns[ $k ]['nullable'] && isset( $v['default'] );
 			if ( $columns[ $k ]['nullable'] && isset( $v['default'] ) and ( $prior_default || ! empty( $v['prior_default'] ) ) ) {
 				$columns[ $k ]['unset_if_null'] = true;
 			}

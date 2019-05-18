@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Traits Helper Data Helper
  *
- * @version 0.0.41
+ * @version 0.0.55
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -95,7 +95,7 @@ trait Data_Helper {
 				}
 				break;
 			default:
-				if ( is_null( $param ) || ( $update && (string) $param === '' ) ) {
+				if ( is_null( $param ) || ( (string) $param === '' ) ) {
 					return null;
 				}
 				break;
