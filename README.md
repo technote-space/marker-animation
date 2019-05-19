@@ -41,6 +41,8 @@
 ## 要件
 - PHP 5.6 以上
 - WordPress 4.6 以上
+  - 次のメジャーアップデートで WordPress 5.2 以上 かつ ブロックエディタのみ になります
+  - (2019/6/1 予定)
 
 ## 導入手順
 1. 管理画面のプラグインから「新規追加」  
@@ -66,6 +68,7 @@
 マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
 ![ボタン2](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051621.png)
 ### クラシックエディタ
+次のメジャーアップデートでクラシックエディタでは使用できなくなります。
 #### マーカーアニメーションボタン
 デフォルト設定画面で設定した値でマーカーが動作します。
 ![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030454.png)
