@@ -99,8 +99,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				$params['columns'][ $key ]['args']['attributes']['data-option_name'] = $name;
 			}
 			$params['columns'][ $key ]['form_type'] = $this->app->array->get( $args, 'form' );
-			$options                                = $this->app->array->get( $args, 'args.options' );
+			$options                                = $this->app->array->get( $args, 'options' );
 			$options and $params['columns'][ $key ]['options'] = $options;
+			unset( $params['columns'][ $key ]['args']['options'] );
 		}
 		$params['columns']['selector']['args']['attributes']['data-default'] = $this->get_default_class( $post->ID );
 		$params['columns']['selector']['default']                            = $params['columns']['selector']['args']['attributes']['data-default'];
@@ -128,6 +129,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			'delay'                        => 'delay',
 			'function'                     => 'function',
 			'is_font_bold'                 => 'bold',
+			'is_stripe'                    => 'stripe',
 			'is_repeat'                    => 'repeat',
 			'padding_bottom'               => 'padding_bottom',
 			'is_valid_button'              => 'is_valid_button',
@@ -175,6 +177,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 							'delay',
 							'function',
 							'bold',
+							'stripe',
 							'repeat',
 							'padding_bottom',
 						] ) ) {
@@ -362,7 +365,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					continue;
 				}
 
-				$setting['attributes']['data-value'] = $is_default ? $setting['value'] : $data[ $key ];
+				$setting['attributes']['data-value'] = $is_default ? $this->app->array->get( $setting, 'detail.value' ) : $data[ $key ];
 				list( $name, $value ) = $assets->parse_setting( $setting, $name );
 				$options[ $name ] = $value;
 			}

@@ -56,6 +56,11 @@ return [
 					'type'    => 'bool',
 					'default' => true,
 				],
+				'stripe'                        => [
+					'label'   => 'stripe',
+					'type'    => 'bool',
+					'default' => false,
+				],
 				'repeat'                        => [
 					'label'   => 'repeat',
 					'type'    => 'bool',

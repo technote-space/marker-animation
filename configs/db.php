@@ -71,6 +71,12 @@ return [
 				'default' => '',
 				'comment' => 'padding bottom',
 			],
+			'is_stripe'                    => [
+				'type'     => 'BIT(1)',
+				'unsigned' => true,
+				'default'  => null,
+				'comment'  => 'stripe',
+			],
 			'priority'                     => [
 				'type'     => 'INT(11)',
 				'unsigned' => true,
