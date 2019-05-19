@@ -365,7 +365,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					continue;
 				}
 
-				$setting['attributes']['data-value'] = $is_default ? $setting['value'] : $data[ $key ];
+				$setting['attributes']['data-value'] = $is_default ? $this->app->array->get( $setting, 'detail.value' ) : $data[ $key ];
 				list( $name, $value ) = $assets->parse_setting( $setting, $name );
 				$options[ $name ] = $value;
 			}
