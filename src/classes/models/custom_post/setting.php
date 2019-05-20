@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.4
+ * @version 1.7.6
  * @author Technote
  * @since 1.4.0
  * @copyright Technote All Rights Reserved
@@ -9,6 +9,12 @@
  */
 
 namespace Marker_Animation\Classes\Models\Custom_Post;
+
+use Marker_Animation\Classes\Models\Assets;
+use Marker_Animation\Traits\Models\Custom_Post;
+use WP_Framework_Db\Classes\Models\Query\Builder;
+use WP_Framework_Upgrade\Traits\Upgrade;
+use WP_Post;
 
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
@@ -20,7 +26,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
  */
 class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Framework_Upgrade\Interfaces\Upgrade {
 
-	use \Marker_Animation\Traits\Models\Custom_Post, \WP_Framework_Upgrade\Traits\Upgrade;
+	use Custom_Post, Upgrade;
 
 	/**
 	 * insert presets
@@ -53,8 +59,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			return;
 		}
 
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets = Assets::get_instance( $this->app );
 		$assets->enqueue_marker_animation();
 		$this->add_script_view( 'admin/script/custom_post/setting_list' );
 	}
@@ -66,15 +72,15 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @return string
 	 */
 	public function get_default_class( $post_id, $is_selector = true ) {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets = Assets::get_instance( $this->app );
 
 		return ( $is_selector ? '.' : '' ) . $assets->get_default_marker_animation_class() . '-' . $post_id;
 	}
 
 	/**
 	 * @param array $params
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 *
 	 * @return array
 	 */
@@ -82,11 +88,13 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		/** @noinspection PhpUnusedParameterInspection */
 		$params, $post
 	) {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets          = Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( 'setting' );
+
 		foreach ( $this->get_setting_list() as $key => $name ) {
-			$params['columns'][ $key ]['args'] = $this->app->array->get( $setting_details, $name );
+			$args                              = $this->app->array->get( $setting_details, $name );
+			$params['columns'][ $key ]['args'] = $args;
 			unset( $params['columns'][ $key ]['args']['name'] );
 			unset( $params['columns'][ $key ]['args']['value'] );
 			unset( $params['columns'][ $key ]['args']['selected'] );
@@ -96,14 +104,15 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			if ( empty( $params['columns'][ $key ]['args']['attributes']['data-option_name'] ) ) {
 				$params['columns'][ $key ]['args']['attributes']['data-option_name'] = $name;
 			}
+			$params['columns'][ $key ]['form_type'] = $this->app->array->get( $args, 'form' );
+			$options                                = $this->app->array->get( $args, 'options' );
+			$options and $params['columns'][ $key ]['options'] = $options;
+			unset( $params['columns'][ $key ]['args']['options'] );
 		}
 		$params['columns']['selector']['args']['attributes']['data-default'] = $this->get_default_class( $post->ID );
 		$params['columns']['selector']['default']                            = $params['columns']['selector']['args']['attributes']['data-default'];
 
-		$params['columns']['color']['form_type']    = 'color';
-		$params['columns']['function']['form_type'] = 'select';
-		$params['columns']['function']['options']   = $assets->get_animation_functions();
-		$params['name_prefix']                      = $assets->get_name_prefix();
+		$params['name_prefix'] = $assets->get_name_prefix();
 		if ( ! $this->app->utility->can_use_block_editor() ) {
 			unset( $params['columns']['is_valid_button_block_editor'] );
 		}
@@ -126,6 +135,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			'delay'                        => 'delay',
 			'function'                     => 'function',
 			'is_font_bold'                 => 'bold',
+			'is_stripe'                    => 'stripe',
 			'is_repeat'                    => 'repeat',
 			'padding_bottom'               => 'padding_bottom',
 			'is_valid_button'              => 'is_valid_button',
@@ -155,8 +165,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					/** @noinspection PhpUnusedParameterInspection */
 					$value, $data, $post
 				) {
-					/** @var \Marker_Animation\Classes\Models\Assets $assets */
-					$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+					/** @var Assets $assets */
+					$assets          = Assets::get_instance( $this->app );
 					$setting_details = $assets->get_setting_details( 'front' );
 					$attributes      = [];
 					$details         = [];
@@ -165,7 +175,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 						if ( empty( $setting ) ) {
 							continue;
 						}
-						$is_default = '' === (string) ( $data[ $key ] );
+						$is_default = $this->is_default( $data[ $key ] );
 						if ( in_array( $name, [
 							'color',
 							'thickness',
@@ -173,21 +183,31 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 							'delay',
 							'function',
 							'bold',
+							'stripe',
+							'repeat',
 							'padding_bottom',
 						] ) ) {
+							$value = $data[ $key ];
 							if ( $is_default ) {
-								$details[ $setting['title'] ] = $this->translate( 'default' ) . " ({$setting['value']})";
+								if ( 'bool' === $setting['type'] ) {
+									$value   = $this->app->array->get( $setting, 'attributes.checked' ) ? 1 : 0;
+									$default = $value ? $this->translate( 'Yes' ) : $this->translate( 'No' );
+								} else {
+									$value   = $setting['value'];
+									$default = $value;
+								}
+								$details[ $setting['title'] ] = $this->translate( 'default' ) . " ({$default})";
 							} else {
 								if ( 'function' === $name ) {
 									$details[ $setting['title'] ] = $this->translate( $data[ $key ] );
-								} elseif ( 'bold' === $name ) {
+								} elseif ( 'bool' === $setting['type'] ) {
 									$details[ $setting['title'] ] = empty( $data[ $key ] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' );
 								} else {
 									$details[ $setting['title'] ] = $data[ $key ];
 								}
 							}
 						}
-						$setting['attributes']['data-value'] = $is_default ? $setting['value'] : $data[ $key ];
+						$setting['attributes']['data-value'] = $is_default ? $value : $data[ $key ];
 						list( $name, $value ) = $assets->parse_setting( $setting, $name );
 						$attributes[] = "data-ma_{$name}=\"{$value}\"";
 					}
@@ -206,7 +226,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					$value, $data, $post
 				) {
 					$details = [
-						'repeat'                       => empty( $data['is_repeat'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
@@ -233,7 +252,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 * @param array $params
 	 */
 	protected function before_output_edit_form(
@@ -242,15 +261,15 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	) {
 		$this->setup_color_picker();
 
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets = Assets::get_instance( $this->app );
 		$assets->enqueue_marker_animation();
 	}
 
 	/**
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 */
-	public function output_after_editor( \WP_Post $post ) {
+	public function output_after_editor( WP_Post $post ) {
 		$this->get_view( 'admin/custom_post/setting/test', [], true );
 	}
 
@@ -269,20 +288,20 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * @param int $post_id
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 * @param array $old
 	 * @param array $new
 	 */
-	public function data_updated( $post_id, \WP_Post $post, array $old, array $new ) {
+	public function data_updated( $post_id, WP_Post $post, array $old, array $new ) {
 		$this->clear_options_cache();
 	}
 
 	/**
 	 * @param int $post_id
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 * @param array $data
 	 */
-	public function data_inserted( $post_id, \WP_Post $post, array $data ) {
+	public function data_inserted( $post_id, WP_Post $post, array $data ) {
 		$this->clear_options_cache();
 	}
 
@@ -297,8 +316,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * clear options cache
 	 */
 	private function clear_options_cache() {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets = Assets::get_instance( $this->app );
 		$assets->clear_options_cache();
 	}
 
@@ -329,20 +348,20 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @return array
 	 */
 	public function get_settings( $target ) {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets          = Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( $target );
 		$settings        = [];
 		foreach (
 			$this->get_list_data( function ( $query ) {
-				/** @var \WP_Framework_Db\Classes\Models\Query\Builder $query */
+				/** @var Builder $query */
 				$query->where( 'is_valid', 1 )
 				      ->order_by( 'priority' );
 			} )['data'] as $data
 		) {
 			$options = [];
 			foreach ( $this->get_setting_list() as $key => $name ) {
-				$is_default = '' === (string) ( $data[ $key ] );
+				$is_default = $this->is_default( $data[ $key ] );
 				if ( 'is_valid_button' === $name || 'is_valid_style' === $name || 'is_valid_button_block_editor' === $name ) {
 					$options[ $name ] = $data[ $key ];
 					continue;
@@ -352,11 +371,11 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					continue;
 				}
 
-				$setting['attributes']['data-value'] = $is_default ? $setting['value'] : $data[ $key ];
+				$setting['attributes']['data-value'] = $is_default ? $this->app->array->get( $setting, 'detail.value' ) : $data[ $key ];
 				list( $name, $value ) = $assets->parse_setting( $setting, $name );
 				$options[ $name ] = $value;
 			}
-			/** @var \WP_Post $post */
+			/** @var WP_Post $post */
 			$post                = $data['post'];
 			$options['selector'] = $this->get_default_class( $post->ID );
 			$options['class']    = $this->get_default_class( $post->ID, false );

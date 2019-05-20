@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.0
+ * @version 1.7.6
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -15,7 +15,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 return [
 
 	// db version
-	'db_version'                     => '0.0.8',
+	'db_version'                     => '0.1.0',
 
 	// menu image url
 	'menu_image'                     => 'icon-24x24.png',

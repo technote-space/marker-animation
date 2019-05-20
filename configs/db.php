@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.6.0
+ * @version 1.7.6
  * @author Technote
  * @since 1.4.0
  * @copyright Technote All Rights Reserved
@@ -23,7 +23,7 @@ return [
 				'comment'  => 'post id',
 			],
 			'is_valid'                     => [
-				'type'     => 'TINYINT(1)',
+				'type'     => 'BIT(1)',
 				'unsigned' => true,
 				'null'     => false,
 				'default'  => 1,
@@ -31,47 +31,51 @@ return [
 			],
 			'color'                        => [
 				'type'    => 'VARCHAR(32)',
-				'default' => '#ffff66',
+				'default' => '',
 				'comment' => 'color',
 			],
 			'thickness'                    => [
 				'type'    => 'VARCHAR(32)',
-				'default' => '.6em',
+				'default' => '',
 				'comment' => 'thickness',
 			],
 			'duration'                     => [
 				'type'    => 'VARCHAR(32)',
-				'default' => '2s',
+				'default' => '',
 				'comment' => 'duration',
 			],
 			'delay'                        => [
 				'type'    => 'VARCHAR(32)',
-				'default' => '.1s',
+				'default' => '',
 				'comment' => 'delay',
 			],
 			'function'                     => [
 				'type'    => 'VARCHAR(32)',
-				'default' => 'ease',
+				'default' => '',
 				'comment' => 'function',
 			],
 			'is_font_bold'                 => [
-				'type'     => 'TINYINT(1)',
+				'type'     => 'BIT(1)',
 				'unsigned' => true,
-				'null'     => false,
-				'default'  => 1,
+				'default'  => null,
 				'comment'  => 'font bold',
 			],
 			'is_repeat'                    => [
-				'type'     => 'TINYINT(1)',
+				'type'     => 'BIT(1)',
 				'unsigned' => true,
-				'null'     => false,
-				'default'  => 0,
+				'default'  => null,
 				'comment'  => 'repeat',
 			],
 			'padding_bottom'               => [
 				'type'    => 'VARCHAR(32)',
-				'default' => '.6em',
+				'default' => '',
 				'comment' => 'padding bottom',
+			],
+			'is_stripe'                    => [
+				'type'     => 'BIT(1)',
+				'unsigned' => true,
+				'default'  => null,
+				'comment'  => 'stripe',
 			],
 			'priority'                     => [
 				'type'     => 'INT(11)',
@@ -81,21 +85,21 @@ return [
 				'comment'  => 'priority',
 			],
 			'is_valid_button'              => [
-				'type'     => 'TINYINT(1)',
+				'type'     => 'BIT(1)',
 				'unsigned' => true,
 				'null'     => false,
 				'default'  => 1,
 				'comment'  => 'is valid button',
 			],
 			'is_valid_style'               => [
-				'type'     => 'TINYINT(1)',
+				'type'     => 'BIT(1)',
 				'unsigned' => true,
 				'null'     => false,
 				'default'  => 0,
 				'comment'  => 'is valid style',
 			],
 			'is_valid_button_block_editor' => [
-				'type'     => 'TINYINT(1)',
+				'type'     => 'BIT(1)',
 				'unsigned' => true,
 				'null'     => false,
 				'default'  => 1,

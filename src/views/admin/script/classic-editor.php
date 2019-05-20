@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.5.0
+ * @version 1.7.6
  * @author Technote
  * @since 1.4.0
  * @copyright Technote All Rights Reserved
@@ -8,10 +8,12 @@
  * @link https://technote.space/
  */
 
+use WP_Framework_Presenter\Interfaces\Presenter;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
-/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
+/** @var Presenter $instance */
 ?>
 
 <script>

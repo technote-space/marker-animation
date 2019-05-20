@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.0
+ * @version 1.7.6
  * @author Technote
  * @since 1.4.0
  * @copyright Technote All Rights Reserved
@@ -8,28 +8,28 @@
  * @link https://technote.space
  */
 
+use WP_Framework_Presenter\Traits\Presenter;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
-/** @var \WP_Framework_Presenter\Traits\Presenter $instance */
+/** @var Presenter $instance */
 /** @var array $data */
 /** @var array $column */
 /** @var string $name */
 /** @var string $prefix */
-$attr     = $instance->app->array->get( $column, 'attributes', [] );
 $options  = $instance->app->array->get( $column, 'options', [] );
 $selected = [];
-$value    = $instance->old( $prefix . $name, $data, $name );
-if ( ! empty( $value ) ) {
+$value    = false === $data && isset( $options[ null ] ) ? null : $instance->old( $prefix . $name, $data, $name, '' );
+if ( '' !== $value ) {
 	$selected[] = $value;
 } else {
 	$selected[] = $column['default'];
 }
 ?>
 <?php $instance->form( 'select', [
-	'name'       => $prefix . $name,
-	'id'         => $prefix . $name,
-	'attributes' => $attr,
-	'options'    => $options,
-	'selected'   => $selected,
+	'name'     => $prefix . $name,
+	'id'       => $prefix . $name,
+	'options'  => $options,
+	'selected' => $selected,
 ], $instance->app->array->get( $column, 'args', [] ) ); ?>

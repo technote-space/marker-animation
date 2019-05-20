@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.6.7
+ * @version 1.7.6
  * @author Technote
  * @since 1.4.0
  * @copyright Technote All Rights Reserved
@@ -9,6 +9,9 @@
  */
 
 namespace Marker_Animation\Traits\Models;
+
+use WP_Framework_Core\Traits\Helper\Data_Helper;
+use WP_Framework_Core\Traits\Helper\Validate;
 
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
@@ -20,7 +23,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
  */
 trait Custom_Post {
 
-	use \WP_Framework_Custom_Post\Traits\Custom_Post, \WP_Framework_Core\Traits\Helper\Data_Helper, \WP_Framework_Core\Traits\Helper\Validate;
+	use \WP_Framework_Custom_Post\Traits\Custom_Post, Data_Helper, Validate;
 
 	/**
 	 * @return string

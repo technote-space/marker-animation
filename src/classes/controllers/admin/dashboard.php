@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.4
+ * @version 1.7.6
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -10,6 +10,9 @@
 
 namespace Marker_Animation\Classes\Controllers\Admin;
 
+use Marker_Animation\Classes\Models\Assets;
+use WP_Framework_Admin\Classes\Controllers\Admin\Base;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
@@ -18,15 +21,15 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
  * Class Dashboard
  * @package Marker_Animation\Classes\Controllers\Admin
  */
-class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
+class Dashboard extends Base {
 
 	use \WP_Framework_Admin\Traits\Dashboard;
 
 	/**
-	 * @return \Marker_Animation\Classes\Models\Assets|string
+	 * @return Assets|string
 	 */
 	private function get_assets() {
-		return \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		return Assets::get_instance( $this->app );
 	}
 
 	/**
@@ -43,8 +46,9 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 			}
 			if ( isset( $data['args']['options'] ) ) {
 				return [
-					'form'    => $data['form'],
-					'options' => $data['args']['options'],
+					'form'     => $data['form'],
+					'options'  => $data['args']['options'],
+					'nullable' => $data['nullable'],
 				];
 			}
 
@@ -102,6 +106,7 @@ class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
 		$detail['attributes']['data-value']   = $this->app->array->get( $detail, 'value' );
 		$detail['attributes']['data-default'] = $this->app->array->get( $detail, 'default' );
 		isset( $option['args']['attributes'] ) and $detail['attributes'] = $option['args']['attributes'];
+		$detail['attributes']['data-nullable'] = $this->app->array->get( $option, 'nullable', false );
 
 		return $detail;
 	}

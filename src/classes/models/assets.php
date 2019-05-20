@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.0
+ * @version 1.7.6
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -9,6 +9,11 @@
  */
 
 namespace Marker_Animation\Classes\Models;
+
+use WP_Framework_Common\Traits\Package;
+use WP_Framework_Core\Traits\Hook;
+use WP_Framework_Core\Traits\Singleton;
+use WP_Framework_Presenter\Traits\Presenter;
 
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
@@ -20,7 +25,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
  */
 class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\Interfaces\Hook, \WP_Framework_Presenter\Interfaces\Presenter {
 
-	use \WP_Framework_Core\Traits\Singleton, \WP_Framework_Core\Traits\Hook, \WP_Framework_Presenter\Traits\Presenter, \WP_Framework_Common\Traits\Package;
+	use Singleton, Hook, Presenter, Package;
 
 	/**
 	 * setup assets
@@ -138,14 +143,14 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		}
 		if ( 'input/checkbox' === $setting['form'] ) {
 			if ( ! empty( $value ) ) {
-				if ( array_key_exists( 'data-option_value-true', $setting['attributes'] ) ) {
-					$value = $setting['attributes']['data-option_value-true'];
+				if ( array_key_exists( 'data-option_value-1', $setting['attributes'] ) ) {
+					$value = $setting['attributes']['data-option_value-1'];
 				} else {
 					$value = true;
 				}
 			} else {
-				if ( array_key_exists( 'data-option_value-false', $setting['attributes'] ) ) {
-					$value = $setting['attributes']['data-option_value-false'];
+				if ( array_key_exists( 'data-option_value-0', $setting['attributes'] ) ) {
+					$value = $setting['attributes']['data-option_value-0'];
 				} else {
 					$value = false;
 				}
@@ -203,22 +208,31 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'duration'                     => 'input/text',
 			'delay'                        => 'input/text',
 			'function'                     => [
-				'form' => 'select',
-				'args' => [
+				'form'     => 'select',
+				'args'     => [
 					'options' => $this->get_animation_functions(),
 				],
+				'nullable' => true,
 			],
 			'bold'                         => [
-				'form' => 'input/checkbox',
-				'args' => [
+				'form'     => 'input/checkbox',
+				'args'     => [
 					'attributes' => [
-						'data-option_name'        => 'font_weight',
-						'data-option_value-true'  => 'bold',
-						'data-option_value-false' => null,
+						'data-option_name'    => 'font_weight',
+						'data-option_value-1' => 'bold',
+						'data-option_value-0' => null,
 					],
 				],
+				'nullable' => true,
 			],
-			'repeat'                       => 'input/checkbox',
+			'stripe'                       => [
+				'form'     => 'input/checkbox',
+				'nullable' => true,
+			],
+			'repeat'                       => [
+				'form'     => 'input/checkbox',
+				'nullable' => true,
+			],
 			'padding_bottom'               => 'input/text',
 			'is_valid_button'              => [
 				'form'   => 'input/checkbox',
@@ -265,7 +279,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			if ( is_array( $form ) && ! empty( $form['args']['target'] ) && ! in_array( $target, $form['args']['target'] ) ) {
 				continue;
 			}
-			$args[ $key ] = $this->get_setting( $key, $form, $prefix );
+			$args[ $key ] = $this->get_setting( $key, $form, $prefix, $target );
 		}
 
 		return $args;
@@ -275,13 +289,14 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 * @param string $name
 	 * @param string|array $form
 	 * @param null|string $prefix
+	 * @param string $target
 	 *
 	 * @return array
 	 */
-	private function get_setting( $name, $form, $prefix = null ) {
-		$detail       = $this->app->array->get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
-		$value        = $this->app->array->get( $detail, 'value' );
-		$ret          = [
+	private function get_setting( $name, $form, $prefix = null, $target = '' ) {
+		$detail                             = $this->app->array->get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
+		$value                              = $this->app->array->get( $detail, 'value' );
+		$ret                                = [
 			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',
 			'name'       => ( isset( $prefix ) ? $prefix : $this->get_name_prefix() ) . $name,
@@ -293,17 +308,31 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			],
 			'detail'     => $detail,
 		];
-		$ret['title'] = $ret['label'];
+		$ret['title']                       = $ret['label'];
+		$ret['type']                        = $this->app->array->get( $detail, 'type', 'string' );
+		$ret['nullable']                    = is_array( $form ) && $this->app->array->get( $form, 'nullable' );
+		$ret['attributes']['data-nullable'] = $ret['nullable'];
+
 		if ( is_array( $form ) ) {
 			$ret['form'] = $form['form'];
 			$ret         = array_replace_recursive( $ret, isset( $form['args'] ) && is_array( $form['args'] ) ? $form['args'] : [] );
+			if ( 'setting' === $target && $ret['nullable'] ) {
+				$ret['form'] = 'select';
+				empty( $ret['options'] ) and $ret['options'] = [];
+				$ret['options'] = array_merge( [ null => 'default' ], $ret['options'] );
+			}
 		} else {
 			$ret['form'] = $form;
 		}
 		if ( $this->app->array->get( $detail, 'type' ) === 'bool' ) {
-			$ret['value'] = 1;
-			! empty( $value ) and $ret['attributes']['checked'] = 'checked';
-			$ret['label'] = $this->translate( 'Valid' );
+			if ( $ret['form'] === 'select' ) {
+				$ret['options']['1'] = 'Valid';
+				$ret['options']['0'] = 'Invalid';
+			} else {
+				$ret['value'] = 1;
+				! empty( $value ) and $ret['attributes']['checked'] = 'checked';
+				$ret['label'] = $this->translate( 'Valid' );
+			}
 		}
 		if ( $ret['form'] === 'select' ) {
 			$ret['selected'] = $value;

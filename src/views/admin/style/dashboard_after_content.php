@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.0
+ * @version 1.7.6
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -11,7 +11,6 @@
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
-/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 ?>
 
 <style>

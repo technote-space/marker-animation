@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Upgrade Classes Models Upgrade
  *
- * @version 0.0.13
+ * @version 0.0.14
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -10,6 +10,11 @@
  */
 
 namespace WP_Framework_Upgrade\Classes\Models;
+
+use Exception;
+use WP_Framework_Core\Interfaces\Singleton;
+use WP_Framework_Core\Traits\Loader;
+use WP_Framework_Upgrade\Traits\Package;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -21,7 +26,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  */
 class Upgrade implements \WP_Framework_Core\Interfaces\Loader {
 
-	use \WP_Framework_Core\Traits\Loader, \WP_Framework_Upgrade\Traits\Package;
+	use Loader, Package;
 
 	/**
 	 * upgrade
@@ -48,7 +53,7 @@ class Upgrade implements \WP_Framework_Core\Interfaces\Loader {
 				$upgrades = [];
 				$count    = 0;
 				foreach ( $this->get_class_list() as $class ) {
-					/** @var \WP_Framework_Upgrade\Interfaces\Upgrade|\WP_Framework_Core\Interfaces\Singleton $class */
+					/** @var \WP_Framework_Upgrade\Interfaces\Upgrade|Singleton $class */
 					foreach ( $class->get_upgrade_methods() as $items ) {
 						if ( ! is_array( $items ) ) {
 							continue;
@@ -86,7 +91,7 @@ class Upgrade implements \WP_Framework_Core\Interfaces\Loader {
 						call_user_func( $item );
 					}
 				}
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				$this->app->log( $e );
 			}
 			$this->do_framework_action( 'finished_upgrade' );
