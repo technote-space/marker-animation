@@ -17,13 +17,13 @@
 
 ### デフォルト設定画面
 
-![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030129.png)
+![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201411.png)
 
 ### マーカー設定画面（設定管理）
 
-![一覧画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051635.png)
+![一覧画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201412.png)
 
-![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051631.png)
+![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201414.png)
 
 ### 投稿編集画面
 #### ブロックエディタ
@@ -32,7 +32,7 @@
 
 ![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-10.gif)
 
-#### クラシックエディタ
+#### クラシックエディタ (次のメジャーアップデートで廃止)
 
 ![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-3.gif)
 
@@ -63,7 +63,7 @@
 ![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051620.png)  
 
 サイドバーで細かく値を指定できます。  
-![詳細設定](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/sidebar.png)  
+![詳細設定](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201416.png)  
 #### マーカー設定で「ブロックエディタにボタン表示させるかどうか」を有効にして登録したボタン
 マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
 ![ボタン2](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051621.png)
@@ -112,6 +112,13 @@
 
 ### 太文字にするかどうか
 マーカーの対象を太文字にするかどうかを設定します。
+
+### ストライプデザインかどうか
+ストライプデザインにするかどうかを設定します。  
+
+![ストライプデザイン](https://raw.githubusercontent.com/technote-space/jquery.marker-animation/master/stripe.png)  
+
+これが設定されている場合、アニメーションなしの動作になります。
 
 ### 繰り返すかどうか
 画面から外れた後に再び表示された場合に再度アニメーションを行うかどうかを設定します。

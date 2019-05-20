@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 5.2
-Stable tag: 1.7.5
+Stable tag: 1.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ This plugin will add "Marker animation" function
 
 This plugin needs PHP5.6 or higher.
 
-The classic editor will not be supported on next major update.
+The classic editor will not be supported on next major update (scheduled for 2019/6/1).
 
 == Installation ==
 
@@ -44,8 +44,10 @@ The classic editor will not be supported on next major update.
 == Upgrade Notice ==
 
 = 1.7.6 =
-* [[次のメジャーアップデートでクラシックエディタでは使用できなくなります (2019/6/1 予定)]](color:red;font-weight:bold)
-* [詳細はこちら](https://github.com/technote-space/marker-animation/issues/119)
+* ストライプデザインのマーカーを追加しました。[詳細](https://github.com/technote-space/marker-animation/issues/115)
+* 設定において太字にするかどうかなどの項目もデフォルト設定を選択できるようにしました。[詳細](https://github.com/technote-space/marker-animation/issues/122)
+* [[次のメジャーアップデート(2019/6/1 予定)からは クラシックエディタ 及び クラシックブロック はサポートされません。]](color:red;font-weight:bold) [詳細](https://github.com/technote-space/marker-animation/issues/119)
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/128)
 
 = 1.7.5 =
 * [すべての差分](https://github.com/technote-space/marker-animation/pull/123)
@@ -92,6 +94,10 @@ The classic editor will not be supported on next major update.
 * クラシックエディタでのボタンの動作が改善されます。
 
 == Changelog ==
+
+= 1.7.6 (2019/5/20) =
+* Added: [Stripe design](https://github.com/wp-content-framework/admin/issues/115)
+* Improved: [Default setting for bool settings](https://github.com/wp-content-framework/admin/issues/122)
 
 = 1.7.5 (2019/4/28) =
 * Improved: [Consider incorrect argument](https://github.com/wp-content-framework/admin/issues/58)
