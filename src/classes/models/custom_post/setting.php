@@ -10,6 +10,12 @@
 
 namespace Marker_Animation\Classes\Models\Custom_Post;
 
+use Marker_Animation\Classes\Models\Assets;
+use Marker_Animation\Traits\Models\Custom_Post;
+use WP_Framework_Db\Classes\Models\Query\Builder;
+use WP_Framework_Upgrade\Traits\Upgrade;
+use WP_Post;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
@@ -20,7 +26,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
  */
 class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Framework_Upgrade\Interfaces\Upgrade {
 
-	use \Marker_Animation\Traits\Models\Custom_Post, \WP_Framework_Upgrade\Traits\Upgrade;
+	use Custom_Post, Upgrade;
 
 	/**
 	 * insert presets
@@ -53,8 +59,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			return;
 		}
 
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets = Assets::get_instance( $this->app );
 		$assets->enqueue_marker_animation();
 		$this->add_script_view( 'admin/script/custom_post/setting_list' );
 	}
@@ -66,15 +72,15 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @return string
 	 */
 	public function get_default_class( $post_id, $is_selector = true ) {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets = Assets::get_instance( $this->app );
 
 		return ( $is_selector ? '.' : '' ) . $assets->get_default_marker_animation_class() . '-' . $post_id;
 	}
 
 	/**
 	 * @param array $params
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 *
 	 * @return array
 	 */
@@ -82,8 +88,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		/** @noinspection PhpUnusedParameterInspection */
 		$params, $post
 	) {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets          = Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( 'setting' );
 
 		foreach ( $this->get_setting_list() as $key => $name ) {
@@ -159,8 +165,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					/** @noinspection PhpUnusedParameterInspection */
 					$value, $data, $post
 				) {
-					/** @var \Marker_Animation\Classes\Models\Assets $assets */
-					$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+					/** @var Assets $assets */
+					$assets          = Assets::get_instance( $this->app );
 					$setting_details = $assets->get_setting_details( 'front' );
 					$attributes      = [];
 					$details         = [];
@@ -246,7 +252,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 * @param array $params
 	 */
 	protected function before_output_edit_form(
@@ -255,15 +261,15 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	) {
 		$this->setup_color_picker();
 
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets = Assets::get_instance( $this->app );
 		$assets->enqueue_marker_animation();
 	}
 
 	/**
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 */
-	public function output_after_editor( \WP_Post $post ) {
+	public function output_after_editor( WP_Post $post ) {
 		$this->get_view( 'admin/custom_post/setting/test', [], true );
 	}
 
@@ -282,20 +288,20 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * @param int $post_id
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 * @param array $old
 	 * @param array $new
 	 */
-	public function data_updated( $post_id, \WP_Post $post, array $old, array $new ) {
+	public function data_updated( $post_id, WP_Post $post, array $old, array $new ) {
 		$this->clear_options_cache();
 	}
 
 	/**
 	 * @param int $post_id
-	 * @param \WP_Post $post
+	 * @param WP_Post $post
 	 * @param array $data
 	 */
-	public function data_inserted( $post_id, \WP_Post $post, array $data ) {
+	public function data_inserted( $post_id, WP_Post $post, array $data ) {
 		$this->clear_options_cache();
 	}
 
@@ -310,8 +316,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * clear options cache
 	 */
 	private function clear_options_cache() {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets = Assets::get_instance( $this->app );
 		$assets->clear_options_cache();
 	}
 
@@ -342,13 +348,13 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @return array
 	 */
 	public function get_settings( $target ) {
-		/** @var \Marker_Animation\Classes\Models\Assets $assets */
-		$assets          = \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		/** @var Assets $assets */
+		$assets          = Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( $target );
 		$settings        = [];
 		foreach (
 			$this->get_list_data( function ( $query ) {
-				/** @var \WP_Framework_Db\Classes\Models\Query\Builder $query */
+				/** @var Builder $query */
 				$query->where( 'is_valid', 1 )
 				      ->order_by( 'priority' );
 			} )['data'] as $data
@@ -369,7 +375,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				list( $name, $value ) = $assets->parse_setting( $setting, $name );
 				$options[ $name ] = $value;
 			}
-			/** @var \WP_Post $post */
+			/** @var WP_Post $post */
 			$post                = $data['post'];
 			$options['selector'] = $this->get_default_class( $post->ID );
 			$options['class']    = $this->get_default_class( $post->ID, false );

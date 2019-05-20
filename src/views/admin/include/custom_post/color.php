@@ -8,10 +8,12 @@
  * @link https://technote.space
  */
 
+use WP_Framework_Presenter\Traits\Presenter;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
-/** @var \WP_Framework_Presenter\Traits\Presenter $instance */
+/** @var Presenter $instance */
 /** @var array $data */
 /** @var array $column */
 /** @var string $name */

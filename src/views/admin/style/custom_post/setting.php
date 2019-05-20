@@ -11,9 +11,7 @@
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
-/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 ?>
-
 <style>
     .marker-setting-preview {
         font-size: 1.5em;

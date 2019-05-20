@@ -10,6 +10,9 @@
 
 namespace Marker_Animation\Classes\Controllers\Admin;
 
+use Marker_Animation\Classes\Models\Assets;
+use WP_Framework_Admin\Classes\Controllers\Admin\Base;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
@@ -18,15 +21,15 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
  * Class Dashboard
  * @package Marker_Animation\Classes\Controllers\Admin
  */
-class Dashboard extends \WP_Framework_Admin\Classes\Controllers\Admin\Base {
+class Dashboard extends Base {
 
 	use \WP_Framework_Admin\Traits\Dashboard;
 
 	/**
-	 * @return \Marker_Animation\Classes\Models\Assets|string
+	 * @return Assets|string
 	 */
 	private function get_assets() {
-		return \Marker_Animation\Classes\Models\Assets::get_instance( $this->app );
+		return Assets::get_instance( $this->app );
 	}
 
 	/**

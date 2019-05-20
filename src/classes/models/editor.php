@@ -10,6 +10,11 @@
 
 namespace Marker_Animation\Classes\Models;
 
+use WP_Framework_Common\Traits\Package;
+use WP_Framework_Core\Traits\Hook;
+use WP_Framework_Core\Traits\Singleton;
+use WP_Framework_Presenter\Traits\Presenter;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
@@ -20,7 +25,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
  */
 class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\Interfaces\Hook, \WP_Framework_Presenter\Interfaces\Presenter {
 
-	use \WP_Framework_Core\Traits\Singleton, \WP_Framework_Core\Traits\Hook, \WP_Framework_Presenter\Traits\Presenter, \WP_Framework_Common\Traits\Package;
+	use Singleton, Hook, Presenter, Package;
 
 	/** @var bool $_setup_params */
 	private $_setup_params = false;
