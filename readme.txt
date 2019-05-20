@@ -96,8 +96,8 @@ The classic editor will not be supported on next major update (scheduled for 201
 == Changelog ==
 
 = 1.7.6 (2019/5/20) =
-* Added: [Stripe design](https://github.com/wp-content-framework/admin/issues/115)
-* Improved: [Default setting for bool settings](https://github.com/wp-content-framework/admin/issues/122)
+* Added: [Stripe design](https://github.com/technote-space/marker-animation/issues/115)
+* Improved: [Default setting for bool settings](https://github.com/technote-space/marker-animation/issues/122)
 
 = 1.7.5 (2019/4/28) =
 * Improved: [Consider incorrect argument](https://github.com/wp-content-framework/admin/issues/58)
