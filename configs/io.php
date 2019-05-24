@@ -25,8 +25,6 @@ return [
 		'is_repeat',
 		'padding_bottom',
 		'priority',
-		'is_valid_button',
-		'is_valid_style',
 		'is_valid_button_block_editor',
 		'selector',
 	],

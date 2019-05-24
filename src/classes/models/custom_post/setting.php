@@ -138,8 +138,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			'is_stripe'                    => 'stripe',
 			'is_repeat'                    => 'repeat',
 			'padding_bottom'               => 'padding_bottom',
-			'is_valid_button'              => 'is_valid_button',
-			'is_valid_style'               => 'is_valid_style',
 			'is_valid_button_block_editor' => 'is_valid_button_block_editor',
 		];
 	}
@@ -226,8 +224,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					$value, $data, $post
 				) {
 					$details = [
-						'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-						'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
 						'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
 					];
@@ -322,27 +318,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
-	 * @param string $key
-	 * @param mixed $value
-	 * @param mixed $default
-	 * @param array|null $post_array
-	 *
-	 * @return mixed
-	 */
-	protected function filter_post_field(
-		/** @noinspection PhpUnusedParameterInspection */
-		$key, $value, $default, $post_array
-	) {
-		if ( 'is_valid_button_block_editor' === $key ) {
-			if ( ! $this->app->utility->can_use_block_editor() ) {
-				return $this->app->input->post( $this->get_post_field_name( 'is_valid_button' ) );
-			}
-		}
-
-		return $value;
-	}
-
-	/**
 	 * @param string $target
 	 *
 	 * @return array
@@ -362,7 +337,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			$options = [];
 			foreach ( $this->get_setting_list() as $key => $name ) {
 				$is_default = $this->is_default( $data[ $key ] );
-				if ( 'is_valid_button' === $name || 'is_valid_style' === $name || 'is_valid_button_block_editor' === $name ) {
+				if ( 'is_valid_button_block_editor' === $name ) {
 					$options[ $name ] = $data[ $key ];
 					continue;
 				}
