@@ -45,11 +45,7 @@ class Dashboard extends Base {
 				];
 			}
 			if ( isset( $data['args']['options'] ) ) {
-				return [
-					'form'     => $data['form'],
-					'options'  => $data['args']['options'],
-					'nullable' => $data['nullable'],
-				];
+				$data['options'] = $data['args']['options'];
 			}
 
 			return $data;

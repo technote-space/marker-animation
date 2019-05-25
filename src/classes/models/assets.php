@@ -40,6 +40,18 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	}
 
 	/**
+	 * clear cache when changed option
+	 *
+	 * @param string $key
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function changed_option( $key ) {
+		if ( $this->app->string->starts_with( $key, $this->get_filter_prefix() ) ) {
+			$this->clear_options_cache();
+		}
+	}
+
+	/**
 	 * enqueue marker animation
 	 */
 	public function enqueue_marker_animation() {
@@ -119,10 +131,11 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'selector' => $this->get_selector(),
 			'prefix'   => $this->get_data_prefix(),
 			'settings' => $setting->get_settings( 'front' ),
+			'default'  => [],
 		];
 		foreach ( $this->get_setting_details( 'front' ) as $key => $setting ) {
 			list( $name, $value ) = $this->parse_setting( $setting, $key );
-			$options[ $name ] = $value;
+			$options['default'][ $name ] = $value;
 		}
 
 		return $options;
@@ -158,18 +171,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		}
 
 		return [ $name, $value ];
-	}
-
-	/**
-	 * clear cache when changed option
-	 *
-	 * @param string $key
-	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function changed_option( $key ) {
-		if ( $this->app->string->starts_with( $key, $this->get_filter_prefix() ) ) {
-			$this->clear_options_cache();
-		}
 	}
 
 	/**
