@@ -138,8 +138,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			'is_stripe'                    => 'stripe',
 			'is_repeat'                    => 'repeat',
 			'padding_bottom'               => 'padding_bottom',
-			'is_valid_button'              => 'is_valid_button',
-			'is_valid_style'               => 'is_valid_style',
 			'is_valid_button_block_editor' => 'is_valid_button_block_editor',
 		];
 	}
@@ -165,57 +163,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					/** @noinspection PhpUnusedParameterInspection */
 					$value, $data, $post
 				) {
-					/** @var Assets $assets */
-					$assets          = Assets::get_instance( $this->app );
-					$setting_details = $assets->get_setting_details( 'front' );
-					$attributes      = [];
-					$details         = [];
-					foreach ( $this->get_setting_list() as $key => $name ) {
-						$setting = $this->app->array->get( $setting_details, $name );
-						if ( empty( $setting ) ) {
-							continue;
-						}
-						$is_default = $this->is_default( $data[ $key ] );
-						if ( in_array( $name, [
-							'color',
-							'thickness',
-							'duration',
-							'delay',
-							'function',
-							'bold',
-							'stripe',
-							'repeat',
-							'padding_bottom',
-						] ) ) {
-							$value = $data[ $key ];
-							if ( $is_default ) {
-								if ( 'bool' === $setting['type'] ) {
-									$value   = $this->app->array->get( $setting, 'attributes.checked' ) ? 1 : 0;
-									$default = $value ? $this->translate( 'Yes' ) : $this->translate( 'No' );
-								} else {
-									$value   = $setting['value'];
-									$default = $value;
-								}
-								$details[ $setting['title'] ] = $this->translate( 'default' ) . " ({$default})";
-							} else {
-								if ( 'function' === $name ) {
-									$details[ $setting['title'] ] = $this->translate( $data[ $key ] );
-								} elseif ( 'bool' === $setting['type'] ) {
-									$details[ $setting['title'] ] = empty( $data[ $key ] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' );
-								} else {
-									$details[ $setting['title'] ] = $data[ $key ];
-								}
-							}
-						}
-						$setting['attributes']['data-value'] = $is_default ? $value : $data[ $key ];
-						list( $name, $value ) = $assets->parse_setting( $setting, $name );
-						$attributes[] = "data-ma_{$name}=\"{$value}\"";
-					}
-
-					return $this->get_view( 'admin/custom_post/setting/preview', [
-						'attributes' => $attributes,
-						'details'    => $details,
-					] );
+					return $this->display_callback( $value, $data, $post );
 				},
 				'unescape' => true,
 			],
@@ -225,19 +173,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					/** @noinspection PhpUnusedParameterInspection */
 					$value, $data, $post
 				) {
-					$details = [
-						'is valid button'              => empty( $data['is_valid_button'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-						'is valid style'               => empty( $data['is_valid_style'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-						'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-						'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
-					];
-					if ( ! $this->app->utility->can_use_block_editor() ) {
-						unset( $details['is valid block editor button'] );
-					}
-
-					return $this->get_view( 'admin/custom_post/setting/others', [
-						'details' => $details,
-					] );
+					return $this->others_callback( $value, $data, $post );
 				},
 				'unescape' => true,
 			],
@@ -249,6 +185,107 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				'hide'         => true,
 			],
 		];
+	}
+
+	/**
+	 * @param mixed $value
+	 * @param array $data
+	 * @param WP_Post $post
+	 *
+	 * @return string
+	 */
+	private function display_callback(
+		/** @noinspection PhpUnusedParameterInspection */
+		$value, $data, $post
+	) {
+		/** @var Assets $assets */
+		$assets          = Assets::get_instance( $this->app );
+		$setting_details = $assets->get_setting_details( 'front' );
+		$attributes      = [];
+		$details         = [];
+		$translate       = [
+			'Yes'     => $this->translate( 'Yes' ),
+			'No'      => $this->translate( 'No' ),
+			'default' => $this->translate( 'default' ),
+		];
+		$target          = $this->get_display_callback_target();
+		foreach ( $this->get_setting_list() as $key => $name ) {
+			$setting = $this->app->array->get( $setting_details, $name );
+			if ( empty( $setting ) ) {
+				continue;
+			}
+			$is_default = $this->is_default( $data[ $key ] );
+			if ( in_array( $name, $target ) ) {
+				$value = $data[ $key ];
+				if ( $is_default ) {
+					if ( 'bool' === $setting['type'] ) {
+						$value   = $this->app->array->get( $setting, 'attributes.checked' ) ? 1 : 0;
+						$default = $value ? $translate['Yes'] : $translate['No'];
+					} else {
+						$value   = $setting['value'];
+						$default = $value;
+					}
+					$details[ $setting['title'] ] = $translate['default'] . " ({$default})";
+				} else {
+					if ( 'function' === $name ) {
+						$details[ $setting['title'] ] = $this->translate( $data[ $key ] );
+					} elseif ( 'bool' === $setting['type'] ) {
+						$details[ $setting['title'] ] = empty( $data[ $key ] ) ? $translate['No'] : $translate['Yes'];
+					} else {
+						$details[ $setting['title'] ] = $data[ $key ];
+					}
+				}
+			}
+			$setting['attributes']['data-value'] = $is_default ? $value : $data[ $key ];
+			list( $name, $value ) = $assets->parse_setting( $setting, $name );
+			$attributes[] = "data-ma_{$name}=\"{$value}\"";
+		}
+
+		return $this->get_view( 'admin/custom_post/setting/preview', [
+			'attributes' => $attributes,
+			'details'    => $details,
+		] );
+	}
+
+	/**
+	 * @return array
+	 */
+	private function get_display_callback_target() {
+		return [
+			'color',
+			'thickness',
+			'duration',
+			'delay',
+			'function',
+			'bold',
+			'stripe',
+			'repeat',
+			'padding_bottom',
+		];
+	}
+
+	/**
+	 * @param mixed $value
+	 * @param array $data
+	 * @param WP_Post $post
+	 *
+	 * @return string
+	 */
+	private function others_callback(
+		/** @noinspection PhpUnusedParameterInspection */
+		$value, $data, $post
+	) {
+		$details = [
+			'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+			'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
+		];
+		if ( ! $this->app->utility->can_use_block_editor() ) {
+			unset( $details['is valid block editor button'] );
+		}
+
+		return $this->get_view( 'admin/custom_post/setting/others', [
+			'details' => $details,
+		] );
 	}
 
 	/**
@@ -322,27 +359,6 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
-	 * @param string $key
-	 * @param mixed $value
-	 * @param mixed $default
-	 * @param array|null $post_array
-	 *
-	 * @return mixed
-	 */
-	protected function filter_post_field(
-		/** @noinspection PhpUnusedParameterInspection */
-		$key, $value, $default, $post_array
-	) {
-		if ( 'is_valid_button_block_editor' === $key ) {
-			if ( ! $this->app->utility->can_use_block_editor() ) {
-				return $this->app->input->post( $this->get_post_field_name( 'is_valid_button' ) );
-			}
-		}
-
-		return $value;
-	}
-
-	/**
 	 * @param string $target
 	 *
 	 * @return array
@@ -352,6 +368,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$assets          = Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( $target );
 		$settings        = [];
+		$setting_list    = $this->get_setting_list();
 		foreach (
 			$this->get_list_data( function ( $query ) {
 				/** @var Builder $query */
@@ -360,9 +377,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			} )['data'] as $data
 		) {
 			$options = [];
-			foreach ( $this->get_setting_list() as $key => $name ) {
-				$is_default = $this->is_default( $data[ $key ] );
-				if ( 'is_valid_button' === $name || 'is_valid_style' === $name || 'is_valid_button_block_editor' === $name ) {
+			foreach ( $setting_list as $key => $name ) {
+				if ( 'is_valid_button_block_editor' === $name ) {
 					$options[ $name ] = $data[ $key ];
 					continue;
 				}
@@ -371,7 +387,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 					continue;
 				}
 
-				$setting['attributes']['data-value'] = $is_default ? $this->app->array->get( $setting, 'detail.value' ) : $data[ $key ];
+				$setting['attributes']['data-value'] = $this->is_default( $data[ $key ] ) ? $this->app->array->get( $setting, 'detail.value' ) : $data[ $key ];
 				list( $name, $value ) = $assets->parse_setting( $setting, $name );
 				$options[ $name ] = $value;
 			}

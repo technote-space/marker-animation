@@ -73,12 +73,6 @@ msgstr "マーカー位置の調整"
 msgid "stripe"
 msgstr "ストライプデザインかどうか"
 
-msgid "is valid button"
-msgstr "クラシックエディタにボタン表示させるかどうか"
-
-msgid "is valid style"
-msgstr "クラシックエディタにスタイルメニューに表示させるかどうか"
-
 msgid "is valid block editor button"
 msgstr "ブロックエディタにボタン表示させるかどうか"
 
