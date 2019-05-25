@@ -53,7 +53,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 						} else if ( option_value === '' ) {
 							option_value = $( this ).data( 'default' );
 						}
-						if ( /^-?\d+$/.test( option_value ) ) {
+						if ( 'text' !== $( this ).attr( 'type' ) && /^-?\d+$/.test( option_value ) ) {
 							option_value = option_value - 0;
 						}
 						options[ option_name ] = option_value;
