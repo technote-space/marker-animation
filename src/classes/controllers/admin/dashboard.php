@@ -81,6 +81,7 @@ class Dashboard extends Base {
 	 */
 	protected function filter_view_args( array $args ) {
 		$args['name_prefix']            = $this->get_filter_prefix();
+		$args['id_prefix']              = $this->get_assets()->get_id_prefix();
 		$args['target_selector']        = '#' . $this->id( false ) . '-content-wrap .marker-animation-option';
 		$args['marker_target_selector'] = '.marker-setting-preview span';
 

@@ -113,6 +113,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$params['columns']['selector']['default']                            = $params['columns']['selector']['args']['attributes']['data-default'];
 
 		$params['name_prefix'] = $assets->get_name_prefix();
+		$params['id_prefix']   = $assets->get_id_prefix();
 		if ( ! $this->app->utility->can_use_block_editor() ) {
 			unset( $params['columns']['is_valid_button_block_editor'] );
 		}
