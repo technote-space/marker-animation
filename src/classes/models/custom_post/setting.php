@@ -112,12 +112,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$params['columns']['selector']['args']['attributes']['data-default'] = $this->get_default_class( $post->ID );
 		$params['columns']['selector']['default']                            = $params['columns']['selector']['args']['attributes']['data-default'];
 
-		$params['name_prefix'] = $assets->get_name_prefix();
-		$params['id_prefix']   = $assets->get_id_prefix();
-		if ( ! $this->app->utility->can_use_block_editor() ) {
-			unset( $params['columns']['is_valid_button_block_editor'] );
-		}
-
+		$params['name_prefix']            = $assets->get_name_prefix();
+		$params['id_prefix']              = $assets->get_id_prefix();
 		$params['target_selector']        = '.marker-animation-option';
 		$params['marker_target_selector'] = '.marker-setting-preview .marker-animation';
 
@@ -293,16 +289,11 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		/** @noinspection PhpUnusedParameterInspection */
 		$value, $data, $post
 	) {
-		$details = [
-			'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
-			'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
-		];
-		if ( ! $this->app->utility->can_use_block_editor() ) {
-			unset( $details['is valid block editor button'] );
-		}
-
 		return $this->get_view( 'admin/custom_post/setting/others', [
-			'details' => $details,
+			'details' => [
+				'is valid block editor button' => empty( $data['is_valid_button_block_editor'] ) ? $this->translate( 'No' ) : $this->translate( 'Yes' ),
+				'selector'                     => $this->get_default_class( $post->ID ) . ( empty( $data['selector'] ) ? '' : ', ' . $data['selector'] ),
+			],
 		] );
 	}
 
