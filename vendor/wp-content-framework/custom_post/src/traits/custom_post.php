@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Traits Custom Post
  *
- * @version 0.0.35
+ * @version 0.0.36
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -516,7 +516,16 @@ trait Custom_Post {
 	 * @return bool
 	 */
 	public function is_support_io() {
-		return $this->compare_wp_version( '4.7', '>=' ) && ! empty( $this->app->get_config( 'io', $this->get_post_type_slug() ) ) && $this->user_can( 'edit_others_posts' );
+		return $this->compare_wp_version( '4.7', '>=' ) && ! empty( $this->app->get_config( 'io', $this->get_post_type_slug() ) ) && $this->user_can( 'edit_others_posts' ) && $this->is_valid_export_post_status();
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function is_valid_export_post_status() {
+		$post_status = ! empty( $_REQUEST['post_status'] ) ? $_REQUEST['post_status'] : 'all';
+
+		return ! in_array( $post_status, $this->get_exclude_from_search_post_status() );
 	}
 
 	/**
@@ -652,10 +661,10 @@ trait Custom_Post {
 		$export_data = [];
 		$setting     = $this->app->get_config( 'io', $this->get_post_type_slug() );
 		foreach (
-			$this->get_list_data( function ( $query ) use ( $post_ids ) {
+			$this->app->array->get( $this->get_list_data( function ( $query ) use ( $post_ids ) {
 				/** @var Builder $query */
 				$query->where_in( 'p.ID', $post_ids );
-			} )['data'] as $d
+			}, false ), 'data' ) as $d
 		) {
 			$data = [];
 			if ( in_array( 'title', $this->get_post_type_supports() ) ) {
@@ -1001,7 +1010,7 @@ trait Custom_Post {
 		if ( $is_valid ) {
 			$query->where( 'p.post_status', 'publish' );
 		}
-		$exclude = get_post_stati( [ 'exclude_from_search' => true ] );
+		$exclude = $this->get_exclude_from_search_post_status();
 		if ( ! empty( $exclude ) ) {
 			$query->where_not_in( 'p.post_status', $exclude );
 		}
@@ -1586,6 +1595,13 @@ trait Custom_Post {
 		$action = '&action=edit';
 
 		return admin_url( sprintf( $post_type_object->_edit_link . $action, $post->ID ) );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_exclude_from_search_post_status() {
+		return get_post_stati( [ 'exclude_from_search' => true ] );
 	}
 
 	/**

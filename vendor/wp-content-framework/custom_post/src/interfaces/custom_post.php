@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Custom_Post Interfaces Custom Post
  *
- * @version 0.0.34
+ * @version 0.0.36
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -358,6 +358,11 @@ interface Custom_Post extends Singleton, Hook, Presenter, Data_Helper, Validate 
 	 * @return string
 	 */
 	public function get_edit_post_link( $post_id );
+
+	/**
+	 * @return array
+	 */
+	public function get_exclude_from_search_post_status();
 
 	/**
 	 * @return int
