@@ -1,10 +1,10 @@
 === Marker Animation ===
 Contributors: technote0space
 Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アンダーライン
-Requires at least: 4.6
+Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 5.2
-Stable tag: 1.7.6
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,11 @@ The classic editor will not be supported on next major update (scheduled for 201
 10. Block Editor(off animation)
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+* [[クラシックエディタ 及び クラシックブロック のサポートは終了しました。]](color:red;font-weight:bold) [詳細](https://github.com/technote-space/marker-animation/issues/119)
+* ストライプデザイン設定時の設定の制御を改善しました。 [詳細](https://github.com/technote-space/marker-animation/issues/131)
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/137)
 
 = 1.7.6 =
 * ストライプデザインのマーカーを追加しました。[詳細](https://github.com/technote-space/marker-animation/issues/115)
@@ -94,6 +99,11 @@ The classic editor will not be supported on next major update (scheduled for 201
 * クラシックエディタでのボタンの動作が改善されます。
 
 == Changelog ==
+
+= 2.0.0 (2019/6/1) =
+* Changed: [Finished classic editor support](https://github.com/technote-space/marker-animation/issues/119)
+* Improved: [Setting behavior of stripe design](https://github.com/technote-space/marker-animation/issues/131)
+* Fixed: [Preview behavior](https://github.com/technote-space/marker-animation/issues/133)
 
 = 1.7.6 (2019/5/20) =
 * Added: [Stripe design](https://github.com/technote-space/marker-animation/issues/115)

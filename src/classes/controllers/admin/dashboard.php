@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.6
+ * @version 2.0.0
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -45,11 +45,7 @@ class Dashboard extends Base {
 				];
 			}
 			if ( isset( $data['args']['options'] ) ) {
-				return [
-					'form'     => $data['form'],
-					'options'  => $data['args']['options'],
-					'nullable' => $data['nullable'],
-				];
+				$data['options'] = $data['args']['options'];
 			}
 
 			return $data;
@@ -85,6 +81,7 @@ class Dashboard extends Base {
 	 */
 	protected function filter_view_args( array $args ) {
 		$args['name_prefix']            = $this->get_filter_prefix();
+		$args['id_prefix']              = $this->get_assets()->get_id_prefix();
 		$args['target_selector']        = '#' . $this->id( false ) . '-content-wrap .marker-animation-option';
 		$args['marker_target_selector'] = '.marker-setting-preview span';
 

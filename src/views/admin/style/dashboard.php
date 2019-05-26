@@ -2,31 +2,22 @@
 /**
  * @version 2.0.0
  * @author Technote
- * @since 1.6.9
+ * @since 2.0.0
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
  */
 
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
-	exit;
+	return;
 }
+?>
+<style>
+    select[data-readonly="1"] {
+        opacity: .5;
+    }
 
-return [
-
-	'setting' => [
-		'is_valid',
-		'color',
-		'thickness',
-		'duration',
-		'delay',
-		'function',
-		'is_font_bold',
-		'is_repeat',
-		'padding_bottom',
-		'priority',
-		'is_valid_button_block_editor',
-		'selector',
-	],
-
-];
+    select[data-readonly="1"] option {
+        display: none;
+    }
+</style>

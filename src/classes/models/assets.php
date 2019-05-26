@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.6
+ * @version 2.0.0
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -37,6 +37,18 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		}
 
 		$this->enqueue_marker_animation();
+	}
+
+	/**
+	 * clear cache when changed option
+	 *
+	 * @param string $key
+	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
+	private function changed_option( $key ) {
+		if ( $this->app->string->starts_with( $key, $this->get_filter_prefix() ) ) {
+			$this->clear_options_cache();
+		}
 	}
 
 	/**
@@ -119,10 +131,11 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'selector' => $this->get_selector(),
 			'prefix'   => $this->get_data_prefix(),
 			'settings' => $setting->get_settings( 'front' ),
+			'default'  => [],
 		];
 		foreach ( $this->get_setting_details( 'front' ) as $key => $setting ) {
 			list( $name, $value ) = $this->parse_setting( $setting, $key );
-			$options[ $name ] = $value;
+			$options['default'][ $name ] = $value;
 		}
 
 		return $options;
@@ -158,18 +171,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		}
 
 		return [ $name, $value ];
-	}
-
-	/**
-	 * clear cache when changed option
-	 *
-	 * @param string $key
-	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function changed_option( $key ) {
-		if ( $this->app->string->starts_with( $key, $this->get_filter_prefix() ) ) {
-			$this->clear_options_cache();
-		}
 	}
 
 	/**
@@ -234,26 +235,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 				'nullable' => true,
 			],
 			'padding_bottom'               => 'input/text',
-			'is_valid_button'              => [
-				'form'   => 'input/checkbox',
-				'args'   => [
-					'target' => [ 'setting' ],
-				],
-				'detail' => [
-					'value' => 1,
-					'label' => $this->translate( 'show' ),
-				],
-			],
-			'is_valid_style'               => [
-				'form'   => 'input/checkbox',
-				'args'   => [
-					'target' => [ 'setting' ],
-				],
-				'detail' => [
-					'value' => 0,
-					'label' => $this->translate( 'show' ),
-				],
-			],
 			'is_valid_button_block_editor' => [
 				'form'   => 'input/checkbox',
 				'args'   => [
@@ -307,10 +288,10 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 				'data-default' => $this->app->array->get( $detail, 'default' ),
 			],
 			'detail'     => $detail,
+			'type'       => $this->app->array->get( $detail, 'type', 'string' ),
+			'nullable'   => is_array( $form ) && $this->app->array->get( $form, 'nullable' ),
 		];
 		$ret['title']                       = $ret['label'];
-		$ret['type']                        = $this->app->array->get( $detail, 'type', 'string' );
-		$ret['nullable']                    = is_array( $form ) && $this->app->array->get( $form, 'nullable' );
 		$ret['attributes']['data-nullable'] = $ret['nullable'];
 
 		if ( is_array( $form ) ) {

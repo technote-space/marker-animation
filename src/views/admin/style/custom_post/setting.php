@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.6
+ * @version 2.0.0
  * @author Technote
  * @since 1.4.0
  * @copyright Technote All Rights Reserved
@@ -8,9 +8,14 @@
  * @link https://technote.space/
  */
 
+use WP_Framework_Presenter\Interfaces\Presenter;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
+/** @var Presenter $instance */
+/** @var array $args */
+$instance->add_style_view( 'admin/style/dashboard', $args );
 ?>
 <style>
     .marker-setting-preview {

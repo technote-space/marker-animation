@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.6
+ * @version 2.0.0
  * @author Technote
  * @since 1.4.0
  * @copyright Technote All Rights Reserved
@@ -83,20 +83,6 @@ return [
 				'null'     => false,
 				'default'  => 10,
 				'comment'  => 'priority',
-			],
-			'is_valid_button'              => [
-				'type'     => 'BIT(1)',
-				'unsigned' => true,
-				'null'     => false,
-				'default'  => 1,
-				'comment'  => 'is valid button',
-			],
-			'is_valid_style'               => [
-				'type'     => 'BIT(1)',
-				'unsigned' => true,
-				'null'     => false,
-				'default'  => 0,
-				'comment'  => 'is valid style',
 			],
 			'is_valid_button_block_editor' => [
 				'type'     => 'BIT(1)',

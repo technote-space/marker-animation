@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.1
+ * @version 2.0.0
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -29,30 +29,9 @@ return [
 		],
 	],
 
-	'\Marker_Animation\Classes\Models\Editor'              => [
-		'admin_head-post.php'         => [
-			'enqueue_editor_params',
-		],
-		'admin_head-post-new.php'     => [
-			'enqueue_editor_params',
-		],
-		'mce_external_plugins'        => [
-			'mce_external_plugins',
-		],
-		'mce_buttons'                 => [
-			'mce_buttons',
-		],
-		'editor_stylesheets'          => [
-			'editor_stylesheets',
-		],
-		'mce_css'                     => [
-			'mce_css',
-		],
+	'\Marker_Animation\Classes\Models\Editor' => [
 		'enqueue_block_editor_assets' => [
 			'enqueue_block_editor_assets',
-		],
-		'tiny_mce_before_init'        => [
-			'tiny_mce_before_init' => 11,
 		],
 	],
 
