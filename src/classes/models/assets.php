@@ -288,10 +288,10 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 				'data-default' => $this->app->array->get( $detail, 'default' ),
 			],
 			'detail'     => $detail,
+			'type'       => $this->app->array->get( $detail, 'type', 'string' ),
+			'nullable'   => is_array( $form ) && $this->app->array->get( $form, 'nullable' ),
 		];
 		$ret['title']                       = $ret['label'];
-		$ret['type']                        = $this->app->array->get( $detail, 'type', 'string' );
-		$ret['nullable']                    = is_array( $form ) && $this->app->array->get( $form, 'nullable' );
 		$ret['attributes']['data-nullable'] = $ret['nullable'];
 
 		if ( is_array( $form ) ) {

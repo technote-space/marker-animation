@@ -217,25 +217,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			}
 			$is_default = $this->is_default( $data[ $key ] );
 			if ( in_array( $name, $target ) ) {
-				$value = $data[ $key ];
-				if ( $is_default ) {
-					if ( 'bool' === $setting['type'] ) {
-						$value   = $this->app->array->get( $setting, 'attributes.checked' ) ? 1 : 0;
-						$default = $value ? $translate['Yes'] : $translate['No'];
-					} else {
-						$value   = $setting['value'];
-						$default = $value;
-					}
-					$details[ $setting['title'] ] = $translate['default'] . " ({$default})";
-				} else {
-					if ( 'function' === $name ) {
-						$details[ $setting['title'] ] = $this->translate( $data[ $key ] );
-					} elseif ( 'bool' === $setting['type'] ) {
-						$details[ $setting['title'] ] = empty( $data[ $key ] ) ? $translate['No'] : $translate['Yes'];
-					} else {
-						$details[ $setting['title'] ] = $data[ $key ];
-					}
-				}
+				list( $detail, $value ) = $this->get_display_detail( $key, $name, $data, $setting, $is_default, $translate );
+				$details[ $setting['title'] ] = $detail;
 			}
 			$setting['attributes']['data-value'] = $is_default ? $value : $data[ $key ];
 			list( $name, $value ) = $assets->parse_setting( $setting, $name );
@@ -246,6 +229,40 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			'attributes' => $attributes,
 			'details'    => $details,
 		] );
+	}
+
+	/**
+	 * @param string $key
+	 * @param string $name
+	 * @param array $data
+	 * @param array $setting
+	 * @param bool $is_default
+	 * @param array $translate
+	 *
+	 * @return array
+	 */
+	private function get_display_detail( $key, $name, $data, $setting, $is_default, $translate ) {
+		$value = $data[ $key ];
+		if ( $is_default ) {
+			if ( 'bool' === $setting['type'] ) {
+				$value   = $this->app->array->get( $setting, 'attributes.checked' ) ? 1 : 0;
+				$default = $value ? $translate['Yes'] : $translate['No'];
+			} else {
+				$value   = $setting['value'];
+				$default = $value;
+			}
+			$detail = $translate['default'] . " ({$default})";
+		} else {
+			if ( 'function' === $name ) {
+				$detail = $this->translate( $data[ $key ] );
+			} elseif ( 'bool' === $setting['type'] ) {
+				$detail = empty( $data[ $key ] ) ? $translate['No'] : $translate['Yes'];
+			} else {
+				$detail = $data[ $key ];
+			}
+		}
+
+		return [ $detail, $value ];
 	}
 
 	/**
@@ -371,11 +388,11 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$settings        = [];
 		$setting_list    = $this->get_setting_list();
 		foreach (
-			$this->get_list_data( function ( $query ) {
+			$this->app->array->get( $this->get_list_data( function ( $query ) {
 				/** @var Builder $query */
 				$query->where( 'is_valid', 1 )
 				      ->order_by( 'priority' );
-			} )['data'] as $data
+			} ), 'data' ) as $data
 		) {
 			$options = [];
 			foreach ( $setting_list as $key => $name ) {
