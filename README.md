@@ -26,23 +26,14 @@
 ![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201414.png)
 
 ### 投稿編集画面
-#### ブロックエディタ
   
 ![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-9.gif)
 
 ![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-10.gif)
 
-#### クラシックエディタ (次のメジャーアップデートで廃止)
-
-![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-3.gif)
-
-![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-4.gif)
-
 ## 要件
 - PHP 5.6 以上
-- WordPress 4.6 以上
-  - 次のメジャーアップデートで WordPress 5.2 以上 かつ ブロックエディタのみ になります
-  - (2019/6/1 予定)
+- WordPress 5.2 以上
 
 ## 導入手順
 1. 管理画面のプラグインから「新規追加」  
@@ -57,30 +48,15 @@
 3. アニメーションを外したい場合は対象の文にカーソルを合わせた状態でマーカーペンアイコンを押下
 
 ## コントロールの種類
-### ブロックエディタ
-#### マーカーアニメーションボタン
+### マーカーアニメーションボタン
 デフォルト設定画面で設定した値でマーカーが動作します。  
 ![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051620.png)  
 
 サイドバーで細かく値を指定できます。  
 ![詳細設定](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201416.png)  
-#### マーカー設定で「ブロックエディタにボタン表示させるかどうか」を有効にして登録したボタン
+### マーカー設定で「ブロックエディタにボタン表示させるかどうか」を有効にして登録したボタン
 マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
 ![ボタン2](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051621.png)
-### クラシックエディタ
-次のメジャーアップデートでクラシックエディタでは使用できなくなります。
-#### マーカーアニメーションボタン
-デフォルト設定画面で設定した値でマーカーが動作します。
-![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030454.png)
-#### マーカーアニメーション(詳細設定)ボタン
-細かく値を指定できます。
-![ボタン2](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030455.png)
-#### マーカー設定で「クラシックエディタにボタン表示させるかどうか」を有効にして登録したボタン
-マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
-![ボタン3](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030134.png)
-#### マーカー設定で「クラシックエディタにスタイルメニューに表示させるかどうか」を有効にして登録したメニュー
-マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。  
-![メニュー](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201901030136.png)
 
 ## 設定
 ### 有効かどうか
