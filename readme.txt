@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 5.2
 Requires PHP: 5.6
 Tested up to: 5.2
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,10 @@ The classic editor will not be supported on next major update (scheduled for 201
 10. Block Editor(off animation)
 
 == Upgrade Notice ==
+
+= 2.0.1 =
+* ツールバーボタンの挙動を修正しました。 [詳細](https://github.com/technote-space/marker-animation/issues/132)
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/139)
 
 = 2.0.0 =
 * [[クラシックエディタ 及び クラシックブロック のサポートは終了しました。]](color:red;font-weight:bold) [詳細](https://github.com/technote-space/marker-animation/issues/119)
@@ -99,6 +103,9 @@ The classic editor will not be supported on next major update (scheduled for 201
 * クラシックエディタでのボタンの動作が改善されます。
 
 == Changelog ==
+
+= 2.0.1 (2019/6/1) =
+* Fixed: [Behavior of Toolbar button](https://github.com/technote-space/marker-animation/issues/132)
 
 = 2.0.0 (2019/6/1) =
 * Changed: [Finished classic editor support](https://github.com/technote-space/marker-animation/issues/119)
