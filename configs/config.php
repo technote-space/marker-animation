@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 2.0.0
+ * @version 2.0.2
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -13,12 +13,6 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 }
 
 return [
-
-	// required wordpress version
-	'required_wordpress_version'     => '5.2',
-
-	// db version
-	'db_version'                     => '0.1.0',
 
 	// menu image url
 	'menu_image'                     => 'icon-24x24.png',
