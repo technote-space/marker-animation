@@ -52,7 +52,7 @@
 デフォルト設定画面で設定した値でマーカーが動作します。  
 ![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051620.png)  
 
-サイドバーで細かく値を指定できます。  
+サイドバーで細かく値を指定できます。 (WordPress v5.2以上)  
 ![詳細設定](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201416.png)  
 ### マーカー設定で「ブロックエディタにボタン表示させるかどうか」を有効にして登録したボタン
 マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
