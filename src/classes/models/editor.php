@@ -64,6 +64,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'prefix'                     => $assets->get_data_prefix(),
 			'default_icon'               => $this->get_img_url( 'icon-24x24.png' ),
 			'append_nav_item_class_name' => true,
+			'is_valid_detail_setting'    => $this->app->utility->compare_wp_version( '5.2', '>=' ),
 		];
 	}
 }

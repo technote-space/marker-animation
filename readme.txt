@@ -1,7 +1,7 @@
 === Marker Animation ===
 Contributors: technote0space
 Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アンダーライン
-Requires at least: 5.2
+Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 5.2
 Stable tag: 2.0.1
@@ -42,6 +42,9 @@ The classic editor will not be supported on next major update (scheduled for 201
 10. Block Editor(off animation)
 
 == Upgrade Notice ==
+
+= 2.0.2 =
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/140)
 
 = 2.0.1 =
 * ツールバーボタンの挙動を修正しました。 [詳細](https://github.com/technote-space/marker-animation/issues/132)
@@ -103,6 +106,9 @@ The classic editor will not be supported on next major update (scheduled for 201
 * クラシックエディタでのボタンの動作が改善されます。
 
 == Changelog ==
+
+= 2.0.2 (2019/6/1) =
+* Changed: [Required WordPress version](https://github.com/technote-space/marker-animation/issues/141)
 
 = 2.0.1 (2019/6/1) =
 * Fixed: [Behavior of Toolbar button](https://github.com/technote-space/marker-animation/issues/132)
