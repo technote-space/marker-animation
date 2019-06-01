@@ -43,7 +43,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'wp-components',
 			'lodash',
 		] );
-		$this->localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
+		$this->localize_script( 'marker_animation-editor', 'markerAnimationParams', $this->get_editor_params() );
 	}
 
 	/**
