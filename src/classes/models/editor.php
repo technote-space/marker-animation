@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 2.0.2
+ * @version 2.0.3
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -43,7 +43,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'wp-components',
 			'lodash',
 		] );
-		$this->localize_script( 'marker_animation-editor', 'marker_animation_params', $this->get_editor_params() );
+		$this->localize_script( 'marker_animation-editor', 'markerAnimationParams', $this->get_editor_params() );
 	}
 
 	/**

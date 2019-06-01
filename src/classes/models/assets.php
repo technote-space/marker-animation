@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 2.0.0
+ * @version 2.0.3
  * @author Technote
  * @since 1.0.0
  * @copyright Technote All Rights Reserved
@@ -85,7 +85,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	 * @return string
 	 */
 	public function get_marker_object_name() {
-		return 'marker_animation';
+		return 'markerAnimation';
 	}
 
 	/**
