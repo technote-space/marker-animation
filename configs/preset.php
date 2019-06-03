@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.7.1
+ * @version 2.0.4
  * @author Technote
  * @since 1.7.1
  * @copyright Technote All Rights Reserved
@@ -15,21 +15,27 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 return [
 
 	[
-		'name'     => 'Red',
-		'color'    => '#f69',
-		'priority' => 50,
+		'name'                         => 'Red',
+		'color'                        => '#f69',
+		'is_valid'                     => 1,
+		'is_valid_button_block_editor' => 1,
+		'priority'                     => 50,
 	],
 
 	[
-		'name'     => 'Green',
-		'color'    => '#6f6',
-		'priority' => 50,
+		'name'                         => 'Green',
+		'color'                        => '#6f6',
+		'is_valid'                     => 1,
+		'is_valid_button_block_editor' => 1,
+		'priority'                     => 50,
 	],
 
 	[
-		'name'     => 'Blue',
-		'color'    => '#6cf',
-		'priority' => 50,
+		'name'                         => 'Blue',
+		'color'                        => '#6cf',
+		'is_valid'                     => 1,
+		'is_valid_button_block_editor' => 1,
+		'priority'                     => 50,
 	],
 
 ];
