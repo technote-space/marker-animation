@@ -80,7 +80,7 @@ const getPanelComponent = ( setting, control, args, stripe ) => {
 		case 'checkbox':
 			return <CheckboxControl
 				label={ setting.label }
-				checked={ 'true' === value }
+				checked={ value }
 				onChange={ setData( setting, control, args ) }
 			/>;
 		case 'listbox':
@@ -99,17 +99,17 @@ const getData = ( setting, control, args ) => {
 	const activeFormat = getActiveFormat( args.value, control.setting.name );
 	const name = getDataName( setting.name, true );
 	if ( ! activeFormat || ! activeFormat.attributes || ! ( name in activeFormat.attributes ) ) {
-		return setting.type === 'checkbox' ? setting.checked + '' : setting.value;
+		return setting.type === 'checkbox' ? setting.checked : setting.value;
 	}
 	if ( setting.type === 'checkbox' ) {
 		if ( activeFormat.attributes[ name ] === 'true' ) {
-			return 'true';
+			return true;
 		}
 		const result = parseInputValue( true, setting.name );
 		if ( ! result ) {
 			return false;
 		}
-		return ( result.value === activeFormat.attributes[ name ] ) + '';
+		return result.value === activeFormat.attributes[ name ];
 	}
 	return activeFormat.attributes[ name ];
 };
