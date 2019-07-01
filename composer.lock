@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "068ca9e551f1516fc7cb24383b1758bb",
+    "content-hash": "e2237b813a3e8a21fc96dc67c6ddb98c",
     "packages": [
         {
             "name": "matthiasmullie/minify",
@@ -558,43 +558,6 @@
                 "wordpress"
             ],
             "time": "2019-06-01T19:12:39+00:00"
-        },
-        {
-            "name": "wp-content-framework/upgrade",
-            "version": "v0.0.14",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wp-content-framework/upgrade.git",
-                "reference": "6195d9b5edf6d5bde6860e2fa5407e260047c97e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/upgrade/zipball/6195d9b5edf6d5bde6860e2fa5407e260047c97e",
-                "reference": "6195d9b5edf6d5bde6860e2fa5407e260047c97e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "technote",
-                    "email": "technote.space@gmail.com",
-                    "homepage": "https://technote.space"
-                }
-            ],
-            "description": "Wordpress content framework",
-            "homepage": "https://github.com/wp-content-framework",
-            "keywords": [
-                "framework",
-                "wordpress"
-            ],
-            "time": "2019-05-19T15:05:51+00:00"
         },
         {
             "name": "wp-content-framework/view",
