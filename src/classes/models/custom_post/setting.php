@@ -14,9 +14,11 @@ use WP_Framework_Db\Classes\Models\Query\Builder;
 use WP_Framework_Upgrade\Traits\Upgrade;
 use WP_Post;
 
+// @codeCoverageIgnoreStart
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Class Setting
@@ -28,8 +30,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * insert presets
+	 * @noinspection PhpUnusedPrivateMethodInspection
+	 * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
 	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function insert_presets() {
 		if ( $this->app->get_option( 'has_inserted_presets' ) ) {
 			return;
@@ -49,8 +52,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * setup assets
+	 * @noinspection PhpUnusedPrivateMethodInspection
+	 * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
 	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function setup_assets() {
 		global $typenow;
 		if ( empty( $typenow ) || $typenow !== $this->get_post_type() ) {
@@ -81,6 +85,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 *
 	 * @return array
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	protected function filter_edit_form_params(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -104,7 +109,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			}
 			$params['columns'][ $key ]['form_type'] = $this->app->array->get( $args, 'form' );
 			$options                                = $this->app->array->get( $args, 'options' );
-			$options and $params['columns'][ $key ]['options'] = $options;
+			if ( $options ) {
+				$params['columns'][ $key ]['options'] = $options;
+			}
 			unset( $params['columns'][ $key ]['args']['options'] );
 		}
 		$params['columns']['selector']['args']['attributes']['data-default'] = $this->get_default_class( $post->ID );
@@ -188,6 +195,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	private function display_callback(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -210,13 +218,13 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				continue;
 			}
 			$is_default = $this->is_default( $data[ $key ] );
-			if ( in_array( $name, $target ) ) {
-				list( $detail, $value ) = $this->get_display_detail( $key, $name, $data, $setting, $is_default, $translate );
+			if ( in_array( $name, $target, true ) ) {
+				list( $detail, $value ) = $this->get_display_detail( $key, $name, $data, $setting, $is_default, $translate ); // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
 				$details[ $setting['title'] ] = $detail;
 			}
 			$setting['attributes']['data-value'] = $is_default ? $value : $data[ $key ];
-			list( $name, $value ) = $assets->parse_setting( $setting, $name );
-			$attributes[] = "data-ma_{$name}=\"{$value}\"";
+			list( $name, $value ) = $assets->parse_setting( $setting, $name ); // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
+			$attributes[] = "data-ma_{$name}=\"{$value}\""; // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
 		}
 
 		return $this->get_view( 'admin/custom_post/setting/preview', [
@@ -282,6 +290,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	private function others_callback(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -298,6 +307,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	/**
 	 * @param WP_Post $post
 	 * @param array $params
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	protected function before_output_edit_form(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -312,8 +322,12 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * @param WP_Post $post
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function output_after_editor( WP_Post $post ) {
+	public function output_after_editor(
+		/** @noinspection PhpUnusedParameterInspection */
+		WP_Post $post
+	) {
 		$this->get_view( 'admin/custom_post/setting/test', [], true );
 	}
 
@@ -323,7 +337,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @return null|string
 	 */
 	protected function get_table_column_name( $key ) {
-		if ( $key === 'post_title' ) {
+		if ( 'post_title' === $key ) {
 			return $this->get_post_column_title();
 		}
 
@@ -335,8 +349,12 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 * @param array $old
 	 * @param array $new
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function data_updated( $post_id, WP_Post $post, array $old, array $new ) {
+	public function data_updated(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id, WP_Post $post, array $old, array $new
+	) {
 		$this->clear_options_cache();
 	}
 
@@ -344,15 +362,23 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param int $post_id
 	 * @param WP_Post $post
 	 * @param array $data
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function data_inserted( $post_id, WP_Post $post, array $data ) {
+	public function data_inserted(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id, WP_Post $post, array $data
+	) {
 		$this->clear_options_cache();
 	}
 
 	/**
 	 * @param int $post_id
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function trash_post( $post_id ) {
+	public function trash_post(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id
+	) {
 		$this->clear_options_cache();
 	}
 
@@ -380,7 +406,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			$this->app->array->get( $this->get_list_data( function ( $query ) {
 				/** @var Builder $query */
 				$query->where( 'is_valid', 1 )
-				      ->order_by( 'priority' );
+					->order_by( 'priority' );
 			} ), 'data' ) as $data
 		) {
 			$options = [];
@@ -395,14 +421,16 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				}
 
 				$setting['attributes']['data-value'] = $this->is_default( $data[ $key ] ) ? $this->app->array->get( $setting, 'detail.value' ) : $data[ $key ];
-				list( $name, $value ) = $assets->parse_setting( $setting, $name );
-				$options[ $name ] = $value;
+				list( $name, $value ) = $assets->parse_setting( $setting, $name ); // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
+				$options[ $name ] = $value; // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
 			}
 			/** @var WP_Post $post */
 			$post                = $data['post'];
 			$options['selector'] = $this->get_default_class( $post->ID );
 			$options['class']    = $this->get_default_class( $post->ID, false );
-			! empty( $data['selector'] ) and $options['selector'] .= ', ' . $data['selector'];
+			if ( ! empty( $data['selector'] ) ) {
+				$options['selector'] .= ', ' . $data['selector'];
+			}
 			$settings[] = [
 				'id'      => $post->ID,
 				'options' => $options,

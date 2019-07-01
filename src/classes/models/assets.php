@@ -13,9 +13,11 @@ use WP_Framework_Core\Traits\Hook;
 use WP_Framework_Core\Traits\Singleton;
 use WP_Framework_Presenter\Traits\Presenter;
 
+// @codeCoverageIgnoreStart
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Class Assets
@@ -27,8 +29,9 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * setup assets
+	 * @noinspection PhpUnusedPrivateMethodInspection
+	 * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
 	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function setup_assets() {
 		if ( ! $this->apply_filters( 'is_valid' ) ) {
 			return;
@@ -39,10 +42,11 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * clear cache when changed option
+	 * @noinspection PhpUnusedPrivateMethodInspection
+	 * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
 	 *
 	 * @param string $key
 	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function changed_option( $key ) {
 		if ( $this->app->string->starts_with( $key, $this->get_filter_prefix() ) ) {
 			$this->clear_options_cache();
@@ -132,7 +136,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			'default'  => [],
 		];
 		foreach ( $this->get_setting_details( 'front' ) as $key => $setting ) {
-			list( $name, $value ) = $this->parse_setting( $setting, $key );
+			list( $name, $value ) = $this->parse_setting( $setting, $key ); // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
 			$options['default'][ $name ] = $value;
 		}
 
@@ -255,7 +259,7 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 	public function get_setting_details( $target, $prefix = null ) {
 		$args = [];
 		foreach ( $this->get_setting_keys() as $key => $form ) {
-			if ( is_array( $form ) && ! empty( $form['args']['target'] ) && ! in_array( $target, $form['args']['target'] ) ) {
+			if ( is_array( $form ) && ! empty( $form['args']['target'] ) && ! in_array( $target, $form['args']['target'], true ) ) {
 				continue;
 			}
 			$args[ $key ] = $this->get_setting( $key, $form, $prefix, $target );
@@ -292,32 +296,73 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		$ret['title']                       = $ret['label'];
 		$ret['attributes']['data-nullable'] = $ret['nullable'];
 
+		$ret = $this->setup_form_setting( $ret, $form, $target );
+		if ( 'bool' === $this->app->array->get( $detail, 'type' ) ) {
+			$ret = $this->setup_bool_setting( $ret, $value );
+		}
+		if ( 'select' === $ret['form'] ) {
+			$ret = $this->setup_select_setting( $ret, $value );
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * @param array $ret
+	 * @param mixed $form
+	 * @param string $target
+	 *
+	 * @return array
+	 */
+	private function setup_form_setting( array $ret, $form, $target ) {
 		if ( is_array( $form ) ) {
 			$ret['form'] = $form['form'];
 			$ret         = array_replace_recursive( $ret, isset( $form['args'] ) && is_array( $form['args'] ) ? $form['args'] : [] );
 			if ( 'setting' === $target && $ret['nullable'] ) {
 				$ret['form'] = 'select';
-				empty( $ret['options'] ) and $ret['options'] = [];
+				if ( empty( $ret['options'] ) ) {
+					$ret['options'] = [];
+				}
 				$ret['options'] = array_merge( [ null => 'default' ], $ret['options'] );
 			}
 		} else {
 			$ret['form'] = $form;
 		}
-		if ( $this->app->array->get( $detail, 'type' ) === 'bool' ) {
-			if ( $ret['form'] === 'select' ) {
-				$ret['options']['1'] = 'Valid';
-				$ret['options']['0'] = 'Invalid';
-			} else {
-				$ret['value'] = 1;
-				! empty( $value ) and $ret['attributes']['checked'] = 'checked';
-				$ret['label'] = $this->translate( 'Valid' );
+
+		return $ret;
+	}
+
+	/**
+	 * @param array $ret
+	 * @param mixed $value
+	 *
+	 * @return array
+	 */
+	private function setup_bool_setting( array $ret, $value ) {
+		if ( 'select' === $ret['form'] ) {
+			$ret['options']['1'] = 'Valid';
+			$ret['options']['0'] = 'Invalid';
+		} else {
+			$ret['value'] = 1;
+			if ( ! empty( $value ) ) {
+				$ret['attributes']['checked'] = 'checked';
 			}
+			$ret['label'] = $this->translate( 'Valid' );
 		}
-		if ( $ret['form'] === 'select' ) {
-			$ret['selected'] = $value;
-			if ( ! empty( $ret['options'] ) && ! isset( $ret['options'][ $value ] ) ) {
-				$ret['options'][ $value ] = $value;
-			}
+
+		return $ret;
+	}
+
+	/**
+	 * @param array $ret
+	 * @param mixed $value
+	 *
+	 * @return array
+	 */
+	private function setup_select_setting( array $ret, $value ) {
+		$ret['selected'] = $value;
+		if ( ! empty( $ret['options'] ) && ! isset( $ret['options'][ $value ] ) ) {
+			$ret['options'][ $value ] = $value;
 		}
 
 		return $ret;

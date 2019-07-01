@@ -18,11 +18,12 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 /** @var string $prefix */
 $attr  = $instance->app->array->get( $column, 'attributes', [] );
 $_data = [];
-! empty( $data[ $name ] ) and $_data[ $name ] = $data[ $name ];
-?>
-<?php $instance->form( 'color', [
+if ( ! empty( $data[ $name ] ) ) {
+	$_data[ $name ] = $data[ $name ];
+}
+$instance->form( 'color', [
 	'name'       => $prefix . $name,
 	'id'         => $prefix . $name,
 	'value'      => $instance->old( $prefix . $name, $_data, $name, $instance->app->array->get( $column, 'default' ) ),
 	'attributes' => $attr,
-], $instance->app->array->get( $column, 'args', [] ) ); ?>
+], $instance->app->array->get( $column, 'args', [] ) );

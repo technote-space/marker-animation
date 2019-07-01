@@ -11,9 +11,11 @@ namespace Marker_Animation\Classes\Controllers\Admin;
 use Marker_Animation\Classes\Models\Assets;
 use WP_Framework_Admin\Classes\Controllers\Admin\Base;
 
+// @codeCoverageIgnoreStart
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Class Dashboard
@@ -34,20 +36,23 @@ class Dashboard extends Base {
 	 * @return array
 	 */
 	protected function get_setting_list() {
-		return $this->app->array->map( $this->app->array->filter( $this->get_assets()->get_setting_keys(), function ( $data ) {
-			return ! is_array( $data ) || empty( $data['args']['target'] ) || in_array( 'dashboard', $data['args']['target'] );
-		} ), function ( $data ) {
-			if ( ! is_array( $data ) ) {
-				return [
-					'form' => $data,
-				];
-			}
-			if ( isset( $data['args']['options'] ) ) {
-				$data['options'] = $data['args']['options'];
-			}
+		return $this->app->array->map(
+			$this->app->array->filter( $this->get_assets()->get_setting_keys(), function ( $data ) {
+				return ! is_array( $data ) || empty( $data['args']['target'] ) || in_array( 'dashboard', $data['args']['target'], true );
+			} ),
+			function ( $data ) {
+				if ( ! is_array( $data ) ) {
+					return [
+						'form' => $data,
+					];
+				}
+				if ( isset( $data['args']['options'] ) ) {
+					$data['options'] = $data['args']['options'];
+				}
 
-			return $data;
-		} );
+				return $data;
+			}
+		);
 	}
 
 	/**
@@ -92,6 +97,7 @@ class Dashboard extends Base {
 	 * @param array $option
 	 *
 	 * @return array
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	protected function filter_detail(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -100,7 +106,9 @@ class Dashboard extends Base {
 		$detail['class']                      = 'marker-animation-option';
 		$detail['attributes']['data-value']   = $this->app->array->get( $detail, 'value' );
 		$detail['attributes']['data-default'] = $this->app->array->get( $detail, 'default' );
-		isset( $option['args']['attributes'] ) and $detail['attributes'] = $option['args']['attributes'];
+		if ( isset( $option['args']['attributes'] ) ) {
+			$detail['attributes'] = $option['args']['attributes'];
+		}
 		$detail['attributes']['data-nullable'] = $this->app->array->get( $option, 'nullable', false );
 
 		return $detail;

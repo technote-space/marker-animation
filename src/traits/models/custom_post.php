@@ -11,9 +11,11 @@ namespace Marker_Animation\Traits\Models;
 use WP_Framework_Core\Traits\Helper\Data_Helper;
 use WP_Framework_Core\Traits\Helper\Validate;
 
+// @codeCoverageIgnoreStart
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Trait Custom_Post

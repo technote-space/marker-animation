@@ -16,21 +16,23 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 /** @var array $details */
 ?>
 <table>
-    <tr>
-        <td>
-            <span class="marker-animation-preview" <?php $instance->h( implode( ' ', $attributes ), false, true, false ); ?>><?php $instance->h( 'Marker Animation', true ); ?></span>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <table class="widefat striped">
-				<?php foreach ( $details as $name => $value ): ?>
-                    <tr>
-                        <th><?php $instance->h( $name ); ?></th>
-                        <td><?php $instance->h( $value ); ?></td>
-                    </tr>
+	<tr>
+		<td>
+			<span class="marker-animation-preview" <?php $instance->h( implode( ' ', $attributes ), false, true, false ); ?>>
+				<?php $instance->h( 'Marker Animation', true ); ?>
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table class="widefat striped">
+				<?php foreach ( $details as $name => $value ) : ?>
+					<tr>
+						<th><?php $instance->h( $name ); ?></th>
+						<td><?php $instance->h( $value ); ?></td>
+					</tr>
 				<?php endforeach; ?>
-            </table>
-        </td>
-    </tr>
+			</table>
+		</td>
+	</tr>
 </table>

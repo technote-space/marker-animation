@@ -13,9 +13,11 @@ use WP_Framework_Core\Traits\Hook;
 use WP_Framework_Core\Traits\Singleton;
 use WP_Framework_Presenter\Traits\Presenter;
 
+// @codeCoverageIgnoreStart
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Class Editor
@@ -27,8 +29,9 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 
 	/**
 	 * enqueue css for gutenberg
+	 * @noinspection PhpUnusedPrivateMethodInspection
+	 * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
 	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function enqueue_block_editor_assets() {
 		if ( ! $this->apply_filters( 'is_valid' ) ) {
 			return;

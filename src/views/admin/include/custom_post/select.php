@@ -24,10 +24,9 @@ if ( '' !== $value ) {
 } else {
 	$selected[] = $column['default'];
 }
-?>
-<?php $instance->form( 'select', [
+$instance->form( 'select', [
 	'name'     => $prefix . $name,
 	'id'       => $prefix . $name,
 	'options'  => $options,
 	'selected' => $selected,
-], $instance->app->array->get( $column, 'args', [] ) ); ?>
+], $instance->app->array->get( $column, 'args', [] ) );

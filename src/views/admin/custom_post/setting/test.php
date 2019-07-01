@@ -6,38 +6,13 @@
  * @link https://technote.space/
  */
 
+use WP_Framework_Presenter\Interfaces\Presenter;
+
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	return;
 }
+/** @var Presenter $instance */
 ?>
 <div class="block form">
-    <div class="marker-setting-preview">
-        Hello, Dolly<br>
-        <span class="marker-animation">Well, hello, Dolly</span><br>
-        It's so nice to have you back where you belong<br>
-        You're lookin' swell, Dolly<br>
-        I can tell, Dolly<br>
-        <span class="marker-animation">You're still glowin', you're still crowin'</span><br>
-        You're still goin' strong<br>
-        I feel the room swayin'<br>
-        While the band's playin'<br>
-        One of our old favorite songs from way back when<br>
-        <span class="marker-animation">So, take her wrap, fellas<br>
-            Dolly, never go away again</span><br>
-        Hello, Dolly<br>
-        Well, hello, Dolly<br>
-        It's so nice to have you back where you belong<br>
-        <span class="marker-animation"> You're lookin' swell, Dolly<br>
-            I can tell, Dolly<br>
-            You're still glowin'</span>, you're still crowin'<br>
-        You're still goin' strong<br>
-        I feel the room swayin'<br>
-        <span class="marker-animation">While the band's playin'<br>
-            One of our old favorite songs from way back when</span><br>
-        So, golly, gee, fellas<br>
-        <span class="marker-animation">Have a little faith in me, fellas<br>
-            Dolly, never go away</span><br>
-        Promise, you'll never go away<br>
-        Dolly'll never go away again
-    </div>
+	<?php $instance->get_view( 'admin/include/hello_dolly', [], true ); ?>
 </div>
