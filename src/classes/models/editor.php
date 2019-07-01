@@ -34,7 +34,7 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 			return;
 		}
 		$this->enqueue_style( 'marker_animation-editor', 'gutenberg.css' );
-		$this->enqueue_script( 'marker_animation-editor', 'marker-animation-gutenberg.min.js', [
+		$this->enqueue_script( 'marker_animation-editor', 'gutenberg.min.js', [
 			'wp-blocks',
 			'wp-element',
 			'wp-rich-text',
