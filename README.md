@@ -105,8 +105,9 @@
 ## アニメーションなしでの利用
 塗る時間と遅れ時間を0に設定するとアニメーションなしでの利用が可能です。
 
-## @See
-[Register Grouped Format Type](https://github.com/technote-space/register-grouped-format-type)
+## Dependency
+- [jQuery Marker Animation](https://github.com/technote-space/jquery.marker-animation)
+- [Register Grouped Format Type](https://github.com/technote-space/register-grouped-format-type)
 
 ## Author
 [GitHub (Technote)](https://github.com/technote-space)  
