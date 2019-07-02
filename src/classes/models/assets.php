@@ -280,7 +280,6 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		$detail                             = $this->app->array->get( is_array( $form ) ? $form : [], 'detail', $this->app->setting->get_setting( $name, true ) );
 		$value                              = $this->app->array->get( $detail, 'value' );
 		$ret                                = [
-			'id'         => $this->get_id_prefix() . $name,
 			'class'      => 'marker-animation-option',
 			'name'       => ( isset( $prefix ) ? $prefix : $this->get_name_prefix() ) . $name,
 			'value'      => $value,

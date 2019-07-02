@@ -372,9 +372,32 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post {
 
 	/**
 	 * @param int $post_id
+	 * @param WP_Post $post
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+	 */
+	public function untrash_post(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id, WP_Post $post
+	) {
+		$this->clear_options_cache();
+	}
+
+	/**
+	 * @param int $post_id
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	public function trash_post(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id
+	) {
+		$this->clear_options_cache();
+	}
+
+	/**
+	 * @param int $post_id
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+	 */
+	protected function delete_misc(
 		/** @noinspection PhpUnusedParameterInspection */
 		$post_id
 	) {
