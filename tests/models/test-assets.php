@@ -34,6 +34,11 @@ class AssetsTest extends WP_UnitTestCase {
 	private static $setting;
 
 	/**
+	 * @var string $handle
+	 */
+	private static $handle;
+
+	/**
 	 * @SuppressWarnings(StaticAccess)
 	 * @throws ReflectionException
 	 */
@@ -41,6 +46,7 @@ class AssetsTest extends WP_UnitTestCase {
 		static::$app     = WP_Framework::get_instance( MARKER_ANIMATION );
 		static::$assets  = Assets::get_instance( static::$app );
 		static::$setting = Setting::get_instance( static::$app );
+		static::$handle  = static::$app->slug_name . '-marker_animation';
 		static::reset();
 	}
 
@@ -52,9 +58,7 @@ class AssetsTest extends WP_UnitTestCase {
 	}
 
 	private static function reset() {
-		wp_dequeue_style( static::$app->slug_name . '-marker_animation' );
-		wp_dequeue_style( 'artb-css' );
-		wp_dequeue_script( static::$app->slug_name . '-marker_animation' );
+		wp_dequeue_script( static::$handle );
 		static::$app->setting->edit_setting( 'is_valid', 'is_valid_marker_options_cache', true );
 		static::$app->setting->edit_setting( 'is_valid', 'selector', '' );
 		static::$app->delete_shared_object( '_hook_cache' );
@@ -64,8 +68,8 @@ class AssetsTest extends WP_UnitTestCase {
 
 	public function test_setup_assets() {
 		static::$app->file->put_contents( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js', '' );
-		$handle = static::$app->slug_name . '-marker_animation';
-		wp_dequeue_style( $handle );
+		$handle = static::$handle;
+		wp_dequeue_script( $handle );
 		$this->assertFalse( wp_script_is( $handle ) );
 
 		static::$app->setting->edit_setting( 'is_valid', 'default', false );
@@ -88,26 +92,26 @@ class AssetsTest extends WP_UnitTestCase {
 	public function test_get_marker_options() {
 		$key = 'marker_options_cache';
 		static::$app->option->delete( $key );
-		static::assertFalse( static::$app->option->exists( $key ) );
+		$this->assertFalse( static::$app->option->exists( $key ) );
 
 		static::$app->setting->edit_setting( 'is_valid_marker_options_cache', 'default', true );
 		static::$app->setting->edit_setting( 'selector', 'default', 'test1' );
 		static::$app->delete_shared_object( '_hook_cache' );
 		$option = static::$assets->get_marker_options();
-		static::assertTrue( static::$app->option->exists( $key ) );
-		static::assertStringStartsWith( 'test1,', $option['selector'] );
+		$this->assertTrue( static::$app->option->exists( $key ) );
+		$this->assertStringStartsWith( 'test1,', $option['selector'] );
 
 		static::$app->setting->edit_setting( 'is_valid_marker_options_cache', 'default', true );
 		static::$app->setting->edit_setting( 'selector', 'default', '' );
 		static::$app->delete_shared_object( '_hook_cache' );
 		$option = static::$assets->get_marker_options();
-		static::assertStringStartsWith( 'test1,', $option['selector'] );
+		$this->assertStringStartsWith( 'test1,', $option['selector'] );
 
 		static::$app->setting->edit_setting( 'is_valid_marker_options_cache', 'default', false );
 		static::$app->setting->edit_setting( 'selector', 'default', 'test2' );
 		static::$app->delete_shared_object( '_hook_cache' );
 		$option = static::$assets->get_marker_options();
-		static::assertStringStartsWith( 'test2,', $option['selector'] );
+		$this->assertStringStartsWith( 'test2,', $option['selector'] );
 	}
 
 	/**
@@ -117,14 +121,14 @@ class AssetsTest extends WP_UnitTestCase {
 		$key = 'marker_options_cache';
 
 		static::$app->option->set( $key, true );
-		static::assertTrue( static::$app->option->exists( $key ) );
+		$this->assertTrue( static::$app->option->exists( $key ) );
 		static::$app->filter->do_action( 'changed_option', 'test' );
-		static::assertTrue( static::$app->option->exists( $key ) );
+		$this->assertTrue( static::$app->option->exists( $key ) );
 
 		static::$app->option->set( $key, true );
-		static::assertTrue( static::$app->option->exists( $key ) );
+		$this->assertTrue( static::$app->option->exists( $key ) );
 		static::$app->filter->do_action( 'changed_option', 'marker_animation/test' );
-		static::assertFalse( static::$app->option->exists( $key ) );
+		$this->assertFalse( static::$app->option->exists( $key ) );
 	}
 
 	/**
@@ -137,9 +141,9 @@ class AssetsTest extends WP_UnitTestCase {
 	 */
 	public function test_parse_setting( $setting, $key, $expected1, $expected2 ) {
 		$setting = static::$assets->parse_setting( $setting, $key );
-		static::assertCount( 2, $setting );
-		static::assertEquals( $expected1, $setting[0] );
-		static::assertEquals( $expected2, $setting[1] );
+		$this->assertCount( 2, $setting );
+		$this->assertEquals( $expected1, $setting[0] );
+		$this->assertEquals( $expected2, $setting[1] );
 	}
 
 	public function parse_setting_data_provider() {
@@ -226,8 +230,8 @@ class AssetsTest extends WP_UnitTestCase {
 					'',
 				],
 				function ( $ret ) {
-					static::assertArrayHasKey( 'form', $ret );
-					static::assertEquals( 'test1', $ret['form'] );
+					$this->assertArrayHasKey( 'form', $ret );
+					$this->assertEquals( 'test1', $ret['form'] );
 				},
 			],
 			[
@@ -245,11 +249,11 @@ class AssetsTest extends WP_UnitTestCase {
 					'setting',
 				],
 				function ( $ret ) {
-					static::assertArrayHasKey( 'form', $ret );
-					static::assertArrayHasKey( 'test2-arg1', $ret );
-					static::assertArrayNotHasKey( 'options', $ret );
-					static::assertEquals( 'test2', $ret['form'] );
-					static::assertEquals( '21', $ret['test2-arg1'] );
+					$this->assertArrayHasKey( 'form', $ret );
+					$this->assertArrayHasKey( 'test2-arg1', $ret );
+					$this->assertArrayNotHasKey( 'options', $ret );
+					$this->assertEquals( 'test2', $ret['form'] );
+					$this->assertEquals( '21', $ret['test2-arg1'] );
 				},
 			],
 			[
@@ -263,11 +267,11 @@ class AssetsTest extends WP_UnitTestCase {
 					'setting',
 				],
 				function ( $ret ) {
-					static::assertArrayHasKey( 'form', $ret );
-					static::assertArrayNotHasKey( 'args', $ret );
-					static::assertArrayHasKey( 'options', $ret );
-					static::assertEquals( 'select', $ret['form'] );
-					static::assertCount( 1, $ret['options'] );
+					$this->assertArrayHasKey( 'form', $ret );
+					$this->assertArrayNotHasKey( 'args', $ret );
+					$this->assertArrayHasKey( 'options', $ret );
+					$this->assertEquals( 'select', $ret['form'] );
+					$this->assertCount( 1, $ret['options'] );
 				},
 			],
 			[
@@ -282,11 +286,11 @@ class AssetsTest extends WP_UnitTestCase {
 					'setting',
 				],
 				function ( $ret ) {
-					static::assertArrayHasKey( 'form', $ret );
-					static::assertArrayNotHasKey( 'args', $ret );
-					static::assertArrayHasKey( 'options', $ret );
-					static::assertEquals( 'select', $ret['form'] );
-					static::assertCount( 2, $ret['options'] );
+					$this->assertArrayHasKey( 'form', $ret );
+					$this->assertArrayNotHasKey( 'args', $ret );
+					$this->assertArrayHasKey( 'options', $ret );
+					$this->assertEquals( 'select', $ret['form'] );
+					$this->assertCount( 2, $ret['options'] );
 				},
 			],
 		];
@@ -318,8 +322,8 @@ class AssetsTest extends WP_UnitTestCase {
 					'',
 				],
 				function ( $ret ) {
-					static::assertEquals( 'Valid', $ret['options']['1'] );
-					static::assertEquals( 'Invalid', $ret['options']['0'] );
+					$this->assertEquals( 'Valid', $ret['options']['1'] );
+					$this->assertEquals( 'Invalid', $ret['options']['0'] );
 				},
 			],
 			[
@@ -331,9 +335,9 @@ class AssetsTest extends WP_UnitTestCase {
 					'',
 				],
 				function ( $ret ) {
-					static::assertEquals( 1, $ret['value'] );
-					static::assertArrayNotHasKey( 'attributes', $ret );
-					static::assertArrayHasKey( 'label', $ret );
+					$this->assertEquals( 1, $ret['value'] );
+					$this->assertArrayNotHasKey( 'attributes', $ret );
+					$this->assertArrayHasKey( 'label', $ret );
 				},
 			],
 			[
@@ -345,9 +349,9 @@ class AssetsTest extends WP_UnitTestCase {
 					'1',
 				],
 				function ( $ret ) {
-					static::assertEquals( 1, $ret['value'] );
-					static::assertArrayHasKey( 'attributes', $ret );
-					static::assertArrayHasKey( 'label', $ret );
+					$this->assertEquals( 1, $ret['value'] );
+					$this->assertArrayHasKey( 'attributes', $ret );
+					$this->assertArrayHasKey( 'label', $ret );
 				},
 			],
 		];
@@ -375,7 +379,7 @@ class AssetsTest extends WP_UnitTestCase {
 					'b',
 				],
 				function ( $ret ) {
-					static::assertEquals( 'b', $ret['selected'] );
+					$this->assertEquals( 'b', $ret['selected'] );
 				},
 			],
 			[
@@ -388,8 +392,8 @@ class AssetsTest extends WP_UnitTestCase {
 					'a',
 				],
 				function ( $ret ) {
-					static::assertEquals( 'a', $ret['selected'] );
-					static::assertArrayHasKey( 'a', $ret['options'] );
+					$this->assertEquals( 'a', $ret['selected'] );
+					$this->assertArrayHasKey( 'a', $ret['options'] );
 				},
 			],
 			[
@@ -402,8 +406,8 @@ class AssetsTest extends WP_UnitTestCase {
 					'c',
 				],
 				function ( $ret ) {
-					static::assertEquals( 'c', $ret['selected'] );
-					static::assertArrayHasKey( 'c', $ret['options'] );
+					$this->assertEquals( 'c', $ret['selected'] );
+					$this->assertArrayHasKey( 'c', $ret['options'] );
 				},
 			],
 		];

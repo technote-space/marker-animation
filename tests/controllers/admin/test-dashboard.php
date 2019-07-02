@@ -118,10 +118,10 @@ class DashboardTest extends WP_UnitTestCase {
 		static::$app->input->set_request( 'marker_animation_nonce_admin_dashboard', static::create_nonce() );
 		static::$app->input->set_post( 'marker_animation/color', 'blue' );
 		static::$app->delete_shared_object( '_hook_cache' );
-		static::assertEquals( 'red', static::$app->filter->apply_filters( 'color' ) );
+		$this->assertEquals( 'red', static::$app->filter->apply_filters( 'color' ) );
 
 		static::$dashboard->action();
-		static::assertEquals( '#ffff66', static::$app->filter->apply_filters( 'color' ) );
+		$this->assertEquals( '#ffff66', static::$app->filter->apply_filters( 'color' ) );
 	}
 
 	/**
@@ -136,10 +136,10 @@ class DashboardTest extends WP_UnitTestCase {
 		static::$app->input->set_request( 'marker_animation_nonce_admin_dashboard', static::create_nonce() );
 		static::$app->input->set_post( 'marker_animation/color', 'blue' );
 		static::$app->delete_shared_object( '_hook_cache' );
-		static::assertEquals( 'red', static::$app->filter->apply_filters( 'color' ) );
+		$this->assertEquals( 'red', static::$app->filter->apply_filters( 'color' ) );
 
 		static::$dashboard->action();
-		static::assertEquals( 'blue', static::$app->filter->apply_filters( 'color' ) );
+		$this->assertEquals( 'blue', static::$app->filter->apply_filters( 'color' ) );
 	}
 
 	/**
