@@ -44,7 +44,6 @@ class DashboardTest extends WP_UnitTestCase {
 	 */
 	public static function tearDownAfterClass() {
 		static::reset();
-		static::$app->file->delete( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js' );
 	}
 
 	/**
@@ -62,7 +61,7 @@ class DashboardTest extends WP_UnitTestCase {
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		static::get_output_js();
 		static::get_output_css();
-		static::$app->file->put_contents( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js', '' );
+		static::$app->file->delete( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js' );
 		static::$app->option->delete( 'marker_animation/color' );
 	}
 
@@ -71,6 +70,7 @@ class DashboardTest extends WP_UnitTestCase {
 	 */
 	public function test_action() {
 		static::reset();
+		static::$app->file->put_contents( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js', '' );
 		$this->assertFalse( wp_script_is( 'wp-color-picker' ) );
 		$this->assertFalse( wp_style_is( 'wp-color-picker' ) );
 		$this->assertFalse( wp_script_is( static::$app->slug_name . '-marker_animation' ) );

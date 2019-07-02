@@ -36,15 +36,34 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		if ( ! $this->apply_filters( 'is_valid' ) ) {
 			return;
 		}
-		$this->enqueue_style( 'marker_animation-editor', 'gutenberg.css' );
-		$this->enqueue_script( 'marker_animation-editor', 'gutenberg.min.js', [
+
+		$handle  = 'marker_animation-editor';
+		$depends = [
+			'wp-block-editor',
 			'wp-blocks',
-			'wp-element',
-			'wp-rich-text',
 			'wp-components',
-			'lodash',
-		] );
-		$this->localize_script( 'marker_animation-editor', 'markerAnimationParams', $this->get_editor_params() );
+			'wp-compose',
+			'wp-core-data',
+			'wp-data',
+			'wp-dom-ready',
+			'wp-editor',
+			'wp-element',
+			'wp-format-library',
+			'wp-hooks',
+			'wp-i18n',
+			'wp-rich-text',
+			'wp-server-side-render',
+			'wp-url',
+		];
+		foreach ( $depends as $key => $depend ) {
+			if ( ! $this->app->editor->is_support_editor_package( $depend ) ) {
+				unset( $depends[ $key ] );
+			}
+		}
+		$depends[] = 'lodash';
+		$this->enqueue_style( $handle, 'gutenberg.css' );
+		$this->enqueue_script( $handle, 'gutenberg.min.js', $depends );
+		$this->localize_script( $handle, 'markerAnimationParams', $this->get_editor_params() );
 	}
 
 	/**

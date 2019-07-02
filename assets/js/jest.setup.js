@@ -9,12 +9,13 @@ global.window.matchMedia = () => ( {
 global.markerAnimationParams = {
 	translate: {},
 	class: 'test-class1',
-	prefix: 'prefix-',
+	prefix: 'prefix_',
 	details: {
 		'test1-1': {
 			form: 'input/checkbox',
 			attributes: {
 				'data-value': 'test1',
+				'data-option_name': 'test1-option',
 			},
 		},
 		'test1-2': {
@@ -57,8 +58,22 @@ global.markerAnimationParams = {
 				'data-value': 'test6',
 			},
 		},
+		color: {
+			form: 'color',
+			value: 'blue',
+			attributes: {},
+		},
+		stripe: {
+			form: 'input/checkbox',
+			detail: {
+				value: false,
+			},
+			attributes: {},
+		},
 	},
 };
+
+import domReady from '@wordpress/dom-ready' ;
 
 const blockEditor = require( '@wordpress/block-editor' );
 const blocks = require( '@wordpress/blocks' );
@@ -82,6 +97,7 @@ global.wp = {
 	compose,
 	coreData,
 	data,
+	domReady,
 	editor,
 	element,
 	formatLibrary,
@@ -91,3 +107,14 @@ global.wp = {
 	richText,
 	url,
 };
+
+{
+	const editorDiv = document.createElement( 'div' );
+	const child = document.createElement( 'div' );
+	child.className = markerAnimationParams.class;
+	child.dataset[ global.markerAnimationParams.prefix + 'color' ] = 'red';
+	child.dataset[ 'test' ] = '123';
+	editorDiv.id = 'editor';
+	editorDiv.append( child );
+	document.body.appendChild( editorDiv );
+}

@@ -35,6 +35,7 @@ export const addStyle = ( key, value, className, isData, setupStripe, isAddStyle
 		if ( sheet.insertRule ) {
 			sheet.insertRule( selector + '{' + style + '}', sheet.cssRules.length );
 		} else {
+			/* istanbul ignore next */
 			sheet.addRule( selector, style );
 		}
 	}, key, value, className, setupStripe, isStripe );
@@ -58,27 +59,12 @@ export const addStyleHelper = ( func, key, value, className, setupStripe, isStri
 		return;
 	}
 
-	let style = null;
 	if ( 'color' === key ) {
 		addColorStyle( func, key, value, className, setupStripe, isStripe );
 		return;
-	} else if ( 'color-normal' === key ) {
-		style = 'background-image:linear-gradient(to right,rgba(255,255,255,0) 50%,' + value + ' 50%)';
-	} else if ( 'color-stripe' === key ) {
-		style = 'background-image:repeating-linear-gradient(-45deg,' + value + ',' + value + ' 2px,transparent 2px,transparent 4px)';
-	} else if ( 'thickness' === key ) {
-		style = 'background-size:200% ' + value;
-	} else if ( 'font_weight' === key || 'bold' === key ) {
-		style = 'font-weight:' + ( ! value || value === 'null' ? 'normal' : value );
-	} else if ( 'padding_bottom' === key ) {
-		style = 'padding-bottom:' + value;
-	} else if ( 'display' === key ) {
-		style = 'display:' + value;
-	} else if ( 'background-position' === key ) {
-		style = 'background-position:' + value;
-	} else if ( 'background-repeat' === key ) {
-		style = 'background-repeat:' + value;
 	}
+
+	const style = getStyle( key, value );
 	if ( style ) {
 		func( className, style, originalKey );
 	}
@@ -91,6 +77,14 @@ export const addStyleHelper = ( func, key, value, className, setupStripe, isStri
 	markerAnimationParams.addedStyle[ className ][ key ][ value ] = true;
 };
 
+/**
+ * @param {function} func apply function
+ * @param {string} key key
+ * @param {*} value value
+ * @param {string?} className class name
+ * @param {boolean?} setupStripe setup stripe?
+ * @param {boolean?} isStripe is stripe?
+ */
 const addColorStyle = ( func, key, value, className, setupStripe, isStripe ) => {
 	if ( undefined === isStripe ) {
 		return;
@@ -109,9 +103,42 @@ const addColorStyle = ( func, key, value, className, setupStripe, isStripe ) => 
 };
 
 /**
+ * @param {string} key key
+ * @param {*} value value
+ * @returns {string|null} style
+ */
+const getStyle = ( key, value ) => {
+	if ( 'color-normal' === key ) {
+		return 'background-image:linear-gradient(to right,rgba(255,255,255,0) 50%,' + value + ' 50%)';
+	} else if ( 'color-stripe' === key ) {
+		return 'background-image:repeating-linear-gradient(-45deg,' + value + ',' + value + ' 2px,transparent 2px,transparent 4px)';
+	} else if ( 'thickness' === key ) {
+		return 'background-size:200% ' + value;
+	} else if ( 'font_weight' === key || 'bold' === key ) {
+		return 'font-weight:' + ( ! value || value === 'null' ? 'normal' : value );
+	} else if ( 'padding_bottom' === key ) {
+		return 'padding-bottom:' + value;
+	} else if ( 'display' === key ) {
+		return 'display:' + value;
+	} else if ( 'background-position' === key ) {
+		return 'background-position:' + value;
+	} else if ( 'background-repeat' === key ) {
+		return 'background-repeat:' + value;
+	}
+	return null;
+};
+
+let hasLoaded = false;
+
+/**
  * apply styles
  */
 export const applyStyles = () => {
+	if ( hasLoaded ) {
+		return;
+	}
+	hasLoaded = true;
+
 	Object.keys( markerAnimationParams.details ).forEach( key => {
 		const detail = markerAnimationParams.details[ key ];
 		if ( detail.ignore ) {

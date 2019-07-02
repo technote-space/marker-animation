@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import { addStyleHelper } from '../../src/gutenberg/utils/style';
+import { addStyleHelper, applyStyles } from '../../src/gutenberg/utils/style';
 
 describe( 'addStyleHelper', () => {
 	it( 'should set styles', () => {
@@ -76,5 +76,16 @@ describe( 'addStyleHelper', () => {
 		expect( called ).toBe( 2 );
 		addStyleHelper( func, 'color', 'red', 'test-class4', true, false );
 		expect( called ).toBe( 4 );
+	} );
+} );
+
+describe( 'applyStyles', () => {
+	it( 'should setup styles', () => {
+		applyStyles();
+		applyStyles();
+		window.document.dispatchEvent( new Event( 'DOMContentLoaded', {
+			bubbles: true,
+			cancelable: true,
+		} ) );
 	} );
 } );

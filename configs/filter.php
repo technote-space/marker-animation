@@ -13,7 +13,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 return [
 
 	'\Marker_Animation\Classes\Models\Assets'              => [
-		'template_redirect'         => [
+		'wp_head'                   => [
 			'setup_assets',
 		],
 		'${prefix}changed_option'   => [
