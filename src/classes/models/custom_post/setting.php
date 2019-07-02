@@ -431,13 +431,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post {
 				$options['selector'] .= ', ' . $data['selector'];
 			}
 			if ( 'editor' === $target ) {
-				foreach ( $options as $key => $item ) {
-					$new_key = $this->app->string->camel( $key );
-					if ( $key !== $new_key ) {
-						$options[ $new_key ] = $item;
-						unset( $options[ $key ] );
-					}
-				}
+				$options = $this->toCamel( $options );
 			}
 			$settings[] = [
 				'id'      => $post->ID,
@@ -447,5 +441,22 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post {
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * @param array $options
+	 *
+	 * @return array
+	 */
+	private function toCamel( $options ) {
+		foreach ( $options as $key => $item ) {
+			$new_key = $this->app->string->camel( $key );
+			if ( $key !== $new_key ) {
+				$options[ $new_key ] = $item;
+				unset( $options[ $key ] );
+			}
+		}
+
+		return $options;
 	}
 }
