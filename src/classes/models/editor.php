@@ -57,15 +57,17 @@ class Editor implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 		$setting = Custom_Post\Setting::get_instance( $this->app );
 
 		return [
-			'title'                      => $this->translate( 'Marker Animation' ),
-			'detail_title'               => $this->translate( 'Marker Animation (detail setting)' ),
-			'class'                      => $assets->get_default_marker_animation_class(),
-			'details'                    => $assets->get_setting_details( 'editor' ),
-			'settings'                   => $setting->get_settings( 'editor' ),
-			'prefix'                     => $assets->get_data_prefix(),
-			'default_icon'               => $this->get_img_url( 'icon-24x24.png' ),
-			'append_nav_item_class_name' => true,
-			'is_valid_detail_setting'    => $this->app->utility->compare_wp_version( '5.2', '>=' ),
+			'class'                => $assets->get_default_marker_animation_class(),
+			'details'              => $assets->get_setting_details( 'editor' ),
+			'settings'             => $setting->get_settings( 'editor' ),
+			'prefix'               => $assets->get_data_prefix(),
+			'defaultIcon'          => $this->get_img_url( 'icon-24x24.png' ),
+			'isValidDetailSetting' => $this->app->utility->compare_wp_version( '5.2', '>=' ),
+			'translate'            => $this->get_translate_data( [
+				'Marker Animation',
+				'Marker Animation (detail setting)',
+				'Reset',
+			] ),
 		];
 	}
 }

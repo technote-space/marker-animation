@@ -430,6 +430,15 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post {
 			if ( ! empty( $data['selector'] ) ) {
 				$options['selector'] .= ', ' . $data['selector'];
 			}
+			if ( 'editor' === $target ) {
+				foreach ( $options as $key => $item ) {
+					$new_key = $this->app->string->camel( $key );
+					if ( $key !== $new_key ) {
+						$options[ $new_key ] = $item;
+						unset( $options[ $key ] );
+					}
+				}
+			}
 			$settings[] = [
 				'id'      => $post->ID,
 				'options' => $options,
