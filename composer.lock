@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2237b813a3e8a21fc96dc67c6ddb98c",
+    "content-hash": "53155d7b136607cd927feaa36c616458",
     "packages": [
         {
             "name": "matthiasmullie/minify",
@@ -362,16 +362,16 @@
         },
         {
             "name": "wp-content-framework/custom_post",
-            "version": "v0.0.37",
+            "version": "v0.0.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/custom_post.git",
-                "reference": "3f755799c75fdbdcc1f8eaf2b5dad8cdff67778d"
+                "reference": "8daf9150b21b6616d999054c90792f14e044796a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/custom_post/zipball/3f755799c75fdbdcc1f8eaf2b5dad8cdff67778d",
-                "reference": "3f755799c75fdbdcc1f8eaf2b5dad8cdff67778d",
+                "url": "https://api.github.com/repos/wp-content-framework/custom_post/zipball/8daf9150b21b6616d999054c90792f14e044796a",
+                "reference": "8daf9150b21b6616d999054c90792f14e044796a",
                 "shasum": ""
             },
             "require": {
@@ -403,7 +403,7 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-06-02T13:37:17+00:00"
+            "time": "2019-07-02T16:42:07+00:00"
         },
         {
             "name": "wp-content-framework/db",
@@ -445,6 +445,47 @@
                 "wordpress"
             ],
             "time": "2019-05-15T07:46:06+00:00"
+        },
+        {
+            "name": "wp-content-framework/editor",
+            "version": "v0.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wp-content-framework/editor.git",
+                "reference": "c5b0f4c20424f656372c419f00070586040d6e32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wp-content-framework/editor/zipball/c5b0f4c20424f656372c419f00070586040d6e32",
+                "reference": "c5b0f4c20424f656372c419f00070586040d6e32",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phake/phake": "~2.0",
+                "phpunit/phpunit": "~5.7"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "technote",
+                    "email": "technote.space@gmail.com",
+                    "homepage": "https://technote.space"
+                }
+            ],
+            "description": "Wordpress content framework",
+            "homepage": "https://github.com/wp-content-framework",
+            "keywords": [
+                "framework",
+                "wordpress"
+            ],
+            "time": "2019-06-24T04:56:12+00:00"
         },
         {
             "name": "wp-content-framework/presenter",
@@ -837,16 +878,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "dc784032a3f6f4e7a4b882e272b771f6fe4c37cf"
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc784032a3f6f4e7a4b882e272b771f6fe4c37cf",
-                "reference": "dc784032a3f6f4e7a4b882e272b771f6fe4c37cf",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
                 "shasum": ""
             },
             "require": {
@@ -904,7 +945,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-06-30T00:37:05+00:00"
+            "time": "2019-07-01T23:21:34+00:00"
         },
         {
             "name": "myclabs/deep-copy",
