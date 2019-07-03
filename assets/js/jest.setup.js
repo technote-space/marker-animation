@@ -1,3 +1,11 @@
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure( {
+	adapter: new Adapter(),
+	snapshotSerializers: [ 'enzyme-to-json/serializer' ],
+} );
+
 const Mousetrap = require( 'mousetrap' );
 const lodash = require( 'lodash' );
 global.Mousetrap = Mousetrap;
@@ -8,7 +16,7 @@ global.window.matchMedia = () => ( {
 } );
 global.markerAnimationParams = {
 	translate: {},
-	class: 'test-class1',
+	class: 'test-marker-animation-class',
 	prefix: 'prefix_',
 	details: {
 		'test1-1': {
@@ -66,7 +74,7 @@ global.markerAnimationParams = {
 		stripe: {
 			form: 'input/checkbox',
 			detail: {
-				value: false,
+				value: true,
 			},
 			attributes: {},
 		},
@@ -110,11 +118,20 @@ global.wp = {
 
 {
 	const editorDiv = document.createElement( 'div' );
-	const child = document.createElement( 'div' );
-	child.className = markerAnimationParams.class;
-	child.dataset[ global.markerAnimationParams.prefix + 'color' ] = 'red';
-	child.dataset[ 'test' ] = '123';
 	editorDiv.id = 'editor';
-	editorDiv.append( child );
+
+	const addChild = ( tag, dataset ) => {
+		const child = document.createElement( tag );
+		child.className = markerAnimationParams.class;
+		Object.keys( dataset ).forEach( key => {
+			child.dataset[ key ] = dataset[ key ];
+		} );
+		editorDiv.append( child );
+	};
+	const getDataKey = key => `${ global.markerAnimationParams.prefix }${ key }`;
+
+	addChild( 'div', { [ getDataKey( 'color' ) ]: 'red', test: '123' } );
+	addChild( 'div', { [ getDataKey( 'font_weight' ) ]: 'bold' } );
+
 	document.body.appendChild( editorDiv );
 }

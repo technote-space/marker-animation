@@ -1,5 +1,9 @@
 /* eslint-disable no-magic-numbers */
-import { addStyleHelper, applyStyles } from '../../src/gutenberg/utils/style';
+import { addStyleHelper, applyStyles, addStyle } from '../../src/gutenberg/utils/style';
+
+beforeEach( () => {
+	markerAnimationParams.addedStyle = {};
+} );
 
 describe( 'addStyleHelper', () => {
 	it( 'should set styles', () => {
@@ -17,11 +21,11 @@ describe( 'addStyleHelper', () => {
 				expect( _key ).toBeUndefined();
 				called++;
 			};
-			addStyleHelper( func( 'test1', 'test-class1' ), key, 'test1' );
+			addStyleHelper( func( 'test1', 'test-marker-animation-class' ), key, 'test1' );
 			expect( called ).toBe( 1 );
-			addStyleHelper( func( 'test1', 'test-class1' ), key, 'test1' );
+			addStyleHelper( func( 'test1', 'test-marker-animation-class' ), key, 'test1' );
 			expect( called ).toBe( 1 );
-			addStyleHelper( func( 'test2', 'test-class1' ), key, 'test2' );
+			addStyleHelper( func( 'test2', 'test-marker-animation-class' ), key, 'test2' );
 			expect( called ).toBe( 2 );
 			addStyleHelper( func( 'test2', 'test-class2' ), key, 'test2', 'test-class2' );
 			expect( called ).toBe( 3 );
@@ -35,13 +39,13 @@ describe( 'addStyleHelper', () => {
 			expect( _key ).toBeUndefined();
 			called++;
 		};
-		addStyleHelper( func( 'normal', 'test-class1' ), 'font_weight', 0 );
+		addStyleHelper( func( 'normal', 'test-marker-animation-class' ), 'font_weight', 0 );
 		expect( called ).toBe( 1 );
-		addStyleHelper( func( 'normal', 'test-class1' ), 'font_weight', 0 );
+		addStyleHelper( func( 'normal', 'test-marker-animation-class' ), 'font_weight', 0 );
 		expect( called ).toBe( 1 );
-		addStyleHelper( func( 'normal', 'test-class1' ), 'font_weight', 'null' );
+		addStyleHelper( func( 'normal', 'test-marker-animation-class' ), 'font_weight', 'null' );
 		expect( called ).toBe( 2 );
-		addStyleHelper( func( 'bold', 'test-class1' ), 'font_weight', 'bold' );
+		addStyleHelper( func( 'bold', 'test-marker-animation-class' ), 'font_weight', 'bold' );
 		expect( called ).toBe( 3 );
 		addStyleHelper( func( 'bold', 'test-class2' ), 'font_weight', 'bold', 'test-class2' );
 		expect( called ).toBe( 4 );
@@ -62,7 +66,7 @@ describe( 'addStyleHelper', () => {
 			expect( _key ).toBeUndefined();
 			called++;
 		};
-		addStyleHelper( func( 'background-image:linear-gradient', 'test-class1' ), 'color', 'red', undefined, false, false );
+		addStyleHelper( func( 'background-image:linear-gradient', 'test-marker-animation-class' ), 'color', 'red', undefined, false, false );
 		expect( called ).toBe( 1 );
 		addStyleHelper( func( 'background-image:repeating-linear-gradient', 'test-class2' ), 'color', 'red', 'test-class2', false, true );
 		expect( called ).toBe( 2 );
@@ -87,5 +91,30 @@ describe( 'applyStyles', () => {
 			bubbles: true,
 			cancelable: true,
 		} ) );
+		expect( Array.from( document.head.children ).filter( el => {
+			if ( ! el.sheet || ! el.sheet.cssRules ) {
+				return false;
+			}
+			return el.sheet.cssRules.filter( rule => rule.selectorText.startsWith( 'body #editor .test-marker-animation-class' ) ).length;
+		} ) ).toHaveLength( 5 );
+	} );
+} );
+
+describe( 'addStyle', () => {
+	it( 'should add styles', () => {
+		addStyle( 'color', 'blue', 'test-class5', false, true, true, false );
+		addStyle( 'thickness', '1em', 'test-class6', false );
+		expect( Array.from( document.head.children ).filter( el => {
+			if ( ! el.sheet || ! el.sheet.cssRules ) {
+				return false;
+			}
+			return el.sheet.cssRules.filter( rule => rule.selectorText.startsWith( 'body #editor .test-class5' ) ).length;
+		} ) ).toHaveLength( 2 );
+		expect( Array.from( document.head.children ).filter( el => {
+			if ( ! el.sheet || ! el.sheet.cssRules ) {
+				return false;
+			}
+			return el.sheet.cssRules.filter( rule => rule.selectorText.startsWith( 'body #editor .test-class6' ) ).length;
+		} ) ).toHaveLength( 1 );
 	} );
 } );
