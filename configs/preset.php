@@ -36,4 +36,13 @@ return [
 		'priority'                     => 50,
 	],
 
+	[
+		'name'                         => 'Stripe design',
+		'color'                        => '#ffbb5b',
+		'is_valid'                     => 1,
+		'is_stripe'                    => 1,
+		'is_valid_button_block_editor' => 1,
+		'priority'                     => 60,
+	],
+
 ];
