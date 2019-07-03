@@ -119,7 +119,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post {
 		$params['name_prefix']            = $assets->get_name_prefix();
 		$params['id_prefix']              = $assets->get_id_prefix();
 		$params['target_selector']        = '.marker-animation-option';
-		$params['marker_target_selector'] = '.marker-setting-preview .marker-animation';
+		$params['marker_target_selector'] = '.marker-setting-preview span';
 
 		return $params;
 	}
