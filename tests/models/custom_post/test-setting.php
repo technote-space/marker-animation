@@ -15,6 +15,7 @@ use Marker_Animation\Classes\Models\Custom_Post\Setting;
  * Setting test case.
  *
  * @mixin TestCase
+ * @SuppressWarnings(TooManyPublicMethods)
  */
 class SettingTest extends WP_UnitTestCase {
 
