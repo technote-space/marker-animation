@@ -1,8 +1,45 @@
 import { getDataName, parseInputValue } from './misc';
 
+/* istanbul ignore next */
 if ( markerAnimationParams.addedStyle === undefined ) {
 	markerAnimationParams.addedStyle = {};
 }
+
+/**
+ * @param {string} className class name
+ * @param {string} style style
+ * @param {string} originalKey original key
+ * @param {string} key key
+ * @param {*} value value
+ * @param {boolean?} isData is data?
+ * @param {boolean?} setupStripe setup stripe?
+ * @param {boolean?} isAddStyle is add style?
+ * @param {boolean?} isStripe is stripe?
+ */
+export const applyStyle = ( className, style, originalKey, key, value, isData, setupStripe, isAddStyle, isStripe ) => {
+	let selector = 'body #editor .' + className;
+	if ( 'color' === key ) {
+		if ( ( isAddStyle || ! setupStripe ) && isData ) {
+			selector += '[' + getDataName( key, true ) + '="' + value + '"]';
+		}
+		if ( setupStripe && 'color' === originalKey ) {
+			selector += '[' + getDataName( 'stripe', true ) + '="' + ( isStripe ? 'false' : 'true' ) + '"]';
+		}
+	} else if ( isData ) {
+		selector += '[' + getDataName( key, true ) + '="' + value + '"]';
+	}
+	const styleSheetElement = document.createElement( 'style' );
+
+	document.head.appendChild( styleSheetElement );
+
+	const sheet = styleSheetElement.sheet;
+	/* istanbul ignore else */
+	if ( sheet.insertRule ) {
+		sheet.insertRule( selector + '{' + style + '}', sheet.cssRules.length );
+	} else {
+		sheet.addRule( selector, style );
+	}
+};
 
 /**
  * add style
@@ -15,29 +52,8 @@ if ( markerAnimationParams.addedStyle === undefined ) {
  * @param {boolean?} isStripe is stripe?
  */
 export const addStyle = ( key, value, className, isData, setupStripe, isAddStyle, isStripe ) => {
-	addStyleHelper( ( className, style, _key ) => {
-		let selector = 'body #editor .' + className;
-		if ( 'color' === key ) {
-			if ( ( isAddStyle || ! setupStripe ) && isData ) {
-				selector += '[' + getDataName( key, true ) + '="' + value + '"]';
-			}
-			if ( setupStripe && 'color' === _key ) {
-				selector += '[' + getDataName( 'stripe', true ) + '="' + ( isStripe ? 'false' : 'true' ) + '"]';
-			}
-		} else if ( isData ) {
-			selector += '[' + getDataName( key, true ) + '="' + value + '"]';
-		}
-		const styleSheetElement = document.createElement( 'style' );
-
-		document.head.appendChild( styleSheetElement );
-
-		const sheet = styleSheetElement.sheet;
-		if ( sheet.insertRule ) {
-			sheet.insertRule( selector + '{' + style + '}', sheet.cssRules.length );
-		} else {
-			/* istanbul ignore next */
-			sheet.addRule( selector, style );
-		}
+	addStyleHelper( ( className, style, originalKey ) => {
+		applyStyle( className, style, originalKey, key, value, isData, setupStripe, isAddStyle, isStripe );
 	}, key, value, className, setupStripe, isStripe );
 };
 
