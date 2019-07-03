@@ -30,6 +30,7 @@ export const getPanelComponent = ( setting, args, formatName, value, stripe ) =>
 		case 'colorpicker':
 			return <ColorPalette
 				id={ id }
+				key={ id }
 				label={ setting.label }
 				colors={ getColors() }
 				value={ value }
@@ -38,12 +39,15 @@ export const getPanelComponent = ( setting, args, formatName, value, stripe ) =>
 		case 'textbox':
 			return <MyTextControl
 				id={ id }
+				key={ id }
 				label={ setting.label }
 				value={ value }
+				args={ args }
 				onChange={ setData( setting, args, formatName ) }
 			/>;
 		case 'checkbox':
 			return <CheckboxControl
+				key={ id }
 				label={ setting.label }
 				checked={ value }
 				onChange={ setData( setting, args, formatName ) }
@@ -51,6 +55,7 @@ export const getPanelComponent = ( setting, args, formatName, value, stripe ) =>
 		case 'listbox':
 			return <SelectControl
 				id={ id }
+				key={ id }
 				label={ setting.label }
 				options={ setting.values }
 				value={ value }
