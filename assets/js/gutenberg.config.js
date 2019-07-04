@@ -1,14 +1,18 @@
+const SpeedMeasurePlugin = require( 'speed-measure-webpack-plugin' );
+const DuplicatePackageCheckerPlugin = require( 'duplicate-package-checker-webpack-plugin' );
+const smp = new SpeedMeasurePlugin();
 const webpack = require( 'webpack' );
 const pkg = require( './package' );
+const path = require( 'path' );
 
 const banner = `${ pkg.name }-gutenberg ${ pkg.version }\nCopyright (c) ${ new Date().getFullYear() } ${ pkg.author }\nLicense: ${ pkg.license }`;
 
 const webpackConfig = {
-	context: __dirname + '/src/gutenberg',
+	context: path.resolve( __dirname, 'src', 'gutenberg' ),
 	entry: './index.js',
 	output: {
 		path: __dirname,
-		filename: `${ pkg.name }-gutenberg.min.js`,
+		filename: 'gutenberg.min.js',
 	},
 	module: {
 		rules: [
@@ -19,13 +23,13 @@ const webpackConfig = {
 			},
 		],
 	},
+	externals: {
+		lodash: 'lodash',
+	},
 	plugins: [
 		new webpack.BannerPlugin( banner ),
-		new webpack.DefinePlugin( {
-			'PLUGIN_NAME': JSON.stringify( `${ pkg.name }` ),
-			'PARAMETER_NAME': JSON.stringify( 'markerAnimationParams' ),
-		} ),
+		new DuplicatePackageCheckerPlugin(),
 	],
 };
 
-module.exports = webpackConfig;
+module.exports = smp.wrap( webpackConfig );

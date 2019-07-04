@@ -1,8 +1,6 @@
 <?php
 /**
- * @version 1.7.6
  * @author Technote
- * @since 1.4.0
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -26,10 +24,9 @@ if ( '' !== $value ) {
 } else {
 	$selected[] = $column['default'];
 }
-?>
-<?php $instance->form( 'select', [
+$instance->form( 'select', [
 	'name'     => $prefix . $name,
 	'id'       => $prefix . $name,
 	'options'  => $options,
 	'selected' => $selected,
-], $instance->app->array->get( $column, 'args', [] ) ); ?>
+], $instance->app->array->get( $column, 'args', [] ) );

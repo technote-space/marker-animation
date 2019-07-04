@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MyTextControl should render text control: blur1 1`] = `
+<div
+  className="components-base-control"
+>
+  <div
+    className="components-base-control__field"
+  >
+    <label
+      className="components-base-control__label"
+      htmlFor="inspector-text-control-0"
+    >
+      test-label
+    </label>
+    <input
+      className="components-text-control__input"
+      id="test-id"
+      onBlur={[Function]}
+      onChange={[Function]}
+      type="text"
+      value="xyz"
+    />
+  </div>
+</div>
+`;
+
+exports[`MyTextControl should render text control: blur2 1`] = `
+<div
+  className="components-base-control"
+>
+  <div
+    className="components-base-control__field"
+  >
+    <label
+      className="components-base-control__label"
+      htmlFor="inspector-text-control-1"
+    >
+      test-label
+    </label>
+    <input
+      className="components-text-control__input"
+      id="test-id"
+      onBlur={[Function]}
+      onChange={[Function]}
+      type="text"
+      value="abc"
+    />
+  </div>
+</div>
+`;
+
+exports[`MyTextControl should render text control: changed1 1`] = `
+<div
+  className="components-base-control"
+>
+  <div
+    className="components-base-control__field"
+  >
+    <label
+      className="components-base-control__label"
+      htmlFor="inspector-text-control-0"
+    >
+      test-label
+    </label>
+    <input
+      className="components-text-control__input"
+      id="test-id"
+      onBlur={[Function]}
+      onChange={[Function]}
+      type="text"
+      value="xyz"
+    />
+  </div>
+</div>
+`;
+
+exports[`MyTextControl should render text control: render1 1`] = `
+<div
+  className="components-base-control"
+>
+  <div
+    className="components-base-control__field"
+  >
+    <label
+      className="components-base-control__label"
+      htmlFor="inspector-text-control-0"
+    >
+      test-label
+    </label>
+    <input
+      className="components-text-control__input"
+      id="test-id"
+      onBlur={[Function]}
+      onChange={[Function]}
+      type="text"
+      value="abc"
+    />
+  </div>
+</div>
+`;
+
+exports[`MyTextControl should render text control: render2 1`] = `
+<div
+  className="components-base-control"
+>
+  <div
+    className="components-base-control__field"
+  >
+    <label
+      className="components-base-control__label"
+      htmlFor="inspector-text-control-1"
+    >
+      test-label
+    </label>
+    <input
+      className="components-text-control__input"
+      id="test-id"
+      onBlur={[Function]}
+      onChange={[Function]}
+      type="text"
+      value="abc"
+    />
+  </div>
+</div>
+`;

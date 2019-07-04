@@ -1,8 +1,6 @@
 <?php
 /**
- * @version 2.0.0
  * @author Technote
- * @since 1.0.0
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -14,8 +12,8 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 
 return [
 
-	'\Marker_Animation\Classes\Models\Assets' => [
-		'template_redirect'         => [
+	'\Marker_Animation\Classes\Models\Assets'              => [
+		'wp_head'                   => [
 			'setup_assets',
 		],
 		'${prefix}changed_option'   => [
@@ -28,13 +26,11 @@ return [
 			'clear_options_cache',
 		],
 	],
-
-	'\Marker_Animation\Classes\Models\Editor' => [
+	'\Marker_Animation\Classes\Models\Editor'              => [
 		'enqueue_block_editor_assets' => [
 			'enqueue_block_editor_assets',
 		],
 	],
-
 	'\Marker_Animation\Classes\Models\Custom_Post\Setting' => [
 		'${prefix}app_activated' => [
 			'insert_presets',

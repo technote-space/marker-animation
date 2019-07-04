@@ -1,8 +1,6 @@
 <?php
 /**
- * @version 1.7.6
  * @author Technote
- * @since 1.4.0
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -20,11 +18,12 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 /** @var string $prefix */
 $attr  = $instance->app->array->get( $column, 'attributes', [] );
 $_data = [];
-! empty( $data[ $name ] ) and $_data[ $name ] = $data[ $name ];
-?>
-<?php $instance->form( 'color', [
+if ( ! empty( $data[ $name ] ) ) {
+	$_data[ $name ] = $data[ $name ];
+}
+$instance->form( 'color', [
 	'name'       => $prefix . $name,
 	'id'         => $prefix . $name,
 	'value'      => $instance->old( $prefix . $name, $_data, $name, $instance->app->array->get( $column, 'default' ) ),
 	'attributes' => $attr,
-], $instance->app->array->get( $column, 'args', [] ) ); ?>
+], $instance->app->array->get( $column, 'args', [] ) );

@@ -1,8 +1,6 @@
 <?php
 /**
- * @version 2.0.4
  * @author Technote
- * @since 1.7.1
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -36,6 +34,15 @@ return [
 		'is_valid'                     => 1,
 		'is_valid_button_block_editor' => 1,
 		'priority'                     => 50,
+	],
+
+	[
+		'name'                         => 'Stripe design',
+		'color'                        => '#ffbb5b',
+		'is_valid'                     => 1,
+		'is_stripe'                    => 1,
+		'is_valid_button_block_editor' => 1,
+		'priority'                     => 60,
 	],
 
 ];

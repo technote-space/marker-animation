@@ -4,7 +4,8 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 5.2
-Stable tag: 2.0.4
+Stable tag: 2.1.0
+Donate link: https://paypal.me/technote0space
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +41,12 @@ This plugin needs PHP5.6 or higher.
 10. Block Editor(off animation)
 
 == Upgrade Notice ==
+
+= 2.1.0 =
+* サイドバーで設定したものをリセットするボタンを追加しました。 [詳細](https://github.com/technote-space/marker-animation/issues/167)
+* リファクタリング [詳細](https://github.com/technote-space/marker-animation/issues/163)
+* 細かいバグの修正 [詳細](https://github.com/technote-space/marker-animation/issues/169)
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/166)
 
 = 2.0.4 =
 * ストライプデザイン設定時の設定の制御を修正しました。 [詳細](https://github.com/technote-space/marker-animation/issues/151)
@@ -84,6 +91,13 @@ This plugin needs PHP5.6 or higher.
 * [すべての差分](https://github.com/technote-space/marker-animation/pull/109)
 
 == Changelog ==
+
+= 2.1.0 (2019/7/4) =
+* Added: [Reset button to sidebar](https://github.com/technote-space/marker-animation/issues/167)
+* Added: [Stripe preset](https://github.com/technote-space/marker-animation/issues/171)
+* Fixed: [Behavior of sidebar setting](https://github.com/technote-space/marker-animation/issues/169)
+* Deleted: [Upgrade feature](https://github.com/technote-space/marker-animation/issues/164)
+* Improved: [Use library](https://github.com/technote-space/marker-animation/issues/155)
 
 = 2.0.4 (2019/6/3) =
 * Fixed: [Preset validity](https://github.com/technote-space/marker-animation/issues/150)

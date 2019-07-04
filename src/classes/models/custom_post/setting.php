@@ -1,8 +1,6 @@
 <?php
 /**
- * @version 2.0.0
  * @author Technote
- * @since 1.4.0
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -13,25 +11,27 @@ namespace Marker_Animation\Classes\Models\Custom_Post;
 use Marker_Animation\Classes\Models\Assets;
 use Marker_Animation\Traits\Models\Custom_Post;
 use WP_Framework_Db\Classes\Models\Query\Builder;
-use WP_Framework_Upgrade\Traits\Upgrade;
 use WP_Post;
 
+// @codeCoverageIgnoreStart
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Class Setting
  * @package Marker_Animation\Classes\Models\Custom_Post
  */
-class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Framework_Upgrade\Interfaces\Upgrade {
+class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post {
 
-	use Custom_Post, Upgrade;
+	use Custom_Post;
 
 	/**
 	 * insert presets
+	 * @noinspection PhpUnusedPrivateMethodInspection
+	 * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
 	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function insert_presets() {
 		if ( $this->app->get_option( 'has_inserted_presets' ) ) {
 			return;
@@ -51,8 +51,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * setup assets
+	 * @noinspection PhpUnusedPrivateMethodInspection
+	 * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
 	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function setup_assets() {
 		global $typenow;
 		if ( empty( $typenow ) || $typenow !== $this->get_post_type() ) {
@@ -83,6 +84,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 *
 	 * @return array
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	protected function filter_edit_form_params(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -106,7 +108,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			}
 			$params['columns'][ $key ]['form_type'] = $this->app->array->get( $args, 'form' );
 			$options                                = $this->app->array->get( $args, 'options' );
-			$options and $params['columns'][ $key ]['options'] = $options;
+			if ( $options ) {
+				$params['columns'][ $key ]['options'] = $options;
+			}
 			unset( $params['columns'][ $key ]['args']['options'] );
 		}
 		$params['columns']['selector']['args']['attributes']['data-default'] = $this->get_default_class( $post->ID );
@@ -115,7 +119,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		$params['name_prefix']            = $assets->get_name_prefix();
 		$params['id_prefix']              = $assets->get_id_prefix();
 		$params['target_selector']        = '.marker-animation-option';
-		$params['marker_target_selector'] = '.marker-setting-preview .marker-animation';
+		$params['marker_target_selector'] = '.marker-setting-preview span';
 
 		return $params;
 	}
@@ -190,6 +194,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	private function display_callback(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -212,13 +217,13 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				continue;
 			}
 			$is_default = $this->is_default( $data[ $key ] );
-			if ( in_array( $name, $target ) ) {
-				list( $detail, $value ) = $this->get_display_detail( $key, $name, $data, $setting, $is_default, $translate );
+			if ( in_array( $name, $target, true ) ) {
+				list( $detail, $value ) = $this->get_display_detail( $key, $name, $data, $setting, $is_default, $translate ); // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
 				$details[ $setting['title'] ] = $detail;
 			}
 			$setting['attributes']['data-value'] = $is_default ? $value : $data[ $key ];
-			list( $name, $value ) = $assets->parse_setting( $setting, $name );
-			$attributes[] = "data-ma_{$name}=\"{$value}\"";
+			list( $name, $value ) = $assets->parse_setting( $setting, $name ); // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
+			$attributes[] = "data-ma_{$name}=\"{$value}\""; // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
 		}
 
 		return $this->get_view( 'admin/custom_post/setting/preview', [
@@ -284,6 +289,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	private function others_callback(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -300,6 +306,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	/**
 	 * @param WP_Post $post
 	 * @param array $params
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	protected function before_output_edit_form(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -314,8 +321,12 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * @param WP_Post $post
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function output_after_editor( WP_Post $post ) {
+	public function output_after_editor(
+		/** @noinspection PhpUnusedParameterInspection */
+		WP_Post $post
+	) {
 		$this->get_view( 'admin/custom_post/setting/test', [], true );
 	}
 
@@ -325,7 +336,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @return null|string
 	 */
 	protected function get_table_column_name( $key ) {
-		if ( $key === 'post_title' ) {
+		if ( 'post_title' === $key ) {
 			return $this->get_post_column_title();
 		}
 
@@ -337,8 +348,12 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 * @param array $old
 	 * @param array $new
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function data_updated( $post_id, WP_Post $post, array $old, array $new ) {
+	public function data_updated(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id, WP_Post $post, array $old, array $new
+	) {
 		$this->clear_options_cache();
 	}
 
@@ -346,15 +361,46 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param int $post_id
 	 * @param WP_Post $post
 	 * @param array $data
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function data_inserted( $post_id, WP_Post $post, array $data ) {
+	public function data_inserted(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id, WP_Post $post, array $data
+	) {
 		$this->clear_options_cache();
 	}
 
 	/**
 	 * @param int $post_id
+	 * @param WP_Post $post
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function trash_post( $post_id ) {
+	public function untrash_post(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id, WP_Post $post
+	) {
+		$this->clear_options_cache();
+	}
+
+	/**
+	 * @param int $post_id
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+	 */
+	public function trash_post(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id
+	) {
+		$this->clear_options_cache();
+	}
+
+	/**
+	 * @param int $post_id
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+	 */
+	protected function delete_misc(
+		/** @noinspection PhpUnusedParameterInspection */
+		$post_id
+	) {
 		$this->clear_options_cache();
 	}
 
@@ -382,7 +428,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			$this->app->array->get( $this->get_list_data( function ( $query ) {
 				/** @var Builder $query */
 				$query->where( 'is_valid', 1 )
-				      ->order_by( 'priority' );
+					->order_by( 'priority' );
 			} ), 'data' ) as $data
 		) {
 			$options = [];
@@ -397,14 +443,19 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				}
 
 				$setting['attributes']['data-value'] = $this->is_default( $data[ $key ] ) ? $this->app->array->get( $setting, 'detail.value' ) : $data[ $key ];
-				list( $name, $value ) = $assets->parse_setting( $setting, $name );
-				$options[ $name ] = $value;
+				list( $name, $value ) = $assets->parse_setting( $setting, $name ); // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
+				$options[ $name ] = $value; // phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning
 			}
 			/** @var WP_Post $post */
 			$post                = $data['post'];
 			$options['selector'] = $this->get_default_class( $post->ID );
 			$options['class']    = $this->get_default_class( $post->ID, false );
-			! empty( $data['selector'] ) and $options['selector'] .= ', ' . $data['selector'];
+			if ( ! empty( $data['selector'] ) ) {
+				$options['selector'] .= ', ' . $data['selector'];
+			}
+			if ( 'editor' === $target ) {
+				$options = $this->toCamel( $options );
+			}
 			$settings[] = [
 				'id'      => $post->ID,
 				'options' => $options,
@@ -416,31 +467,19 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	}
 
 	/**
+	 * @param array $options
+	 *
 	 * @return array
 	 */
-	public function get_upgrade_methods() {
-		return [
-			[
-				'version'  => '1.4.0',
-				'callback' => function () {
-					foreach (
-						[
-							1 => '#ff99b4',
-							2 => '#99e3ff',
-							3 => '#99ffa8',
-						] as $k => $v
-					) {
-						$color = $this->app->get_option( $this->get_filter_prefix() . 'color' . $k, $v );
-						empty( $color ) and $color = $v;
-						$this->insert( [
-							'post_title' => $this->translate( 'preset color' . $k ),
-							'color'      => $color,
-							'selector'   => ".marker-animation[data-ma_color{$k}]",
-							'priority'   => 10 + $k,
-						] );
-					}
-				},
-			],
-		];
+	private function toCamel( $options ) {
+		foreach ( $options as $key => $item ) {
+			$new_key = $this->app->string->camel( $key );
+			if ( $key !== $new_key ) {
+				$options[ $new_key ] = $item;
+				unset( $options[ $key ] );
+			}
+		}
+
+		return $options;
 	}
 }

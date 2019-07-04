@@ -1,8 +1,6 @@
 <?php
 /**
- * @version 1.7.6
  * @author Technote
- * @since 1.4.0
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space/
@@ -13,9 +11,11 @@ namespace Marker_Animation\Traits\Models;
 use WP_Framework_Core\Traits\Helper\Data_Helper;
 use WP_Framework_Core\Traits\Helper\Validate;
 
+// @codeCoverageIgnoreStart
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Trait Custom_Post
