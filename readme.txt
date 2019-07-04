@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 5.2
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 Donate link: https://paypal.me/technote0space
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -91,6 +91,9 @@ This plugin needs PHP5.6 or higher.
 * [すべての差分](https://github.com/technote-space/marker-animation/pull/109)
 
 == Changelog ==
+
+= 2.1.1 (2019/7/4) =
+* Fixed: eslint
 
 = 2.1.0 (2019/7/4) =
 * Added: [Reset button to sidebar](https://github.com/technote-space/marker-animation/issues/167)
