@@ -8,9 +8,11 @@
 
 namespace Marker_Animation\Interfaces\Models;
 
+// @codeCoverageIgnoreStart
 if ( ! defined( 'MARKER_ANIMATION' ) ) {
 	exit;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Interface Custom_Post
