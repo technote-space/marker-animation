@@ -1,0 +1,19 @@
+{
+  "name": "Marker Animation",
+  "slug": "marker-animation",
+  "download_url": "https://github.com/technote-space/marker-animation/releases/latest/download/marker-animation.zip",
+  "version": "2.1.2",
+  "tested": "5.2",
+  "homepage": "https://technote.space/",
+  "author": "Technote",
+  "author_homepage": "https://technote.space/",
+  "sections": {
+    "description": "This plugin will add \"Marker animation\" function"
+  },
+  "banners": {
+    "low": "https://raw.githubusercontent.com/technote-space/marker-animation/images/assets/banner-772x250.png"
+  },
+  "icons": {
+    "1x": "https://raw.githubusercontent.com/technote-space/marker-animation/images/assets/icon-128x128.png"
+  }
+}
