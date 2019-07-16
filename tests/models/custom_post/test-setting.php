@@ -40,6 +40,11 @@ class SettingTest extends WP_UnitTestCase {
 	private static $handle;
 
 	/**
+	 * @var bool $is_ci
+	 */
+	private static $is_ci;
+
+	/**
 	 * @SuppressWarnings(StaticAccess)
 	 * @throws ReflectionException
 	 */
@@ -48,6 +53,7 @@ class SettingTest extends WP_UnitTestCase {
 		static::$setting = Setting::get_instance( static::$app );
 		static::$assets  = Assets::get_instance( static::$app );
 		static::$handle  = static::$app->slug_name . '-marker_animation';
+		static::$is_ci   = ! empty( getenv( 'CI' ) );
 		static::reset();
 	}
 
@@ -63,7 +69,9 @@ class SettingTest extends WP_UnitTestCase {
 		static::$app->db->wp_table( 'posts' )->truncate();
 		static::$app->option->delete( 'has_inserted_presets' );
 		wp_dequeue_script( static::$handle );
-		static::$app->file->delete( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js' );
+		if ( static::$is_ci ) {
+			static::$app->file->delete( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js' );
+		}
 	}
 
 	public function test_insert_presets() {
@@ -95,7 +103,9 @@ class SettingTest extends WP_UnitTestCase {
 	public function test_setup_assets() {
 		$this->get_output_js();
 		$this->get_output_css();
-		static::$app->file->put_contents( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js', '' );
+		if ( static::$is_ci ) {
+			static::$app->file->put_contents( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js', '' );
+		}
 
 		global $typenow;
 		wp_dequeue_script( static::$handle );

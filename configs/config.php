@@ -15,6 +15,9 @@ return [
 	// menu image url
 	'menu_image'                     => 'icon-24x24.png',
 
+	// update
+	'update_info_file_url'           => 'https://raw.githubusercontent.com/technote-space/marker-animation/master/update.json',
+
 	// suppress setting help contents
 	'suppress_setting_help_contents' => true,
 
