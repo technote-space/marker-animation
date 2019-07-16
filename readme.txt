@@ -9,7 +9,7 @@ Donate link: https://paypal.me/technote0space
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin will add "Marker animation" function
+This is a plugin that adds the function to display animation such as painting with a highlighter.
 
 == Description ==
 

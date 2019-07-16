@@ -1,6 +1,6 @@
 {
   "name": "technote-space/marker-animation",
-  "description": "This plugin make it easy to change block's search keywords.",
+  "description": "This is a plugin that adds the function to display animation such as painting with a highlighter.",
   "type": "wordpress-plugin",
   "license": "GPL-2.0+",
   "authors": [
@@ -72,7 +72,7 @@
       "git clone --depth=1 https://github.com/wp-content-framework/travis-ci.git travis-ci"
     ],
     "bin:prepare": "TRAVIS_BUILD_DIR=$(cd $(dirname $0); pwd) ACTIVATE_POPULAR_PLUGINS=1 bash ./travis-ci/bin/prepare.sh",
-    "bin:gh-pages": "TRAVIS_BUILD_DIR=$(cd $(dirname $0); pwd) GH_PAGES_PLUGIN_SCRIPT='./index.min.js' GH_PAGES_PLUGIN_STYLE='./index.css' GH_PAGES_TITLE='marker-animation' GH_PAGES_TEMPLATE=gutenberg  bash ./travis-ci/bin/deploy/gh-pages.sh",
+    "bin:gh-pages": "TRAVIS_BUILD_DIR=$(cd $(dirname $0); pwd) GH_PAGES_PLUGIN_SCRIPT='./index.min.js' GH_PAGES_PLUGIN_STYLE='./index.css' GH_PAGES_TITLE='Marker Animation' GH_PAGES_TEMPLATE=gutenberg  bash ./travis-ci/bin/deploy/gh-pages.sh",
     "bin:update": [
       "TRAVIS_BUILD_DIR=$(cd $(dirname $0); pwd) bash ./travis-ci/bin/update/composer.sh",
       "TRAVIS_BUILD_DIR=$(cd $(dirname $0); pwd) bash ./travis-ci/bin/update/package.sh"
