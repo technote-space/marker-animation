@@ -39,6 +39,11 @@ class AssetsTest extends WP_UnitTestCase {
 	private static $handle;
 
 	/**
+	 * @var bool $is_ci
+	 */
+	private static $is_ci;
+
+	/**
 	 * @SuppressWarnings(StaticAccess)
 	 * @throws ReflectionException
 	 */
@@ -47,6 +52,7 @@ class AssetsTest extends WP_UnitTestCase {
 		static::$assets  = Assets::get_instance( static::$app );
 		static::$setting = Setting::get_instance( static::$app );
 		static::$handle  = static::$app->slug_name . '-marker_animation';
+		static::$is_ci   = ! empty( getenv( 'CI' ) );
 		static::reset();
 	}
 
@@ -63,11 +69,15 @@ class AssetsTest extends WP_UnitTestCase {
 		static::$app->setting->edit_setting( 'is_valid', 'selector', '' );
 		static::$app->delete_shared_object( '_hook_cache' );
 		static::$app->option->delete( 'marker_options_cache' );
-		static::$app->file->delete( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js' );
+		if ( static::$is_ci ) {
+			static::$app->file->delete( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js' );
+		}
 	}
 
 	public function test_setup_assets() {
-		static::$app->file->put_contents( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js', '' );
+		if ( static::$is_ci ) {
+			static::$app->file->put_contents( static::$app->define->plugin_assets_dir . DS . 'js' . DS . 'marker-animation.min.js', '' );
+		}
 		$handle = static::$handle;
 		wp_dequeue_script( $handle );
 		$this->assertFalse( wp_script_is( $handle ) );
