@@ -218,28 +218,29 @@ jobs:
 #        on:
 #          tags: true
 
-#    - stage: deploy
-#      language: node_js
-#      node_js: '11'
-#      dist: trusty
-#      env:
-#        - GH_PAGES_PLUGIN_SCRIPT="./index.min.js"
-#        - GH_PAGES_PLUGIN_STYLE="./index.css"
-#        - GH_PAGES_TITLE="Test Travis"
-#        - GH_PAGES_TEMPLATE=gutenberg
-#        - GH_PAGES_TRACKING_ID=UA-78163306-3
-#      script: skip
-#      before_deploy:
-#        - source travis-ci/bin/deploy/env.sh
-#        - bash travis-ci/bin/deploy/gh-pages.sh
-#      deploy:
-#        provider: pages
-#        skip_cleanup: true
-#        github_token: ${GITHUB_TOKEN}
-#        keep_history: true
-#        local_dir: ${GH_PAGES_DIR}
-#        on:
-#          tags: true
+    - stage: deploy
+      language: node_js
+      node_js: '11'
+      dist: trusty
+      env:
+        - GH_PAGES_APP_ID=editor
+        - GH_PAGES_PLUGIN_SCRIPT="./index.min.js"
+        - GH_PAGES_PLUGIN_STYLE="./index.css"
+        - GH_PAGES_TITLE="Marker Animation"
+        - GH_PAGES_TEMPLATE=gutenberg
+        - GH_PAGES_TRACKING_ID=UA-78163306-3
+      script: skip
+      before_deploy:
+        - source travis-ci/bin/deploy/env.sh
+        - bash travis-ci/bin/deploy/gh-pages.sh
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: ${GITHUB_TOKEN}
+        keep_history: true
+        local_dir: ${GH_PAGES_DIR}
+        on:
+          tags: true
 
   allow_failures:
     - env: WP_VERSION=4.5
