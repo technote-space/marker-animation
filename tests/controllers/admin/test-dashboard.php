@@ -5,9 +5,15 @@
  * @package Tests
  */
 
-use PHPUnit\Framework\TestCase;
+namespace Marker_Animation\Tests\Controllers\Admin;
 
+use PHPUnit\Framework\TestCase;
 use Marker_Animation\Classes\Controllers\Admin\Dashboard;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use WP_Framework;
+use WP_UnitTestCase;
 
 /**
  * @noinspection PhpUndefinedClassInspection

@@ -5,10 +5,15 @@
  * @package Tests
  */
 
-use PHPUnit\Framework\TestCase;
+namespace Marker_Animation\Tests\Models\CustomPost;
 
+use PHPUnit\Framework\TestCase;
 use Marker_Animation\Classes\Models\Assets;
 use Marker_Animation\Classes\Models\Custom_Post\Setting;
+use ReflectionClass;
+use ReflectionException;
+use WP_Framework;
+use WP_UnitTestCase;
 
 /**
  * @noinspection PhpUndefinedClassInspection
@@ -46,7 +51,6 @@ class SettingTest extends WP_UnitTestCase {
 
 	/**
 	 * @SuppressWarnings(StaticAccess)
-	 * @throws ReflectionException
 	 */
 	public static function setUpBeforeClass() {
 		static::$app     = WP_Framework::get_instance( MARKER_ANIMATION );
@@ -57,9 +61,6 @@ class SettingTest extends WP_UnitTestCase {
 		static::reset();
 	}
 
-	/**
-	 * @throws ReflectionException
-	 */
 	public static function tearDownAfterClass() {
 		static::reset();
 	}
@@ -109,13 +110,13 @@ class SettingTest extends WP_UnitTestCase {
 
 		global $typenow;
 		wp_dequeue_script( static::$handle );
-		$typenow = 'post';
+		$typenow = 'post'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		do_action( 'load-edit.php' ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		$this->assertFalse( wp_script_is( static::$handle ) );
 		$this->assertEmpty( $this->get_output_js() );
 
 		wp_dequeue_script( static::$handle );
-		$typenow = 'ma-setting';
+		$typenow = 'ma-setting'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		do_action( 'load-edit.php' ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		$this->assertTrue( wp_script_is( static::$handle ) );
 		$this->assertNotEmpty( $this->get_output_js() );
