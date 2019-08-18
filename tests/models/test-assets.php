@@ -2,13 +2,18 @@
 /**
  * Class AssetsTest
  *
- * @package Test_Travis
+ * @package Tests
  */
 
-use PHPUnit\Framework\TestCase;
+namespace Marker_Animation\Tests\Models;
 
+use PHPUnit\Framework\TestCase;
 use Marker_Animation\Classes\Models\Assets;
 use Marker_Animation\Classes\Models\Custom_Post\Setting;
+use ReflectionException;
+use ReflectionMethod;
+use WP_Framework;
+use WP_UnitTestCase;
 
 /**
  * @noinspection PhpUndefinedClassInspection
@@ -45,7 +50,6 @@ class AssetsTest extends WP_UnitTestCase {
 
 	/**
 	 * @SuppressWarnings(StaticAccess)
-	 * @throws ReflectionException
 	 */
 	public static function setUpBeforeClass() {
 		static::$app     = WP_Framework::get_instance( MARKER_ANIMATION );
@@ -56,9 +60,6 @@ class AssetsTest extends WP_UnitTestCase {
 		static::reset();
 	}
 
-	/**
-	 * @throws ReflectionException
-	 */
 	public static function tearDownAfterClass() {
 		static::reset();
 	}

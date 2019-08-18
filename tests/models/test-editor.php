@@ -2,13 +2,16 @@
 /**
  * Class EditorTest
  *
- * @package Test_Travis
+ * @package Tests
  */
 
-use PHPUnit\Framework\TestCase;
+namespace Marker_Animation\Tests\Models;
 
+use PHPUnit\Framework\TestCase;
 use Marker_Animation\Classes\Models\Assets;
 use Marker_Animation\Classes\Models\Editor;
+use WP_Framework;
+use WP_UnitTestCase;
 
 /**
  * @noinspection PhpUndefinedClassInspection
