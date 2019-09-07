@@ -143,7 +143,6 @@ jobs:
         skip_cleanup: true
         name: ${RELEASE_TITLE}
         tag_name: ${RELEASE_TAG}
-        draft: true
         api_key:
           secure: SED2xsuudQql6XDDhUXESghmbqzuOrxKMMM/jdRBSkj4IBkUkmq+273uiFeZKdNau/CgM4uqaFus2LFcGyJdLkA+HlO1aP+1yDMzCKoMVRuDRk4foo3/EiS21hYX4RmHLzERSlM9EKjfH1GN37v01LqIV+59NmSwiRBMXkIOaeGC3lVXeT6oeUnCvPfQjTc9Da24mCObHwPqgfWIjw4SaA4WGT+aEvjv9xLZst8c68/P/wz77eZsrgJMxcXKn/zr/OrlYUeQdPhSQLLU2BSI4BoSqPxI6EjQz6W7NumRHyTm0b7D6y5C9SyvaC8A7+iibdC5xWGxfHGORaA3ix8T+ihCnK/dDSelcUAjxB/Cp1T3BJCTCW1fnqRR1g86ddulzy2oJBhuGyxHkWcmTR34tp59bTIA6WkEAXPg9TNOs5LALDXK3scy+pQ4u+wu3yxyGVJon6su/0j1r77WEt9O0Ob6UqeYtQ+CHynU4Ix2xzH7jgYfPBCJIIVm4MPGiXQVW+YoRPNGGsreNe2rvVW3FrA3KoBZvPI2RI44jx2Zf1SIMPEVi5zSgqEhoZMnpXrxedphOvJ86EgrByfd9vr3b9rW4/qXZy2f3Kjt41XVou3fqbR0vrbTbClzXwqHzVssV+59S/nB//9ACfHYBZQrURR0N00060gLoFyzEz37Kcc=
         file: ${RELEASE_FILE}
