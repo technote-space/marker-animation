@@ -18,8 +18,37 @@ This plugin will add the ability to display animations like painting with a high
 
 [Latest version](https://github.com/technote-space/marker-animation/releases/latest/download/marker-animation.zip)
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Screenshots](#screenshots)
+  - [Behavior](#behavior)
+  - [Dashboard](#dashboard)
+  - [Marker setting](#marker-setting)
+  - [Editor page](#editor-page)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Control types](#control-types)
+  - [Default button](#default-button)
+  - [Registered buttons](#registered-buttons)
+- [Settings](#settings)
+  - [Validity](#validity)
+  - [Color](#color)
+  - [Thickness](#thickness)
+  - [Duration](#duration)
+  - [Delay](#delay)
+  - [Function](#function)
+  - [Font bold](#font-bold)
+  - [Stripe](#stripe)
+  - [Repeat](#repeat)
+  - [Padding bottom](#padding-bottom)
+- [Dependency](#dependency)
+- [Author](#author)
+- [Plugin framework](#plugin-framework)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Screenshots
 ### Behavior
