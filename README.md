@@ -116,11 +116,11 @@ ex. `1.2s`  `.5s`  `800ms`
 ### Delay
 Specify the time to start animation.  
 ex. `1.2s`  `.5s`  `800ms`  
-[Detail](https://developer.mozilla.org/ja/docs/Web/CSS/transition-delay)
+[Detail](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-delay)
 
 ### Function
 Specify the transition timing function.  
-[Detail](https://developer.mozilla.org/ja/docs/Web/CSS/transition-timing-function)  
+[Detail](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function)  
 
 ### Font bold
 Specify whether to display bold. 
