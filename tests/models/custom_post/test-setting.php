@@ -7,6 +7,7 @@
 
 namespace Marker_Animation\Tests\Models\CustomPost;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
 use Marker_Animation\Classes\Models\Assets;
 use Marker_Animation\Classes\Models\Custom_Post\Setting;
@@ -224,12 +225,46 @@ class SettingTest extends WP_UnitTestCase {
 		$this->assertContains( 'class="marker-setting-preview"', $contents );
 	}
 
-	public function test_call_clear_option() {
+	/**
+	 * @dataProvider cache_clear_test_targets
+	 *
+	 * @param Closure $func
+	 */
+	public function test_call_clear_option( $func ) {
 		$post = get_post( 1 );
-		static::$setting->data_updated( 1, $post, [], [] );
-		static::$setting->data_inserted( 1, $post, [] );
-		static::$setting->untrash_post( 1, $post );
-		static::$setting->trash_post( 1 );
+
+		static::$app->option->set( 'marker_options_cache', 'test' );
+		$this->assertTrue( static::$app->option->exists( 'marker_options_cache' ) );
+		$func( $post );
+		$this->assertFalse( static::$app->option->exists( 'marker_options_cache' ) );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function cache_clear_test_targets() {
+		return [
+			[
+				function ( $post ) {
+					static::$setting->data_updated( 1, $post, [], [] );
+				},
+			],
+			[
+				function ( $post ) {
+					static::$setting->data_inserted( 1, $post, [] );
+				},
+			],
+			[
+				function ( $post ) {
+					static::$setting->untrash_post( 1, $post );
+				},
+			],
+			[
+				function () {
+					static::$setting->trash_post( 1 );
+				},
+			],
+		];
 	}
 
 	/**
