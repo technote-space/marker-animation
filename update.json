@@ -1,8 +1,8 @@
 {
   "name": "Marker Animation",
   "slug": "marker-animation",
-  "download_url": "https://github.com/technote-space/marker-animation/releases/latest/download/marker-animation.zip",
   "version": "2.2.0",
+  "download_url": "https://github.com/technote-space/marker-animation/releases/latest/download/release.zip",
   "tested": "5.2",
   "homepage": "https://github.com/technote-space/marker-animation",
   "author": "Technote",

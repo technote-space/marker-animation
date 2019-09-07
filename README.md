@@ -16,7 +16,7 @@ This plugin will add the ability to display animations like painting with a high
 
 [Demonstration](https://technote-space.github.io/marker-animation)
 
-[Latest version](https://github.com/technote-space/marker-animation/releases/latest/download/marker-animation.zip)
+[Latest version](https://github.com/technote-space/marker-animation/releases/latest/download/release.zip)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -77,7 +77,7 @@ This plugin will add the ability to display animations like painting with a high
 
 ## Installation
 1. Download latest version  
-[marker-animation.zip](https://github.com/technote-space/marker-animation/releases/latest/download/marker-animation.zip)
+[release.zip](https://github.com/technote-space/marker-animation/releases/latest/download/release.zip)
 1. Install plugin
 ![install](https://raw.githubusercontent.com/technote-space/screenshots/master/misc/install-wp-plugin.png)
 1. Activate plugin
