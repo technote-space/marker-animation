@@ -1,5 +1,6 @@
 # Marker Animation
 
+[![Build Status](https://github.com/technote-space/marker-animation/workflows/Build/badge.svg)](https://github.com/technote-space/marker-animation/actions)
 [![Build Status](https://travis-ci.com/technote-space/marker-animation.svg?branch=master)](https://travis-ci.com/technote-space/marker-animation)
 [![Coverage Status](https://coveralls.io/repos/github/technote-space/marker-animation/badge.svg?branch=master)](https://coveralls.io/github/technote-space/marker-animation?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/technote-space/marker-animation/badge)](https://www.codefactor.io/repository/github/technote-space/marker-animation)
@@ -7,108 +8,133 @@
 [![PHP: >=5.6](https://img.shields.io/badge/PHP-%3E%3D5.6-orange.svg)](http://php.net/)
 [![WordPress: >=4.6](https://img.shields.io/badge/WordPress-%3E%3D4.6-brightgreen.svg)](https://wordpress.org/)
 
-![バナー](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/banner-772x250.png)
+![Banner](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/banner-772x250.png)
 
-蛍光ペンで塗るようなアニメーションを表示する機能を追加するプラグインです。
+*Read this in other languages: [English](README.md), [日本語](README.ja.md).*
 
-[デモ](https://technote-space.github.io/marker-animation)
+This plugin will add the ability to display animations like painting with a highlighter.
 
-[最新バージョン](https://github.com/technote-space/marker-animation/releases/latest/download/marker-animation.zip)
+[Demonstration](https://technote-space.github.io/marker-animation)
 
-## スクリーンショット
-### 動作
+[Latest version](https://github.com/technote-space/marker-animation/releases/latest/download/marker-animation.zip)
 
-![動作](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-1.gif)
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
 
-### デフォルト設定画面
+- [Screenshots](#screenshots)
+  - [Behavior](#behavior)
+  - [Dashboard](#dashboard)
+  - [Marker setting](#marker-setting)
+  - [Editor page](#editor-page)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Control types](#control-types)
+  - [Default button](#default-button)
+  - [Registered buttons](#registered-buttons)
+- [Settings](#settings)
+  - [Validity](#validity)
+  - [Color](#color)
+  - [Thickness](#thickness)
+  - [Duration](#duration)
+  - [Delay](#delay)
+  - [Function](#function)
+  - [Font bold](#font-bold)
+  - [Stripe](#stripe)
+  - [Repeat](#repeat)
+  - [Padding bottom](#padding-bottom)
+- [Dependency](#dependency)
+- [Author](#author)
+- [Plugin framework](#plugin-framework)
 
-![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201411.png)
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-### マーカー設定画面（設定管理）
+## Screenshots
+### Behavior
 
-![一覧画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201412.png)
+![Behavior](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-1.gif)
 
-![設定画面](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201414.png)
+### Dashboard
 
-### 投稿編集画面
+![Dashboard](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201411.png)
+
+### Marker setting
+
+![Setting list](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201412.png)
+
+![Setting page](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201414.png)
+
+### Editor page
   
-![アニメーションON](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-9.gif)
+![On animation](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-9.gif)
 
-![アニメーションOFF](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-10.gif)
+![Off animation](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/screenshot-10.gif)
 
-## 要件
-- PHP 5.6 以上
-- WordPress 4.6 以上
+## Requirements
+- \>= PHP 5.6
+- \>= WordPress 4.6
 
-## 導入手順
-1. 最新版をGitHubからダウンロード  
+## Installation
+1. Download latest version  
 [marker-animation.zip](https://github.com/technote-space/marker-animation/releases/latest/download/marker-animation.zip)
-2. 「プラグインのアップロード」からインストール
+1. Install plugin
 ![install](https://raw.githubusercontent.com/technote-space/screenshots/master/misc/install-wp-plugin.png)
-3. プラグインを有効化 
+1. Activate plugin
 
-## 使用方法
-1. 投稿画面のエディタでアニメーションを追加したい文章をマウスで選択
-2. マーカーペンアイコンを押下
-3. アニメーションを外したい場合は対象の文にカーソルを合わせた状態でマーカーペンアイコンを押下
+## Usage
+1. Select sentence which you want to add animation.
+1. Press apply animation button.
+1. If you want to remove the animation, press the button with the cursor on the target sentence.
 
-## コントロールの種類
-### マーカーアニメーションボタン
-デフォルト設定画面で設定した値でマーカーが動作します。  
-![ボタン1](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051620.png)  
+## Control types
+### Default button
+![Default button](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051620.png)  
 
-サイドバーで細かく値を指定できます。 (WordPress v5.2以上)  
-![詳細設定](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201416.png)  
-### マーカー設定で「ブロックエディタにボタン表示させるかどうか」を有効にして登録したボタン
-マーカー設定で登録した値（空にした値はデフォルトの値）でマーカーが動作します。
-![ボタン2](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051621.png)
+Details can be specified in the sidebar(\>=WordPress v5.2)
 
-## 設定
-### 有効かどうか
-マーカーアニメーションが有効かどうかを設定します。  
-これを外すと全てのアニメーションが動作しなくなります。
+![Detail](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201905201416.png)  
 
-### マーカーの色
-マーカーの色を設定します。
+### Registered buttons
+The buttons which is registered from `All Settings` will be gathered by Dropdown.
+![Registered buttons](https://raw.githubusercontent.com/technote-space/marker-animation/images/.github/images/201902051621.png)
 
-### マーカーの太さ
-マーカーの太さを設定します。
+## Settings
+### Validity
+When this setting is off, all functions are disabled.
 
-### 塗る時間
-マーカーを塗り終えるまでにかかる時間を設定します。  
-0以上の数値＋単位で指定します。  
-使用可能な単位は「s」と「ms」でそれぞれ秒とミリ秒です。
+### Color
+Specify the highlighter color.
 
-### 遅れ時間
-表示されてからどれだけ時間が経過してからアニメーションを開始するかを指定します。
-0、正の数、負の数＋単位で指定します。  
-使用可能な単位は「塗る時間」と同様です。  
-数値に負の数を指定した場合の動作等は[こちら](https://developer.mozilla.org/ja/docs/Web/CSS/transition-delay)を確認してください。
+### Thickness
+Specify the highlighter thickness.
 
-### 塗り方
-マーカーの塗り方を設定します。  
-詳細は[こちら](https://developer.mozilla.org/ja/docs/Web/CSS/transition-timing-function)を確認してください。  
-設定画面では「ease」「linear」「ease-in」「ease-out」「ease-in-out」が選択できます。  
-「cubic-bezier」等を指定したい場合は、詳細設定画面から設定します。
+### Duration
+Specify the time to finish animation.  
+ex. `1.2s`  `.5s`  `800ms`
 
-### 太文字にするかどうか
-マーカーの対象を太文字にするかどうかを設定します。
+### Delay
+Specify the time to start animation.  
+ex. `1.2s`  `.5s`  `800ms`  
+[Detail](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-delay)
 
-### ストライプデザインかどうか
-ストライプデザインにするかどうかを設定します。  
+### Function
+Specify the transition timing function.  
+[Detail](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function)  
 
-![ストライプデザイン](https://raw.githubusercontent.com/technote-space/jquery.marker-animation/master/stripe.png)  
+### Font bold
+Specify whether to display bold. 
 
-これが設定されている場合、アニメーションなしの動作になります。
+### Stripe
+Specify whether to display stripe design.
 
-### 繰り返すかどうか
-画面から外れた後に再び表示された場合に再度アニメーションを行うかどうかを設定します。
+![Stripe](https://raw.githubusercontent.com/technote-space/jquery.marker-animation/images/stripe.png)  
 
-### マーカー位置の調整
-マーカーの表示位置を調整する値を設定します。
+### Repeat
+Specify whether to repeat animation.
 
-## アニメーションなしでの利用
-塗る時間と遅れ時間を0に設定するとアニメーションなしでの利用が可能です。
+### Padding bottom
+Specify padding bottom.
 
 ## Dependency
 - [jQuery Marker Animation](https://github.com/technote-space/jquery.marker-animation)
@@ -118,5 +144,5 @@
 [GitHub (Technote)](https://github.com/technote-space)  
 [Blog](https://technote.space)
 
-## プラグイン作成用フレームワーク
+## Plugin framework
 [WP Content Framework](https://github.com/wp-content-framework/core)

@@ -1,4 +1,4 @@
-import { Common } from '@technote-space/register-grouped-format-type';
+import { Common } from '../wrapper';
 import MyTextControl from '../components/text-control';
 import { getData, setData, resetData, getActiveFormatData } from './format';
 import { body, attrs, getName, translate, getIcon } from './misc';

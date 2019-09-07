@@ -1,4 +1,4 @@
-import { Common } from '@technote-space/register-grouped-format-type';
+import { Common } from '../wrapper';
 
 const { getTranslator } = Common.Helpers;
 const { Icon } = Common.Components;
