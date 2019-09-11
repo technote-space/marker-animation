@@ -3,7 +3,7 @@ Contributors: technote0space
 Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アンダーライン
 Requires at least: 4.6
 Requires PHP: 5.6
-Tested up to: 5.2
+Tested up to: 5.2.3
 Stable tag: 2.2.1
 Donate link: https://paypal.me/technote0space
 License: GPLv2 or later
