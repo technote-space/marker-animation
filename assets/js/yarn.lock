@@ -16,7 +16,7 @@
   dependencies:
     "@babel/highlight" "^7.0.0"
 
-"@babel/core@^7.1.0", "@babel/core@^7.5.5", "@babel/core@^7.6.0":
+"@babel/core@^7.1.0", "@babel/core@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.6.0.tgz#9b00f73554edd67bebc86df8303ef678be3d7b48"
   integrity sha512-FuRhDRtsd6IptKpHXAa+4WPZYY2ZzgowkbLBecEDDSje1X/apG7jQM33or3NdOmjXBKWGOg4JmSiRfUfuTtHXw==
@@ -478,16 +478,6 @@
     "@babel/helper-plugin-utils" "^7.0.0"
     babel-plugin-dynamic-import-node "^2.3.0"
 
-"@babel/plugin-transform-modules-commonjs@^7.5.0":
-  version "7.5.0"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-modules-commonjs/-/plugin-transform-modules-commonjs-7.5.0.tgz#425127e6045231360858eeaa47a71d75eded7a74"
-  integrity sha512-xmHq0B+ytyrWJvQTc5OWAC4ii6Dhr0s22STOoydokG51JjWhyYo5mRPXoi+ZmtHQhZZwuXNN+GG5jy5UZZJxIQ==
-  dependencies:
-    "@babel/helper-module-transforms" "^7.4.4"
-    "@babel/helper-plugin-utils" "^7.0.0"
-    "@babel/helper-simple-access" "^7.1.0"
-    babel-plugin-dynamic-import-node "^2.3.0"
-
 "@babel/plugin-transform-modules-commonjs@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-modules-commonjs/-/plugin-transform-modules-commonjs-7.6.0.tgz#39dfe957de4420445f1fcf88b68a2e4aa4515486"
@@ -576,7 +566,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/plugin-transform-runtime@^7.5.5", "@babel/plugin-transform-runtime@^7.6.0":
+"@babel/plugin-transform-runtime@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-7.6.0.tgz#85a3cce402b28586138e368fce20ab3019b9713e"
   integrity sha512-Da8tMf7uClzwUm/pnJ1S93m/aRXmoYNDD7TkHua8xBDdaAs54uZpTWvEt6NGwmoVMb9mZbntfTqmG2oSzN/7Vg==
@@ -632,14 +622,6 @@
     "@babel/helper-regex" "^7.4.4"
     regexpu-core "^4.5.4"
 
-"@babel/polyfill@^7.4.4":
-  version "7.4.4"
-  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.4.4.tgz#78801cf3dbe657844eeabf31c1cae3828051e893"
-  integrity sha512-WlthFLfhQQhh+A2Gn5NSFl0Huxz36x86Jn+E9OW7ibK8edKPq+KLy4apM1yDpQ8kJOVi1OVjpP4vSDLdrI04dg==
-  dependencies:
-    core-js "^2.6.5"
-    regenerator-runtime "^0.13.2"
-
 "@babel/polyfill@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.6.0.tgz#6d89203f8b6cd323e8d946e47774ea35dc0619cc"
@@ -648,7 +630,7 @@
     core-js "^2.6.5"
     regenerator-runtime "^0.13.2"
 
-"@babel/preset-env@^7.5.5", "@babel/preset-env@^7.6.0":
+"@babel/preset-env@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.6.0.tgz#aae4141c506100bb2bfaa4ac2a5c12b395619e50"
   integrity sha512-1efzxFv/TcPsNXlRhMzRnkBFMeIqBBgzwmZwlFDw5Ubj0AGLeufxugirwZmkkX/ayi3owsSqoQ4fw8LkfK9SYg==
@@ -704,7 +686,7 @@
     js-levenshtein "^1.1.3"
     semver "^5.5.0"
 
-"@babel/register@^7.5.5", "@babel/register@^7.6.0":
+"@babel/register@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.6.0.tgz#76b6f466714680f4becafd45beeb2a7b87431abf"
   integrity sha512-78BomdN8el+x/nkup9KwtjJXuptW5oXMFmP11WoM2VJBjxrKv4grC3qjpLL8RGGUYUGsm57xnjYFM2uom+jWUQ==
@@ -1029,18 +1011,17 @@
   resolved "https://registry.yarnpkg.com/@tannin/postfix/-/postfix-1.0.2.tgz#fbb723e79603add30f5d8a08a626c2970d984857"
   integrity sha512-Nggtk7/ljfNPpAX8CjxxLkMKuO6u2gH1ozmTvGclWF2pNcxTf6YGghYNYNWZRKrimXGhQ8yZqvAHep7h80K04g==
 
-"@technote-space/gutenberg-utils@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@technote-space/gutenberg-utils/-/gutenberg-utils-1.1.2.tgz#0eed6638ff9cf5c302844bd89f517fbd89f326d4"
-  integrity sha512-XQSDPKF+/5RkSR197cUXixWFJbhy35zENF+zoiqy/CCy5vtHXtn9diIkfATM1gl4UkuUzkoRleuejNpwuCFNoA==
+"@technote-space/gutenberg-utils@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@technote-space/gutenberg-utils/-/gutenberg-utils-1.1.3.tgz#d0b558670fa1cefc06741a57fb73f4d07f42bf35"
+  integrity sha512-cbGwc2oVAO8ukphVVr/83I7M04bNzR7anyZgW/olalfCh/XcePkX/31bg0NwnMoYozqqnttjIIwolRUqcHAP4g==
   dependencies:
-    "@babel/core" "^7.5.5"
+    "@babel/core" "^7.6.0"
     "@babel/plugin-proposal-object-rest-spread" "^7.5.5"
     "@babel/plugin-transform-react-jsx" "^7.3.0"
-    "@babel/plugin-transform-runtime" "^7.5.5"
-    "@babel/preset-env" "^7.5.5"
-    "@babel/register" "^7.5.5"
-    babel-jest "^24.9.0"
+    "@babel/plugin-transform-runtime" "^7.6.0"
+    "@babel/preset-env" "^7.6.0"
+    "@babel/register" "^7.6.0"
     babel-loader "^8.0.6"
     classnames "^2.2.6"
     css-loader "^3.2.0"
@@ -1054,22 +1035,22 @@
     style-loader "^1.0.0"
     traverse "^0.6.6"
     webpack "^4.39.3"
-    webpack-cli "~3.3.7"
+    webpack-cli "~3.3.8"
 
-"@technote-space/register-grouped-format-type@^1.0.24":
-  version "1.0.24"
-  resolved "https://registry.yarnpkg.com/@technote-space/register-grouped-format-type/-/register-grouped-format-type-1.0.24.tgz#312f3b1781b7d70722eeedd5849bcf10c5b104cd"
-  integrity sha512-WM4eybTKLKKVec0Jtp5VeoXq28u8/FnB+MGxkyUPxDr2Q6iJ4kJRDIg6+27NibEugOoh83wQJ1dcJHOYm5gCBQ==
+"@technote-space/register-grouped-format-type@^1.0.25":
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/@technote-space/register-grouped-format-type/-/register-grouped-format-type-1.0.25.tgz#a311977dcfc31c80e26c8563b34edc2f03d2f046"
+  integrity sha512-xWStogxDQCDFajCFdTmBd/Dkse79s+cy9WDLQ/q7NSjUx+rPuwyjuaTC+wPN0yNnZ8zLeATYYT6aKm1Gm4NoKQ==
   dependencies:
-    "@babel/core" "^7.5.5"
+    "@babel/core" "^7.6.0"
     "@babel/plugin-proposal-object-rest-spread" "^7.5.5"
-    "@babel/plugin-transform-modules-commonjs" "^7.5.0"
+    "@babel/plugin-transform-modules-commonjs" "^7.6.0"
     "@babel/plugin-transform-react-jsx" "^7.3.0"
-    "@babel/plugin-transform-runtime" "^7.5.5"
-    "@babel/polyfill" "^7.4.4"
-    "@babel/preset-env" "^7.5.5"
-    "@babel/register" "^7.5.5"
-    "@technote-space/gutenberg-utils" "^1.1.2"
+    "@babel/plugin-transform-runtime" "^7.6.0"
+    "@babel/polyfill" "^7.6.0"
+    "@babel/preset-env" "^7.6.0"
+    "@babel/register" "^7.6.0"
+    "@technote-space/gutenberg-utils" "^1.1.3"
     babel-jest "^24.9.0"
     babel-loader "^8.0.6"
     duplicate-package-checker-webpack-plugin "^3.0.0"
@@ -8207,7 +8188,7 @@ webidl-conversions@^4.0.2:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
-webpack-cli@^3.3.8, webpack-cli@~3.3.7, webpack-cli@~3.3.8:
+webpack-cli@^3.3.8, webpack-cli@~3.3.8:
   version "3.3.8"
   resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-3.3.8.tgz#caeaebcc26f685db1736e5decd3f01aac30123ec"
   integrity sha512-RANYSXwikSWINjHMd/mtesblNSpjpDLoYTBtP99n1RhXqVI/wxN40Auqy42I7y4xrbmRBoA5Zy5E0JSBD5XRhw==
