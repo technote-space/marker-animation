@@ -42,7 +42,7 @@
     "@wordpress/dom-ready": "^2.5.0",
     "@wordpress/editor": "^9.6.0",
     "@wordpress/element": "^2.7.0",
-    "@wordpress/format-library": "^1.8.0",
+    "@wordpress/format-library": "^1.9.1",
     "@wordpress/hooks": "^2.6.0",
     "@wordpress/i18n": "^3.6.0",
     "@wordpress/rich-text": "^3.6.0",
