@@ -21,13 +21,6 @@ cache:
   directories:
     - "${HOME}/.composer/cache"
     - node_modules
-    - "${TRAVIS_BUILD_DIR}/.plugin"
-    - "${TRAVIS_BUILD_DIR}/.work/cache"
-
-addons:
-  apt:
-    packages:
-      - unar
 
 stages:
   - name: check
@@ -36,12 +29,6 @@ stages:
     if: branch = master and tag IS blank and type IN (pull_request, api)
   - name: test trunk
     if: branch = master and tag IS blank and type IN (pull_request, api, cron)
-  - name: deploy
-    if: tag IS present
-
-before_install:
-  - npm install -g npm@latest
-  - npm install -g yarn@latest
 
 before_script:
   - git clone --depth=1 https://github.com/wp-content-framework/travis-ci.git travis-ci
@@ -72,8 +59,6 @@ jobs:
       env:
         - WP_VERSION=latest
         - WP_MULTISITE=1
-        - COVERAGE_REPORT=1
-        - ACTIVATE_POPULAR_PLUGINS=1
       script: bash travis-ci/bin/php/wp-test.sh
     - stage: test
       language: php
@@ -81,21 +66,18 @@ jobs:
       env:
         - WP_VERSION=5.2
         - WP_MULTISITE=1
-        - COVERAGE_REPORT=1
       script: bash travis-ci/bin/php/wp-test.sh
     - stage: test
       language: php
       php: '7.0'
       env:
         - WP_VERSION=5.0
-        - COVERAGE_REPORT=1
       script: bash travis-ci/bin/php/wp-test.sh
     - stage: test
       language: php
       php: '5.6'
       env:
         - WP_VERSION=latest
-        - COVERAGE_REPORT=1
       script: bash travis-ci/bin/php/wp-test.sh
     - stage: test
       language: php
@@ -103,14 +85,12 @@ jobs:
       env:
         - WP_VERSION=5.0
         - WP_MULTISITE=1
-        - COVERAGE_REPORT=1
       script: bash travis-ci/bin/php/wp-test.sh
 
     - stage: test
       language: node_js
       node_js: '11'
       dist: trusty
-      env: COVERAGE_REPORT=1
       script: bash travis-ci/bin/js/js-test.sh
 
 
@@ -120,7 +100,6 @@ jobs:
       env:
         - WP_VERSION=trunk
         - WP_MULTISITE=1
-        - ACTIVATE_POPULAR_PLUGINS=1
       script: bash travis-ci/bin/php/wp-test.sh
 
     - stage: test trunk
@@ -128,48 +107,3 @@ jobs:
       php: '5.6'
       env: WP_VERSION=trunk
       script: bash travis-ci/bin/php/wp-test.sh
-
-
-    - stage: deploy
-      language: node_js
-      node_js: '11'
-      dist: trusty
-      script: skip
-      before_deploy:
-        - source travis-ci/bin/deploy/env.sh
-        - bash travis-ci/bin/deploy/create.sh
-      deploy:
-        provider: releases
-        skip_cleanup: true
-        name: ${RELEASE_TITLE}
-        tag_name: ${RELEASE_TAG}
-        api_key:
-          secure: SED2xsuudQql6XDDhUXESghmbqzuOrxKMMM/jdRBSkj4IBkUkmq+273uiFeZKdNau/CgM4uqaFus2LFcGyJdLkA+HlO1aP+1yDMzCKoMVRuDRk4foo3/EiS21hYX4RmHLzERSlM9EKjfH1GN37v01LqIV+59NmSwiRBMXkIOaeGC3lVXeT6oeUnCvPfQjTc9Da24mCObHwPqgfWIjw4SaA4WGT+aEvjv9xLZst8c68/P/wz77eZsrgJMxcXKn/zr/OrlYUeQdPhSQLLU2BSI4BoSqPxI6EjQz6W7NumRHyTm0b7D6y5C9SyvaC8A7+iibdC5xWGxfHGORaA3ix8T+ihCnK/dDSelcUAjxB/Cp1T3BJCTCW1fnqRR1g86ddulzy2oJBhuGyxHkWcmTR34tp59bTIA6WkEAXPg9TNOs5LALDXK3scy+pQ4u+wu3yxyGVJon6su/0j1r77WEt9O0Ob6UqeYtQ+CHynU4Ix2xzH7jgYfPBCJIIVm4MPGiXQVW+YoRPNGGsreNe2rvVW3FrA3KoBZvPI2RI44jx2Zf1SIMPEVi5zSgqEhoZMnpXrxedphOvJ86EgrByfd9vr3b9rW4/qXZy2f3Kjt41XVou3fqbR0vrbTbClzXwqHzVssV+59S/nB//9ACfHYBZQrURR0N00060gLoFyzEz37Kcc=
-        file: ${RELEASE_FILE}
-        overwrite: true
-        on:
-          tags: true
-
-    - stage: deploy
-      language: node_js
-      node_js: '11'
-      dist: trusty
-      env:
-        - GH_PAGES_APP_ID=editor
-        - GH_PAGES_PLUGIN_SCRIPT="./index.min.js"
-        - GH_PAGES_PLUGIN_STYLE="./index.css"
-        - GH_PAGES_TITLE="Marker Animation"
-        - GH_PAGES_TEMPLATE=gutenberg
-        - GH_PAGES_TRACKING_ID=UA-78163306-3
-      script: skip
-      before_deploy:
-        - source travis-ci/bin/deploy/env.sh
-        - bash travis-ci/bin/deploy/gh-pages.sh
-      deploy:
-        provider: pages
-        skip_cleanup: true
-        github_token: ${GITHUB_TOKEN}
-        keep_history: true
-        local_dir: ${GH_PAGES_DIR}
-        on:
-          tags: true
