@@ -3,8 +3,8 @@ Contributors: technote0space
 Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アンダーライン
 Requires at least: 4.6
 Requires PHP: 5.6
-Tested up to: 5.2.3
-Stable tag: 2.2.3
+Tested up to: 5.3
+Stable tag: 2.2.4
 Donate link: https://paypal.me/technote0space
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -31,6 +31,10 @@ This plugin needs PHP5.6 or higher.
 == Screenshots ==
 
 == Upgrade Notice ==
+
+= 2.2.3 =
+* パッケージの更新
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/255)
 
 = 2.2.0 =
 * Gutenberg v6.3 以上への対応
