@@ -95,7 +95,7 @@ describe( 'applyStyles', () => {
 			if ( ! el.sheet || ! el.sheet.cssRules ) {
 				return false;
 			}
-			return el.sheet.cssRules.filter( rule => rule.selectorText.startsWith( 'body #editor .test-marker-animation-class' ) ).length;
+			return el.sheet.cssRules.filter( rule => rule.selectorText && rule.selectorText.startsWith( 'body #editor .test-marker-animation-class' ) ).length;
 		} ) ).toHaveLength( 5 );
 	} );
 } );
@@ -108,13 +108,13 @@ describe( 'addStyle', () => {
 			if ( ! el.sheet || ! el.sheet.cssRules ) {
 				return false;
 			}
-			return el.sheet.cssRules.filter( rule => rule.selectorText.startsWith( 'body #editor .test-class5' ) ).length;
+			return el.sheet.cssRules.filter( rule => rule.selectorText && rule.selectorText.startsWith( 'body #editor .test-class5' ) ).length;
 		} ) ).toHaveLength( 2 );
 		expect( Array.from( document.head.children ).filter( el => {
 			if ( ! el.sheet || ! el.sheet.cssRules ) {
 				return false;
 			}
-			return el.sheet.cssRules.filter( rule => rule.selectorText.startsWith( 'body #editor .test-class6' ) ).length;
+			return el.sheet.cssRules.filter( rule => rule.selectorText && rule.selectorText.startsWith( 'body #editor .test-class6' ) ).length;
 		} ) ).toHaveLength( 1 );
 	} );
 } );
