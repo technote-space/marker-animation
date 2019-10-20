@@ -32,6 +32,10 @@ This plugin needs PHP5.6 or higher.
 
 == Upgrade Notice ==
 
+= 2.2.3 =
+* パッケージの更新
+* [すべての差分](https://github.com/technote-space/hide-blocks-temporarily/pull/184)
+
 = 2.2.0 =
 * Gutenberg v6.3 以上への対応
 * GitHub Actions の導入 [詳細](https://github.com/technote-space/marker-animation/issues/205)
