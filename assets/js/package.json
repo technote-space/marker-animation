@@ -39,7 +39,7 @@
     "@wordpress/core-data": "^2.7.2",
     "@wordpress/data": "^4.9.2",
     "@wordpress/dom-ready": "^2.5.1",
-    "@wordpress/editor": "^9.7.2",
+    "@wordpress/editor": "^9.8.0",
     "@wordpress/element": "^2.8.2",
     "@wordpress/format-library": "^1.9.2",
     "@wordpress/hooks": "^2.6.0",
