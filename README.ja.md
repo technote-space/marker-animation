@@ -1,6 +1,6 @@
 # Marker Animation
 
-[![Build Status](https://github.com/technote-space/marker-animation/workflows/Build/badge.svg)](https://github.com/technote-space/marker-animation/actions)
+[![CI Status](https://github.com/technote-space/marker-animation/workflows/CI/badge.svg)](https://github.com/technote-space/marker-animation/actions)
 [![Build Status](https://travis-ci.com/technote-space/marker-animation.svg?branch=master)](https://travis-ci.com/technote-space/marker-animation)
 [![codecov](https://codecov.io/gh/technote-space/marker-animation/branch/master/graph/badge.svg)](https://codecov.io/gh/technote-space/marker-animation)
 [![CodeFactor](https://www.codefactor.io/repository/github/technote-space/marker-animation/badge)](https://www.codefactor.io/repository/github/technote-space/marker-animation)
