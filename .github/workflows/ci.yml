@@ -207,9 +207,9 @@ jobs:
             WP_VERSION: 'latest'
             WP_MULTISITE: '1'
             ACTIVATE_POPULAR_PLUGINS: 1
- exclude:
- - php: '7.3'
- WP_VERSION: '4.6'
+        exclude:
+          - php: '7.3'
+            WP_VERSION: '4.6'
     steps:
       - uses: actions/checkout@v2
         with:
