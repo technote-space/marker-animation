@@ -17,13 +17,32 @@ jobs:
     name: ESLint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 3
+      - uses: technote-space/get-diff-action@v1
+        with:
+          PREFIX_FILTER: assets/js/
+          SUFFIX_FILTER: .js
+          FILES: .eslintrc
+      - name: Get Yarn Cache Directory
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+        if: env.GIT_DIFF
+      - name: Cache node dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+        if: env.GIT_DIFF
       - name: Prepare setting
         run: git clone --depth=1 https://github.com/wp-content-framework/travis-ci.git travis-ci && bash travis-ci/bin/prepare.sh
+        if: env.GIT_DIFF
       - name: Check code style
         run: bash travis-ci/bin/js/js-lint.sh
+        if: env.GIT_DIFF
       - uses: 8398a7/action-slack@v1
         with:
           type: failure
@@ -35,13 +54,34 @@ jobs:
     name: PHP Code Sniffer
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 3
+      - uses: technote-space/get-diff-action@v1
+        with:
+          PREFIX_FILTER: |
+            configs/
+            src/
+            tests/
+          SUFFIX_FILTER: .php
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+        if: env.GIT_DIFF
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+        if: env.GIT_DIFF
       - name: Prepare setting
         run: git clone --depth=1 https://github.com/wp-content-framework/travis-ci.git travis-ci && bash travis-ci/bin/prepare.sh
+        if: env.GIT_DIFF
       - name: Check code style
         run: bash travis-ci/bin/php/phpcs.sh
+        if: env.GIT_DIFF
       - uses: 8398a7/action-slack@v1
         with:
           type: failure
@@ -53,13 +93,34 @@ jobs:
     name: PHPMD
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 3
+      - uses: technote-space/get-diff-action@v1
+        with:
+          PREFIX_FILTER: |
+            configs/
+            src/
+            tests/
+          SUFFIX_FILTER: .php
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+        if: env.GIT_DIFF
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+        if: env.GIT_DIFF
       - name: Prepare setting
         run: git clone --depth=1 https://github.com/wp-content-framework/travis-ci.git travis-ci && bash travis-ci/bin/prepare.sh
+        if: env.GIT_DIFF
       - name: Check code style
         run: bash travis-ci/bin/php/phpmd.sh
+        if: env.GIT_DIFF
       - uses: 8398a7/action-slack@v1
         with:
           type: failure
@@ -76,23 +137,50 @@ jobs:
       matrix:
         node: ['10', '11', '12']
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 3
+      - uses: technote-space/get-diff-action@v1
+        with:
+          PREFIX_FILTER: assets/js/
+          SUFFIX_FILTER: |
+            .js
+            .snap
+          FILES: |
+            yarn.lock
+            jest.config.js
       - name: Setup node
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
+        if: env.GIT_DIFF || github.event_name == 'push'
+      - name: Get Yarn Cache Directory
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+        if: env.GIT_DIFF || github.event_name == 'push'
+      - name: Cache node dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+        if: env.GIT_DIFF || github.event_name == 'push'
       - name: Prepare setting
         run: git clone --depth=1 https://github.com/wp-content-framework/travis-ci.git travis-ci && bash travis-ci/bin/prepare.sh
+        if: env.GIT_DIFF || github.event_name == 'push'
       - name: Run tests
         run: bash travis-ci/bin/js/js-test.sh
+        if: env.GIT_DIFF || github.event_name == 'push'
       - name: Codecov
-        run: curl -s https://codecov.io/bash | bash -s -- -t $CODECOV_TOKEN -f $COVERAGE_FILE
+        run: |
+          if [ -n "$CODECOV_TOKEN" ]; then
+            curl -s https://codecov.io/bash | bash -s -- -t $CODECOV_TOKEN -f $COVERAGE_FILE
+          fi
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           COVERAGE_FILE: ./assets/js/coverage/lcov.info
-        if: matrix.node == '12'
+        if: matrix.node == '12' && (env.GIT_DIFF || github.event_name == 'push')
       - uses: 8398a7/action-slack@v1
         with:
           type: failure
@@ -112,30 +200,52 @@ jobs:
     strategy:
       matrix:
         php: ['7.0', '7.3', '5.6']
-        WP_VERSION: ['latest', '5.2', '4.6']
+        WP_VERSION: ['latest', '4.6']
         WP_MULTISITE: ['0', '1']
         include:
           - php: '7.3'
             WP_VERSION: 'latest'
             WP_MULTISITE: '1'
             ACTIVATE_POPULAR_PLUGINS: 1
-        exclude:
-          - php: '7.3'
-            WP_VERSION: '4.6'
+ exclude:
+ - php: '7.3'
+ WP_VERSION: '4.6'
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 3
+      - uses: technote-space/get-diff-action@v1
+        with:
+          PREFIX_FILTER: |
+            configs/
+            src/
+            tests/
+          SUFFIX_FILTER: .php
+          FILES: composer.lock
       - name: Switch PHP version
         env:
           PHP_VERSION: ${{ matrix.php }}
         run: sudo ln -sf "/usr/bin/php$PHP_VERSION" /etc/alternatives/php
+        if: env.GIT_DIFF || github.event_name == 'push'
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+        if: env.GIT_DIFF || github.event_name == 'push'
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+        if: env.GIT_DIFF || github.event_name == 'push'
       - name: Prepare setting
         run: git clone --depth=1 https://github.com/wp-content-framework/travis-ci.git travis-ci && bash travis-ci/bin/prepare.sh
         env:
           WP_VERSION: ${{ matrix.WP_VERSION }}
           WP_MULTISITE: ${{ matrix.WP_MULTISITE }}
           ACTIVATE_POPULAR_PLUGINS: ${{ matrix.ACTIVATE_POPULAR_PLUGINS }}
+        if: env.GIT_DIFF || github.event_name == 'push'
       - name: Run tests
         run: bash travis-ci/bin/php/wp-test.sh
         env:
@@ -143,12 +253,16 @@ jobs:
           WP_VERSION: ${{ matrix.WP_VERSION }}
           WP_MULTISITE: ${{ matrix.WP_MULTISITE }}
           ACTIVATE_POPULAR_PLUGINS: ${{ matrix.ACTIVATE_POPULAR_PLUGINS }}
+        if: env.GIT_DIFF || github.event_name == 'push'
       - name: Codecov
-        run: curl -s https://codecov.io/bash | bash -s -- -t $CODECOV_TOKEN -f $COVERAGE_FILE
+        run: |
+          if [ -n "$CODECOV_TOKEN" ]; then
+            curl -s https://codecov.io/bash | bash -s -- -t $CODECOV_TOKEN -f $COVERAGE_FILE
+          fi
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           COVERAGE_FILE: ./coverage/clover.xml
-        if: matrix.ACTIVATE_POPULAR_PLUGINS == 1
+        if: matrix.ACTIVATE_POPULAR_PLUGINS == 1 && (env.GIT_DIFF || github.event_name == 'push')
       - uses: 8398a7/action-slack@v1
         with:
           type: failure
