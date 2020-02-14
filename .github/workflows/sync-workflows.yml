@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: 0 15 * * 4
+    - cron: 0 16 * * 4
   repository_dispatch:
     types: [sync-workflows]
 
@@ -20,12 +20,12 @@ jobs:
             mkdir -p .github/workflows/.tmp
             git clone --depth=1 https://github.com/technote-space/github-actions-workflows.git .github/workflows/.tmp/workflows
 
-            bash .github/workflows/.tmp/workflows/wp-plugin/copy.sh test-pages-releases php-js-test
+            bash .github/workflows/.tmp/workflows/wp-plugin/copy.sh
             sed -i "s/WP_VERSION: \[.\+$/WP_VERSION: ['latest', '4.6']/" .github/workflows/ci.yml
             sed -i "/ACTIVATE_POPULAR_PLUGINS: 1/a \        exclude:\n          - php: '7.3'\n            WP_VERSION: '4.6'" .github/workflows/ci.yml
-            sed -i "s/GH_PAGES_APP_ID:.*$/GH_PAGES_APP_ID: editor/" .github/workflows/release.yml
-            sed -i "s/GH_PAGES_PLUGIN_STYLE:.*$/GH_PAGES_PLUGIN_STYLE: .\/index.css/" .github/workflows/release.yml
-            sed -i "s/GH_PAGES_TITLE:.*$/GH_PAGES_TITLE: Marker Animation/" .github/workflows/release.yml
+            sed -i "s/GH_PAGES_APP_ID:.*$/GH_PAGES_APP_ID: editor/" .github/workflows/ci.yml
+            sed -i "s/GH_PAGES_PLUGIN_STYLE:.*$/GH_PAGES_PLUGIN_STYLE: .\/index.css/" .github/workflows/ci.yml
+            sed -i "s/GH_PAGES_TITLE:.*$/GH_PAGES_TITLE: Marker Animation/" .github/workflows/ci.yml
 
             rm -rdf .github/workflows/.tmp
           COMMIT_MESSAGE: 'chore: sync workflows'
