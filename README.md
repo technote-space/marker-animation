@@ -20,7 +20,8 @@ This plugin will add the ability to display animations like painting with a high
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
+<details>
+<summary>Details</summary>
 
 - [Screenshots](#screenshots)
   - [Behavior](#behavior)
@@ -48,6 +49,7 @@ This plugin will add the ability to display animations like painting with a high
 - [Author](#author)
 - [Plugin framework](#plugin-framework)
 
+</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Screenshots
