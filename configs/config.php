@@ -12,8 +12,8 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 
 return [
 
-    // required wordpress version
-    'required_wordpress_version'     => '5.4',
+	// required wordpress version
+	'required_wordpress_version'     => '5.4',
 
 	// menu image url
 	'menu_image'                     => 'icon-24x24.png',
