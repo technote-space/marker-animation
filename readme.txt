@@ -32,6 +32,10 @@ This plugin needs PHP5.6 or higher.
 
 == Upgrade Notice ==
 
+= 3.0.1 =
+* ボタン表示の調整
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/322)
+
 = 3.0.0 =
 * [[最新のバージョン(WP5.4)のみサポート]](color:red;font-weight:bold)
 * [すべての差分](https://github.com/technote-space/marker-animation/pull/318)
