@@ -11,24 +11,6 @@
     background-repeat: repeat-x;
 }
 
-.marker-animation-nav .components-dropdown-menu__menu-item {
-    display: flex !important;
-    background-position: left -100% bottom 10% !important;
-    background-size: 200% 1em !important;
-    font-weight: normal !important;
-    padding: 6px !important;
-}
-
-.components-toolbar > .editor-styles-wrapper::before,
-.components-toolbar > .editor-styles-wrapper::after {
-    content: none;
-    display: none;
-}
-
-.components-toolbar > .editor-styles-wrapper {
-    background: transparent !important;
-}
-
 .marker-animation-menu .components-dropdown-menu__menu-item.is-active {
     color: #1e1e1e;
     background: #ddd;
