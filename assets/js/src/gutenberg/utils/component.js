@@ -79,6 +79,7 @@ export const getDefaultFormatGroupProps = () => ([
 			title: translate('Marker Animation (detail setting)'),
 			initialOpen: true,
 		},
+		className: 'marker-animation-button',
 		menuClassName: 'marker-animation-menu marker-animation-menu-default',
 	},
 ]);
@@ -92,6 +93,7 @@ export const getSettingFormatGroupProps = () => ([
 		toolbarGroup: getName('toolbar'),
 		label: translate('Marker Animation'),
 		icon: getIcon(),
+		className: 'marker-animation-button',
 		menuClassName: 'marker-animation-menu marker-animation-menu-setting',
 	},
 ]);

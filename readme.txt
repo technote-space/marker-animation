@@ -4,7 +4,7 @@ Tags: marker, marker animation, highlighter, 蛍光ペン, マーカー, アン�
 Requires at least: 5.4
 Requires PHP: 5.6
 Tested up to: 5.4
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 Donate link: https://paypal.me/technote0space
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -31,6 +31,10 @@ This plugin needs PHP5.6 or higher.
 == Screenshots ==
 
 == Upgrade Notice ==
+
+= 3.0.1 =
+* ボタン表示の調整
+* [すべての差分](https://github.com/technote-space/marker-animation/pull/322)
 
 = 3.0.0 =
 * [[最新のバージョン(WP5.4)のみサポート]](color:red;font-weight:bold)
