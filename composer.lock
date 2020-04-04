@@ -117,16 +117,16 @@
         },
         {
             "name": "technote/gutenberg-package-versions",
-            "version": "v0.2.31",
+            "version": "v0.2.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/technote-space/gutenberg-package-versions.git",
-                "reference": "81e5776d5b2631f85c620a486c5e83e0b7f7e573"
+                "reference": "11c6763d25b6d66d0229ed76de7d71fb6d9843a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/technote-space/gutenberg-package-versions/zipball/81e5776d5b2631f85c620a486c5e83e0b7f7e573",
-                "reference": "81e5776d5b2631f85c620a486c5e83e0b7f7e573",
+                "url": "https://api.github.com/repos/technote-space/gutenberg-package-versions/zipball/11c6763d25b6d66d0229ed76de7d71fb6d9843a3",
+                "reference": "11c6763d25b6d66d0229ed76de7d71fb6d9843a3",
                 "shasum": ""
             },
             "require": {
@@ -170,7 +170,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-03-24T17:48:04+00:00"
+            "time": "2020-04-04T16:49:24+00:00"
         },
         {
             "name": "technote/gutenberg-packages",
