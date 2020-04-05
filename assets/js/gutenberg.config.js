@@ -6,7 +6,7 @@ const webpack                       = require('webpack');
 const pkg                           = require('./package');
 const path                          = require('path');
 
-const banner    = `${pkg.name}-gutenberg ${pkg.version}\nCopyright (c) ${new Date().getFullYear()} ${pkg.author}\nLicense: ${pkg.license}`;
+const banner    = `${pkg.name}-gutenberg ${pkg.version}\nCopyright (c) ${new Date().getFullYear()} ${pkg.author.name}\nLicense: ${pkg.license}`;
 const externals = {
 	'@wordpress/block-editor': 'window.wp.blockEditor',
 	'@wordpress/components': 'window.wp.components',
