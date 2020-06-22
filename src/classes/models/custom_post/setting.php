@@ -87,10 +87,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @return array
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	protected function filter_edit_form_params(
-		/** @noinspection PhpUnusedParameterInspection */
-		$params, $post
-	) {
+	protected function filter_edit_form_params( $params, $post ) {
 		/** @var Assets $assets */
 		$assets          = Assets::get_instance( $this->app );
 		$setting_details = $assets->get_setting_details( 'setting' );
@@ -161,20 +158,14 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			},
 			'display'  => [
 				'name'     => $this->translate( 'display' ),
-				'callback' => function (
-					/** @noinspection PhpUnusedParameterInspection */
-					$value, $data, $post
-				) {
+				'callback' => function ( $value, $data, $post ) {
 					return $this->display_callback( $value, $data, $post );
 				},
 				'unescape' => true,
 			],
 			'others'   => [
 				'name'     => $this->translate( 'others' ),
-				'callback' => function (
-					/** @noinspection PhpUnusedParameterInspection */
-					$value, $data, $post
-				) {
+				'callback' => function ( $value, $data, $post ) {
 					return $this->others_callback( $value, $data, $post );
 				},
 				'unescape' => true,
@@ -199,7 +190,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 */
 	private function display_callback(
 		/** @noinspection PhpUnusedParameterInspection */
-		$value, $data, $post
+		$value,
+		$data,
+		$post
 	) {
 		/** @var Assets $assets */
 		$assets          = Assets::get_instance( $this->app );
@@ -294,7 +287,9 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 */
 	private function others_callback(
 		/** @noinspection PhpUnusedParameterInspection */
-		$value, $data, $post
+		$value,
+		$data,
+		$post
 	) {
 		return $this->get_view( 'admin/custom_post/setting/others', [
 			'details' => [
@@ -311,7 +306,8 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 */
 	protected function before_output_edit_form(
 		/** @noinspection PhpUnusedParameterInspection */
-		$post, $params
+		$post,
+		$params
 	) {
 		$this->setup_color_picker();
 
@@ -324,10 +320,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function output_after_editor(
-		/** @noinspection PhpUnusedParameterInspection */
-		WP_Post $post
-	) {
+	public function output_after_editor( WP_Post $post ) {
 		$this->get_view( 'admin/custom_post/setting/test', [], true );
 	}
 
@@ -351,10 +344,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param array $new
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function data_updated(
-		/** @noinspection PhpUnusedParameterInspection */
-		$post_id, WP_Post $post, array $old, array $new
-	) {
+	public function data_updated( $post_id, WP_Post $post, array $old, array $new ) {
 		$this->clear_options_cache();
 	}
 
@@ -364,10 +354,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param array $data
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function data_inserted(
-		/** @noinspection PhpUnusedParameterInspection */
-		$post_id, WP_Post $post, array $data
-	) {
+	public function data_inserted( $post_id, WP_Post $post, array $data ) {
 		$this->clear_options_cache();
 	}
 
@@ -376,10 +363,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param WP_Post $post
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function untrash_post(
-		/** @noinspection PhpUnusedParameterInspection */
-		$post_id, WP_Post $post
-	) {
+	public function untrash_post( $post_id, WP_Post $post ) {
 		$this->clear_options_cache();
 	}
 
@@ -387,10 +371,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 * @param int $post_id
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function trash_post(
-		/** @noinspection PhpUnusedParameterInspection */
-		$post_id
-	) {
+	public function trash_post( $post_id ) {
 		$this->clear_options_cache();
 	}
 
@@ -429,7 +410,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			$this->app->array->get( $this->get_list_data( function ( $query ) {
 				/** @var Builder $query */
 				$query->where( 'is_valid', 1 )
-					->order_by( 'priority' );
+				      ->order_by( 'priority' );
 			} ), 'data' ) as $data
 		) {
 			$options = [];
@@ -455,7 +436,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 				$options['selector'] .= ', ' . $data['selector'];
 			}
 			if ( 'editor' === $target ) {
-				$options = $this->toCamel( $options );
+				$options = $this->to_camel( $options );
 			}
 			$settings[] = [
 				'id'      => $post->ID,
@@ -472,7 +453,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	 *
 	 * @return array
 	 */
-	private function toCamel( $options ) {
+	private function to_camel( $options ) {
 		foreach ( $options as $key => $item ) {
 			$new_key = $this->app->string->camel( $key );
 			if ( $key !== $new_key ) {
