@@ -11,6 +11,7 @@ namespace Marker_Animation\Classes\Models\Custom_Post;
 use Marker_Animation\Classes\Models\Assets;
 use Marker_Animation\Traits\Models\Custom_Post;
 use WP_Framework_Db\Classes\Models\Query\Builder;
+use WP_Framework_Upgrade\Traits\Upgrade;
 use WP_Post;
 
 // @codeCoverageIgnoreStart
@@ -23,9 +24,9 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
  * Class Setting
  * @package Marker_Animation\Classes\Models\Custom_Post
  */
-class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post {
+class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Framework_Upgrade\Interfaces\Upgrade {
 
-	use Custom_Post;
+	use Custom_Post, Upgrade;
 
 	/**
 	 * insert presets
@@ -481,5 +482,26 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post {
 		}
 
 		return $options;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_upgrade_methods() {
+		return [
+			[
+				'version'  => '4.0.0',
+				'callback' => function () {
+					foreach ( $this->app->array->get( $this->get_list_data( null, false ), 'data' ) as $item ) {
+						if ( isset( $item['function'] ) && ! isset( $item['timing_function'] ) ) {
+							$item['timing_function'] = $item['function'];
+							unset( $item['function'] );
+							unset( $item['post'] );
+							$this->update( $item, $item );
+						}
+					}
+				},
+			],
+		];
 	}
 }
