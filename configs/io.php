@@ -18,7 +18,7 @@ return [
 		'thickness',
 		'duration',
 		'delay',
-		'function',
+		'timing_function',
 		'is_font_bold',
 		'is_repeat',
 		'padding_bottom',

@@ -47,7 +47,7 @@ return [
 				'default' => '',
 				'comment' => 'delay',
 			],
-			'function'                     => [
+			'timing_function'              => [
 				'type'    => 'VARCHAR(32)',
 				'default' => '',
 				'comment' => 'function',

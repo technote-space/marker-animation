@@ -138,7 +138,7 @@ class SettingTest extends WP_UnitTestCase {
 		$this->assertContains( 'id="marker_animation-thickness"', $contents );
 		$this->assertContains( 'id="marker_animation-duration"', $contents );
 		$this->assertContains( 'id="marker_animation-delay"', $contents );
-		$this->assertContains( 'id="marker_animation-function"', $contents );
+		$this->assertContains( 'id="marker_animation-timing_function"', $contents );
 		$this->assertContains( 'id="marker_animation-is_font_bold"', $contents );
 		$this->assertContains( 'id="marker_animation-is_repeat"', $contents );
 		$this->assertContains( 'id="marker_animation-padding_bottom"', $contents );
@@ -363,7 +363,7 @@ class SettingTest extends WP_UnitTestCase {
 					'is_valid'                     => 1,
 					'color'                        => 'color1',
 					'duration'                     => 'duration1',
-					'function'                     => 'function1',
+					'timing_function'              => 'function1',
 					'is_font_bold'                 => 1,
 					'is_valid_button_block_editor' => 1,
 					'priority'                     => 25,
@@ -381,7 +381,7 @@ class SettingTest extends WP_UnitTestCase {
 					'post_title'                   => 'test title3',
 					'is_valid'                     => 1,
 					'color'                        => 'color3',
-					'function'                     => 'function3',
+					'timing_function'              => 'function3',
 					'padding_bottom'               => 'padding_bottom3',
 					'is_valid_button_block_editor' => 1,
 					'selector'                     => 'selector3',
