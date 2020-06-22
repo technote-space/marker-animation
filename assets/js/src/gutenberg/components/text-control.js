@@ -18,28 +18,28 @@ const { isEqual } = window.lodash;
  * @constructor
  */
 const MyTextControl = ({ stateArgs, initialValue, stateValue, setState, onChange, args, id, label, value }) => {
-	if (undefined === stateArgs || !isEqual([args.value.start, args.value.end, args.value.text], [stateArgs.value.start, stateArgs.value.end, stateArgs.value.text])) {
-		setState({ stateArgs: args });
-		setState({ initialValue: value });
-		setState({ stateValue: value });
-	}
-	return <TextControl
-		id={id}
-		label={label}
-		value={stateValue}
-		onChange={value => setState({ stateValue: value })}
-		onBlur={() => {
-			if (initialValue !== stateValue) {
-				onChange(stateValue);
-			}
-		}}
-	/>;
+  if (undefined === stateArgs || !isEqual([args.value.start, args.value.end, args.value.text], [stateArgs.value.start, stateArgs.value.end, stateArgs.value.text])) {
+    setState({ stateArgs: args });
+    setState({ initialValue: value });
+    setState({ stateValue: value });
+  }
+  return <TextControl
+    id={id}
+    label={label}
+    value={stateValue}
+    onChange={value => setState({ stateValue: value })}
+    onBlur={() => {
+      if (initialValue !== stateValue) {
+        onChange(stateValue);
+      }
+    }}
+  />;
 };
 
 export default compose(
-	withState({
-		stateArgs: undefined,
-		stateValue: '',
-		initialValue: '',
-	}),
+  withState({
+    stateArgs: undefined,
+    stateValue: '',
+    initialValue: '',
+  }),
 )(MyTextControl);

@@ -9,29 +9,29 @@ const path                          = require('path');
 const banner = `${pkg.name} ${pkg.version} - ${pkg.description}\nCopyright (c) ${new Date().getFullYear()} ${pkg.author}\nLicense: ${pkg.license}`;
 
 const webpackConfig = {
-	context: path.resolve(__dirname, 'src', 'marker-animation'),
-	entry: './index.js',
-	output: {
-		path: __dirname,
-		filename: 'marker-animation.min.js',
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				loader: 'babel-loader?cacheDirectory',
-			},
-		],
-	},
-	externals: {
-		jquery: 'jQuery',
-	},
-	plugins: [
-		new webpack.BannerPlugin(banner),
-		new DuplicatePackageCheckerPlugin(),
-		new HardSource(),
-	],
+  context: path.resolve(__dirname, 'src', 'marker-animation'),
+  entry: './index.js',
+  output: {
+    path: __dirname,
+    filename: 'marker-animation.min.js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader?cacheDirectory',
+      },
+    ],
+  },
+  externals: {
+    jquery: 'jQuery',
+  },
+  plugins: [
+    new webpack.BannerPlugin(banner),
+    new DuplicatePackageCheckerPlugin(),
+    new HardSource(),
+  ],
 };
 
 module.exports = smp.wrap(webpackConfig);
