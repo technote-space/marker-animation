@@ -134,7 +134,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post {
 			'thickness'                    => 'thickness',
 			'duration'                     => 'duration',
 			'delay'                        => 'delay',
-			'function'                     => 'function',
+			'timing_function'              => 'function',
 			'is_font_bold'                 => 'bold',
 			'is_stripe'                    => 'stripe',
 			'is_repeat'                    => 'repeat',
