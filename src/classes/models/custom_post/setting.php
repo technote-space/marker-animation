@@ -466,6 +466,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 
 	/**
 	 * @return array
+	 * @codeCoverageIgnore
 	 */
 	public function get_upgrade_methods() {
 		return [
