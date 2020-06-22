@@ -409,8 +409,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 		foreach (
 			$this->app->array->get( $this->get_list_data( function ( $query ) {
 				/** @var Builder $query */
-				$query->where( 'is_valid', 1 )
-				      ->order_by( 'priority' );
+				$query->where( 'is_valid', 1 )->order_by( 'priority' );
 			} ), 'data' ) as $data
 		) {
 			$options = [];
