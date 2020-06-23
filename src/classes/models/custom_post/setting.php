@@ -471,7 +471,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 	public function get_upgrade_methods() {
 		return [
 			[
-				'version'  => '4.0.0',
+				'version'  => '4.0.1',
 				'callback' => function () {
 					foreach ( $this->app->array->get( $this->get_list_data( null, false ), 'data' ) as $item ) {
 						if ( isset( $item['function'] ) && ! isset( $item['timing_function'] ) ) {
