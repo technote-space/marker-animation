@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c0587d61380b51497a70c94c65840262",
+    "content-hash": "21e2915edc3ee60885c078b10b8ad9bf",
     "packages": [
         {
             "name": "matthiasmullie/minify",
@@ -500,6 +500,50 @@
             "time": "2020-06-21T15:13:22+00:00"
         },
         {
+            "name": "wp-content-framework/cron",
+            "version": "v1.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wp-content-framework/cron.git",
+                "reference": "6dac270610731162977b74d3321161856dccfbb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wp-content-framework/cron/zipball/6dac270610731162977b74d3321161856dccfbb8",
+                "reference": "6dac270610731162977b74d3321161856dccfbb8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
+                "phpcompatibility/phpcompatibility-wp": "^2.1",
+                "phpmd/phpmd": "^2.8",
+                "squizlabs/php_codesniffer": "^3.5",
+                "wp-coding-standards/wpcs": "^2.3"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "technote",
+                    "email": "technote.space@gmail.com",
+                    "homepage": "https://technote.space"
+                }
+            ],
+            "description": "Wordpress content framework",
+            "homepage": "https://github.com/wp-content-framework",
+            "keywords": [
+                "framework",
+                "wordpress"
+            ],
+            "time": "2020-06-21T15:13:29+00:00"
+        },
+        {
             "name": "wp-content-framework/custom_post",
             "version": "v1.0.10",
             "source": {
@@ -641,6 +685,53 @@
                 "wordpress"
             ],
             "time": "2020-06-19T06:19:21+00:00"
+        },
+        {
+            "name": "wp-content-framework/log",
+            "version": "v1.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wp-content-framework/log.git",
+                "reference": "0ee157306848c56a17b0c50a873db9b8dcfc6b8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wp-content-framework/log/zipball/0ee157306848c56a17b0c50a873db9b8dcfc6b8d",
+                "reference": "0ee157306848c56a17b0c50a873db9b8dcfc6b8d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0",
+                "wp-content-framework/admin": "^1.0",
+                "wp-content-framework/cron": "^1.0",
+                "wp-content-framework/db": "^1.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
+                "phpcompatibility/phpcompatibility-wp": "^2.1",
+                "phpmd/phpmd": "^2.8",
+                "squizlabs/php_codesniffer": "^3.5",
+                "wp-coding-standards/wpcs": "^2.3"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "technote",
+                    "email": "technote.space@gmail.com",
+                    "homepage": "https://technote.space"
+                }
+            ],
+            "description": "Wordpress content framework",
+            "homepage": "https://github.com/wp-content-framework",
+            "keywords": [
+                "framework",
+                "wordpress"
+            ],
+            "time": "2020-06-19T06:19:18+00:00"
         },
         {
             "name": "wp-content-framework/presenter",
