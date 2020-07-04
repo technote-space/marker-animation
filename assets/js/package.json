@@ -1,6 +1,6 @@
 {
   "name": "marker-animation",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "marker animation for wordpress",
   "main": "marker-animation.min.js",
   "scripts": {
