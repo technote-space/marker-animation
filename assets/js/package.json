@@ -17,7 +17,7 @@
     "build": "yarn build:m && yarn build:g",
     "build:m": "webpack --mode production --config marker-animation.config.js",
     "build:g": "webpack --mode production --config gutenberg.config.js",
-    "update": "ncu -u && yarn install && yarn upgrade && yarn audit"
+    "update": "npx npm-check-updates -u && yarn install && yarn upgrade && yarn audit"
   },
   "author": {
     "name": "Technote",
