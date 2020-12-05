@@ -2,13 +2,13 @@
 
 exports[`MyTextControl should render text control: blur1 1`] = `
 <div
-  className="components-base-control"
+  className="components-base-control css-wdf2ti-Wrapper e1puf3u0"
 >
   <div
-    className="components-base-control__field"
+    className="components-base-control__field css-11vcxb9-StyledField e1puf3u1"
   >
     <label
-      className="components-base-control__label"
+      className="components-base-control__label css-pezhm9-StyledLabel e1puf3u2"
       htmlFor="inspector-text-control-0"
     >
       test-label
@@ -27,13 +27,13 @@ exports[`MyTextControl should render text control: blur1 1`] = `
 
 exports[`MyTextControl should render text control: blur2 1`] = `
 <div
-  className="components-base-control"
+  className="components-base-control css-wdf2ti-Wrapper e1puf3u0"
 >
   <div
-    className="components-base-control__field"
+    className="components-base-control__field css-11vcxb9-StyledField e1puf3u1"
   >
     <label
-      className="components-base-control__label"
+      className="components-base-control__label css-pezhm9-StyledLabel e1puf3u2"
       htmlFor="inspector-text-control-1"
     >
       test-label
@@ -52,13 +52,13 @@ exports[`MyTextControl should render text control: blur2 1`] = `
 
 exports[`MyTextControl should render text control: changed1 1`] = `
 <div
-  className="components-base-control"
+  className="components-base-control css-wdf2ti-Wrapper e1puf3u0"
 >
   <div
-    className="components-base-control__field"
+    className="components-base-control__field css-11vcxb9-StyledField e1puf3u1"
   >
     <label
-      className="components-base-control__label"
+      className="components-base-control__label css-pezhm9-StyledLabel e1puf3u2"
       htmlFor="inspector-text-control-0"
     >
       test-label
@@ -77,13 +77,13 @@ exports[`MyTextControl should render text control: changed1 1`] = `
 
 exports[`MyTextControl should render text control: render1 1`] = `
 <div
-  className="components-base-control"
+  className="components-base-control css-wdf2ti-Wrapper e1puf3u0"
 >
   <div
-    className="components-base-control__field"
+    className="components-base-control__field css-11vcxb9-StyledField e1puf3u1"
   >
     <label
-      className="components-base-control__label"
+      className="components-base-control__label css-pezhm9-StyledLabel e1puf3u2"
       htmlFor="inspector-text-control-0"
     >
       test-label
@@ -102,13 +102,13 @@ exports[`MyTextControl should render text control: render1 1`] = `
 
 exports[`MyTextControl should render text control: render2 1`] = `
 <div
-  className="components-base-control"
+  className="components-base-control css-wdf2ti-Wrapper e1puf3u0"
 >
   <div
-    className="components-base-control__field"
+    className="components-base-control__field css-11vcxb9-StyledField e1puf3u1"
   >
     <label
-      className="components-base-control__label"
+      className="components-base-control__label css-pezhm9-StyledLabel e1puf3u2"
       htmlFor="inspector-text-control-1"
     >
       test-label

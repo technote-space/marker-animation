@@ -136,6 +136,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			'is_font_bold'                 => 'bold',
 			'is_stripe'                    => 'stripe',
 			'is_repeat'                    => 'repeat',
+			'is_rtl'                       => 'rtl',
 			'padding_bottom'               => 'padding_bottom',
 			'is_valid_button_block_editor' => 'is_valid_button_block_editor',
 		];
@@ -273,6 +274,7 @@ class Setting implements \Marker_Animation\Interfaces\Models\Custom_Post, \WP_Fr
 			'bold',
 			'stripe',
 			'repeat',
+			'rtl',
 			'padding_bottom',
 		];
 	}

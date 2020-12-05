@@ -236,6 +236,10 @@ class Assets implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_C
 				'form'     => 'input/checkbox',
 				'nullable' => true,
 			],
+			'rtl'                          => [
+				'form'     => 'input/checkbox',
+				'nullable' => true,
+			],
 			'padding_bottom'               => 'input/text',
 			'is_valid_button_block_editor' => [
 				'form'   => 'input/checkbox',

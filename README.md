@@ -13,8 +13,6 @@
 
 This plugin will add the ability to display animations like painting with a highlighter.
 
-[Demonstration](https://technote-space.github.io/marker-animation)
-
 [Latest version](https://github.com/technote-space/marker-animation/releases/latest/download/release.zip)
 
 ## Table of Contents

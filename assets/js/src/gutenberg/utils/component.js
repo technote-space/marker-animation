@@ -22,7 +22,7 @@ export const getPanelComponent = (setting, args, formatName, value, stripe) => {
   }
 
   // eslint-disable-next-line no-magic-numbers
-  if (stripe && ['duration', 'delay', 'function', 'repeat'].indexOf(setting.name) >= 0) {
+  if (stripe && ['duration', 'delay', 'function', 'repeat', 'rtl'].indexOf(setting.name) >= 0) {
     return null;
   }
 

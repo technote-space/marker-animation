@@ -105,7 +105,7 @@ class Dashboard extends Base {
 	) {
 		$detail['class']                      = 'marker-animation-option';
 		$detail['attributes']['data-value']   = $this->app->array->get( $detail, 'value' );
-		$detail['attributes']['data-default'] = $this->app->array->get( $detail, 'default' );
+		$detail['attributes']['data-default'] = $this->app->utility->value( $this->app->array->get( $detail, 'default' ) );
 		if ( isset( $option['args']['attributes'] ) ) {
 			$detail['attributes'] = $option['args']['attributes'];
 		}

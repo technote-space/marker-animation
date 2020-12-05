@@ -64,6 +64,13 @@ return [
 					'type'    => 'bool',
 					'default' => false,
 				],
+				'rtl'                           => [
+					'label'   => 'rtl',
+					'type'    => 'bool',
+					'default' => function () {
+						return is_rtl();
+					},
+				],
 				'padding_bottom'                => [
 					'label'   => 'padding bottom',
 					'default' => '.6em',

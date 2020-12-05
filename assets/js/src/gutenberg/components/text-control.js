@@ -1,14 +1,9 @@
 import React from 'react';
 import { TextControl } from '@wordpress/components';
-import { compose, withState } from '@wordpress/compose';
-
-const { isEqual } = window.lodash;
+import { useState, useMemo, useCallback } from '@wordpress/element';
+import { isEqual } from 'lodash';
 
 /**
- * @param {object?} stateArgs state args
- * @param {string?} initialValue initial value
- * @param {string?} stateValue state value
- * @param {function} setState set state
  * @param {function} onChange on change
  * @param {object} args args
  * @param {string} id id
@@ -17,29 +12,30 @@ const { isEqual } = window.lodash;
  * @returns {Component} text control
  * @constructor
  */
-const MyTextControl = ({ stateArgs, initialValue, stateValue, setState, onChange, args, id, label, value }) => {
+const MyTextControl = ({ onChange, args, id, label, value }) => {
+  const [stateArgs, setStateArgs]       = useState(undefined);
+  const [stateValue, setStateValue]     = useState('');
+  const [initialValue, setInitialValue] = useState('');
+  const onBlur                          = useCallback(() => {
+    if (initialValue !== stateValue) {
+      onChange(stateValue);
+    }
+  });
+
+
   if (undefined === stateArgs || !isEqual([args.value.start, args.value.end, args.value.text], [stateArgs.value.start, stateArgs.value.end, stateArgs.value.text])) {
-    setState({ stateArgs: args });
-    setState({ initialValue: value });
-    setState({ stateValue: value });
+    setStateArgs(args);
+    setStateValue(value);
+    setInitialValue(value);
   }
-  return <TextControl
+
+  return useMemo(() => <TextControl
     id={id}
     label={label}
     value={stateValue}
-    onChange={value => setState({ stateValue: value })}
-    onBlur={() => {
-      if (initialValue !== stateValue) {
-        onChange(stateValue);
-      }
-    }}
-  />;
+    onChange={setStateValue}
+    onBlur={onBlur}
+  />, [id, stateValue]);
 };
 
-export default compose(
-  withState({
-    stateArgs: undefined,
-    stateValue: '',
-    initialValue: '',
-  }),
-)(MyTextControl);
+export default MyTextControl;
