@@ -13,8 +13,6 @@
 
 蛍光ペンで塗るようなアニメーションを表示する機能を追加するプラグインです。
 
-[デモ](https://technote-space.github.io/marker-animation)
-
 [最新バージョン](https://github.com/technote-space/marker-animation/releases/latest/download/release.zip)
 
 ## Table of Contents
