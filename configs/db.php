@@ -64,6 +64,12 @@ return [
 				'default'  => null,
 				'comment'  => 'repeat',
 			],
+			'is_rtl'                       => [
+				'type'     => 'BIT(1)',
+				'unsigned' => true,
+				'default'  => null,
+				'comment'  => 'rtl',
+			],
 			'padding_bottom'               => [
 				'type'    => 'VARCHAR(32)',
 				'default' => '',
