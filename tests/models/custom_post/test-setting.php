@@ -141,6 +141,7 @@ class SettingTest extends WP_UnitTestCase {
 		$this->assertContains( 'id="marker_animation-timing_function"', $contents );
 		$this->assertContains( 'id="marker_animation-is_font_bold"', $contents );
 		$this->assertContains( 'id="marker_animation-is_repeat"', $contents );
+		$this->assertContains( 'id="marker_animation-is_rtl"', $contents );
 		$this->assertContains( 'id="marker_animation-padding_bottom"', $contents );
 		$this->assertContains( 'id="marker_animation-is_stripe"', $contents );
 		$this->assertContains( 'id="marker_animation-priority"', $contents );
@@ -195,6 +196,7 @@ class SettingTest extends WP_UnitTestCase {
 		$this->assertContains( '<th>stripe</th>', $contents );
 		$this->assertContains( '<td>default (No)</td>', $contents );
 		$this->assertContains( '<th>repeat</th>', $contents );
+		$this->assertContains( '<th>rtl</th>', $contents );
 		$this->assertContains( '<td>default (No)</td>', $contents );
 		$this->assertContains( '<th>padding bottom</th>', $contents );
 		$this->assertContains( '<td>default (.6em)</td>', $contents );
@@ -293,6 +295,7 @@ class SettingTest extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'function', $settings[0]['options'] );
 		$this->assertArrayHasKey( 'stripe', $settings[0]['options'] );
 		$this->assertArrayHasKey( 'repeat', $settings[0]['options'] );
+		$this->assertArrayHasKey( 'rtl', $settings[0]['options'] );
 		$this->assertArrayHasKey( 'selector', $settings[0]['options'] );
 		$this->assertArrayHasKey( 'class', $settings[0]['options'] );
 		$this->assertArrayHasKey( 'fontWeight', $settings[0]['options'] );
@@ -374,6 +377,7 @@ class SettingTest extends WP_UnitTestCase {
 					'color'                        => 'color2',
 					'delay'                        => 'delay2',
 					'is_repeat'                    => 1,
+					'is_rtl'                       => 1,
 					'is_valid_button_block_editor' => 0,
 					'priority'                     => 50,
 				],
