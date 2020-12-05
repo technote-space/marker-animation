@@ -115,6 +115,7 @@ class DashboardTest extends WP_UnitTestCase {
 		$this->assertContains( 'id="marker_animation-bold"', $contents );
 		$this->assertContains( 'id="marker_animation-stripe"', $contents );
 		$this->assertContains( 'id="marker_animation-repeat"', $contents );
+		$this->assertContains( 'id="marker_animation-rtl"', $contents );
 		$this->assertContains( 'id="marker_animation-padding_bottom"', $contents );
 		$this->assertContains( 'name="update"', $contents );
 		$this->assertContains( 'name="reset"', $contents );
