@@ -59,7 +59,7 @@ if ( ! defined( 'MARKER_ANIMATION' ) ) {
 
 						if ( 'stripe' === option_name ) {
 							const readonly = option_value && $( this ).val() !== '';
-							[ 'duration', 'delay', 'function', 'repeat', 'rtl' ].forEach( function( target ) {
+							[ 'duration', 'delay', 'timing_function', 'is_repeat', 'is_rtl' ].forEach( function( target ) {
 								$( '#<?php $instance->h( $id_prefix );?>' + target ).prop( 'readonly', readonly ).attr( 'data-readonly', readonly ? 1 : '' );
 							} );
 						}
