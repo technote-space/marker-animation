@@ -1,4 +1,6 @@
 import { getDataName, parseInputValue } from './misc';
+import { Helpers } from '../wrapper';
+const { editorReady } = Helpers;
 
 /* istanbul ignore next */
 if (markerAnimationParams.addedStyle === undefined) {
@@ -166,7 +168,7 @@ export const applyStyles = () => {
       addStyle(name, value, undefined, true, true, false, markerAnimationParams.details[ 'stripe' ].detail.value);
     }
   });
-  wp.domReady(() => {
+  editorReady(() => {
     [].forEach.call(document.getElementById('editor').getElementsByClassName(markerAnimationParams.class), elem => {
       Object.keys(elem.dataset).forEach(key => {
         // eslint-disable-next-line no-magic-numbers
