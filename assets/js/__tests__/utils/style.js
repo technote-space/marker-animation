@@ -1,5 +1,8 @@
 /* eslint-disable no-magic-numbers */
 import { addStyleHelper, applyStyles, addStyle } from '../../src/gutenberg/utils/style';
+import { Helpers } from '../../src/gutenberg/wrapper';
+
+jest.mock('../../src/gutenberg/wrapper');
 
 beforeEach(() => {
   markerAnimationParams.addedStyle = {};
@@ -85,6 +88,7 @@ describe('addStyleHelper', () => {
 
 describe('applyStyles', () => {
   it('should setup styles', () => {
+    jest.spyOn(Helpers, 'editorReady').mockImplementation((callback) => callback());
     applyStyles();
     applyStyles();
     window.document.dispatchEvent(new Event('DOMContentLoaded', {
