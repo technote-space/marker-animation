@@ -26,13 +26,13 @@
   },
   "license": "GPL-3.0",
   "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/plugin-transform-react-jsx": "^7.14.3",
-    "@babel/preset-env": "^7.14.4",
+    "@babel/core": "^7.14.5",
+    "@babel/plugin-transform-react-jsx": "^7.14.5",
+    "@babel/preset-env": "^7.14.5",
     "@technote-space/gutenberg-test-helper": "^0.1.13",
     "@technote-space/gutenberg-utils": "^2.4.3",
     "@technote-space/register-grouped-format-type": "^2.2.3",
-    "@wordpress/components": "^14.1.1",
+    "@wordpress/components": "^14.1.2",
     "@wordpress/compose": "^4.1.1",
     "@wordpress/element": "^3.1.1",
     "@wordpress/rich-text": "^4.1.1",
@@ -50,6 +50,6 @@
     "lodash": "^4.17.21",
     "speed-measure-webpack-plugin": "^1.5.0",
     "webpack": "^5.38.1",
-    "webpack-cli": "~4.7.0"
+    "webpack-cli": "~4.7.2"
   }
 }
